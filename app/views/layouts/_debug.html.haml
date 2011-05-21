@@ -1,0 +1,13 @@
+#debug
+  .name
+    = "Tracks (#{Rails.env})"
+  .version
+    %b Code Revision:
+    = GIT_REVISION
+    - unless GIT_TAG.blank?
+      %b Tag:
+      = GIT_TAG
+    %b Committed:
+    = GIT_COMMIT_DATE.to_s(:short_datetime)
+  .debug_link
+    = link_to "(Debug Tools)", "/__rack_bug__/bookmarklet.html"

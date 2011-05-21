@@ -1,0 +1,61 @@
+@import constants.sass
+
+$admin_menu_height: 20px
+
+body.with_admin #inset
+  :margin-top $admin_menu_height
+
+
+#admin_tools
+  :width 100%
+  :font-size 11px
+  :background $admin_background_color
+  :color white
+  :z-index 2
+  :position absolute
+  :top 0
+  :left 0
+  :border-bottom 1px solid black
+  :padding 5px
+  :font-family Helvetica, Arial, sans-serif
+  :height 15px
+
+  h3
+    :float left
+    :margin 0 1em 0 0
+    :font-size 11px
+    :font-weight bold
+
+  ul
+    :list-style none
+    :margin 0
+    :padding-bottom 5px
+
+  li
+    :list-style none
+    :display block
+    :float left
+    :margin-right 1em
+
+    a
+      :color white
+
+    a:hover
+      :color #ff6
+
+    form
+      :margin 0 0 0 0
+      :padding 0
+      :border 0
+      :background transparent
+
+    form div input[type='submit']
+      :font-size 10px
+
+.admin_tool, .admin_tool a
+  :background $admin_background_color
+  :color white
+  :padding 5px
+
+.admin_tool:hover, admin_tool a:hover
+  :color #ff6

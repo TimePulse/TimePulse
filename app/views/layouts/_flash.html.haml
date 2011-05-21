@@ -1,0 +1,4 @@
+#messages
+  - flash.select{|k,v| [ :success, :notice, :error ].include?(k)}.each do |key, msg|
+    %div{ :class => "flash #{key}" }
+      = content_tag :p, msg

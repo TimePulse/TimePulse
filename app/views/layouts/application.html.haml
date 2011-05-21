@@ -1,0 +1,53 @@
+!!!
+%html{"xmlns"=>"http://www.w3.org/1999/xhtml", "xml:lang"=>"en"}
+
+  %head
+    %meta{"http-equiv" => "content-type", "content" => "text/html;charset=UTF-8" }
+    - if content_for?(:keywords)
+      %meta{"name" => "keywords", "content" => yield(:keywords)}
+    - if content_for?(:description)
+      %meta{"name" => "description", "content" => yield(:description)}
+
+    %title=  @title ? @title : "Another Fine Project by Logical Reality Design"
+
+    = stylesheet_link_tag 'universal', :media=>'all'
+    = stylesheet_link_tag 'screen', :media=>'screen, projection'
+    = stylesheet_link_tag 'print', :media=>'print'
+
+    - if Rails.env.production?
+      = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+    -else
+      = javascript_include_tag "jquery-1.4.2.js"
+
+    = javascript_include_tag "rails.js"
+    = javascript_include_tag "jquery.ninja_script.js"
+    = javascript_include_tag 'application.js'
+
+    = csrf_meta_tag
+
+    %style{ :type => 'text/css', :media => 'screen, projection' }
+      = yield :page_css if content_for? :page_css
+
+    = yield :header
+
+  -# TODO: Turn on these admin lines if the site has an admin interface, otherwise delete them.
+  -# %body{ :class => admin? ? 'with_admin' : nil }
+  -# = render :partial => 'layouts/admin_nav' if admin?
+  %body
+    - if Rails.env.development? or Rails.env.staging?
+      = render :partial => 'layouts/debug'
+    #inset
+      #wrap
+        #header
+          = render :partial => 'layouts/nav'
+
+        #content-wrap
+          -# TODO: Suggested place for a sidebar.  Remove if not using it
+          -# = render :partial => 'layouts/aux'
+
+          #content
+            - if content_for? :headline
+              %h1= yield :headline
+            #content-body
+              = render :partial => 'layouts/flash' , :locals => { :flash => flash }
+              = yield
