@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/odorcicd/authlogic.git
+  revision: a087ad0cba3c165ba22fcf176c28b6f7517931e8
+  branch: rails3
+  specs:
+    authlogic (2.1.3)
+      activesupport
+
 GEM
   remote: http://evan:daNdZoa5@gems.lrdesign.com/
   remote: http://rubygems.org/
@@ -31,6 +39,8 @@ GEM
     activesupport (3.0.7)
     annotate (2.4.0)
     arel (2.0.10)
+    awesome_nested_set (2.0.0)
+      activerecord (>= 3.0.0)
     builder (2.1.2)
     cgi_multipart_eof_fix (2.5.0)
     columnize (0.3.2)
@@ -49,7 +59,6 @@ GEM
     haml (3.1.1)
     i18n (0.5.0)
     linecache (0.43)
-    logical_authz (0.1.10)
     lrd_dev_tools (0.1.2)
     lrd_rack_bug (0.3.1.1)
       uuid (~> 2.3.1)
@@ -127,10 +136,11 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   annotate
+  authlogic!
+  awesome_nested_set
   factory_girl_rails
   faker
   haml
-  logical_authz
   lrd_dev_tools (>= 0.1.1)
   lrd_rack_bug (>= 0.3.0.4)
   lrd_view_tools (>= 0.1.3)

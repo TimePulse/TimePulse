@@ -27,7 +27,7 @@ describe CurrentProjectController do
   end
   
   describe "for javascript requests" do  
-    integrate_views
+    render_views
     before(:each) { request.accept = "application/javascript" }
     it "should respond by replacing the contents of #project_picker" do
       post :create, :id => @project1.id

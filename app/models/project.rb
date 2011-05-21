@@ -17,16 +17,21 @@
 #  flat_rate   :boolean(1)      default(FALSE)
 #
 
-class Project < ActiveRecord::Base 
+require 'cascade'
+
+class Project < ActiveRecord::Base
+
+  include Cascade
+
   acts_as_nested_set
   belongs_to :client
   has_many :work_units
 
   # default_scope :joins => :client
-  
-  validates_presence_of :name 
-  cascades :client, :account, :clockable    
-                       
-  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate                    
+
+  validates_presence_of :name
+  cascades :client, :account, :clockable
+
+  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate
 end
 

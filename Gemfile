@@ -20,7 +20,10 @@ gem "mysql2", "< 0.3"
 gem "activerecord"
 gem "lrd_view_tools", ">= 0.1.3"
 gem "lrd_rack_bug", ">= 0.3.0.4"
-gem "logical_authz"
+# gem "logical_authz"
+gem "awesome_nested_set"
+gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
+
 
 group :development, :test do
   gem 'rspec'

@@ -95,7 +95,7 @@ describe ClockTimeController do
       end 
 
       describe "with Unobtrusive" do
-        integrate_views
+        render_views
         before do
           request.env['HTTP_ACCEPT'] = 'application/json'
         end
