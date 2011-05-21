@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ClockTimeController do
   before(:each) do
-    @user = activate_and_login(:user)              
+    @user = authenticate(:user)              
     @project = Factory(:task)
   end                               
   

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe HomeController do
   before(:each) do
-    activate_and_login(:user)    
+    authenticate(:user)    
   end
 
   describe "GET 'index'" do

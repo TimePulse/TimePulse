@@ -8,7 +8,7 @@ describe GroupsController do
   describe "logging in as non-admin" do
     before(:each) do
       @person = Factory.create(:user)
-      activate_and_login(@person)
+      authenticate(@person)
     end
 
     it "should redirect away from index with an error message" do
@@ -21,7 +21,7 @@ describe GroupsController do
 
   describe "logged in as admin" do
     before(:each) do
-      @person = activate_and_login(:admin)
+      @person = authenticate(:admin)
     end
     
     describe "GET index" do

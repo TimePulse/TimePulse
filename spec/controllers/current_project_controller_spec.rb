@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CurrentProjectController do
   before(:each) do          
-    @user = activate_and_login(:user)
+    @user = authenticate(:user)
     @project1 = Factory(:task)
     @project2 = Factory(:task)
   end

@@ -14,7 +14,7 @@ describe UsersController do
 
   describe "accessed by a normal user" do
     before do
-      @user = activate_and_login(:user)
+      @user = authenticate(:user)
     end
 
     describe "get show" do
@@ -67,7 +67,7 @@ describe UsersController do
   describe "accessed by admin" do
 
     before(:each) do
-      @user = activate_and_login(:admin)
+      @user = authenticate(:admin)
     end
 
     after(:each) do

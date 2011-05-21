@@ -4,7 +4,7 @@ describe WorkUnitsController do
 
   describe "as admin" do
     before(:each) do
-      @user = activate_and_login(:admin)
+      @user = authenticate(:admin)
       @work_unit = Factory(:work_unit)
     end
 

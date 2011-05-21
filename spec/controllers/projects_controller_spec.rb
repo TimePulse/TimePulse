@@ -7,7 +7,7 @@ describe ProjectsController do
 
   describe "accessed by a normal user" do
     before(:each) do          
-      @user = activate_and_login(:user)
+      @user = authenticate(:user)
     end
 
     describe "GET index" do
@@ -53,7 +53,7 @@ describe ProjectsController do
 
   describe "accessed by and admin" do
     before do
-      @user = activate_and_login(:admin)
+      @user = authenticate(:admin)
     end
     
     describe "GET index" do

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ClientsController do 
   before(:each) do
-    activate_and_login(:admin)    
+    authenticate(:admin)    
   end
 
   def mock_client(stubs={})

@@ -10,7 +10,7 @@ describe LogicalAuthz::Helper do
   describe "URL helpers:" do
     before do
       user = Factory(:user, :groups => [@group])
-      activate_and_login(user)
+      authenticate(user)
       @project = Factory(:project)
       @client = Factory(:client)
     end
@@ -100,7 +100,7 @@ describe LogicalAuthz::Helper do
     describe "should recognize authorized users" do
       before do
         user = Factory(:user, :groups => [@group])
-        activate_and_login(user)
+        authenticate(user)
         Factory(:permission, :group => @group, :controller => "clients", :action => "show")
       end
 
@@ -137,7 +137,7 @@ describe LogicalAuthz::Helper do
 
     describe "should refuse unauthorized users" do
       before do
-        activate_and_login(:user)
+        authenticate(:user)
       end
 
       it "on a controller level" do

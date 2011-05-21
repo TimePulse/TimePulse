@@ -106,8 +106,9 @@ class WorkUnit < ActiveRecord::Base
     end
   end
 
+  validate :validate_integrity
   # Users are not allowed to have two work units in progress simultaneously.
-  def validate
+  def validate_integrity
     if in_progress? && (@other = user.current_work_unit) && @other != self
       errors.add_to_base "You may not clock in twice at the same time."
     end
@@ -122,6 +123,7 @@ class WorkUnit < ActiveRecord::Base
     errors.add(:stop_time, "must not be in the future") if stop_time && stop_time > Time.now
     errors.add(:start_time, "must not be in the future") if start_time && start_time > Time.now
   end
+
 
   after_validation_on_create :set_defaults
   def set_defaults
