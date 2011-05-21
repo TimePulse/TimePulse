@@ -1,0 +1,23 @@
+- content_for :aux do
+  - page_block "#{@client.name} Work" do
+    %table.listing
+      %tr
+        %th
+        %th Units
+        %th Hours
+      %tr
+        %th Total
+        %td= WorkUnit.for_client(@client).completed.count
+        %td= WorkUnit.for_client(@client).completed.sum(:hours)
+      %tr
+        %th Invoiced
+        %td= WorkUnit.for_client(@client).completed.invoiced.count
+        %td= WorkUnit.for_client(@client).completed.invoiced.sum(:hours)
+      %tr
+        %th Uninvoiced
+        %td= WorkUnit.for_client(@client).completed.uninvoiced.count
+        %td= WorkUnit.for_client(@client).completed.uninvoiced.sum(:hours)
+      %tr
+        %th Shown
+        %td= @work_units.count
+        %td= @work_units.inject(0.0){ |sum, wu| sum += wu.hours }

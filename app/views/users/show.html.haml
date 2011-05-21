@@ -1,0 +1,12 @@
+-set_headline "User"
+%dl.values
+  %dt Name
+  %dd= @user.name
+  %dt Email
+  %dd= @user.email
+  %dt Login
+  %dd= @user.login
+%ul
+  %li=link_to_if_authorized("Edit", :action => :edit)
+  %li=link_to_if_authorized("List", :action => :index)
+  %li=link_to("Dashboard", root_path)

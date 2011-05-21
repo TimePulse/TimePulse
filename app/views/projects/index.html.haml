@@ -1,0 +1,13 @@
+- set_headline  "Listing Projects"
+
+%table.listing
+  %tr   
+    %th Project
+    %th Client
+    %th Description
+    %th
+
+  = list_tree(@projects)
+ 
+
+= link_to 'New Project', new_project_path

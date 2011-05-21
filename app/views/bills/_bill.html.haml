@@ -1,0 +1,12 @@
+%tr
+  %td= bill.user.name
+  %td= bill.hours
+  %td= bill.created_at.to_s(:date) 
+  %td= bill.due_on
+  %td= bill.paid_on  
+  %td= bill.notes
+  %td= bill.clients.map{ |c| c.abbreviation }.join(', ')
+
+  %td= link_to 'Show', bill
+  %td= link_to 'Edit', edit_bill_path(bill)
+  %td= link_to 'Destroy', bill, :confirm => 'Are you sure?', :method => :delete

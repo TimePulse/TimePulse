@@ -1,0 +1,19 @@
+- set_headline "Listing invoices"
+
+= link_to 'New invoice', new_invoice_path
+%br 
+
+- create_tabbed_panel do |tp|
+  - tp.add_tab("Unpaid") do 
+    = will_paginate @unpaid_invoices
+    %table.listing
+      = render :partial => "invoice_header"
+      = render :partial => "invoice", :collection => @unpaid_invoices
+
+  - tp.add_tab("Paid") do 
+    = will_paginate @paid_invoices    
+    %table.listing
+      = render :partial => "invoice_header"
+      = render :partial => "invoice", :collection => @paid_invoices
+      
+

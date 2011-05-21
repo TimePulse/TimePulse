@@ -1,0 +1,12 @@
+- set_headline "Client Info: #{@client.name}"
+
+%p= @client.name
+%p= @client.billing_email
+%p= @client.address_1
+%p= @client.address_2
+%p= @client.city
+%p= @client.state
+%p= @client.postal
+
+= link_to 'Edit', edit_client_path(@client) 
+= link_to 'Back', clients_path

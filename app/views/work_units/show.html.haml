@@ -1,0 +1,39 @@
+- set_headline ""
+
+= link_to 'Edit', edit_work_unit_path(@work_unit)
+|
+= link_to 'Back', work_units_path
+
+%p
+  %b Project:
+  =h @work_unit.project_id
+
+%p
+  %b User:
+  =h @work_unit.user_id
+
+%p
+  %b Start time:
+  =h @work_unit.start_time
+
+%p
+  %b Stop time:
+  =h @work_unit.stop_time
+
+%p
+  %b Hours:
+  =h @work_unit.hours
+
+%p
+  %b Notes:
+  =h @work_unit.notes
+
+%p
+  %b Invoiced:
+  =h @work_unit.invoiced?
+
+%p
+  %b Billed:
+  =h @work_unit.billed?
+
+

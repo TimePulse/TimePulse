@@ -1,0 +1,7 @@
+- authorized_menu(["Users", users_path], ["Groups", groups_path], ["Permissions", permissions_path]) do |items|
+  .nav#admin_nav
+    %div
+      %ul
+        -items.each do |name, path|
+          -if authorized_url?(path)
+            %li= link_to(name, path)

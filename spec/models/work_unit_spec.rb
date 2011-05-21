@@ -1,0 +1,216 @@
+# == Schema Information
+#
+# Table name: work_units
+#
+#  id         :integer(4)      not null, primary key
+#  project_id :integer(4)
+#  user_id    :integer(4)
+#  start_time :datetime
+#  stop_time  :datetime
+#  hours      :decimal(8, 2)
+#  notes      :string(255)
+#  invoice_id :integer(4)
+#  bill_id    :integer(4)
+#  created_at :datetime
+#  updated_at :datetime
+#  billable   :boolean(1)      default(TRUE)
+#
+
+require 'spec_helper'
+
+describe WorkUnit do
+  before(:each) do
+    @work_unit = Factory(:work_unit)
+  end 
+  
+  
+  describe "default behavior" do
+    it "should  override the start time with mass assignment" do
+      wu = WorkUnit.new(:start_time => Time.now - 5.days)
+      wu.start_time.should be_close(Time.now - 5.days, 1.second)      
+    end    
+  end
+  
+  describe "validations" do                        
+    it "should be invalid without a start time" do
+      Factory.build(:work_unit, :start_time => nil).should_not be_valid
+    end
+    it "should be invalid if stop time is specified but not hours" do
+      Factory.build(:work_unit, :hours => nil).should_not be_valid
+    end
+    it "should not be valid if hours is specified but not stop time" do
+      Factory.build(:work_unit, :stop_time => nil).should_not be_valid      
+    end                           
+    
+    # the user is not allowed to clock in on two tasks at once
+    it "should be invalid if it's in_progress but the user already is clocked in" do
+      @wu1 = Factory(:in_progress_work_unit)        
+      Factory.build(:in_progress_work_unit, :user => @wu1.user).should_not be_valid
+    end    
+    
+    it "should be invalid if the stop time is in the future" do
+      Factory.build(:work_unit, :stop_time => Time.now + 1.minute).should_not be_valid            
+    end
+  end
+
+  describe "in_progress" do
+    describe "named scope" do
+      it "should not find a complete WU" do
+        WorkUnit.in_progress.should_not include(@work_unit)
+      end
+
+      it "should find a WU with a start time but no hours or end time" do
+        @wu2 = Factory(:work_unit, :start_time => Time.now-2.hours, :hours => nil, :stop_time => nil)
+        WorkUnit.in_progress.should include(@wu2)
+      end
+    end     
+    describe "flag" do
+      it "should be true for a WU with a start time but no hours or end time" do
+        @wu2 = Factory(:work_unit, :start_time => Time.now-2.hours, :hours => nil, :stop_time => nil)        
+        @wu2.should be_in_progress
+      end   
+      it "should be false for a WU with completed attributes" do
+        Factory(:work_unit).should_not be_in_progress
+      end
+    end
+  end
+
+  describe "decimal_time_between" do
+    it "should give 3.00 hours for an appropriate time" do
+       @time = Time.zone.now
+       WorkUnit.decimal_hours_between( @time - 3.hours, @time).should == 3.00
+    end
+    it "should give 3.50 hours for an appropriate time" do
+       @time = Time.zone.now
+       WorkUnit.decimal_hours_between( @time - 3.hours - 30.minutes, @time).should == 3.50
+    end    
+    it "should round hours to 2 decimal places" do
+      WorkUnit.decimal_hours_between(
+        Time.parse("2010-05-27 19:49:24"), 
+        Time.parse("2010-05-27 19:58:49")).should == 0.16      
+    end
+    it "should round hours to 2 decimal places" do
+      WorkUnit.decimal_hours_between(
+        Time.parse("2010-05-26 22:06:21"), 
+        Time.parse( "2010-05-26 23:58:31")).should == 1.87      
+    end
+    it "should round hours to 2 decimal places" do
+      WorkUnit.decimal_hours_between(
+        Time.parse("2010-05-18 05:16:00"), 
+        Time.parse("2010-05-18 08:50:00")).should == 3.57      
+    end          
+    it "should round hours to 2 decimal places" do
+      WorkUnit.decimal_hours_between(
+        Time.parse("2010-05-26 19:58:56"), 
+        Time.parse("2010-05-26 20:00:32")).should == 0.03      
+    end       
+    it "should round a 20-minute period" do
+      WorkUnit.decimal_hours_between(
+        Time.parse("2010-05-26 4:00:00"), 
+        Time.parse("2010-05-26 4:20:00")).should == 0.33            
+    end
+           
+  end
+  
+  describe "validations" do
+    it "should not allow a work unit with hours > (stop - start)" do
+      @time = Time.zone.now
+      Factory.build(:work_unit, :start_time => @time - 3.hours, :stop_time => @time, :hours => 3.01).should_not be_valid
+    end
+    it "should allow a work unit with hours = (stop - start)" do
+      @time = Time.zone.now
+      Factory.build(:work_unit, :start_time => @time - 3.hours, :stop_time => @time, :hours => 3.00).should be_valid      
+    end
+    
+    it "should not allow a blank stop_time when hours is set" do
+      Factory.build(:work_unit, :stop_time => nil, :hours => 3.00).should_not be_valid                  
+    end    
+  end
+  
+  describe "completed" do
+    describe "named scope" do
+      it "should find a complete WU" do
+        WorkUnit.completed.should include(@work_unit)
+      end
+
+      it "should not find a WU with a start time but no hours or end time" do
+        @wu2 = Factory(:work_unit, :start_time => Time.now - 2.hours, :hours => nil, :stop_time => nil)
+        WorkUnit.completed.should_not include(@wu2)
+      end
+    end     
+    describe "flag" do
+      it "should be true for a WU with a start time but no hours or end time" do
+        @wu2 = Factory(:work_unit, :start_time => Time.now-2.hours, :hours => nil, :stop_time => nil)        
+        @wu2.should_not be_completed
+      end   
+      it "should be true for a WU with completed attributes" do
+        Factory(:work_unit).should be_completed
+      end
+    end
+  end
+  
+  describe "truncate_hours" do
+    it "should clamp excessive hours to the difference between start and stop time" do
+      t = Time.now
+      @wu2 = Factory.build(:work_unit, :start_time => t, :stop_time => t + 2.hours, :hours => 4.75)
+      lambda { @wu2.truncate_hours! }.should change{ @wu2.hours }.from(4.75).to(2.0)   
+    end
+    it "should not clamp excessive hours to the difference between start and stop time" do
+      t = Time.now
+      @wu2 = Factory.build(:work_unit, :start_time => t, :stop_time => t + 2.hours, :hours => 2)
+      lambda { @wu2.truncate_hours! }.should_not change{ @wu2.hours }
+    end
+    it "should not change anything if there are no hours" do
+      t = Time.now
+      @wu2 = Factory.build(:work_unit, :start_time => t, :hours => nil)
+      lambda { @wu2.truncate_hours! }.should_not change{ @wu2.hours }
+    end
+  end
+  
+  describe "billable" do
+    it "should get set to true when the project is billable" do
+      @proj = Factory(:project, :billable => true)
+      Factory(:work_unit, :project => @proj).should be_billable
+    end
+    it "should get set to false when the project is not billable" do
+      @proj = Factory(:project, :billable => false) 
+      @proj.should_not be_billable 
+      @proj.work_units.create().should_not be_billable
+    end
+  end
+  
+  describe "for_client" do
+    before :each  do
+      @client = Factory(:client)
+      @project = Factory(:project, :billable => true, :client => @client)
+    end
+    it "should find a work unit for a client's project" do      
+      wu = Factory(:work_unit, :project => @project)
+      WorkUnit.for_client(@client).should include(wu)
+    end
+    it "should find work units for two different projects" do
+      proj2 = Factory(:project, :billable => true, :client => @client)
+      wu1 = Factory(:work_unit, :project => @project)
+      wu2 = Factory(:work_unit, :project => proj2)      
+      WorkUnit.for_client(@client).should include(wu1)
+      WorkUnit.for_client(@client).should include(wu2)
+    end
+    it "should find work_units in a subproject only once" do
+      proj2 = Factory(:project, :billable => true, :client => @client, :parent => @project)
+      wu1 = Factory(:work_unit, :project => @project)
+      wu2 = Factory(:work_unit, :project => proj2)      
+      WorkUnit.for_client(@client).should include(wu1)
+      WorkUnit.for_client(@client).should include(wu2)
+      WorkUnit.for_client(@client).count.should == 2
+    end
+    it "should not find a different client's work unit" do
+      proj2 = Factory(:project, :billable => true, :client => Factory(:client))
+      wu1 = Factory(:work_unit, :project => @project)
+      wu2 = Factory(:work_unit, :project => proj2)      
+      WorkUnit.for_client(@client).should include(wu1)
+      WorkUnit.for_client(@client).should_not include(wu2)
+    end
+  end
+    
+end
+

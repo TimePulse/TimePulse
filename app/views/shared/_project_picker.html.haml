@@ -1,0 +1,3 @@
+- page_block("Projects", :id => 'project_picker') do
+  %table.project_picker
+    = list_tree(Project.root, 0, 'home/project')

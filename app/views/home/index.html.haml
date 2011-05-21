@@ -1,0 +1,10 @@
+- set_headline "User Dashboard"
+
+-content_for :aux do
+  = render :partial => "shared/timeclock"
+  = render :partial => "shared/recent_work"
+  
+-content_for :picker do
+  = render :partial => "shared/project_picker"
+
+= render :partial => 'home/current_project_block'    

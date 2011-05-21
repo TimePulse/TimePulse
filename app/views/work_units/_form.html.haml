@@ -1,0 +1,14 @@
+#work_unit_form
+  - form_for(@work_unit) do |f|
+    = f.error_messages
+    = f.hidden_field  :calculate, :value => true
+
+    = labeled_datetimepicker_field f, :start_time 
+    = labeled_datetimepicker_field f, :stop_time 
+
+    = labeled_input f, :hours, :input => f.text_field(:hours), :comment => "(Decimal or HH:MM)"
+    = labeled_input f, :notes, :input => f.text_field(:notes)  
+    = labeled_input f, :billable, :input => f.check_box(:billable)         
+    = unlabeled_submit f
+  
+      

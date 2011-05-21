@@ -1,0 +1,6 @@
+- title = "Clock in on #{project.name}"
+- form_tag(clock_in_path(:id => project), :method => :post, :title => title, :class => "clock_in") do
+  - if defined?(style)  and style == :icon
+    = image_submit_tag('/images/icons/clock_in.png', :alt => title)
+  - else
+    = submit_tag(title)

@@ -1,0 +1,6 @@
+%tr
+  - if defined?(row_label) && row_label
+    %td= row_label.to_s
+  %td= "%.2f" % row[:total]
+  %td= "%.2f" % row[:unbilled]
+  %td= "%.2f" % row[:unbillable]

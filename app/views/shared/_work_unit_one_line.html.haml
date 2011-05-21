@@ -1,0 +1,16 @@
+
+- token = ActiveSupport::SecureRandom.hex(8)
+
+%tr.work_unit.one_line.has_tooltip{ :id => token }    
+  %td= work_unit.try(:project).try(:client).try(:abbreviation)  
+  %td= truncate(work_unit.try(:project).try(:name), :length => 25)
+  %td= truncate(work_unit.notes, :length => 25, :omission => '...')
+  %td{ :style => "text-align: center;"}
+    = "%.2f" % work_unit.hours
+  %td
+    %span.nobr= (work_unit.stop_time || work_unit.start_time).to_datetime.to_s(:short_date)
+  %td
+    = link_to 'Edit', edit_work_unit_path(work_unit)
+    = link_to 'Delete', work_unit_path(work_unit), :method => :delete, :confirm => "Are you sure?"
+    = tooltip_for(work_unit, token)
+  

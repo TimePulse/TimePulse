@@ -1,0 +1,13 @@
+#current_project 
+  %h2= "Viewing Project: #{current_project_label}".html_safe!
+  - if current_project 
+    - if current_project.description
+      %p= current_project.description
+
+    = render :partial => 'home/work_unit_form'      
+    = render :partial => 'home/project_hours_report'
+  - else
+    %p No project selected.
+    
+      
+     

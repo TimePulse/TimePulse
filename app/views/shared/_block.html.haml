@@ -1,0 +1,14 @@
+- klass = "block #{cssclass}"
+- klass += " with_title" if title
+
+%div{ :class => klass, :id => "#{cssid}"  }
+  -if title
+    .block_title
+      %h2= title.upcase
+      - if defined?(extratitle)
+        .extratitle= extratitle
+      
+  .block_content
+    .block_inner
+      =body unless body.blank?
+  .block_bottom    

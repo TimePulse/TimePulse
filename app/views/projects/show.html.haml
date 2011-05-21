@@ -1,0 +1,19 @@
+
+%p
+  <b>Name:</b> 
+  %br
+  =h @project.name 
+  
+%p
+  <b>Account:</b>
+  %br
+  =h @project.account 
+
+%p
+  <b>Description:</b>
+  %br
+  =h @project.description 
+
+%br
+  = link_to 'Edit', edit_project_path(@project)  |
+  = link_to 'Back', projects_path 

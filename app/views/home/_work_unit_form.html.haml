@@ -1,0 +1,21 @@
+#work_unit_form  
+  %h3 Enter/Record Hours:
+  - if current_project.clockable?
+    %p 
+      Hours are not forced to the difference between start and stop: you may enter "I worked 2 hours
+      between 9am and 1pm", for example.  If hours are left blank, they will be computed as 
+      the difference between start and stop time.
+    - remote_form_for(@work_unit ||= WorkUnit.new(:Project => current_project)) do |f|
+      = f.error_messages
+      = f.hidden_field  :calculate, :value => true
+
+      = labeled_datetimepicker_field f, :start_time 
+      = labeled_datetimepicker_field f, :stop_time 
+  
+      = labeled_input f, :hours, :input => f.text_field(:hours), :comment => "(Decimal or HH:MM)"
+      = labeled_input f, :notes, :input => f.text_field(:notes)
+      = unlabeled_submit f
+  - else
+    %p 
+      This is not a clockable project.  To enter hours, you will need to select a
+      different project or a clockable subproject.

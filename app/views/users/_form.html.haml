@@ -1,0 +1,10 @@
+
+
+= error_messages_for :user
+- form_for @user do |f|
+  = labeled_input f, :name  if @user.new_record?
+  = labeled_input f, :login if @user.new_record?
+  = labeled_input f, :email
+  = labeled_input f, :password
+  = labeled_input f, :password_confirmation
+  = f.submit 

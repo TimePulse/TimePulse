@@ -1,0 +1,33 @@
+- set_headline "Listing work_units"
+
+= link_to 'New work_unit', new_work_unit_path
+%br 
+
+%table.listing
+  %tr
+    %th Project
+    %th User
+    %th Start time
+    %th Stop time
+    %th Hours
+    %th Notes
+    %th Inv.
+    %th Billed
+    %th Billable
+
+  - for work_unit in @work_units
+    %tr
+      %td= work_unit.project.name
+      %td= work_unit.user.name
+      %td= work_unit.start_time
+      %td= work_unit.stop_time
+      %td= work_unit.hours
+      %td= work_unit.notes
+      %td= bool_checked(work_unit.invoiced?)
+      %td= bool_checked(work_unit.billed?)
+      %td= bool_checked(work_unit.billable?)
+
+      %td= link_to 'Show', work_unit
+      %td= link_to 'Edit', edit_work_unit_path(work_unit)
+      %td= link_to 'Destroy', work_unit, :confirm => 'Are you sure?', :method => :delete
+

@@ -1,0 +1,12 @@
+- form_for(@project) do |f| 
+  = f.error_messages 
+                                    
+  = labeled_input f, :client_id, :input => client_selector(f)   
+  = labeled_input f, :parent_id, :input => project_parent_selector(f)
+  = labeled_input f, :name                   
+  = labeled_input f, :account                   
+  = labeled_input f, :description                   
+  = labeled_input f, :clockable, :input => f.check_box(:clockable)                   
+  = labeled_input f, :billable, :input => f.check_box(:billable)                   
+  = labeled_input f, :flat_rate, :input => f.check_box(:flat_rate)                     
+  = labeled_input f, nil, :nolabel => true, :input => f.submit
