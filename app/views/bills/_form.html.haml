@@ -5,20 +5,20 @@
   %input#bill_user_id{ :name => "bill[user_id]", :type => "hidden", :value => @bill.user.id }
   = labeled_datepicker_field f, :due_on
   = labeled_datepicker_field f, :paid_on
-  = labeled_input f, :notes, :input => f.text_area(:notes, :size => '60x4')
-  = labeled_input f, :reference_number, :input => f.text_field(:reference_number)
+  = f.labeled_input(:notes){ f.text_area(:notes, :size => '60x4') }
+  = f.labeled_input(:reference_number){ f.text_field(:reference_number) }
 
   - if @work_units
     %input#work_unit_select_all{ :type => 'button', :value => 'select all' }
     %table#totals.listing
-      %tr 
+      %tr
         %th Work Units
-        %th Hours         
+        %th Hours
       %tr
         %td#work_unit_count
         %td#hours_total
-        
-    %table.listing 
+
+    %table.listing
       - f.fields_for :work_unit_ids do |wu_form|
         - @work_units.each do |wu|
           - content_tag_for(:tr, wu) do
@@ -32,5 +32,5 @@
             %td= wu.notes
             %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
             %td.nobr= wu.stop_time.try(:to_s, :time)
-      
-  = unlabeled_submit f
+
+  = f.unlabeled_submit

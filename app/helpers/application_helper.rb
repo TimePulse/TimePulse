@@ -29,10 +29,10 @@ module ApplicationHelper
     options.reverse_merge!(:cssclass => :date_entry)
     fieldval =  form.object.send(field_name)
     value = fieldval ? fieldval.to_s(:long) : nil
-    labeled_input form, field_name, options, {
+    form.labeled_input(field_name, options.merge!(
       :class => options[:cssclass],
       :value => value
-    }
+    ))
   end
 
   def labeled_datetimepicker_field(form, field_name, options = {})

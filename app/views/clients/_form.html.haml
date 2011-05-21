@@ -1,11 +1,11 @@
 -form_for(@client) do |f|
   = f.error_messages
-  = labeled_input f, :name
-  = labeled_input f, :abbreviation
-  = labeled_input f, :billing_email
-  = labeled_input f, :address_1
-  = labeled_input f, :address_2
-  = labeled_input f, :city
-  = labeled_input f, :state
-  = labeled_input f, :postal
-  = labeled_input f, nil, :input => f.submit, :nolabel => true
+  = f.labeled_input :name
+  = f.labeled_input :abbreviation
+  = f.labeled_input :billing_email
+  = f.labeled_input :address_1
+  = f.labeled_input :address_2
+  = f.labeled_input :city
+  = f.labeled_input :state
+  = f.labeled_input :postal
+  = f.unlabeled_submit

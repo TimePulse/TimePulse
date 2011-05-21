@@ -3,12 +3,11 @@
     = f.error_messages
     = f.hidden_field  :calculate, :value => true
 
-    = labeled_datetimepicker_field f, :start_time 
-    = labeled_datetimepicker_field f, :stop_time 
+    = labeled_datetimepicker_field f, :start_time
+    = labeled_datetimepicker_field f, :stop_time
 
-    = labeled_input f, :hours, :input => f.text_field(:hours), :comment => "(Decimal or HH:MM)"
-    = labeled_input f, :notes, :input => f.text_field(:notes)  
-    = labeled_input f, :billable, :input => f.check_box(:billable)         
-    = unlabeled_submit f
-  
-      
+    = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
+    = f.labeled_input :notes
+    = f.labeled_input(:billable){ f.check_box(:billable) }
+    = f.unlabeled_submit
+
