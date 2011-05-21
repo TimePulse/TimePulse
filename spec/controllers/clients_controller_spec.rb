@@ -53,7 +53,7 @@ describe ClientsController do
       it "redirects to the created client" do
         Client.stub(:new).and_return(mock_client(:save => true))
         post :create, :client => {}
-        response.should redirect_to(client_url(mock_client))
+        rendered.should redirect_to(client_url(mock_client))
       end
     end
 
@@ -67,7 +67,7 @@ describe ClientsController do
       it "re-renders the 'new' template" do
         Client.stub(:new).and_return(mock_client(:save => false))
         post :create, :client => {}
-        response.should render_template('new')
+        rendered.should render_template('new')
       end
     end
 
@@ -91,7 +91,7 @@ describe ClientsController do
       it "redirects to the client" do
         Client.stub(:find).and_return(mock_client(:update_attributes => true))
         put :update, :id => "1"
-        response.should redirect_to(client_url(mock_client))
+        rendered.should redirect_to(client_url(mock_client))
       end
     end
 
@@ -111,7 +111,7 @@ describe ClientsController do
       it "re-renders the 'edit' template" do
         Client.stub(:find).and_return(mock_client(:update_attributes => false))
         put :update, :id => "1"
-        response.should render_template('edit')
+        rendered.should render_template('edit')
       end
     end
 
@@ -127,7 +127,7 @@ describe ClientsController do
     it "redirects to the clients list" do
       Client.stub(:find).and_return(mock_client(:destroy => true))
       delete :destroy, :id => "1"
-      response.should redirect_to(clients_url)
+      rendered.should redirect_to(clients_url)
     end
   end
 

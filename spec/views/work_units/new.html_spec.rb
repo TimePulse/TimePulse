@@ -4,21 +4,21 @@ describe "/work_units/new" do
   include WorkUnitsHelper
   
   before(:each) do
-    assigns[:work_unit] = Factory.build(:work_unit)
+    assign(:work_unit, Factory.build(:work_unit))
   end
   
   it "should succeed" do
-    render "/work_units/new"
-    response.should be_success
+    render
+    
   end
   
 
   it "should render new form" do
-    render "/work_units/new"
+    render
     
-    response.should have_tag("form[action=?][method=post]", work_units_path) do
-      with_tag("input#work_unit_hours[name=?]", "work_unit[hours]")
-      with_tag("input#work_unit_notes[name=?]", "work_unit[notes]")
+    rendered.should have_selector("form[action=?][method='post']", work_units_path) do |scope|
+      scope.should have_selector("input#work_unit_hours[name='work_unit[hours]']")
+      scope.should have_selector("input#work_unit_notes[name='work_unit[notes]']")
     end
   end
 end

@@ -102,7 +102,7 @@ describe ProjectsController do
         it "redirects to the created project" do
           post :create, :project => { :name => 'Cool Project' }
           controller.should be_authorized
-          response.should redirect_to(project_url(assigns[:project]))
+          rendered.should redirect_to(project_url(assigns[:project]))
         end
       end
 
@@ -117,7 +117,7 @@ describe ProjectsController do
         it "re-renders the 'new' template" do
           post :create, :project => { :name => '' }
           controller.should be_authorized
-          response.should render_template('new')
+          rendered.should render_template('new')
         end
       end
 
@@ -142,7 +142,7 @@ describe ProjectsController do
         it "redirects to the project" do
           put :update, :id => @project.id, :project => {:name => 'new name'}
           controller.should be_authorized
-          response.should redirect_to(project_url(assigns[:project]))
+          rendered.should redirect_to(project_url(assigns[:project]))
         end
       end
 
@@ -163,7 +163,7 @@ describe ProjectsController do
         it "re-renders the 'edit' template" do
           put :update, :id => @project.id, :project => {:name => nil }
           controller.should be_authorized
-          response.should render_template('edit')
+          rendered.should render_template('edit')
         end
       end
 
@@ -186,7 +186,7 @@ describe ProjectsController do
       it "redirects to the projects list" do
         delete :destroy, :id => @project.id
         controller.should be_authorized
-        response.should redirect_to(projects_url)
+        rendered.should redirect_to(projects_url)
       end
     end
 

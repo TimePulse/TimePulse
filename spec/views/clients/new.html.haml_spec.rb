@@ -4,16 +4,16 @@ describe "/clients/new" do
   include ClientsHelper
 
   before(:each) do
-    assigns[:client] = Factory.build(:client)
+    assign(:client, Factory.build(:client))
   end
          
   it "should succeed" do                       
     render              
-    response.should be_success    
+        
   end
   it "renders new client form" do
     render
-    response.should have_tag("form[action=?][method=post]", clients_path) do
+    rendered.should have_selector("form[action=?][method='post']", clients_path) do |scope|
     end
   end
 end

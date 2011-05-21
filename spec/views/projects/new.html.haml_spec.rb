@@ -4,17 +4,17 @@ describe "/projects/new" do
   include ProjectsHelper
 
   before(:each) do
-    assigns[:project] = Factory.build(:project)
+    assign(:project, Factory.build(:project))
   end
   it "should succeed" do
     render
-    response.should be_success
+    
   end
 
   it "renders new project form" do
     render
 
-    response.should have_tag("form[action=?][method=post]", projects_path) do
+    rendered.should have_selector("form[action=?][method='post']", projects_path) do |scope|
     end
   end
 end

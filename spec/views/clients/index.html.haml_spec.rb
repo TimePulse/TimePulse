@@ -5,14 +5,14 @@ describe "/clients/index" do
 
   before(:each) do
     authenticate(:user)
-    assigns[:clients] = [
+    assign(:clients, [
       Factory(:client),
       Factory(:client)
-    ]
+    ])
   end
 
   it "renders a list of clients" do
     render
-    response.should be_success
+
   end
 end

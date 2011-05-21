@@ -54,7 +54,7 @@ describe UsersController do
           put :update, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
         end.should change{ @user.reload.crypted_password }
         controller.should be_authorized
-        response.should be_success
+        
       end
       
       it "should succeed" do
@@ -79,7 +79,7 @@ describe UsersController do
       attributes.delete :groups
       post :create, :user => attributes
       
-      response.should be_redirect
+      rendered.should be_redirect
     end
 
     it "should assign users to the Registered Users group on creation" do

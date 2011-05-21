@@ -23,7 +23,7 @@ describe CurrentProjectController do
   
   it "should redirect back" do
     post :create, :id => @project2.id
-    response.should redirect_back    
+    rendered.should redirect_back    
   end
   
   describe "for javascript requests" do  
@@ -31,7 +31,7 @@ describe CurrentProjectController do
     before(:each) { request.accept = "application/javascript" }
     it "should respond by replacing the contents of #project_picker" do
       post :create, :id => @project1.id
-      response.should have_rjs
+      rendered.should have_rjs
     end
   end
   
