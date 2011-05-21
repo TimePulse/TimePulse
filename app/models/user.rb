@@ -23,37 +23,38 @@
 #  updated_at          :datetime
 #
 
-class User < ActiveRecord::Base 
+class User < ActiveRecord::Base
   acts_as_authentic do |c|
     c.session_class = UserSession
-  end                          
-  
+  end
+
   belongs_to :current_project, :class_name => "Project"
   has_many :work_units
   has_many :bills
 
   validates_presence_of :name, :email
-  
+
   attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation
-  
-  has_and_belongs_to_many :groups
-  
+
+  #TODO: Fix this when LAz for R3 is ready.
+  # has_and_belongs_to_many :groups
+
   def reset_current_work_unit
     @cwu = nil
   end
 
-  def current_work_unit 
-    @cwu ||= work_units.in_progress.first    
+  def current_work_unit
+    @cwu ||= work_units.in_progress.first
   end
 
   def clocked_in?
     reset_current_work_unit
     !current_work_unit.nil?
   end
-  
+
   def recent_work_units
     work_units.completed.recent
-  end  
+  end
 
   def time_on_project(project)
     work_units.for_project(project).sum(:hours)
@@ -62,22 +63,22 @@ class User < ActiveRecord::Base
   def unbilled_time_on_project(project)
     work_units.unbilled.for_project(project).sum(:hours)
   end
-  
+
   def unbillable_time_on_project(project)
-    work_units.unbillable.for_project(project).sum(:hours)    
+    work_units.unbillable.for_project(project).sum(:hours)
   end
 
   def work_units_for(project)
     work_units.completed.for_project(project).all
-  end     
-  
+  end
+
   def current_project_hours_report
     @cphr ||= hours_report_on(current_project)
-  end                       
-  
+  end
+
   def hours_report_on(project)
     HoursReport.new(project, self)
   end
-  
+
 end
 
