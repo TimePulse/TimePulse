@@ -3,7 +3,7 @@ Factory.define :user , :class => User do |u|
   u.sequence(:login) { |n| "quentin#{n}"}
   u.password "foobar"
   u.password_confirmation "foobar"
-  u.groups [Group.find_by_name("Registered Users")]
+  u.groups{ [Group.find_by_name("Registered Users")] }
   u.sequence(:email) {|n| "quentin#{n}@example.com"}
   u.sequence(:single_access_token) {|n| "k#{n}cFzLIQnZ4MHRmJvJzg"}
 end
@@ -11,5 +11,7 @@ end
 Factory.define :admin, :parent => :user do |u|
   u.name "Administrator"
   u.sequence(:login) { |n| "administrator#{n}" }
-  u.groups [Group.find_by_name("Administration"), Group.find_by_name("Registered Users")]
+  u.groups{  [Group.find_by_name("Administration"), Group.find_by_name("Registered Users")] }
 end
+
+
