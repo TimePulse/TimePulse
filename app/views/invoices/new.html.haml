@@ -4,14 +4,14 @@
 |
 = link_to 'Back to List', invoices_path
 
-- page_block "Invoice Parameters" do
-  - form_tag new_invoice_path, :method => 'get' do
+= page_block "Invoice Parameters" do
+  = form_tag new_invoice_path, :method => 'get' do
     = invoice_client_selector
     = submit_tag "Set Parameters"
 
 - if @client
   = render :partial => 'work_units_info_aux'
 
-  - page_block "Create Invoice" do
+  = page_block "Create Invoice" do
     = render :partial => "form"
 

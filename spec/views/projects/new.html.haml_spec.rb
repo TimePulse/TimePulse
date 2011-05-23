@@ -8,13 +8,12 @@ describe "/projects/new" do
   end
   it "should succeed" do
     render
-    
+
   end
 
   it "renders new project form" do
     render
-
-    rendered.should have_selector("form[action=?][method='post']", projects_path) do |scope|
+    rendered.should have_selector("form[action='#{projects_path}'][method='post']") do |scope|
     end
   end
 end

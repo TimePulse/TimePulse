@@ -1,9 +1,9 @@
-module ProjectsHelper       
+module ProjectsHelper
 
   def project_parent_selector(form)
-    form.select(:parent_id, 
+    form.select(:parent_id,
     Project.find(:all).collect  {|p| [p.name, p.id]}, { :include_blank => "" }
-    )     
+    )
   end
 
   def  client_selector(form = nil)
@@ -17,7 +17,7 @@ module ProjectsHelper
       end
     end
   end
-  
+
   def client_selector_array
     @client_array ||= Client.find(:all).collect{ |c| [c.name, c.id] }
   end
@@ -30,35 +30,35 @@ module ProjectsHelper
           str << (render :partial => partial, :locals => { :project => project, :depth => depth }) unless project.nil?
         end
       end
-      str.html_safe!      
+      str.html_safe
     end
-  end       
+  end
 
 
   def depth_indicator(depth)
     str = ''
-    if depth > 0 
+    if depth > 0
       depth.times do
         str << image_tag("/images/icons/spacer.png", :class=> "inline", :size =>"10x12", :alt => "&nbsp;&nbsp;&nbsp;")
       end
       str << image_tag("/images/icons/indent_arrow.png", :class=>"inline", :size => "12x12", :alt => '->')
     end
-    str.html_safe!    
-  end     
-  
-  
+    str.html_safe
+  end
+
+
   def short_name_with_client(project)
-    return unless project 
+    return unless project
     returning "" do |str|
-      str << truncate(project.name, :length => 20, :omission => '...') 
-      str << "&nbsp;"   
-      str << "[#{project.client.abbreviation}]" unless project.client.nil?        
-      str.html_safe!
+      str << truncate(project.name, :length => 20, :omission => '...')
+      str << "&nbsp;"
+      str << "[#{project.client.abbreviation}]" unless project.client.nil?
+      str.html_safe
     end
-  end             
-  
+  end
+
   def clock_in_widget(project, style = nil)
-    
+
     title = "Clock in on #{project.name}"
     content_tag(:form,  :action => clock_in_path(:id => project), :method => :post, :title => title, :class => "clock_in") do
       if defined?(style)  and style == :icon
@@ -66,8 +66,8 @@ module ProjectsHelper
       else
         submit_tag(title)
       end
-    end        
-    # render :inline => 'shared/clock_in_widget', :locals => {:style => :icon, :project => project}     
+    end
+    # render :inline => 'shared/clock_in_widget', :locals => {:style => :icon, :project => project}
   end
-  
+
 end
