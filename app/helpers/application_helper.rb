@@ -38,4 +38,9 @@ module ApplicationHelper
   def labeled_datetimepicker_field(form, field_name, options = {})
     labeled_datepicker_field(form, field_name, options.merge!( :cssclass => :datetime_entry ))
   end
+
+  #TODO: Fix this once LAz is integrated
+  def link_to_if_authorized(*args)
+    link_to(*args)
+  end
 end

@@ -9,13 +9,13 @@ describe "/bills/new" do
   describe "without a user specified" do
     it "should not render create form" do
       render
-      rendered.should_not have_selector("form[action=?][method='post']", bills_path)
+      rendered.should_not have_selector("form[action='#{bills_path}'][method='post']")
     end
 
     it "should have a new bill form user selector" do
       render
 
-      rendered.should have_selector("form[action=?][method='get']", new_bill_path) do |scope|
+      rendered.should have_selector("form[action='#{new_bill_path}'][method='get']") do |scope|
         scope.should have_selector("select#user_id") do
           scope.should have_selector("option[value=#{@user.id}]")
         end
@@ -46,21 +46,21 @@ describe "/bills/new" do
       end
       it "should render" do
         render
-        rendered.should have_selector("form[action=?][method='post']", bills_path) do |scope|
+        rendered.should have_selector("form[action='#{bills_path}'][method='post']") do |scope|
           scope.should have_selector("textarea#bill_notes[name='bill[notes]']")
           scope.should have_selector("input#bill_reference_number[name='bill[reference_number]']")
         end
       end
       it "should include a hidden tag for the user" do
         render
-        rendered.should have_selector("form[action=?][method='post']", bills_path) do |scope|
+        rendered.should have_selector("form[action='#{bills_path}'][method='post']") do |scope|
           scope.should have_selector("input#bill_user_id[type=?][value='hidden']")
         end
       end
       it "should include checkboxes for each work unit" do
         render
         @work_units.each do |wu|
-          rendered.should have_selector("form[action=?][method='post']", bills_path) do |scope|
+          rendered.should have_selector("form[action='#{bills_path}'][method='post']") do |scope|
             scope.should have_selector("input[type='checkbox'][name='bill[work_unit_ids][#{wu.id}]']")
           end
         end

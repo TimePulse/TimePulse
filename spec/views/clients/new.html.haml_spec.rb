@@ -6,14 +6,14 @@ describe "/clients/new" do
   before(:each) do
     assign(:client, Factory.build(:client))
   end
-         
-  it "should succeed" do                       
-    render              
-        
+
+  it "should succeed" do
+    render
+
   end
   it "renders new client form" do
     render
-    rendered.should have_selector("form[action=?][method='post']", clients_path) do |scope|
+    rendered.should have_selector("form[action='#{clients_path}'][method='post']") do |scope|
     end
   end
 end
