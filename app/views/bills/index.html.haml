@@ -1,19 +1,19 @@
 - set_headline "Listing bills"
 
 = link_to 'New bill', new_bill_path
-%br 
+%br
 
-- create_tabbed_panel do |tp|
-  - tp.add_tab("Unpaid") do 
+= tabbed_panel do |tp|
+  = tp.add_tab("Unpaid") do
     = will_paginate @unpaid_bills
     %table.listing
       = render :partial => "bill_header"
       = render :partial => "bill", :collection => @unpaid_bills
 
-  - tp.add_tab("Paid") do 
-    = will_paginate @paid_bills    
+  = tp.add_tab("Paid") do
+    = will_paginate @paid_bills
     %table.listing
       = render :partial => "bill_header"
       = render :partial => "bill", :collection => @paid_bills
-      
+
 
