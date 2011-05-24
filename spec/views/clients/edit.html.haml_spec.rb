@@ -9,7 +9,6 @@ describe "/clients/edit" do
 
   it "renders the edit client form" do
     render
-    
-    rendered.should have_selector("form[action=#{client_path(@client)}][method='post']") 
+    rendered.should have_selector("form[action='#{client_path(@client)}'][method='post']")
   end
 end

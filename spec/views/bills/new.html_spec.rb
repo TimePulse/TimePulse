@@ -54,7 +54,7 @@ describe "/bills/new" do
       it "should include a hidden tag for the user" do
         render
         rendered.should have_selector("form[action='#{bills_path}'][method='post']") do |scope|
-          scope.should have_selector("input#bill_user_id[type=?][value='hidden']")
+          scope.should have_selector("input#bill_user_id[type='bill[user_id]'][value='hidden']")
         end
       end
       it "should include checkboxes for each work unit" do
