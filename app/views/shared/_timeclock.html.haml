@@ -1,12 +1,12 @@
 -page_block("Timeclock", :id => "timeclock") do
   - if clocked_in?
-    %span#tasktime{ :style => 'display:none;' }= current_work_unit.start_time.strftime('%s')  
+    %span#tasktime{ :style => 'display:none;' }= current_work_unit.start_time.strftime('%s')
     #task_elapsed -:--:--
     %table
       %tr
         %th Client:
-        %td= current_work_unit.project.client.name 
-      %tr          
+        %td= current_work_unit.project.client.name
+      %tr
         %th Project:
         %td= current_work_unit.project.name
       %tr
@@ -16,13 +16,13 @@
     - form_for(current_work_unit, :url => clock_out_path, :html => {:method => :delete, :class => :edit_work_unit}) do |f|
       = labeled_input f, :hours, :input => f.text_field(:hours, :size => 15)
       = labeled_input f, :stop_time, :input => f.text_field(:stop_time, :size => 15)
-      = labeled_input f, :notes, {}, :size => 15 
+      = labeled_input f, :notes, {}, :size => 15
       = labeled_input f, :billable, :input => f.check_box(:billable)
       = f.submit "Clock Out"
   - else
     %h3 You are not clocked in.
     - if current_user.current_project && current_project.clockable?
-      = clock_in_widget(current_user.current_project)         
+      = clock_in_widget(current_user.current_project)
     - else
       %p Please select a clockable project if you wish to clock in.
-      
+

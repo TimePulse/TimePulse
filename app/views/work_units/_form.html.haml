@@ -8,6 +8,7 @@
 
     = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
     = f.labeled_input :notes
-    = f.labeled_input(:billable){ f.check_box(:billable) }
+    = f.labeled_input(:billable) do
+      f.check_box(:billable)
     = f.unlabeled_submit
 

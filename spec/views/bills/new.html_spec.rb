@@ -2,8 +2,9 @@ require 'spec_helper'
 
 describe "/bills/new" do
   include BillsHelper
-  before :each do
-    @user = Factory(:user)
+
+  let! :user do
+    Factory(:user)
   end
 
   describe "without a user specified" do
@@ -14,10 +15,9 @@ describe "/bills/new" do
 
     it "should have a new bill form user selector" do
       render
-
       rendered.should have_selector("form[action='#{new_bill_path}'][method='get']") do |scope|
         scope.should have_selector("select#user_id") do
-          scope.should have_selector("option[value=#{@user.id}]")
+          scope.should have_selector("option[value='#{user.id}']")
         end
       end
     end
@@ -25,25 +25,22 @@ describe "/bills/new" do
 
   describe "with user specified" do
     before :each  do
-      assign(:user, @user)
-      assign(:bill, Bill.new(:user => @user))
-      assign(:work_units, [ Factory(:work_unit), Factory(:work_unit) ])
+      assign(:bill, Bill.new(:user => user))
+      assign(:work_units, @work_units = [
+        Factory(:work_unit, :user => user),
+        Factory(:work_unit, :user => user) ]
+      )
+      assign(:user, user)
     end
 
     it "should pre-select that user in the selector" do
       render
       rendered.should have_selector("select#user_id") do |scope|
-        scope.should have_selector("option[value=#{@user.id}][selected='selected']")
+        scope.should have_selector("option[value='#{user.id}'][selected='selected']")
       end
     end
 
     describe "create form" do
-      before :each  do
-        @work_units = assign(:work_units, [
-          Factory(:work_unit),
-          Factory(:work_unit)
-        ])
-      end
       it "should render" do
         render
         rendered.should have_selector("form[action='#{bills_path}'][method='post']") do |scope|
@@ -54,7 +51,7 @@ describe "/bills/new" do
       it "should include a hidden tag for the user" do
         render
         rendered.should have_selector("form[action='#{bills_path}'][method='post']") do |scope|
-          scope.should have_selector("input#bill_user_id[type='hidden'][value='#{@user.id}']")
+          scope.should have_selector("input#bill_user_id[type='hidden'][value='#{user.id}']")
         end
       end
       it "should include checkboxes for each work unit" do
