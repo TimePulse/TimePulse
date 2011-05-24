@@ -1,7 +1,7 @@
 
 
 = error_messages_for :user
-- form_for @user do |f|
+= form_for @user do |f|
   = f.labeled_input :name  if @user.new_record?
   = f.labeled_input :login if @user.new_record?
   = f.labeled_input :email

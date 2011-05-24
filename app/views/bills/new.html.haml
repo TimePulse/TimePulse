@@ -4,13 +4,13 @@
 |
 = link_to 'Back to List', bills_path
 
-- page_block "Bill Parameters" do 
-  - form_tag new_bill_path, :method => 'get' do
+= page_block "Bill Parameters" do
+  = form_tag new_bill_path, :method => 'get' do
     = bill_user_selector
     = submit_tag "Set Parameters"
 
 - if @user
   = render :partial => 'work_units_info_aux'
-                      
-  - page_block "Create Bill" do
+
+  = page_block "Create Bill" do
     = render :partial => "form"

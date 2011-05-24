@@ -1,4 +1,4 @@
-- form_for(@bill) do |f|
+= form_for(@bill) do |f|
   = f.error_messages
 
   / = f.hidden_field :user_id, @bill.user.id
@@ -19,9 +19,9 @@
         %td#hours_total
 
     %table.listing
-      - f.fields_for :work_unit_ids do |wu_form|
+      = f.fields_for :work_unit_ids do |wu_form|
         - @work_units.each do |wu|
-          - content_tag_for(:tr, wu) do
+          = content_tag_for(:tr, wu) do
             %td.nobr
               = wu_form.check_box(wu.id, :class => 'work_unit_checkbox')
               = wu_form.label(wu.hours, nil, :class => 'hours')
