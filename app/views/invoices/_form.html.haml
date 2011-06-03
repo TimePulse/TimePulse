@@ -5,8 +5,10 @@
   %input#invoice_client_id{ :name => "invoice[client_id]", :type => "hidden", :value => @invoice.client.id }
   = labeled_datepicker_field f, :due_on
   = labeled_datepicker_field f, :paid_on
-  = f.labeled_input(:notes){ f.text_area(:notes, :size => '60x4') }
-  = f.labeled_input(:reference_number){ f.text_field(:reference_number) }
+  = f.labeled_input(:notes) do
+    = f.text_area(:notes, :size => '60x4')
+  = f.labeled_input(:reference_number) do
+    = f.text_field(:reference_number)
 
   - if @work_units
     %input#work_unit_select_all{ :type => 'button', :value => 'select all' }

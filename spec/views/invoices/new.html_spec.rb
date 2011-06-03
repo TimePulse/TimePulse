@@ -5,7 +5,7 @@ describe "/invoices/new" do
 
   before(:each) do
     assign(:invoice, Factory.build(:invoice))
-    @client = Factory(:client, :name => "Some Client", :abbreviation => "SCL")
+    @client_local = Factory(:client, :name => "Some Client", :abbreviation => "SCL")
     assign(:work_units, [])
   end
 
@@ -26,7 +26,7 @@ describe "/invoices/new" do
 
       rendered.should have_selector("form[action='#{new_invoice_path}'][method='get']") do |scope|
         scope.should have_selector("select#client_id") do
-          scope.should have_selector("option[value='#{@client.id}']")
+          scope.should have_selector("option[value='#{@client_local.id}']")
         end
       end
     end
@@ -34,15 +34,15 @@ describe "/invoices/new" do
 
   describe "with client specified" do
     before :each  do
-      assign(:client, @client)
-      assign(:invoice, Invoice.new(:client => @client))
+      assign(:client, @client_local)
+      assign(:invoice, Invoice.new(:client => @client_local))
       assign(:work_units, [ Factory(:work_unit), Factory(:work_unit) ])
     end
 
     it "should pre-select that client in the selector" do
       render
       rendered.should have_selector("select#client_id") do |scope|
-        scope.should have_selector("option[value='#{@client.id}'][selected='selected']")
+        scope.should have_selector("option[value='#{@client_local.id}'][selected='selected']")
       end
     end
 
@@ -63,13 +63,13 @@ describe "/invoices/new" do
       it "should include a hidden tag for the client" do
         render
         rendered.should have_selector("form[action='#{invoices_path}'][method='post']") do |scope|
-          scope.should have_selector("input#invoice_client_id[type='hidden'][value='#{@client.id}']")
+          scope.should have_selector("input#invoice_client_id[type='hidden'][value='#{@client_local.id}']")
         end
       end
       it "should include checkboxes for each work unit" do
         render
         @work_units.each do |wu|
-          rendered.should have_selector("form[action='invoices_path'][method='post']") do |scope|
+          rendered.should have_selector("form[action='#{invoices_path}'][method='post']") do |scope|
             scope.should have_selector("input[type='checkbox'][name='invoice[work_unit_ids][#{wu.id}]']")
           end
         end
