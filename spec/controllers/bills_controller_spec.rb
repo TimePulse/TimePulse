@@ -208,7 +208,7 @@ describe BillsController do
         it "should redirect to the created bill" do
           post :create, :bill => @valid_create_params
           new_bill = assigns[:bill]
-          rendered.should redirect_to(bill_url(new_bill))
+          response.should redirect_to(bill_url(new_bill))
         end    
 
         describe "with specified work unit ids" do
@@ -264,7 +264,7 @@ describe BillsController do
 
         it "should re-render the 'new' template" do
           post :create, :bill => @invalid_create_params
-          rendered.should render_template('new')
+          response.should render_template('new')
         end      
       end    
     end
@@ -299,7 +299,7 @@ describe BillsController do
 
         it "should redirect to the bill" do
           put :update, :id => @bill.id, :bill => @valid_update_params
-          rendered.should redirect_to(bill_url(@bill))
+          response.should redirect_to(bill_url(@bill))
         end
       end
 
@@ -323,7 +323,7 @@ describe BillsController do
 
         it "should re-render the 'edit' template" do
           put :update, :id => @bill.id, :bill => @invalid_update_params
-          rendered.should render_template('edit')
+          response.should render_template('edit')
         end
       end
     end
@@ -351,7 +351,7 @@ describe BillsController do
 
       it "should redirect to the bills list" do
         delete :destroy, :id => @bill.id
-        rendered.should redirect_to(bills_url)
+        response.should redirect_to(bills_url)
       end
     end
 

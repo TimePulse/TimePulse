@@ -73,7 +73,7 @@ describe WorkUnitsController do
         end
 
         it "should succeed" do
-          rendered.should be_redirect
+          response.should be_redirect
         end
 
         it "should create a work unit with a real stop time" do
@@ -150,7 +150,7 @@ describe WorkUnitsController do
         it "should redirect to the created work_unit" do
           post :create, :work_unit => @valid_create_params
           new_work_unit = assigns[:work_unit]
-          rendered.should redirect_to(work_unit_url(new_work_unit))
+          response.should redirect_to(work_unit_url(new_work_unit))
         end              
 
         it "should set the work_unit's user to the current user" do
@@ -192,7 +192,7 @@ describe WorkUnitsController do
 
         it "should re-render the 'new' template" do
           post :create, :work_unit => invalid_create_params
-          rendered.should render_template('new')
+          response.should render_template('new')
         end      
       end    
     end
@@ -210,7 +210,7 @@ describe WorkUnitsController do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => Factory(:project).id, 
             :start_time => @start, :calculate => "true", :hours => '2'
           }
-          rendered.should be_redirect
+          response.should be_redirect
         end
 
         it "should create a work unit with a real stop time" do
@@ -261,7 +261,7 @@ describe WorkUnitsController do
 
         it "should redirect to the work_unit" do
           put :update, :id => @work_unit.id, :work_unit => valid_update_params
-          rendered.should redirect_to(work_unit_url(@work_unit))
+          response.should redirect_to(work_unit_url(@work_unit))
         end
         describe "hours in HH:MM" do
           it "should update hours correctly" do
@@ -291,7 +291,7 @@ describe WorkUnitsController do
 
         it "should re-render the 'edit' template" do
           put :update, :id => @work_unit.id, :work_unit => invalid_update_params
-          rendered.should render_template('edit')
+          response.should render_template('edit')
         end        
       end
     end
@@ -315,7 +315,7 @@ describe WorkUnitsController do
 
       it "should redirect to the work_units list" do
         delete :destroy, :id => @work_unit.id
-        rendered.should redirect_back
+        response.should redirect_back
       end
      
     end

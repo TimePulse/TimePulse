@@ -15,7 +15,7 @@ describe ClockTimeController do
       end        
       it "should succeed" do  
         post :create, :id => @project.id                                                                                                 
-        rendered.should redirect_to(root_path)
+        response.should redirect_to(root_path)
       end
       it "should assign a work unit for the current user" do
         post :create, :id => @project.id                                                                                         
@@ -52,7 +52,7 @@ describe ClockTimeController do
         before(:each) { request.env['HTTP_ACCEPT'] = 'application/javascript' }
         it "should render create.rjs" do
           post :create, :id => @project.id 
-          rendered.should render_template('create.rjs')          
+          response.should render_template('create.rjs')          
         end
       end  
       
@@ -102,13 +102,13 @@ describe ClockTimeController do
 
         it "should return a JSON document" do
           delete :destroy
-          rendered.body.should =~ /"timeclock":/
-          rendered.body.should =~ /"recent_work":/
+          response.body.should =~ /"timeclock":/
+          response.body.should =~ /"recent_work":/
         end
 
         it "should return a timeclock block that is clocked out" do
           delete :destroy
-          rendered.body.should =~ /not clocked in/
+          response.body.should =~ /not clocked in/
         end
       end
 
@@ -116,7 +116,7 @@ describe ClockTimeController do
         before(:each) { request.env['HTTP_ACCEPT'] = 'application/javascript' }
         it "should render destroy.rjs" do
           delete :destroy
-          rendered.should render_template('destroy.rjs')          
+          response.should render_template('destroy.rjs')          
         end
       end           
             

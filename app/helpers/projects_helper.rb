@@ -24,7 +24,7 @@ module ProjectsHelper
 
 
   def list_tree(projects, depth = 0, partial = "projects/project")
-    returning String.new do |str|
+    String.new.tap do |str|
       [*projects].each do |project|
         Project.each_with_level(project.self_and_descendants) do |project, depth|
           str << (render :partial => partial, :locals => { :project => project, :depth => depth }) unless project.nil?
@@ -49,7 +49,7 @@ module ProjectsHelper
 
   def short_name_with_client(project)
     return unless project
-    returning "" do |str|
+    String.new.tap do |str|
       str << truncate(project.name, :length => 20, :omission => '...')
       str << "&nbsp;"
       str << "[#{project.client.abbreviation}]" unless project.client.nil?

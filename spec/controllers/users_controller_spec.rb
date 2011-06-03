@@ -79,7 +79,7 @@ describe UsersController do
       attributes.delete :groups
       post :create, :user => attributes
       
-      rendered.should be_redirect
+      response.should be_redirect
     end
 
     it "should assign users to the Registered Users group on creation" do

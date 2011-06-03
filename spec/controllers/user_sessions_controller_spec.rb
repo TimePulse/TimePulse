@@ -17,7 +17,7 @@ describe UserSessionsController do
       end
       it "should redirect to the user dashboard" do
         post :create, :user_session => {:login => @user.login, :password => 'foobar'}
-        rendered.should redirect_to root_url       
+        response.should redirect_to root_url       
       end
     end
 
