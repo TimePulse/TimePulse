@@ -40,7 +40,7 @@ module ApplicationHelper
   end
 
   #TODO: Fix this once LAz is integrated
-  def link_to_if_authorized(*args)
-    link_to(*args)
-  end
+  # def link_to_if_authorized(*args)
+  #   link_to(*args)
+  # end
 end
