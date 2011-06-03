@@ -197,7 +197,7 @@ describe InvoicesController do
         it "should redirect to the created invoice" do
           post :create, :invoice => @valid_create_params
           new_invoice = assigns[:invoice]
-          rendered.should redirect_to(invoice_url(new_invoice))
+          response.should redirect_to(invoice_url(new_invoice))
         end    
         
         describe "with specified work unit ids" do
@@ -254,7 +254,7 @@ describe InvoicesController do
 
         it "should re-render the 'new' template" do
           post :create, :invoice => @invalid_create_params
-          rendered.should render_template('new')
+          response.should render_template('new')
         end      
       end    
     end
@@ -291,7 +291,7 @@ describe InvoicesController do
 
         it "should redirect to the invoice" do
           put :update, :id => @invoice.id, :invoice => @valid_update_params
-          rendered.should redirect_to(invoice_url(@invoice))
+          response.should redirect_to(invoice_url(@invoice))
         end
       end
 
@@ -315,7 +315,7 @@ describe InvoicesController do
 
         it "should re-render the 'edit' template" do
           put :update, :id => @invoice.id, :invoice => @invalid_update_params
-          rendered.should render_template('edit')
+          response.should render_template('edit')
         end
       end
     end
@@ -346,7 +346,7 @@ describe InvoicesController do
 
       it "should redirect to the invoices list" do
         delete :destroy, :id => @invoice.id
-        rendered.should redirect_to(invoices_url)
+        response.should redirect_to(invoices_url)
       end
     end
 
