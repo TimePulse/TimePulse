@@ -25,13 +25,13 @@ describe WorkUnitsController do
       it "should expose the requested work_unit as @work_unit" do
         get :show, :id => @work_unit.id
         assigns[:work_unit].should == @work_unit
-      end  
+      end
     end
 
     ########################################################################################
     #                                      GET NEW
     ########################################################################################
-    describe "responding to GET new" do  
+    describe "responding to GET new" do
       it "should expose a new work_unit as @work_unit" do
         get :new
         assigns[:work_unit].should be_a(WorkUnit)
@@ -42,7 +42,7 @@ describe WorkUnitsController do
     ########################################################################################
     #                                      GET EDIT
     ########################################################################################
-    describe "responding to GET edit" do  
+    describe "responding to GET edit" do
       it "should expose the requested work_unit as @work_unit" do
         get :edit, :id => @work_unit.id
         assigns[:work_unit].should == @work_unit
@@ -67,7 +67,7 @@ describe WorkUnitsController do
         before do
           @start = Time.now - 2 * 60 * 60
           @time = Time.now
-          post :create, :work_unit => { :project_id => Factory(:project).id, 
+          post :create, :work_unit => { :project_id => Factory(:project).id,
             :start_time => @start, :calculate => true, :hours => '2'
           }
         end
@@ -77,7 +77,7 @@ describe WorkUnitsController do
         end
 
         it "should create a work unit with a real stop time" do
-          assigns[:work_unit].stop_time.should be_close(@time, 1)
+          assigns[:work_unit].stop_time.should be_within(1.second).of(@time)
         end
       end
 
@@ -89,10 +89,10 @@ describe WorkUnitsController do
           post :create, :work_unit => { :project_id => Factory(:project).id,
             :start_time => @start.to_s(:long), :stop_time => @stop.to_s(:long), :calculate => true
           }
-          assigns[:work_unit].hours.should == 1.5                    
+          assigns[:work_unit].hours.should == 1.5
         end
       end
-      
+
       describe "with a 20-minute work unit" do
         before :each do
           @start = Time.parse("May 5, 2010 4:00").to_s(:date_and_time)
@@ -104,10 +104,10 @@ describe WorkUnitsController do
               :start_time => @start, :stop_time => @stop, :calculate => true
             }
           end.should change(WorkUnit, :count).by(1)
-          assigns[:work_unit].hours.should be_close(0.33, 0.003)
+          assigns[:work_unit].hours.should be_within(0.003).of(0.33)
         end
-      end      
-      
+      end
+
       describe "for a work unit with a 'calc' hours" do
         before do
           @time = Time.now
@@ -128,11 +128,11 @@ describe WorkUnitsController do
           @valid_create_params = {
             :project_id => Factory(:project).id,
             :start_time => Time.now
-          } 
+          }
         end
 
         it "should create a new work_unit in the database" do
-          lambda do 
+          lambda do
             post :create, :work_unit => @valid_create_params
           end.should change(WorkUnit, :count).by(1)
         end
@@ -151,7 +151,7 @@ describe WorkUnitsController do
           post :create, :work_unit => @valid_create_params
           new_work_unit = assigns[:work_unit]
           response.should redirect_to(work_unit_url(new_work_unit))
-        end              
+        end
 
         it "should set the work_unit's user to the current user" do
           post :create, :work_unit => @valid_create_params
@@ -159,7 +159,7 @@ describe WorkUnitsController do
         end
         describe "and hours in HH:MM format" do
           it "should set the hours correctli" do
-            post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")            
+            post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")
             assigns[:work_unit].hours.should == 4.25
           end
         end
@@ -175,10 +175,10 @@ describe WorkUnitsController do
         end
 
         it "should not create a new work_unit in the database" do
-          lambda do 
+          lambda do
             post :create, :work_unit => invalid_create_params
           end.should_not change(WorkUnit, :count)
-        end      
+        end
 
         it "should expose a newly created work_unit as @work_unit" do
           post :create, :work_unit => invalid_create_params
@@ -193,8 +193,8 @@ describe WorkUnitsController do
         it "should re-render the 'new' template" do
           post :create, :work_unit => invalid_create_params
           response.should render_template('new')
-        end      
-      end    
+        end
+      end
     end
 
     ########################################################################################
@@ -204,20 +204,20 @@ describe WorkUnitsController do
       describe "for a work unit with a start time and calculate = true" do
         before do
           @start = Time.now - 2.5.hours
-        end 
-        
-        it "should redirect " do          
-          put :update, :id => @work_unit.id, :work_unit => {:project_id => Factory(:project).id, 
+        end
+
+        it "should redirect " do
+          put :update, :id => @work_unit.id, :work_unit => {:project_id => Factory(:project).id,
             :start_time => @start, :calculate => "true", :hours => '2'
           }
           response.should be_redirect
         end
 
         it "should create a work unit with a real stop time" do
-          put :update, :id => @work_unit.id, :work_unit => {:project_id => Factory(:project).id, 
+          put :update, :id => @work_unit.id, :work_unit => {:project_id => Factory(:project).id,
             :start_time => @start, :calculate => "true", :hours => '2'
           }
-          assigns[:work_unit].stop_time.should be_close(Time.now, 1.minute)
+          assigns[:work_unit].stop_time.should be_within(1.second).of(Time.now)
         end
       end
 
@@ -226,10 +226,10 @@ describe WorkUnitsController do
           @time = Time.zone.now
           start = @time - 2.hours
           stop = start + 1.5.hours
-          put :update, :id => @work_unit.id, :work_unit => { 
+          put :update, :id => @work_unit.id, :work_unit => {
             :project_id => Factory(:project).id,
             :start_time => start,
-            :stop_time => stop, 
+            :stop_time => stop,
             :hours => nil, :calculate => "true"
           }
         end
@@ -239,16 +239,16 @@ describe WorkUnitsController do
         end
 
         it "should create a work unit with hours" do
-          assigns[:work_unit].hours.should be_close(1.5, 0.001)
+          assigns[:work_unit].hours.should be_within(0.001).of(1.5)
         end
       end
 
       describe "with valid params" do
-        def valid_update_params 
-          { :notes => "A comment here" } 
+        def valid_update_params
+          { :notes => "A comment here" }
         end
 
-        it "should update the requested work_unit in the database" do          
+        it "should update the requested work_unit in the database" do
           lambda do
             put :update, :id => @work_unit.id, :work_unit => valid_update_params
           end.should change{ @work_unit.reload.notes }.to("A comment here")
@@ -266,20 +266,20 @@ describe WorkUnitsController do
         describe "hours in HH:MM" do
           it "should update hours correctly" do
             lambda do
-              put :update, :id => @work_unit.id, :work_unit => valid_update_params.merge!( :hours => "3:45" )                      
+              put :update, :id => @work_unit.id, :work_unit => valid_update_params.merge!( :hours => "3:45" )
             end.should change{ @work_unit.reload.hours }.to(3.75)
           end
         end
-        
+
       end
 
       describe "with invalid params" do
-        def invalid_update_params 
-          { :project_id => nil } 
+        def invalid_update_params
+          { :project_id => nil }
         end
 
         it "should not change the work_unit in the database" do
-          lambda do 
+          lambda do
             put :update, :id => @work_unit.id, :work_unit => invalid_update_params
           end.should_not change{ @work_unit.reload }
         end
@@ -292,7 +292,7 @@ describe WorkUnitsController do
         it "should re-render the 'edit' template" do
           put :update, :id => @work_unit.id, :work_unit => invalid_update_params
           response.should render_template('edit')
-        end        
+        end
       end
     end
 
@@ -308,18 +308,18 @@ describe WorkUnitsController do
         end.should change(WorkUnit, :count).by(-1)
       end
 
-      it "should make the work_units unfindable in the database" do    
+      it "should make the work_units unfindable in the database" do
         delete :destroy, :id => @work_unit.id
-        lambda{ WorkUnit.find(@work_unit.id)}.should raise_error(ActiveRecord::RecordNotFound)      
+        lambda{ WorkUnit.find(@work_unit.id)}.should raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "should redirect to the work_units list" do
         delete :destroy, :id => @work_unit.id
         response.should redirect_back
       end
-     
+
     end
-  end 
+  end
 end
 
 

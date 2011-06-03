@@ -110,11 +110,11 @@ class WorkUnit < ActiveRecord::Base
   # Users are not allowed to have two work units in progress simultaneously.
   def validate_integrity
     if in_progress? && (@other = user.current_work_unit) && @other != self
-      errors.add_to_base "You may not clock in twice at the same time."
+      errors.add :base, "You may not clock in twice at the same time."
     end
     if stop_time && start_time && hours
       if hours > WorkUnit.decimal_hours_between(start_time, stop_time)
-        errors.add_to_base("Hours must not be greater than the difference between start and stop times.")
+        errors.add :base, "Hours must not be greater than the difference between start and stop times."
       end
     end
     errors.add(:hours, "must be greater than 0.00") if hours and hours <= 0.0
