@@ -1,19 +1,19 @@
 class WorkUnitsController < ApplicationController
   include HhmmToDecimal
-    
+
   before_filter :convert_hours_from_hhmm, :only => [ :update, :create ]
-  
+
   before_filter :find_work_unit, :only => [ :show, :edit, :update, :destroy ]
 
   #FIXME:  Judson, I couldn't figure out how to combine these into one
   # call, but I suspect it's possible
   owner_authorized(:edit) do |user, id|
     WorkUnit.find(id).user == user
-  end                                                                        
+  end
   owner_authorized(:destroy) do |user, id|
     WorkUnit.find(id).user == user
   end
-  
+
   grant_aliases :new => [:switch, :create], :edit => :update, :index => :show
 
   # GET /work_units
@@ -44,10 +44,10 @@ class WorkUnitsController < ApplicationController
   # POST /work_units
   def create
     @work_unit = WorkUnit.new(params[:work_unit])
-    @work_unit.user = current_user 
+    @work_unit.user = current_user
     compute_some_fields
     @work_unit.project ||= current_user.current_project
-  
+
     respond_to do |format|
       if @work_unit.save
         flash[:notice] = 'WorkUnit was successfully created.'
@@ -57,7 +57,7 @@ class WorkUnitsController < ApplicationController
         format.html { render :action => "new" }
         format.js
       end
-    end  
+    end
   end
 
   # PUT /work_units/1
@@ -84,7 +84,7 @@ class WorkUnitsController < ApplicationController
     @work_unit = WorkUnit.find(params[:id])
     raise ArgumentError, 'Invalid work_unit id provided' unless @work_unit
   end
-  
+
   # compute a few fields based on sensible defaults, if "calculate" param was passed
   def compute_some_fields
     if params["work_unit"]["calculate"]
@@ -93,8 +93,8 @@ class WorkUnitsController < ApplicationController
       if @work_unit.hours.blank?
         @work_unit.hours = WorkUnit.decimal_hours_between(@work_unit.start_time, @work_unit.stop_time)
       end
-    end    
+    end
   end
-  
-  
+
+
 end

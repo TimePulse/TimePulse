@@ -10,6 +10,7 @@ Tracks::Application.routes.draw do
   resources :users
   resources :projects
 
+  # TODO: Reenable these once LAz is working
   # match '/forbid' => 'permissions#destroy', :as => :forbid, :via => delete
   # match '/permit' => 'permissions#create', :as => :permit, :via => post
   # match '/ungroup_user' => 'groups_users#destroy', :as => :ungroup_user, :via => delete
