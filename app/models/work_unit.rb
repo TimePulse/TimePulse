@@ -125,7 +125,7 @@ class WorkUnit < ActiveRecord::Base
   end
 
 
-  after_validation_on_create :set_defaults
+  after_validation :set_defaults, :on => :create
   def set_defaults
     # debugger
     self.billable = project.billable if project
