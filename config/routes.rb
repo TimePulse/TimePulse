@@ -20,7 +20,7 @@ Tracks::Application.routes.draw do
   match '/login' => 'user_sessions#new', :as => :login
   match '/logout' => 'user_sessions#destroy', :as => :logout
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
-  match '/clock_out/:id' => 'clock_time#destroy', :as => :clock_out, :via => :delete
+  match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete
   match '/login' => 'user_sessions#new', :as => :default_unauthorized
 
   root :to => 'home#index'
