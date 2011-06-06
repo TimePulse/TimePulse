@@ -1,72 +1,85 @@
 require 'spec_helper'
 
-describe ClientsController do 
+describe ClientsController do
   before(:each) do
-    authenticate(:admin)    
+    authenticate(:admin)
   end
 
-  def mock_client(stubs={})
-    @mock_client ||= mock_model(Client, stubs)
+  let! :client do
+    @client ||= Factory(:client)
   end
 
   describe "GET index" do
     it "assigns all clients as @clients" do
-      Client.stub(:find).with(:all).and_return([mock_client])
       get :index
-      assigns[:clients].should == [mock_client]
+      assigns[:clients].should == [client]
     end
   end
 
   describe "GET show" do
     it "assigns the requested client as @client" do
-      Client.stub(:find).with("37").and_return(mock_client)
-      get :show, :id => "37"
-      assigns[:client].should equal(mock_client)
+      get :show, :id => client.id
+      assigns[:client].should == client
     end
   end
 
   describe "GET new" do
     it "assigns a new client as @client" do
-      Client.stub(:new).and_return(mock_client)
       get :new
-      assigns[:client].should equal(mock_client)
+      assigns[:client].should be_a(Client)
+      assigns[:client].should be_new_record
     end
   end
 
   describe "GET edit" do
     it "assigns the requested client as @client" do
-      Client.stub(:find).with("37").and_return(mock_client)
-      get :edit, :id => "37"
-      assigns[:client].should equal(mock_client)
+      get :edit, :id => client.id
+      assigns[:client].should == client
     end
   end
 
   describe "POST create" do
+    def valid_params
+      { :name => 'Foobar Industries',
+        :billing_email => "billing@foobar.com"
+      }
+    end
 
     describe "with valid params" do
       it "assigns a newly created client as @client" do
-        Client.stub(:new).with({'these' => 'params'}).and_return(mock_client(:save => true))
-        post :create, :client => {:these => 'params'}
-        assigns[:client].should equal(mock_client)
+        post :create, :client => valid_params
+        assigns[:client].should be_a(Client)
+        assigns[:client].name.should == 'Foobar Industries'
       end
 
       it "redirects to the created client" do
-        Client.stub(:new).and_return(mock_client(:save => true))
-        post :create, :client => {}
-        response.should redirect_to(client_url(mock_client))
+        post :create, :client => valid_params
+        response.should redirect_to(client_url(assigns[:client]))
+      end
+
+      it "creates a new Client in the database" do
+        lambda do
+          post :create, :client => valid_params
+        end.should change(Client, :count).by(1)
       end
     end
 
     describe "with invalid params" do
+      def invalid_params
+        { :name => nil,
+          :billing_email => "billing@foobar.com"
+        }
+      end
+
       it "assigns a newly created but unsaved client as @client" do
-        Client.stub(:new).with({'these' => 'params'}).and_return(mock_client(:save => false))
-        post :create, :client => {:these => 'params'}
-        assigns[:client].should equal(mock_client)
+        post :create, :client => invalid_params
+        assigns[:client].should be_a(Client)
+        assigns[:client].name.should be_nil
+        assigns[:client].should be_new_record
       end
 
       it "re-renders the 'new' template" do
-        Client.stub(:new).and_return(mock_client(:save => false))
-        post :create, :client => {}
+        post :create, :client => invalid_params
         response.should render_template('new')
       end
     end
@@ -74,43 +87,48 @@ describe ClientsController do
   end
 
   describe "PUT update" do
+    def valid_params
+      { :name => 'Foobar Industries'
+      }
+    end
 
     describe "with valid params" do
       it "updates the requested client" do
-        Client.should_receive(:find).with("37").and_return(mock_client)
-        mock_client.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :client => {:these => 'params'}
+        put :update, :id => client.id, :client => valid_params
       end
 
       it "assigns the requested client as @client" do
-        Client.stub(:find).and_return(mock_client(:update_attributes => true))
-        put :update, :id => "1"
-        assigns[:client].should equal(mock_client)
+        put :update, :id => client.id, :client => valid_params
+        assigns[:client].should == client
+      end
+
+      it "changes the value" do
+        lambda do
+          put :update, :id => client.id, :client => valid_params
+        end.should change{client.reload.name}
       end
 
       it "redirects to the client" do
-        Client.stub(:find).and_return(mock_client(:update_attributes => true))
-        put :update, :id => "1"
-        response.should redirect_to(client_url(mock_client))
+        put :update, :id => client.id, :client => valid_params
+        response.should redirect_to(client_url(client))
       end
     end
 
     describe "with invalid params" do
+      def invalid_params
+        { :name => nil }
+      end
       it "updates the requested client" do
-        Client.should_receive(:find).with("37").and_return(mock_client)
-        mock_client.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, :id => "37", :client => {:these => 'params'}
+        put :update, :id => client.id, :client => invalid_params
       end
 
       it "assigns the client as @client" do
-        Client.stub(:find).and_return(mock_client(:update_attributes => false))
-        put :update, :id => "1"
-        assigns[:client].should equal(mock_client)
+        put :update, :id => client.id, :client => invalid_params
+        assigns[:client].should == client
       end
 
       it "re-renders the 'edit' template" do
-        Client.stub(:find).and_return(mock_client(:update_attributes => false))
-        put :update, :id => "1"
+        put :update, :id => client.id, :client => invalid_params
         response.should render_template('edit')
       end
     end
@@ -118,17 +136,21 @@ describe ClientsController do
   end
 
   describe "DELETE destroy" do
-    it "destroys the requested client" do
-      Client.should_receive(:find).with("37").and_return(mock_client)
-      mock_client.should_receive(:destroy)
-      delete :destroy, :id => "37"
-    end
+     it "should reduce client count by one" do
+        lambda do
+          delete :destroy, :id => client.id
+        end.should change(Client, :count).by(-1)
+      end
 
-    it "redirects to the clients list" do
-      Client.stub(:find).and_return(mock_client(:destroy => true))
-      delete :destroy, :id => "1"
-      response.should redirect_to(clients_url)
-    end
+      it "should make the clients unfindable in the database" do
+        delete :destroy, :id => client.id
+        lambda{ Client.find(client.id)}.should raise_error(ActiveRecord::RecordNotFound)
+      end
+
+      it "should redirect to the clients list" do
+        delete :destroy, :id => client.id
+        response.should redirect_to(clients_path)
+      end
   end
 
 end
