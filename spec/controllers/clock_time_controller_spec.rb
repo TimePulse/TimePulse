@@ -6,7 +6,6 @@ describe ClockTimeController do
     @project = Factory(:task)
   end
 
-
   describe "POST 'create'" do
     describe "with valid parameters" do
       it "should be authorized" do
