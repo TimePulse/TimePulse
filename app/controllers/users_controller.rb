@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class UsersController < AuthzController
   owner_authorized :show, :edit, :update
 
   before_filter :get_user, :only => [:show, :edit, :update]
