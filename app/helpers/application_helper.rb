@@ -20,7 +20,7 @@ module ApplicationHelper
       else
         str << "None Selected"
       end
-      str.html_safe!
+      str.html_safe
     end
   end
 
