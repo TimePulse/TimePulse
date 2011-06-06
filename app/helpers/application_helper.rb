@@ -13,7 +13,7 @@ module ApplicationHelper
   end
 
   def current_project_label
-    returning String.new do |str|
+    String.new.tap do |str|
       if current_project
         str << current_project.name
         str << "&nbsp;&nbsp;[#{current_project.client.name }]"  if current_project.client

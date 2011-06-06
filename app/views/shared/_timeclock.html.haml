@@ -1,4 +1,4 @@
--page_block("Timeclock", :id => "timeclock") do
+= page_block("Timeclock", :id => "timeclock") do
   - if clocked_in?
     %span#tasktime{ :style => 'display:none;' }= current_work_unit.start_time.strftime('%s')
     #task_elapsed -:--:--

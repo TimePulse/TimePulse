@@ -16,27 +16,27 @@ module WorkUnitsHelper
     [ :finished, "work_unit.stop_time.to_s(:date_and_time)" ],
     [ nil, "widget_links(work_unit)" ]
   ]
-  def tooltip_for(work_unit, token)                        
+  def tooltip_for(work_unit, token)
     content_tag( :div, :id => "tooltip_for_#{token}", :class => "tooltip") do
-      TOOLTIP_FIELDS.map { |pair| 
+      TOOLTIP_FIELDS.map { |pair|
         content_tag(:p) do
           content_tag(:b, format_title(pair[0])) + eval(pair[1]).to_s
-        end        
+        end
       }.join()
-    end.html_safe!
-  end  
+    end.html_safe
+  end
 
-  def format_title(title)    
+  def format_title(title)
     if title
       title.to_s.titleize + ": "
     else
       ""
     end
   end
-  
+
   def widget_links(work_unit)
     link_to( 'Edit', edit_work_unit_path(work_unit)) + " " +
     link_to('Delete', work_unit_path(work_unit), {:method => :delete, :confirm => "Are you sure?"})
   end
-  
+
 end
