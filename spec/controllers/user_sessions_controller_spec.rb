@@ -11,12 +11,20 @@ describe UserSessionsController do
     end
              
     describe "with correct parameters" do
-      it "should succeed" do
+      before :each do
+        logout
         post :create, :user_session => {:login => @user.login, :password => 'foobar'}
+      end
+
+      it "should be authorized" do
+        controller.should be_authorized
+      end
+
+      it "should succeed" do
         assigns(:user_session).user.should == @user      
       end
+
       it "should redirect to the user dashboard" do
-        post :create, :user_session => {:login => @user.login, :password => 'foobar'}
         response.should redirect_to root_url       
       end
     end

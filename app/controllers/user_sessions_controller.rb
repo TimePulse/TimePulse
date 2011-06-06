@@ -1,5 +1,13 @@
 class UserSessionsController < AuthzController
+  policy :new do
+    deny authenticated
+    allow always
+  end
   grant_aliases :new => :create
+
+  policy :destroy do
+    allow authenticated
+  end
 
   def new
     @user_session = UserSession.new

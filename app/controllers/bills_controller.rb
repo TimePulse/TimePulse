@@ -1,4 +1,4 @@
-class BillsController < ApplicationController
+class BillsController < AuthzController
   before_filter :find_bill, :only => [ :show, :edit, :update, :destroy ]
   admin_authorized 
 
