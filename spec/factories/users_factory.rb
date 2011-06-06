@@ -5,7 +5,7 @@ Factory.define :user , :class => User do |u|
   u.password_confirmation "foobar"
 
   #TODO: Fix this when LAz for R3 is ready.
-  # u.groups{ [Group.find_by_name("Registered Users")] }
+  u.groups{ [Group.find_by_name("Registered Users")] }
   u.sequence(:email) {|n| "quentin#{n}@example.com"}
   u.sequence(:single_access_token) {|n| "k#{n}cFzLIQnZ4MHRmJvJzg"}
 end
@@ -15,7 +15,7 @@ Factory.define :admin, :parent => :user do |u|
   u.sequence(:login) { |n| "administrator#{n}" }
 
   #TODO: Fix this when LAz for R3 is ready.
-  # u.groups{  [Group.find_by_name("Administration"), Group.find_by_name("Registered Users")] }
+  u.groups{  [Group.find_by_name("Administration"), Group.find_by_name("Registered Users")] }
 end
 
 
