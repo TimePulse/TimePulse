@@ -4,7 +4,7 @@
 %tr{ :class => cssclass }                     
   %td.project_name
     = depth_indicator(depth) 
-    - form_for(project, :url => set_current_project_path(:id => project.id), :html => {:method => :post}) do
+    = form_for(project, :url => set_current_project_path(:id => project.id), :html => {:method => :post}) do
       = submit_tag(project.name)
   %td.tools
     -if project.clockable? and !clocked_in_project?(project) 

@@ -1,4 +1,4 @@
-class ProjectsController < ApplicationController
+class ProjectsController < AuthzController
   # GET /projects
   grant_aliases :new => :create, :edit => :update, :index => :show
 
