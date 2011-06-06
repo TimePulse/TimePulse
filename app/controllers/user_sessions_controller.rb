@@ -1,4 +1,4 @@
-class UserSessionsController < ApplicationController
+class UserSessionsController < AuthzController
   grant_aliases :new => :create
 
   def new
