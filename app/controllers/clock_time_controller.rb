@@ -11,7 +11,6 @@ class ClockTimeController < AuthzController
     current_unit.clock_out! unless current_unit.nil?
     @work_unit = current_user.work_units.build( :project => @project, :start_time => Time.zone.now )
     @work_unit.save!
-    #data = build_json_response
     respond_to do |format|
       format.html { redirect_to root_path }
       format.js
@@ -28,22 +27,24 @@ class ClockTimeController < AuthzController
     @work_unit = current_user.current_work_unit
     @work_unit.update_attributes(params[:work_unit]) if params[:work_unit]
     @work_unit.clock_out!
-    data = build_json_response
     respond_to do |format|
       format.html { redirect_to root_path }
       format.js
       format.json do
-        render :json => data
+        render :json => build_json_response
       end
     end
   end
 
 
   def build_json_response
-
-    {
-      :timeclock => render_to_string(:partial => 'shared/timeclock'),
-      :recent_work => render_to_string(:partial => 'shared/recent_work')
-    }
+    with_format :html do
+      tc = render_to_string(:partial => 'shared/timeclock.html.haml')
+      rw = render_to_string(:partial => 'shared/recent_work.html.haml')
+      {
+        :timeclock => tc,
+        :recent_work => rw
+      }
+    end
   end
 end
