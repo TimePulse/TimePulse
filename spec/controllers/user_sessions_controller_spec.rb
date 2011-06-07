@@ -8,11 +8,11 @@ describe UserSessionsController do
   describe "POST create" do
     before(:each) do
       @user = Factory.create(:user)
+      logout
     end
              
     describe "with correct parameters" do
       before :each do
-        logout
         post :create, :user_session => {:login => @user.login, :password => 'foobar'}
       end
 

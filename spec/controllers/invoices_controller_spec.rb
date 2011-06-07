@@ -27,7 +27,7 @@ describe InvoicesController do
       end
       it "should paginate all unpaid invoices as @unpaid_invoices" do
         get :index
-        assigns[:unpaid_invoices].should == @unpaid_invoices.sort_by(&:created_at).paginate
+        assigns[:unpaid_invoices].should include(*(@unpaid_invoices.paginate))
       end  
       it "should paginate all paid invoices as @paid_invoices" do
         get :index

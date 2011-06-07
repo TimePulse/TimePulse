@@ -29,9 +29,10 @@ describe CurrentProjectController do
   describe "for javascript requests" do  
     render_views
     before(:each) { request.accept = "application/javascript" }
+
     it "should respond by replacing the contents of #project_picker" do
       post :create, :id => @project1.id
-      response.should have_rjs
+      response.content_type.should == "text/javascript"
     end
   end
   

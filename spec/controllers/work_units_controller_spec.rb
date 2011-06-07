@@ -217,7 +217,7 @@ describe WorkUnitsController do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => Factory(:project).id,
             :start_time => @start, :calculate => "true", :hours => '2'
           }
-          assigns[:work_unit].stop_time.should be_within(1.second).of(Time.now)
+          assigns[:work_unit].stop_time.should be_within(90.seconds).of(Time.now.utc)
         end
       end
 

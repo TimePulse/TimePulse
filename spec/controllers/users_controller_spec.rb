@@ -1,11 +1,11 @@
 require "spec_helper"
 
 describe UsersController do
-  describe "accessed by guest" do
-    before do
-      activate_authlogic
-    end
+  before do
+    logout
+  end
 
+  describe "accessed by guest" do
     it "should forbid index" do
       get :index
       controller.should be_forbidden
