@@ -48,10 +48,28 @@ describe ClockTimeController do
       end
 
       describe "with AJAX" do
-        before(:each) { request.env['HTTP_ACCEPT'] = 'application/javascript' }
-        it "should render create.rjs" do
+        before(:each) { @request.env['HTTP_ACCEPT'] = 'application/javascript' }
+        it "should respond with javascript" do
           post :create, :id => @project.id
-          response.should render_template('create.rjs')
+          response.headers['Content-Type'].should =~ /text\/javascript/
+        end
+      end
+
+      describe "with Unobtrusive" do
+        render_views
+        before do
+          request.env['HTTP_ACCEPT'] = 'application/json'
+        end
+
+        it "should return a JSON document" do
+          post :create, :id => @project.id
+          response.body.should =~ /"timeclock":/
+          response.body.should =~ /"recent_work":/
+        end
+
+        it "should return a timeclock block that is clocked in" do
+          post :create, :id => @project.id
+          response.body.should =~ /TIMECLOCK/
         end
       end
 
@@ -112,10 +130,10 @@ describe ClockTimeController do
       end
 
       describe "with AJAX" do
-        before(:each) { request.env['HTTP_ACCEPT'] = 'application/javascript' }
-        it "should render destroy.rjs" do
+        before(:each) { @request.env['HTTP_ACCEPT'] = 'application/javascript' }
+        it "should respond with javascript" do
           delete :destroy
-          response.should render_template('destroy.rjs')
+          response.headers['Content-Type'].should =~ /text\/javascript/
         end
       end
 
