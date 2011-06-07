@@ -24,8 +24,7 @@ gem "lrd_rack_bug", ">= 0.3.0.4"
 gem "logical_tabs"
 gem "awesome_nested_set"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
-gem 'logical_authz', :path => '../LogicalAuthz'
-
+gem 'logical_authz' #, :path => "../LogicalAuthz/"
 
 group :development, :test do
   gem 'rspec'

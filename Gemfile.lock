@@ -6,11 +6,6 @@ GIT
     authlogic (2.1.3)
       activesupport
 
-PATH
-  remote: ../LogicalAuthz
-  specs:
-    logical_authz (0.2.0)
-
 GEM
   remote: http://judson:hiP4cOre@gems.lrdesign.com/
   remote: http://rubygems.org/
@@ -64,6 +59,7 @@ GEM
     haml (3.1.1)
     i18n (0.5.0)
     linecache (0.43)
+    logical_authz (0.2.1)
     logical_tabs (0.8.0)
     lrd_dev_tools (0.1.2)
     lrd_rack_bug (0.3.1.1)
@@ -147,7 +143,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   haml
-  logical_authz!
+  logical_authz
   logical_tabs
   lrd_dev_tools (>= 0.1.1)
   lrd_rack_bug (>= 0.3.0.4)
