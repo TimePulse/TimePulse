@@ -1,4 +1,4 @@
-class HomeController < ApplicationController
+class HomeController < AuthzController
   def index
     @user = current_user
   end

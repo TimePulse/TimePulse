@@ -35,6 +35,8 @@ group :development, :test do
 end
 
 group :development do
+  gem 'capistrano'
+  gem 'capistrano-ext'
   gem 'annotate'
   gem 'lrd_dev_tools', ">= 0.1.1"
   gem 'mongrel'

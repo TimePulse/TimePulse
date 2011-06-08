@@ -12,7 +12,7 @@ require 'bundler/capistrano'
 set :sync_directories, ["public/system"]
 
 set :stages, %w(staging production)
-set :default_stage, 'staging'
+set :default_stage, 'production'
 require 'capistrano/ext/multistage'
 
 set :repository,  "git@github.com:LRDesign/REPO_NAME.git"

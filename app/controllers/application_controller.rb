@@ -1,4 +1,5 @@
 require 'authenticated_system'
+require 'logical_authz/application'
 
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
