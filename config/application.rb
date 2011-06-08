@@ -6,6 +6,8 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
+require 'logical_authz/authn_facade/authlogic'
+
 module Tracks
   class Application < Rails::Application
     config.generators do |g|

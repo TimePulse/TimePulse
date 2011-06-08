@@ -1,5 +1,4 @@
 # Methods added to this helper will be available to all templates in the application.
-require 'logical_authz_helper'
 require 'authenticated_system'
 module ApplicationHelper
   include LogicalAuthz::Helper
