@@ -3,6 +3,7 @@
 = form_for @user_session, :url => user_session_path do |f|
   = f.error_messages
 
-  = labeled_input f, :login
-  = labeled_input f, :password, :input => f.password_field(:password)
-  = f.submit "Login"
+  = f.labeled_input :login
+  = f.labeled_input :password do
+    = f.password_field(:password)
+  = f.unlabeled_submit "Login"

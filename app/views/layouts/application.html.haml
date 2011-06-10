@@ -24,10 +24,6 @@
     = javascript_include_tag 'application.js'
 
     = csrf_meta_tag
-
-    %style{ :type => 'text/css', :media => 'screen, projection' }
-      = yield :page_css if content_for? :page_css
-
     = yield :header
 
   -# TODO: Turn on these admin lines if the site has an admin interface, otherwise delete them.
@@ -39,15 +35,31 @@
     #inset
       #wrap
         #header
-          = render :partial => 'layouts/nav'
+          #logo
+            =link_to image_tag('/images/small-logo.png', :alt => "logo"), root_url
+          #message
+            %h1 Logical Reality Design Tracking System
+            - if logged_in?
+              %h2= "Hello, #{current_user.name} "
+
+        = render :partial => 'layouts/admin_menu'
+        = render :partial => 'layouts/nav'
 
         #content-wrap
-          -# TODO: Suggested place for a sidebar.  Remove if not using it
-          -# = render :partial => 'layouts/aux'
+          = render :partial => 'layouts/aux'
 
-          #content
-            - if content_for? :headline
-              %h1= yield :headline
-            #content-body
-              = render :partial => 'layouts/flash' , :locals => { :flash => flash }
-              = yield
+          - klass = "with_picker" if yield :picker
+          #content-column{ :class => klass }
+
+            #content
+              %h1= yield :headline if yield :headline
+              #content-body
+                = render :partial => 'layouts/flash' , :locals => { :flash => flash }
+                = yield
+    #reference_times{ :style => 'display: none;' }
+      %h3 Server time at page render (sec):
+      %span#servertime= @server_time_now.strftime('%s')
+
+      %h3 Browser time at page render (sec):
+      %span#browsertime
+                
