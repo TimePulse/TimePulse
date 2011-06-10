@@ -1,6 +1,14 @@
-$admin_menu_height: 22px
-$content_width: 960px
-$admin_background_color: #775
+$page_background: #e8e9ed
+$error_background: #e9b2b2
+$title_bg_color: #004
+$title_text_color: white
+$admin_background_color: #3ad932
+$admin_dark_color: #1a7815
+$admin_hover_color: #1ab912
+$nav_background_color: #eee
+$nav_hover_color: #ccc
+
+$column_spacing: 5px
 
 =clearfix
   :content "."
@@ -9,10 +17,12 @@ $admin_background_color: #775
   :clear both
   :visibility hidden
 
-$error_background: #e9b2b2
-
 =error_notice_colors
   :border-width 2px
   :border-style solid
   :border-color #f44
   :background $error_background
+
+=admin_header_style
+  :background $admin_background_color
+  :color black

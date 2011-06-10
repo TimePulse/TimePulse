@@ -1,36 +1,20 @@
 @import constants.sass
 
-form
-  :margin-top .5em
-  :margin-bottom .5em
 
-.form_section
-  :clear both
-  :margin-top 1em
-  :border 1px solid #aaa
-  :background #e9e9f0
-  :padding 0 0 1em 0
-  h3
-    :margin-top .25em
-    :padding-left 1em
-    :border-bottom 1px solid #aaa
-
-
-.form_section:after
-  +clearfix
+label
+  :font-weight bold
+  :margin-right .5em
 
 .labeled_input
   :margin-bottom .25em
   :margin-left 1em
-  :clear both
 
   label
     :display block
     :float left
-    :width 8em
+    :width 6em
     :text-align right
     :font-weight bold
-    :margin-right 1em
 
   .assignable
 
@@ -45,7 +29,9 @@ form
 
 .required label
   :font-weight bold
-  :background url('/images/required.png') center left no-repeat
+
+.nostretch select
+  :width auto
 
 .errorExplanation
   +error_notice_colors
@@ -67,3 +53,4 @@ form
 
   input, textarea
     :background-color $error_background
+

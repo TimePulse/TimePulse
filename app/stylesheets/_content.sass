@@ -1,19 +1,20 @@
 @import constants.sass
 
+$bcolor: #666
+
 #content
-  :border 1px #666666 solid
+  :border 1px $bcolor solid
   :background white
 
   h1
-    :border-bottom 1px #666666 solid
-    :padding 0.25em
-    :background #000044
-    :color white
-    :margin-top 0
+    :border-bottom 1px $bcolor solid
+    :padding .25em
+    :background $title_bg_color
+    :color $title_text_color
+    :margin-bottom 0
 
   #content-body
     :padding 1em
-
   #content-body:after
     +clearfix
 
@@ -25,27 +26,74 @@ table.listing
 
   td, th
     :border 1px solid black
-    :padding 3px 0.25em
-
+    :padding 3px .25em
   th
-    font-weight bold
-    background #ccccee
+    :font-weight bold
+    :background #cce
+
   tr.odd
-    background white
+    :background #fff
   tr.even
-    background #eeeeee
+    :background #eee
   tr.info td
-    border-top-width 2px
+    :border-top-width 2px
   tr.description td
-    border-bottom-width 2px
+    :border-bottom-width 2px
+
+  tr.work_unit:hover
+    :background-color #ff9
+
   tr.one_line td
-    white-space nowrap
-    overflow hidden
+    :white-space nowrap
+    :overflow hidden
+
+.tooltip
+  :display none
+  :background #ddf
+  :padding 1em
+  :font-size 11px
+  :color black
+  :border 1px solid black
+  :z-index 10
+
+#hours_report
+  :margin-bottom 1em
+  .panes
+    .pane
+      :padding-top 0
+      :padding-bottom 0
+    table
+      :margin-top 0
+      :margin-bottom 0
 
 p
-  :margin 1em 0
+  :margin .5em 0 1em 0
 
-em
-  :font-style italic
-strong
-  :font-weight bold
+li
+  :list-style disc
+  :margin-left 2em
+
+dl.values
+  dt
+    :font-weight bold
+    :display run-in
+  dt:after
+    :content ": "
+
+table.project_picker
+  td
+    :padding-top .25em
+  td.tools
+    :padding-left .5em
+  tr.category td
+    :font-weight bold
+    :padding-top .75em
+  tr.current td
+    :background #ff9
+
+
+#work_unit_form
+  :margin 1em 0
+  :border 1px solid gray
+  :background #ccf
+  :padding .5em

@@ -1,25 +1,62 @@
 @import constants.sass
+
+$primary_width: 980px
+
 body
+  :font-family helvetica, "sans-serif"
+  :background $page_background url('/images/background.png') top left repeat-x
+  :border 0
   :margin 0
   :padding 0
-
-#inset
-  :margin 0
-  :padding 1px
+  :font-size 12px
 
 #wrap
-  :width $content_width
-  :margin 1em auto
+  :width $primary_width
+  :margin 0 auto
+
+#header
+  :height 160px
+  :color white
+  #message
+    :float right
+    h1, h2
+      :text-align right
+
+#logo
+  :height 120px
+  :width 120px
+  :margin-top 20px
+  :float left
+
+#nav
+  :height 20px
+  :border 0px
+
+$sidebar_width:  240px
+$picker_width:  200px
+
+#aux
+  :width $sidebar_width
+  :margin-top 2em
+  :float right
+#picker
+  :width $picker_width
+  :margin-top 2em
+  :padding 0
+  :float left
+  :margin-right $column_spacing
+
+#content-column
+  :width ($primary_width - $sidebar_width - $column_spacing - 6px)
+  :float left
+  :margin-top 2em
+
+  h1
+    :margin-top 0
+#content-column.with_picker
+  :width ($primary_width - $sidebar_width - (2 * $column_spacing) - $picker_width - 8px)
 
 
-#content
-  :width $content_width
-  :border 1px solid black
-  :padding 20px
-  :margin 10px auto
+#content-wrap:after
+  +clearfix
 
-  p
-    :margin-top 2em
-
-#footer
-  :text-align center
