@@ -7,6 +7,11 @@ module LogicalAuthz
   # if defined?(:AuthnFacade)
   #   remove_const(:AuthnFacade)
   # end
+
+  unless const_get(:AuthnFacade).nil?
+    remove_const(:AuthnFacade)
+  end
+
   module AuthnFacade
     @@current_user = nil
 
