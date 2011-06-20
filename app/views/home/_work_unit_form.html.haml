@@ -12,8 +12,8 @@
       = labeled_datetimepicker_field f, :start_time
       = labeled_datetimepicker_field f, :stop_time
 
-      = f.labeled_input :hours, :input => f.text_field(:hours), :comment => "(Decimal or HH:MM)"
-      = f.labeled_input :notes, :input => f.text_field(:notes)
+      = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
+      = f.labeled_input :notes
       = f.unlabeled_submit "Save Changes"
   - else
     %p
