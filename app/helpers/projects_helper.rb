@@ -31,7 +31,7 @@ module ProjectsHelper
         end
       end
       str.html_safe
-    end
+    end.html_safe
   end
 
 
