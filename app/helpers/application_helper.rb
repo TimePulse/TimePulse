@@ -35,7 +35,7 @@ module ApplicationHelper
     form.labeled_input(field_name, options.merge!(
       :class => options[:cssclass],
       :value => value
-    ))
+    )).html_safe
   end
 
   def labeled_datetimepicker_field(form, field_name, options = {})

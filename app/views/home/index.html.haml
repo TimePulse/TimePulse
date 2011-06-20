@@ -1,10 +1,10 @@
-- set_headline "User Dashboard"
+- set_headline short_name_with_client(current_project)
 
 -content_for :aux do
   = render :partial => "shared/timeclock"
   = render :partial => "shared/recent_work"
-  
+
 -content_for :picker do
   = render :partial => "shared/project_picker"
 
-= render :partial => 'home/current_project_block'    
+= render :partial => 'home/current_project_block'
