@@ -16,12 +16,18 @@
 
     - if Rails.env.production?
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+      = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"
     -else
       = javascript_include_tag "jquery-1.4.2.js"
+      = javascript_include_tag "jquery-ui-1.8.4.min.js"
 
     = javascript_include_tag "rails.js"
     = javascript_include_tag "jquery.ninja_script.js"
+    = javascript_include_tag "jquery.ui.datetimepicker.js"
+    = javascript_include_tag 'logical_tabs_jquery'
+    = javascript_include_tag 'jquery.tools.min'
     = javascript_include_tag 'application.js'
+
 
     = csrf_meta_tag
     = yield :header
@@ -62,4 +68,4 @@
 
       %h3 Browser time at page render (sec):
       %span#browsertime
-                
+

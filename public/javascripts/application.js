@@ -1,29 +1,26 @@
-Ninja.behavior({
-  '.mizugumo_graceful_form': Ninja.becomesLink
-});
-
 $('document').ready( function(){
   startClock();
 });
 
-$.behavior({
-  '#debug':        $.ninja.tools.suppress_change_events(),
-  '#task_elapsed':  $.ninja.tools.suppress_change_events(),
+Ninja.behavior({
+  '.mizugumo_graceful_form': Ninja.becomesLink,
+  '#debug':        Ninja.tools.suppressChangeEvents(),
+  '#task_elapsed':  Ninja.tools.suppressChangeEvents(),
   '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
   '.datetime_entry': { transform: function(elem){ $(elem).datetimepicker() }},
   '#work_unit_select_all': { click: selectAllWorkUnits },
   '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "default"] },
 
-  '#timeclock form.edit_work_unit':    $.ninja.ajax_submission({
+  '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
     busy_element: function(elem){ return $('#timeclock')}
   }),
-  '#timeclock form.clock_in':          $.ninja.ajax_submission({
+  '#timeclock form.clock_in':          Ninja.submitsAsAjax({
     busy_element: function(elem){ return $('#timeclock')}
   }),
-    '.project_picker form.clock_in':   $.ninja.make_ajax_link({
+    '.project_picker form.clock_in':   Ninja.becomesAjaxLink({
     busy_element: function(elem){ return $('#timeclock')}
   }),
-  '#project_picker form.edit_project': $.ninja.make_ajax_link({
+  '#project_picker form.edit_project': Ninja.becomesAjaxLink({
     busy_element: function(elem){ return $('#timeclock')}
   }),
 
@@ -47,6 +44,7 @@ $.behavior({
     }
   }
 });
+Ninja.go();
 
 
 
