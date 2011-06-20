@@ -58,16 +58,12 @@ module ProjectsHelper
   end
 
   def clock_in_widget(project, style = nil)
-
     title = "Clock in on #{project.name}"
-    content_tag(:form,  :action => clock_in_path(:id => project), :method => :post, :title => title, :class => "clock_in") do
-      if defined?(style)  and style == :icon
-        image_submit_tag('/images/icons/clock_in.png', :alt => title)
-      else
-        submit_tag(title)
-      end
-    end
-    # render :inline => 'shared/clock_in_widget', :locals => {:style => :icon, :project => project}
+    if style == :icon
+      link_to(image_tag('/images/icons/clock_in.png', :alt => title), clock_in_path(:id => project), :method => :post, :title => title)
+    else
+      link_to(title, clock_in_path(:id => project), :method => :post, :title => title)
+    end.html_safe
   end
 
 end
