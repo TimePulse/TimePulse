@@ -1,12 +1,12 @@
 - current = project == current_project
 - cssclass = project.clockable? ? "task" : "category"
 - cssclass += " current" if current
-%tr{ :class => cssclass }                     
+= content_tag_for(:tr, project, :class => cssclass) do
   %td.project_name
-    = depth_indicator(depth) 
+    = depth_indicator(depth)
     = form_for(project, :url => set_current_project_path(:id => project.id), :html => {:method => :post}) do
       = submit_tag(project.name)
   %td.tools
-    -if project.clockable? and !clocked_in_project?(project) 
+    -if project.clockable? and !clocked_in_project?(project)
       -# = render :partial => "shared/clock_in_widget", :locals => {:style => :icon, :project => project}
       = clock_in_widget(project, :icon)
