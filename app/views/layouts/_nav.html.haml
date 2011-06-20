@@ -1,6 +1,6 @@
 #nav
   %ul
-    = authorized_menu(["Dashboard", root_path],  ["Clients", clients_path], ["Projects", projects_path], ["Bills", bills_path ], ["Invoices", invoices_path]) do |items|
+    - authorized_menu(["Dashboard", root_path],  ["Clients", clients_path], ["Projects", projects_path], ["Bills", bills_path ], ["Invoices", invoices_path]) do |items|
       -items.each do |name, path|
         -if authorized_url?(path)
           %li= link_to(name, path)

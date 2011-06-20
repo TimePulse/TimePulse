@@ -1,6 +1,8 @@
 @import constants.sass
 
 $primary_width: 980px
+$sidebar_width:  240px
+$picker_width:  200px
 
 body
   :font-family helvetica, "sans-serif"
@@ -29,16 +31,15 @@ body
   :float left
 
 #nav
-  :height 20px
   :border 0px
-
-$sidebar_width:  240px
-$picker_width:  200px
+#nav:after
+  +clearfix
 
 #aux
   :width $sidebar_width
   :margin-top 2em
   :float right
+
 #picker
   :width $picker_width
   :margin-top 2em

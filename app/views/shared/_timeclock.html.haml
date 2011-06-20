@@ -1,18 +1,14 @@
 = page_block("Timeclock", :id => "timeclock") do
-  foo
   - if clocked_in?
     %span#tasktime{ :style => 'display:none;' }= current_work_unit.start_time.strftime('%s')
     #task_elapsed -:--:--
     %table
       %tr
-        %th Client:
-        %td= current_work_unit.project.client.name
-      %tr
         %th Project:
-        %td= current_work_unit.project.name
+        %td= short_name_with_client(current_work_unit.project)
       %tr
         %th Started:
-        %td= current_work_unit.start_time.to_s(:nice_datetime)
+        %td= current_work_unit.start_time.to_s(:short_datetime)
 
     = form_for(current_work_unit, :url => clock_out_path, :html => {:method => :delete, :class => :edit_work_unit}) do |f|
       = f.labeled_input :hours do

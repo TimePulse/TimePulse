@@ -1,29 +1,26 @@
 @import constants.sass
 
-#nav
-  :width 100%
-  :background $nav_background_color
-  :color black
-  :padding .5em 0
-
+#nav, #admin_nav
   a
     :text-decoration none
     :font-weight bold
     :color black
+    :display block
+    :padding 2px 2em
+  ul li
+    :list-style none
+    :font-weight bold
+    :display block
+    :float left
+    :margin 0
+    :color black
+#nav
+  :width 100%
+  :background $nav_background_color
+  :color black
 
-  ul
-    :display inline
-
-    li
-      :list-style none
-      :font-weight bold
-      :display inline
-      :margin 0
-      :padding .5em 2em
-      :color black
-
-    li:hover
-      :background $nav_hover_color
+  ul li:hover
+    :background $nav_hover_color
 
   ul.right
     :float right

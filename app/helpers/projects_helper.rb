@@ -50,11 +50,10 @@ module ProjectsHelper
   def short_name_with_client(project)
     return unless project
     String.new.tap do |str|
-      str << truncate(project.name, :length => 20, :omission => '...')
-      str << "&nbsp;"
       str << "[#{project.client.abbreviation}]" unless project.client.nil?
-      str.html_safe
-    end
+      str << "&nbsp;"
+      str << truncate(project.name, :length => 20, :omission => '...')
+    end.html_safe
   end
 
   def clock_in_widget(project, style = nil)
