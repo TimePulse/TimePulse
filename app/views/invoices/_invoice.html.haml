@@ -1,12 +1,13 @@
 %tr
   %td= invoice.client.name
-  %td= invoice.hours 
-  %td.nobr= invoice.created_at.to_s(:date)
-  %td= invoice.due_on
-  %td= invoice.paid_on
+  %td= invoice.hours
+  %td.date= invoice.created_at.to_s(:date)
+  %td.date= invoice.due_on
+  %td.date= invoice.paid_on
   %td= invoice.notes
   %td= invoice.reference_number
 
-  %td= link_to 'Show', invoice
-  %td= link_to 'Edit', edit_invoice_path(invoice)
-  %td= link_to 'Destroy', invoice, :confirm => 'Are you sure?', :method => :delete
+  %td.tools
+    = link_to 'Show', invoice
+    = link_to 'Edit', edit_invoice_path(invoice)
+    = link_to 'Destroy', invoice, :confirm => 'Are you sure?', :method => :delete
