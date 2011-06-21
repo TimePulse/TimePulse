@@ -54,11 +54,11 @@
         #content-wrap
           = render :partial => 'layouts/aux'
 
-          - klass = "with_picker" if yield :picker
+          - klass = "with_picker" if content_for?(:picker)
           #content-column{ :class => klass }
 
             #content
-              %h1= yield :headline if yield :headline
+              %h1= yield :headline if content_for?(:headline)
               #content-body
                 = render :partial => 'layouts/flash' , :locals => { :flash => flash }
                 = yield
