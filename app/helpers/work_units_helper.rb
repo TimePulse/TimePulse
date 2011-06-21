@@ -1,4 +1,6 @@
 module WorkUnitsHelper
+  include ProjectsHelper
+
   def clocked_in?
     current_user.clocked_in? if current_user
   end
@@ -7,23 +9,18 @@ module WorkUnitsHelper
     current_user.current_work_unit if current_user
   end
 
-
-  TOOLTIP_FIELDS = [
-    [ :project, "short_name_with_client(work_unit.project)" ],
-    [ :notes, "work_unit.notes" ],
-    [ :hours, "work_unit.hours" ],
-    [ :started, "work_unit.start_time.to_s(:date_and_time)" ],
-    [ :finished, "work_unit.stop_time.to_s(:date_and_time)" ],
-    [ nil, "widget_links(work_unit)" ]
-  ]
   def tooltip_for(work_unit, token)
     content_tag( :div, :id => "tooltip_for_#{token}", :class => "tooltip") do
-      TOOLTIP_FIELDS.map { |pair|
-        content_tag(:p) do
-          content_tag(:b, format_title(pair[0])) + eval(pair[1]).to_s
-        end
-      }.join()
-    end.html_safe
+      content_tag(:dl) do
+         [
+          ["Project:",    short_name_with_client(work_unit.project)],
+          ["Notes:",      work_unit.notes],
+          ["Hours:",      work_unit.hours],
+          ["Started:",    work_unit.start_time.to_s(:short_datetime)],
+          ["Finished:",   work_unit.stop_time.to_s(:short_datetime)]
+          ].map{ |line| "<dt>#{line[0]}</dt><dd>#{line[1]}</dd>".html_safe }.join().html_safe
+      end
+    end
   end
 
   def format_title(title)
