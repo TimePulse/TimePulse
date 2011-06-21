@@ -1,3 +1,0 @@
-page.replace :timeclock, :partial => 'shared/timeclock'  
-page.replace :recent_work, :partial => 'shared/recent_work'  
-page.replace :project_picker, :partial => 'shared/project_picker'

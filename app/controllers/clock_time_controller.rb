@@ -12,7 +12,7 @@ class ClockTimeController < AuthzController
     @work_unit = current_user.work_units.build( :project => @project, :start_time => Time.zone.now )
     @work_unit.save!
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html { flash[:success] = "Clocked in."; redirect_to root_path }
       format.js
       format.json do
         render :json => build_json_response
@@ -28,7 +28,7 @@ class ClockTimeController < AuthzController
     @work_unit.update_attributes(params[:work_unit]) if params[:work_unit]
     @work_unit.clock_out!
     respond_to do |format|
-      format.html { redirect_to root_path }
+      format.html { flash[:success] = "Clocked out."; redirect_to root_path }
       format.js
       format.json do
         render :json => build_json_response

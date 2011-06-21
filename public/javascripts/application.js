@@ -3,7 +3,7 @@ $('document').ready( function(){
 });
 
 Ninja.behavior({
-  '.mizugumo_graceful_form': Ninja.becomesLink,
+  '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
   '#debug':        Ninja.tools.suppressChangeEvents(),
   '#task_elapsed':  Ninja.tools.suppressChangeEvents(),
   '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
@@ -12,18 +12,11 @@ Ninja.behavior({
   '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "default"] },
 
   '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
-    busy_element: function(elem){ return $('#timeclock')}
+    busyElement: function(elem){ return $('#timeclock')}
   }),
   '#timeclock form.clock_in':          Ninja.submitsAsAjax({
-    busy_element: function(elem){ return $('#timeclock')}
+    busyElement: function(elem){ return $('#timeclock')}
   }),
-    '.project_picker form.clock_in':   Ninja.becomesAjaxLink({
-    busy_element: function(elem){ return $('#timeclock')}
-  }),
-  '#project_picker form.edit_project': Ninja.becomesAjaxLink({
-    busy_element: function(elem){ return $('#timeclock')}
-  }),
-
   '#messages .flash': {
     transform: function(elem) {
       $(elem).delay(10000).slideUp(600, function(){$(elem).remove()})

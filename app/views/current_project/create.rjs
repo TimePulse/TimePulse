@@ -1,7 +1,0 @@
-# page.insert_html :top, 'project_picker', 'Hello world!<br>'
-page.replace :project_picker, :partial => 'shared/project_picker'
-page.replace :current_project, :partial => 'home/current_project_block'
-unless current_user.clocked_in?
-  page.replace :timeclock, :partial => 'shared/timeclock'
-end
-page.call 'initialize_tabs'

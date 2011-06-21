@@ -6,5 +6,5 @@
     = depth_indicator(depth)
     = link_to(project.name, set_current_project_path(:id => project.id), :method => :post)
   %td.tools
-    - if project.clockable? and !clocked_in_project?(project)
+    - if project.clockable?
       = clock_in_widget(project, :icon)

@@ -1,2 +1,0 @@
-page.replace :current_project, :partial => 'home/current_project_block'
-page.replace :recent_work, :partial => 'shared/recent_work'  

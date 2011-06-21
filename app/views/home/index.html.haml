@@ -1,4 +1,4 @@
-- set_headline "Dashboard: ".html_safe + short_name_with_client(current_project)
+- set_headline project_headline(current_project)
 
 -content_for :aux do
   = render :partial => "shared/timeclock"

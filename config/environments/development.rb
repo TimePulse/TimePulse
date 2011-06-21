@@ -36,6 +36,6 @@ Tracks::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  config.logical_authz.debug!
+  # config.logical_authz.debug!
 end
 
