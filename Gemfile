@@ -8,10 +8,10 @@ if File::exists?(gemrc)
 end
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.7'
+gem 'rails', '3.0.9'
 
 gem 'rake', '0.8.7'
-gem "haml"
+gem "haml", ">= 3.1.2"
 gem "sass"
 gem "mizugumo"
 gem "will_paginate", "~> 3.0.pre2"

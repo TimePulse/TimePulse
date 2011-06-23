@@ -11,13 +11,11 @@
         %td= current_work_unit.start_time.to_s(:short_datetime)
 
     = form_for(current_work_unit, :url => clock_out_path, :html => {:method => :delete, :class => :edit_work_unit}) do |f|
-      = f.labeled_input :hours do
-        = f.text_field(:hours, :size => 15)
-      = f.labeled_input :stop_time do
-        = f.text_field(:stop_time, :size => 15)
-      = f.labeled_input :notes, :size => 15
       = f.labeled_input :billable do
         = f.check_box(:billable)
+      = f.labeled_input :hours, :size => 15
+      = f.labeled_input :stop_time, :size => 15
+      = f.labeled_input :notes, :size => 15
       = f.unlabeled_submit "Clock Out"
   - else
     %h3 You are not clocked in.

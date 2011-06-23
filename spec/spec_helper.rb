@@ -13,6 +13,7 @@ RSpec.configure do |config|
   config.mock_with :rspec
   config.use_transactional_fixtures = true
 
+  config.backtrace_clean_patterns = {}
   config.before(:each, :type => :controller, :example_group => { :example_group => "nil"})  do
     logout
   end
