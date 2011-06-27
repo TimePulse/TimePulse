@@ -4,7 +4,7 @@
     %span.nobr= short_name_with_client(work_unit.project)
   %td{ :style => "text-align: center;"}
     = "%.2f" % work_unit.hours
-  %td
+  %td.tools.nobr
     = link_to 'Edit', edit_work_unit_path(work_unit)
     = link_to 'Delete', work_unit_path(work_unit), :method => :delete, :confirm => "Are you sure?"
     = tooltip_for(work_unit, token).html_safe

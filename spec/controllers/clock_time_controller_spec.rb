@@ -108,7 +108,7 @@ describe ClockTimeController do
       it "should cause the user to become clocked out" do
         lambda do
           delete :destroy
-        end.should change{ current_user.reload.clocked_in? }.from(true).to(false)
+        end.should change{ current_user.clocked_in? }.from(true).to(false)
       end
 
       describe "with Unobtrusive" do
@@ -130,10 +130,17 @@ describe ClockTimeController do
       end
 
       describe "with AJAX" do
+        render_views
+
         before(:each) { @request.env['HTTP_ACCEPT'] = 'application/javascript' }
         it "should respond with javascript" do
           delete :destroy
           response.headers['Content-Type'].should =~ /text\/javascript/
+        end
+
+        it "should show the user as not clocked in" do
+          delete :destroy
+          response.body.should =~ /not clocked in/
         end
       end
 

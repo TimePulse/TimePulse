@@ -117,7 +117,7 @@ class WorkUnit < ActiveRecord::Base
         errors.add :base, "Hours must not be greater than the difference between start and stop times."
       end
     end
-    errors.add(:hours, "must be greater than 0.00") if hours and hours <= 0.0
+    # errors.add(:hours, "must be greater than 0.00") if hours and hours <= 0.0
     errors.add(:base, "Completed work units must have a stop time") if (hours && !stop_time)
     # errors.add(:notes, "are required for work units over 30 minutes") if hours && (hours > 0.5)  && notes.blank?
     errors.add(:stop_time, "must not be in the future") if stop_time && stop_time > Time.now

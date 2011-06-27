@@ -27,6 +27,7 @@ class ClockTimeController < AuthzController
     @work_unit = current_user.current_work_unit
     @work_unit.update_attributes(params[:work_unit]) if params[:work_unit]
     @work_unit.clock_out!
+    current_user.reload
     respond_to do |format|
       format.html { flash[:success] = "Clocked out."; redirect_to root_path }
       format.js

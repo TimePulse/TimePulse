@@ -47,6 +47,7 @@
             %h1 Logical Reality Design Tracking System
             - if logged_in?
               %h2= "Hello, #{current_user.name} "
+              %h2= Time.now
 
         = render :partial => 'layouts/admin_menu'
         = render :partial => 'layouts/nav'
