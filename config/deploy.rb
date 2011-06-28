@@ -15,7 +15,7 @@ set :stages, %w(staging production)
 set :default_stage, 'production'
 require 'capistrano/ext/multistage'
 
-set :repository,  "git@github.com:LRDesign/REPO_NAME.git"
+set :repository,  "git@github.com:LRDesign/Tracks.git"
 # set :deploy_via, :remote_cache
 set :scm, 'git'
 # set :git_shallow_clone, 1

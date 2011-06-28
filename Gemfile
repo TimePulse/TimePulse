@@ -9,6 +9,7 @@ end
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.9'
+gem 'rack', '1.2.1'
 
 gem 'rake', '0.8.7'
 gem "haml", ">= 3.1.2"
