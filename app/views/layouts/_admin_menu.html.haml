@@ -1,4 +1,5 @@
-- authorized_menu(["Users", users_path], ["Groups", groups_path], ["Permissions", permissions_path]) do |items|
+- if current_user and current_user.admin?
+  - items = ["Users", users_path], ["Groups", groups_path], ["Permissions", permissions_path]
   .nav#admin_nav
     %div
       %ul
