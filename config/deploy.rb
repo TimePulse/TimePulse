@@ -31,6 +31,7 @@ namespace :deploy do
   task :link_shared_files do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/db_backups #{release_path}/db_backups"
+    run "ln -sfn #{shared_path}/config/rb_password #{release_path}/config/rb_password"
   end
 
   after 'deploy:update_code' do

@@ -6,28 +6,39 @@ $picker_width:  200px
 
 body
   :font-family helvetica, "sans-serif"
-  :background $page_background url('/images/background.png') top left repeat-x
+  :background $page_background url('/images/background.png') top left repeat
   :border 0
   :margin 0
   :padding 0
   :font-size 12px
+
+#inset
+  :background url('/images/top_background.png') top left repeat-x
 
 #wrap
   :width $primary_width
   :margin 0 auto
 
 #header
-  :height 160px
+  :height 40px
+  :margin-bottom 1px
   :color white
-  #message
-    :float right
-    h1, h2
-      :text-align right
 
-#logo
-  :height 120px
-  :width 120px
-  :margin-top 20px
+#message
+  :text-align center
+  h2
+    :text-align right
+    :float right
+    :font-size 14px
+    :padding-top 6px
+  h1
+    :padding-top 10px
+    :margin 0
+
+#logo, #logo a
+  :height 40px
+  :width 57px
+  :margin 0
   :float left
 
 #nav

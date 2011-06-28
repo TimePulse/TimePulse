@@ -8,7 +8,7 @@
     - if content_for?(:description)
       %meta{"name" => "description", "content" => yield(:description)}
 
-    %title=  @title ? @title : "Another Fine Project by Logical Reality Design"
+    %title=  @title ? @title : "LRD Time Tracking System"
 
     = stylesheet_link_tag 'universal', :media=>'all'
     = stylesheet_link_tag 'screen', :media=>'screen, projection'
@@ -42,12 +42,11 @@
       #wrap
         #header
           #logo
-            =link_to image_tag('/images/small-logo.png', :alt => "logo"), root_url
+            =link_to image_tag('/images/logo.png', :alt => "logo"), root_url
           #message
-            %h1 Logical Reality Design Tracking System
             - if logged_in?
               %h2= "Hello, #{current_user.name} "
-              %h2= Time.now
+            %h1 LRD Tracking System
 
         = render :partial => 'layouts/admin_menu'
         = render :partial => 'layouts/nav'
