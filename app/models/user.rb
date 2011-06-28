@@ -79,5 +79,10 @@ class User < ActiveRecord::Base
     HoursReport.new(project, self)
   end
 
+  def admin?
+    groups.include?(Group.admin_group)
+  end
+
+
 end
 
