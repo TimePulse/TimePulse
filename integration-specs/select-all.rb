@@ -118,7 +118,6 @@ steps "Select a few work units", :type => :request do
   end
 
   it "should select 3 work units" do
-    fail "testing"
     click_checkbox("invoice_work_unit_ids_1")
     click_checkbox("invoice_work_unit_ids_2")
     click_checkbox("invoice_work_unit_ids_3")
