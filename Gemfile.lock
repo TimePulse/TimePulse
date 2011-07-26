@@ -148,7 +148,7 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.6.0)
-    rspec-steps (0.0.2)
+    rspec-steps (0.0.3)
       rspec (>= 2.0)
     ruby-debug (0.10.4)
       columnize (>= 0.1)
