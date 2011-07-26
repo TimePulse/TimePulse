@@ -68,7 +68,7 @@ class User < ActiveRecord::Base
   end
 
   def work_units_for(project)
-    work_units.completed.for_project(project).all
+    work_units.completed.for_project(project)
   end
 
   def current_project_hours_report

@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe "/home/index" do
   before(:each) do
-    @user = authenticate(:user)
-    Factory(:work_unit, :user => @user)
-    Factory(:work_unit, :user => @user)
+    @current_user = authenticate(:user)
+    Factory(:work_unit, :user => @current_user)
+    Factory(:work_unit, :user => @current_user)
   end
 
   it "should succeed" do
@@ -12,9 +12,12 @@ describe "/home/index" do
   end
 
   describe "with a current, clockable project selected" do
-    before :each do
-      @user.current_project = Factory(:project, :name => "Foo Project", :clockable => true)
-      @user.save!
+    before do
+      @current_user.current_project = Factory(:project, :name => "Foo Project", :clockable => true)
+      @current_user.save!
+      assign(:user, @current_user)
+      assign(:current_project, @current_user.current_project)
+      assign(:work_units, [ Factory(:work_unit), Factory(:work_unit) ].paginate )
     end
     it "should succeed" do
       render
@@ -27,12 +30,16 @@ describe "/home/index" do
       render
       rendered.should have_selector("input[name='commit'][value='Save Changes']")
     end
+    it "should have a list of work units" do
+      render
+      rendered.should have_selector("tr.work_unit.one_line")
+    end
   end
 
-  describe "with an unclocable project current" do
+  describe "with an unclockable project current" do
     before :each do
-      @user.current_project = Factory(:project, :name => "Foo Project", :clockable => false)
-      @user.save!
+      @current_user.current_project = Factory(:project, :name => "Foo Project", :clockable => false)
+      @current_user.save!
     end
     it "should succeed" do
       render
