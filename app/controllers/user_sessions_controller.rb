@@ -12,8 +12,9 @@ class UserSessionsController < AuthzController
   def new
     @user_session = UserSession.new
   end
- 
+
   def create
+    Rails.logger.debug{ User.all.inspect }
     @user_session = UserSession.new(params[:user_session])
     if @user_session.save
       redirect_to_last_unauthorized("Login successful!")
@@ -21,7 +22,7 @@ class UserSessionsController < AuthzController
       render :action => :new
     end
   end
- 
+
   def destroy
     current_user_session.destroy
     redirect_to_last_unauthorized("Logout successful!")
