@@ -30,8 +30,12 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'webrat'
   gem 'ruby-debug'
+  gem 'capybara' #, :path => "../../gems/capybara/"
+  gem 'launchy'
+  gem 'thin'
+  gem 'database_cleaner'
+  gem 'rspec-steps'
 end
 
 group :development do
