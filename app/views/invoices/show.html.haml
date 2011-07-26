@@ -1,7 +1,7 @@
 - set_headline "Invoice for #{@invoice.client.name}"
-          
+
 %h2 Overview
-%table.listing  
+%table.listing
   %tr
     %th Created:
     %td= @invoice.created_at.to_s(:date)
@@ -20,16 +20,16 @@
   %tr
     %th Notes
     %td= @invoice.notes
-  
-    
+
+
 %h2 Hours Report:
-%table.listing 
-  %tr 
+%table.listing
+  %tr
     %th Project
-    %th Hours       
+    %th Hours
     - sanity_sum = 0
-    - @invoice.work_units.collect{ |wu| wu.project if wu.project.clockable }.uniq.each do |proj|
-      - hrs = @invoice.work_units.for_project(proj).sum(:hours) 
+    - @invoice.work_units.collect{ |wu| wu.project if wu.project.clockable }.compact.uniq.each do |proj|
+      - hrs = @invoice.work_units.for_project(proj).sum(:hours)
       - sanity_sum += hrs
       %tr
         %td= proj.name
@@ -38,17 +38,17 @@
       %td
         %b Total
       %td
-        %b= sanity_sum       
-        
+        %b= sanity_sum
+
 %hr Work Unit Details:
 %table.listing
   - @invoice.work_units.each do |wu|
-    - content_tag_for(:tr, wu) do
+    = content_tag_for(:tr, wu) do
       %td.nobr
         %b= wu.hours
       %td= wu.user.login
       %td= wu.notes
-      %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)                                                          
+      %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
 
 = link_to 'Edit', edit_invoice_path(@invoice)
 |

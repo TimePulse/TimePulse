@@ -9,7 +9,7 @@ Ninja.behavior({
   '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
   '.datetime_entry': { transform: function(elem){ $(elem).datetimepicker() }},
   '#work_unit_select_all': { click: selectAllWorkUnits },
-  '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "default"] },
+  '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "andDodefault"] },
 
   '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
     busyElement: function(elem){ return $('#timeclock')}
