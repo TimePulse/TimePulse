@@ -15,7 +15,7 @@
 #
 
 Factory.define :project  do |c|
-  c.sequence(:name) { |n|  "Clientactics Project #{n}" }
+  c.sequence(:name) { |n|  "Foo Project #{n}" }
   c.association :client
   c.clockable true
 end
