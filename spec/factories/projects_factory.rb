@@ -15,12 +15,13 @@
 #
 
 Factory.define :project  do |c|
-  c.name "Clientactics Project"
+  c.sequence(:name) { |n|  "Clientactics Project #{n}" }
   c.association :client
+  c.clockable true
 end
 
 Factory.define :task, :parent => :project do |c|
-  c.name "Clientactics Task"  
-  c.clockable true  
+  c.name "Clientactics Task"
+  c.clockable true
   c.parent { |parent| parent.association(:project) }
 end
