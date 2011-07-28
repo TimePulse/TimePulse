@@ -22,16 +22,18 @@ module HandyXPaths
   class Builder <  XPath::Expression::Self
     include XPath::HTML
     include RSpec::Core::Extensions::InstanceEvalWithArgs
+  end
 
+  module Attrs
     def attrs(hash)
       all(*hash.map do |name, value|
-        attr(name) == value
+        XPath.attr(name) == value
       end)
     end
 
     def all(*expressions)
-      expressions.map{|exp| wrap_xpath(exp)}.inject do |chain, expression|
-        chain & expression
+      expressions.inject(current) do |chain, expression|
+        chain.where(expression)
       end
     end
   end
@@ -39,8 +41,17 @@ module HandyXPaths
   def make_xpath(*args, &block)
     xpath = Builder.new
     unless block.nil?
-      xpath.instance_eval_with_args(*args, &block)
+      xpath = xpath.instance_eval_with_args(*args, &block)
     end
     return xpath
   end
+end
+
+module XPath
+  include HandyXPaths::Attrs
+  extend HandyXPaths::Attrs
+end
+
+class XPath::Expression
+  include HandyXPaths::Attrs
 end

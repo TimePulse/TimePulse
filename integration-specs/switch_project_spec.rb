@@ -29,7 +29,7 @@ steps "log in and switch projects", :type => :request do
 
   it "should have a work unit form (make_xpath format)" do
     page.should have_xpath(make_xpath{
-      descendant(:form)[attrs(:id => "new_work_unit", :action => '/work_units')]
+      descendant(:form).attrs(:id => "new_work_unit", :action => '/work_units')
     })
   end
 
@@ -43,13 +43,13 @@ steps "log in and switch projects", :type => :request do
 
   it "should have a work unit form (css hybrid)" do
     page.should have_xpath(make_xpath{
-      css("form#new_work_unit").where(attr(:action) == '/work_units')
+      css("form#new_work_unit").attrs(:action => '/work_units')
     })
   end
 
   it "should have the name of the project" do
     page.should have_xpath(make_xpath(project_1.name){|name|
-      descendant(all(:h1, attr(:id) == 'headline', contains(name)))
+      descendant(:h1).all(attr(:id) == 'headline', content(name))
     })
   end
 
