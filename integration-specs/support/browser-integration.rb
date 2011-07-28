@@ -20,7 +20,20 @@ end
 
 module HandyXPaths
   class Builder <  XPath::Expression::Self
+    include XPath::HTML
     include RSpec::Core::Extensions::InstanceEvalWithArgs
+
+    def attrs(hash)
+      all(*hash.map do |name, value|
+        attr(name) == value
+      end)
+    end
+
+    def all(*expressions)
+      expressions.map{|exp| wrap_xpath(exp)}.inject do |chain, expression|
+        chain & expression
+      end
+    end
   end
 
   def make_xpath(*args, &block)
