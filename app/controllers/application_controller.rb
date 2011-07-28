@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   needs_authorization
   admin_authorized
 
-  filter_parameter_logging :password, :password_confirmation unless Rails.env.development?
   helper_method :current_user_session, :current_user
   before_filter :set_current_time
 

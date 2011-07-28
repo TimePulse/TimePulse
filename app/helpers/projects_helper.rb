@@ -56,12 +56,21 @@ module ProjectsHelper
     end.html_safe
   end
 
+  def switch_to_project_link(project)
+     link_to(project.name,
+       set_current_project_path(:id => project.id),
+       :method => :post,
+       :id => "switch_to_" + dom_id(project)
+     )
+   end
+
   def clock_in_widget(project, style = nil)
     title = "Clock in on #{project.name}"
+    cssid = "clock_in_on_" + dom_id(project)
     if style == :icon
-      link_to(image_tag('/images/icons/clock_in.png', :alt => title), clock_in_path(:id => project), :method => :post, :title => title)
+      link_to(image_tag('/images/icons/clock_in.png', :alt => title), clock_in_path(:id => project), :method => :post, :title => title, :id => cssid)
     else
-      link_to(title, clock_in_path(:id => project), :method => :post, :title => title)
+      link_to(title, clock_in_path(:id => project), :method => :post, :title => title, :id => cssid)
     end.html_safe
   end
 
