@@ -13,7 +13,7 @@ PATH
       rspec (>= 2.6)
 
 GEM
-  remote: http://evan:daNdZoa5@gems.lrdesign.com/
+  remote: http://judson:hiP4cOre@gems.lrdesign.com/
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
