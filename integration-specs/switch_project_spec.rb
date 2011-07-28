@@ -2,20 +2,15 @@ require 'integration-specs/spec_helper'
 
 steps "log in and switch projects", :type => :request do
 
-  let! :project_1 do Factory(:project) end
-  let! :project_2 do Factory(:project) end
-  let! :user      do Factory(:user, :current_project => project_1) end
+  let :project_1 do Factory(:project) end
+  #let! :project_2 do Factory(:project) end
+  let :user      do Factory(:user, :current_project => project_1) end
 
-  let! :work_units_1 do
+  let! :work_units do
     [ Factory(:work_unit, :project => project_1, :user => user),
       Factory(:work_unit, :project => project_1, :user => user),
       Factory(:work_unit, :project => project_1, :user => user)
     ]
-  end
-
-  after do
-    DatabaseCleaner.clean_with :truncation
-    load 'db/seeds.rb'
   end
 
   it "should login as a user" do
@@ -27,9 +22,9 @@ steps "log in and switch projects", :type => :request do
   end
 
   it "should have a work unit form (XPath Gem format)" do
-    page.should have_xpath(XPath.generate do |doc|
-       doc.descendant(:form)[doc.attr(:id) == "new_work_unit"][doc.attr(:action) == '/work_units']
-    end)
+    page.should have_xpath(make_xpath{
+      descendant(:form)[attr(:id) == "new_work_unit"][attr(:action) == '/work_units']
+    })
   end
 
   it "should have a work unit form (Plain XPath format)" do
@@ -41,12 +36,7 @@ steps "log in and switch projects", :type => :request do
   end
 
   it "should have the name of the project" do
-    p "Project 1 id in specs" => project_1.id
-    p "User's current project id in specs" => user.current_project.id
-    xpath = XPath.generate do |doc|
-      doc.descendant(:h1)[doc.attr(:id) == 'headline'][doc.contains("#{project_1.name}")]
-    end
-    page.should have_xpath(xpath)
+    page.should have_xpath(make_xpath(project_1.name){|name| descendant(:h1)[attr(:id) == 'headline'][contains(name)] })
   end
 
 

@@ -31,11 +31,11 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'ruby-debug'
-  gem 'capybara' #, :path => "../../gems/capybara/"
+  gem 'capybara'
   gem 'launchy'
   gem 'thin'
   gem 'database_cleaner'
-  gem 'rspec-steps'
+  gem 'rspec-steps', :path => "../../gems/rspec-steps/"
 end
 
 group :development do
