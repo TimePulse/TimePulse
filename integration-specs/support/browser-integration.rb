@@ -18,3 +18,16 @@ module SaveAndOpenOnFail
   end
 end
 
+module HandyXPaths
+  class Builder <  XPath::Expression::Self
+    include RSpec::Core::Extensions::InstanceEvalWithArgs
+  end
+
+  def make_xpath(*args, &block)
+    xpath = Builder.new
+    unless block.nil?
+      xpath.instance_eval_with_args(*args, &block)
+    end
+    return xpath
+  end
+end

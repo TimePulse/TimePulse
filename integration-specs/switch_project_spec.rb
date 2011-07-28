@@ -22,9 +22,9 @@ steps "log in and switch projects", :type => :request do
   end
 
   it "should have a work unit form (XPath Gem format)" do
-    page.should have_xpath(XPath.generate do |doc|
-       doc.descendant(:form)[doc.attr(:id) == "new_work_unit"][doc.attr(:action) == '/work_units']
-    end)
+    page.should have_xpath(make_xpath{
+      descendant(:form)[attr(:id) == "new_work_unit"][attr(:action) == '/work_units']
+    })
   end
 
   it "should have a work unit form (Plain XPath format)" do
@@ -36,10 +36,7 @@ steps "log in and switch projects", :type => :request do
   end
 
   it "should have the name of the project" do
-    xpath = XPath.generate do |doc|
-      doc.descendant(:h1)[doc.attr(:id) == 'headline'][doc.contains("#{project_1.name}")]
-    end
-    page.should have_xpath(xpath)
+    page.should have_xpath(make_xpath(project_1.name){|name| descendant(:h1)[attr(:id) == 'headline'][contains(name)] })
   end
 
 

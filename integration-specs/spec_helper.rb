@@ -34,4 +34,5 @@ RSpec.configure do |config|
   end
 
   config.include(SaveAndOpenOnFail, :type => :request)
+  config.include(HandyXPaths, :type => :request)
 end
