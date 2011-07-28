@@ -8,27 +8,7 @@ require 'spec/support/authlogic_test_helper'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
-#Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-
-require 'capybara/rspec'
-require 'selenium-webdriver'
-require 'rspec-steps'
-
-Capybara.register_driver(:selenium_chrome) do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome)
-end
-
-Capybara.default_driver = :selenium
-
-module SaveAndOpenOnFail
-  def instance_eval(&block)
-    super(&block)
-  rescue Object => ex
-    wrapper = ex.exception("#{ex.message}\nLast view at: file://#{save_page}")
-    wrapper.set_backtrace(ex.backtrace)
-    raise wrapper
-  end
-end
+Dir[Rails.root.join("integration-specs/support/**/*.rb")].each {|f| require f}
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -37,6 +17,20 @@ RSpec.configure do |config|
   config.backtrace_clean_patterns = {}
   config.before(:each, :type => :controller, :example_group => { :example_group => "nil"})  do
     logout
+  end
+
+  config.before :all, :type => :request do
+    Rails.application.config.action_dispatch.show_exceptions = true
+  end
+
+  config.after :all, :type => :request do
+    DatabaseCleaner.clean_with :truncation
+    load 'db/seeds.rb'
+  end
+
+  config.before :suite do
+    DatabaseCleaner.clean_with :truncation
+    load 'db/seeds.rb'
   end
 
   config.include(SaveAndOpenOnFail, :type => :request)

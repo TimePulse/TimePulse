@@ -2,20 +2,15 @@ require 'integration-specs/spec_helper'
 
 steps "log in and switch projects", :type => :request do
 
-  let! :project_1 do Factory(:project) end
-  let! :project_2 do Factory(:project) end
-  let! :user      do Factory(:user, :current_project => project_1) end
+  let :project_1 do Factory(:project) end
+  #let! :project_2 do Factory(:project) end
+  let :user      do Factory(:user, :current_project => project_1) end
 
-  let! :work_units_1 do
+  let! :work_units do
     [ Factory(:work_unit, :project => project_1, :user => user),
       Factory(:work_unit, :project => project_1, :user => user),
       Factory(:work_unit, :project => project_1, :user => user)
     ]
-  end
-
-  after do
-    DatabaseCleaner.clean_with :truncation
-    load 'db/seeds.rb'
   end
 
   it "should login as a user" do
@@ -41,8 +36,6 @@ steps "log in and switch projects", :type => :request do
   end
 
   it "should have the name of the project" do
-    p "Project 1 id in specs" => project_1.id
-    p "User's current project id in specs" => user.current_project.id
     xpath = XPath.generate do |doc|
       doc.descendant(:h1)[doc.attr(:id) == 'headline'][doc.contains("#{project_1.name}")]
     end

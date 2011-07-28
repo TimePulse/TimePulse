@@ -2,11 +2,11 @@ require 'integration-specs/spec_helper'
 
 shared_steps "for an invoicing task" do |opt_hash|
   opt_hash ||= {}
-  let! :admin do
+  let :admin do
     Factory(:admin)
   end
 
-  let! :project do
+  let :project do
     Factory(:project)
   end
 
@@ -14,11 +14,6 @@ shared_steps "for an invoicing task" do |opt_hash|
     let! "work_unit_#{idx}" do
       Factory(:work_unit, :project => project)
     end
-  end
-
-  after do
-    DatabaseCleaner.clean_with :truncation
-    load 'db/seeds.rb'
   end
 
   it "should login as an admin" do
