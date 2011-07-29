@@ -53,6 +53,12 @@ steps "log in and switch projects", :type => :request do
     })
   end
 
+  def headline(name)
+    make_xpath(project_1.name){|name| descendant(:h1).content(name) })
+  end
 
+  it "should have the name of the project (method style)" do
+    page.should have_xpath(headline(name).attrs(:id => 'headline'))
+  end
 
 end
