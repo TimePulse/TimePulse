@@ -3,13 +3,17 @@ require 'integration-specs/spec_helper'
 steps "log in and switch projects", :type => :request do
 
   let :project_1 do Factory(:project) end
-  #let! :project_2 do Factory(:project) end
+  let :project_2 do Factory(:project) end
   let :user      do Factory(:user, :current_project => project_1) end
 
   let! :work_units do
     [ Factory(:work_unit, :project => project_1, :user => user),
       Factory(:work_unit, :project => project_1, :user => user),
       Factory(:work_unit, :project => project_1, :user => user)
+    ]
+    [ Factory(:work_unit, :project => project_2, :user => user),
+      Factory(:work_unit, :project => project_2, :user => user),
+      Factory(:work_unit, :project => project_2, :user => user)
     ]
   end
 
@@ -51,6 +55,37 @@ steps "log in and switch projects", :type => :request do
     page.should have_xpath(make_xpath(project_1.name){|name|
       descendant(:h1).all(attr(:id) == 'headline', content(name))
     })
+  end
+
+  it "should have a timeclock with the name of the project" do
+    page.should have_xpath(make_xpath(project_1.name){|name|
+      descendant(:div).all(attr(:id) == 'timeclock', content(name))
+    })
+  end
+
+  it "should list project 1's work units " do
+    project_1.work_units.each do |work_unit|
+      page.should have_xpath(make_xpath(work_unit.notes)){ |notes|
+        css('#content #current_project table.listing').descendant(:tr, content(notes))
+      }
+    end
+  end
+
+  it "should not list project 2's work units" do
+    project_2.work_units.each do |work_unit|
+      page.should_not have_xpath(make_xpath(work_unit.notes)){ |notes|
+        descendant(:tr, content(notes))
+      }
+    end
+  end
+
+  it "should switch projects" do
+    click_link
+
+  end
+
+  def timeclock_xpath
+    make_xpath(descendant)
   end
 
 
