@@ -80,7 +80,8 @@ steps "log in and switch projects", :type => :request do
   end
 
   def headline(name)
-    make_xpath(name){|name| descendant(:h1).all(content(name)) }
+    xpath = HandyXPaths::Builder.new
+    xpath.descendant(:h1)[xpath.content(name)]
   end
 
   it "should have the name of the project (method style)" do
