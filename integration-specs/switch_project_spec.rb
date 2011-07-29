@@ -9,9 +9,8 @@ steps "log in and switch projects", :type => :request do
   let! :work_units do
     [ Factory(:work_unit, :project => project_1, :user => user),
       Factory(:work_unit, :project => project_1, :user => user),
-      Factory(:work_unit, :project => project_1, :user => user)
-    ]
-    [ Factory(:work_unit, :project => project_2, :user => user),
+      Factory(:work_unit, :project => project_1, :user => user),
+      Factory(:work_unit, :project => project_2, :user => user),
       Factory(:work_unit, :project => project_2, :user => user),
       Factory(:work_unit, :project => project_2, :user => user)
     ]
@@ -90,7 +89,7 @@ steps "log in and switch projects", :type => :request do
 
   it "should list project 1's work units - version 2" do
     project_1.work_units.each do |work_unit|
-      page.should have_xpath( work_unit_listing_xpath.descendant(:tr, content(work_unit.notes)))
+      page.should have_xpath( work_unit_listing_xpath.descendant(:tr).where(XPath::HTML.content(work_unit.notes)))
     end
   end
 
