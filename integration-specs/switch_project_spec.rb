@@ -79,9 +79,6 @@ steps "log in and switch projects", :type => :request do
     end
   end
 
-
-
-
   def headline(name)
     make_xpath(name){|name| descendant(:h1).all(content(name)) }
   end
@@ -89,5 +86,16 @@ steps "log in and switch projects", :type => :request do
   it "should have the name of the project (method style)" do
     page.should have_xpath(headline(project_1.name).attrs(:id => 'headline'))
   end
+
+  it "should list project 1's work units - version 2" do
+    project_1.work_units.each do |work_unit|
+      page.should have_xpath( work_unit_listing_xpath.descendant(:tr, content(work_unit.notes)))
+    end
+  end
+
+  def work_unit_listing_xpath
+    make_xpath{ css('#content #current_project table.listing') }
+  end
+
 
 end
