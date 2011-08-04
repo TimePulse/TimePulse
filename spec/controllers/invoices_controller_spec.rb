@@ -207,10 +207,25 @@ describe InvoicesController do
             @wu2 = Factory(:work_unit, :project => @proj)
             @wu3 = Factory(:work_unit, :project => @proj)
           end
+          it "should expose a saved invoice as @invoice" do
+            post :create, :invoice => @valid_create_params
+            assigns[:invoice].should be_a(Invoice)
+          end
+
+          it "should save the newly created invoice as @invoice" do
+            post :create, :invoice => @valid_create_params
+            assigns[:invoice].should_not be_new_record
+          end
+
+          it "should redirect to the created invoice" do
+            post :create, :invoice => @valid_create_params
+            new_invoice = assigns[:invoice]
+            response.should redirect_to(invoice_url(new_invoice))
+          end    
           it "should include specified work units in the invoice" do
             post :create, :invoice => @valid_create_params.merge!({ :work_unit_ids => {
-              @wu1.id => "1",
-              @wu2.id => "1"
+              "#{@wu1.id}" => "1",
+              "#{@wu2.id}" => "1"
             } })
             assigns[:invoice].work_units.should include(@wu1)
             assigns[:invoice].work_units.should include(@wu2)

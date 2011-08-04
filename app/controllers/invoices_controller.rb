@@ -35,6 +35,9 @@ class InvoicesController < ApplicationController
       flash[:notice] = 'Invoice was successfully created.'
       redirect_to(@invoice)
     else
+      str = "Could not save invoice.  errors: #{@invoice.errors}"
+      Rails.logger.info(str)
+      flash[:error] = str
       params[:client_id] = @invoice.client.id if @invoice.client 
       render :action => "new"
     end
@@ -73,8 +76,10 @@ class InvoicesController < ApplicationController
   
   def add_work_units
     if params[:invoice][:work_unit_ids]
+      Rails.logger.info("&&&&&&&&&&&&& Adding work units")
       @invoice.work_units = []
       params[:invoice][:work_unit_ids].each do |id, bool|
+        Rails.logger.info("&&&&&&&&&&&&& #{id} #{bool}")
         @invoice.work_units << WorkUnit.find(id) if bool == "1"
       end
     end
