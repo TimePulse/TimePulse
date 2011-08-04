@@ -36,7 +36,7 @@ group :development, :test do
   gem 'launchy'
   gem 'thin'
   gem 'database_cleaner'
-  gem 'rspec-steps', :path => "../../gems/rspec-steps/"
+  gem 'rspec-steps', ">= 0.0.4"
 end
 
 group :development do
