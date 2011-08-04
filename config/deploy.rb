@@ -20,7 +20,6 @@ set :repository,  "git@github.com:LRDesign/Tracks.git"
 set :scm, 'git'
 # set :git_shallow_clone, 1
 set :scm_verbose, true
-set :git_enable_submodules, 1
 
 
 role(:app) { domain }
