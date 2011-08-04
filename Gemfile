@@ -32,7 +32,10 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'ruby-debug'
-  gem 'capybara'
+
+  #TODO: check if capybara > 1.0.0 is released.   This vendored version is awaiting a 
+  #capybara release that includes commit #e9efc804, so we can use a newer selenium
+  gem 'capybara', :path => 'vendor/git/capybara'
   gem 'launchy'
   gem 'thin'
   gem 'database_cleaner'
