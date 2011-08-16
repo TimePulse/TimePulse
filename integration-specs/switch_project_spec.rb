@@ -77,7 +77,8 @@ steps "log in and switch projects", :type => :request do
       }
     end
   end
-
+  
+  it 
   def headline(name)
     xpath = HandyXPaths::Builder.new
     xpath.descendant(:h1)[xpath.content(name)]
