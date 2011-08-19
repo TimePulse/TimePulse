@@ -1,4 +1,4 @@
-%tr
+= content_tag_for :tr, invoice do
   %td= invoice.client.name
   %td= invoice.hours
   %td.date= invoice.created_at.to_s(:date)
