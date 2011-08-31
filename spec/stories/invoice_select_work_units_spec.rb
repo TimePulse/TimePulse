@@ -1,4 +1,4 @@
-require 'integration-specs/spec_helper'
+require 'spec_helper'
 
 shared_steps "for an invoicing task" do |opt_hash|
   opt_hash ||= {}

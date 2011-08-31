@@ -1,4 +1,4 @@
-require 'integration-specs/spec_helper'
+require 'spec_helper'
 
 steps "log in and switch projects", :type => :request do
 
