@@ -12,7 +12,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 RSpec.configure do |config|
   config.mock_with :rspec
 
-  config.backtrace_clean_patterns = {}
+  #config.backtrace_clean_patterns = {}
   config.before(:each, :type => :controller, :example_group => { :example_group => "nil"})  do
     logout
   end

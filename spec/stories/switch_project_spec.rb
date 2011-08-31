@@ -64,21 +64,22 @@ steps "log in and switch projects", :type => :request do
 
   it "should list project 1's work units " do
     project_1.work_units.each do |work_unit|
-      page.should have_xpath(make_xpath(work_unit.notes)){ |notes|
-        css('#content #current_project table.listing').descendant(:tr, content(notes))
-      }
+      #xp = make_xpath(work_unit.notes){ |notes|
+        #css('#content #current_project table.listing').descendant(:tr, content(notes))
+      #}
+      #xp = "//td[contains(.,'Work') and contains(.,'Unit') and and contains(.,'Notes') contains(.,'1')]"
+      xp = "//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]"
+      #p :xpath => xp, :notes => work_unit.notes
+      page.should have_xpath(xp) 
     end
   end
 
   it "should not list project 2's work units" do
     project_2.work_units.each do |work_unit|
-      page.should_not have_xpath(make_xpath(work_unit.notes)){ |notes|
-        descendant(:tr, content(notes))
-      }
+      page.should_not have_xpath("//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]")        
     end
   end
   
-  it 
   def headline(name)
     xpath = HandyXPaths::Builder.new
     xpath.descendant(:h1)[xpath.content(name)]
