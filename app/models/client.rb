@@ -20,6 +20,7 @@ class Client < ActiveRecord::Base
   validates_presence_of :billing_email            
   
   has_many :projects
+  has_many :invoices
 
   attr_accessible :name, :billing_email, :address_1, :address_2, :city, :state, :postal, :abbreviation
      
