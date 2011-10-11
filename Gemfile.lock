@@ -6,6 +6,11 @@ GIT
     authlogic (2.1.3)
       activesupport
 
+PATH
+  remote: ../mizugumo/
+  specs:
+    mizugumo (0.1.4)
+
 GEM
   remote: http://lrdesign:quiS6Nef@gems.lrdesign.com/
   remote: http://rubygems.org/
@@ -98,7 +103,6 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
-    mizugumo (0.1.4)
     mongrel (1.1.5)
       cgi_multipart_eof_fix (>= 2.4)
       daemons (>= 1.0.3)
@@ -200,7 +204,7 @@ DEPENDENCIES
   lrd_dev_tools (>= 0.1.1)
   lrd_rack_bug (>= 0.3.0.4)
   lrd_view_tools (>= 0.1.3)
-  mizugumo
+  mizugumo!
   mongrel
   mysql2 (< 0.3)
   populator
