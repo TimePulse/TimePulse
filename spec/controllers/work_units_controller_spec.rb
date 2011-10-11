@@ -8,6 +8,8 @@ describe WorkUnitsController do
       @work_unit = Factory(:work_unit)
     end
 
+    let! :project do Factory(:project) end
+
     ########################################################################################
     #                                      GET INDEX
     ########################################################################################
@@ -55,7 +57,7 @@ describe WorkUnitsController do
     describe "responding to POST create" do
       describe "for a work unit without a start time" do
         before do
-          post :create, :work_unit => { :project_id => Factory(:project).id }
+          post :create, :work_unit => { :project_id => project.id }
         end
 
         it "should assign an invalid work unit" do
@@ -67,7 +69,7 @@ describe WorkUnitsController do
         before do
           @start = Time.now - 2 * 60 * 60
           @time = Time.now
-          post :create, :work_unit => { :project_id => Factory(:project).id,
+          post :create, :work_unit => { :project_id => project.id,
             :start_time => @start, :calculate => true, :hours => '2'
           }
         end
@@ -86,7 +88,7 @@ describe WorkUnitsController do
           @time = Time.now
           @start = Time.now - 2 * 60 * 60
           @stop = @start + 1.5 * 3600
-          post :create, :work_unit => { :project_id => Factory(:project).id,
+          post :create, :work_unit => { :project_id => project.id,
             :start_time => @start.to_s(:long), :stop_time => @stop.to_s(:long), :calculate => true
           }
           assigns[:work_unit].hours.should == 1.5
@@ -100,7 +102,7 @@ describe WorkUnitsController do
         end
         it "should create a work unit" do
           lambda do
-            post :create, :work_unit => { :project_id => Factory(:project).id,
+            post :create, :work_unit => { :project_id => project.id,
               :start_time => @start, :stop_time => @stop, :calculate => true
             }
           end.should change(WorkUnit, :count).by(1)
@@ -113,7 +115,7 @@ describe WorkUnitsController do
           @time = Time.now
           @start = Time.now - 2 * 60 * 60
           @stop = @start + 1.5 * 3600
-          post :create, :work_unit => { :project_id => Factory(:project).id,
+          post :create, :work_unit => { :project_id => project.id,
             :start_time => @start, :stop_time => @stop, :calculate => true
           }
         end
@@ -126,7 +128,7 @@ describe WorkUnitsController do
       describe "with valid params" do
         before do
           @valid_create_params = {
-            :project_id => Factory(:project).id,
+            :project_id => project.id,
             :start_time => Time.now
           }
         end
@@ -161,6 +163,18 @@ describe WorkUnitsController do
           it "should set the hours correctli" do
             post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")
             assigns[:work_unit].hours.should == 4.25
+          end
+        end
+
+        describe "and JS accept type" do
+          before do
+            request.env['HTTP_ACCEPT'] = 'application/javascript'
+            @user.current_project = project
+            @user.save
+          end
+          it "should set the work units list" do
+            post :create, :work_unit => @valid_create_params
+            assigns(:work_units).should ==  @user.work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1) 
           end
         end
       end
@@ -207,14 +221,14 @@ describe WorkUnitsController do
         end
 
         it "should redirect " do
-          put :update, :id => @work_unit.id, :work_unit => {:project_id => Factory(:project).id,
+          put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
             :start_time => @start, :calculate => "true", :hours => '2'
           }
           response.should be_redirect
         end
 
         it "should create a work unit with a real stop time" do
-          put :update, :id => @work_unit.id, :work_unit => {:project_id => Factory(:project).id,
+          put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
             :start_time => @start, :calculate => "true", :hours => '2'
           }
           assigns[:work_unit].stop_time.should be_within(90.seconds).of(Time.now.utc)
@@ -227,7 +241,7 @@ describe WorkUnitsController do
           start = @time - 2.hours
           stop = start + 1.5.hours
           put :update, :id => @work_unit.id, :work_unit => {
-            :project_id => Factory(:project).id,
+            :project_id => project.id,
             :start_time => start,
             :stop_time => stop,
             :hours => nil, :calculate => "true"
