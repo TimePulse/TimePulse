@@ -2064,6 +2064,7 @@ define('ninja/behaviors',["ninja/exceptions"], function(Exceptions) {
           config = config.slice(1,config.length)
           var len = config.length
           for(var i = 0; i < len; i++) {
+            var found = true
             if (config[i] == "andDoDefault" || config[i] == "allowDefault") {
               stopDefault = false
             }
@@ -2077,11 +2078,18 @@ define('ninja/behaviors',["ninja/exceptions"], function(Exceptions) {
             if (config[i] == "changesDOM") {
               fireMutation = true
             }
+            if (!found) {
+              console.log("Event handler modifier unrecognized: " + config[i])
+            }
           }
         }
         var handler = function(eventRecord) {
           handle.call(context, eventRecord, this, previousHandler)
-          return !stopDefault
+          if(stopDefault){
+            return false
+          } else {
+            return !eventRecord.isDefaultPrevented()
+          }
         }
         if(stopDefault) {
           handler = this.prependAction(handler, function(eventRecord) {
@@ -3188,19 +3196,22 @@ define('ninja/event-scribe',['require','exports','module'],function() {
     }
 
     EventScribe.prototype = {
-      makeHandlersRemove: function(element) {
-        for(var eventName in this.handlers) {
-          var handler = this.handlers[eventName]
-          this.handlers[eventName] = function(eventRecord) {
-            handler.call(this, eventRecord)
-            jQuery(element).remove()
-          }
-        }
-      },
+      //I'll be frank: I don't remember what this method is for,
+      //so I'm not comfortable keeping it in play.
+//      makeHandlersRemove: function(element) { 
+//        for(var eventName in this.handlers) {
+//          var handler = this.handlers[eventName]
+//          this.handlers[eventName] = function(eventRecord) {
+//            var res = handler.call(eventRecord)
+//            //jQuery(element).remove()
+//            return res
+//          }
+//        }
+//      },
       recordEventHandlers: function (context, behavior) {
         if(this.currentElement !== context.element) {
           if(this.currentElement !== null) {
-            this.makeHandlersRemove(this.currentElement)
+            //this.makeHandlersRemove(this.currentElement)
             this.applyEventHandlers(this.currentElement)
             this.handlers = {}
           }
@@ -4169,11 +4180,49 @@ define('ninja/behaviors/trigger-on',["ninja"],
       };
     })
   })
+define('ninja/behaviors/confirm',["ninja"],
+  function(Ninja){
+    Ninja.packageBehaviors( function(ninja) {
+        return {
+          confirms: function(configs) {
+
+            configs = Ninja.tools.ensureDefaults(configs,
+              { confirmMessage: function(elem){
+                  return $(elem).attr('data-confirm')
+                }})
+            if(typeof configs.confirmMessage == "string"){
+              message = configs.confirmMessage
+              configs.confirmMessage = function(elem){
+                return message
+              }
+            }
+
+            function confirmDefault(event,elem) {
+              if(!confirm(configs.confirmMessage(elem))) {
+                event.preventDefault()
+              }
+            }
+
+            return new ninja.selects({
+                "form": new ninja.does({
+                  priority: -100,
+                  events: { submit: [confirmDefault, "andDoDefault"] }
+                }),
+                "a,input": new ninja.does({
+                  priority: -100,
+                  events: {  click: [confirmDefault, "andDoDefault"] }
+                })
+              })
+          }
+        }
+      })
+  })
 define('ninja/behaviors/all',[
     "./utility",
     "./standard", 
     "./placeholder", 
-    "./trigger-on"
+    "./trigger-on",
+    "./confirm"
   ], 
   function(){})
 define('ninja/tools/overlay',["utils", "ninja"],
