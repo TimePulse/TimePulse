@@ -2,9 +2,11 @@ require 'spec_helper'
 
 steps "log in and switch projects", :type => :request do
 
-  let :project_1 do Factory(:project) end
-  let :project_2 do Factory(:project) end
-  let :user      do Factory(:user, :current_project => project_1) end
+  let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
+  let! :client_2 do Factory(:client, :name => 'Bar, Inc.') end
+  let! :project_1 do Factory(:project, :client => client_1) end
+  let! :project_2 do Factory(:project, :client => client_2) end
+  let! :user      do Factory(:user, :current_project => project_1) end
 
   let! :work_units do
     [ Factory(:work_unit, :project => project_1, :user => user),
@@ -80,10 +82,6 @@ steps "log in and switch projects", :type => :request do
     end
   end
   
-  def headline(name)
-    xpath = HandyXPaths::Builder.new
-    xpath.descendant(:h1)[xpath.content(name)]
-  end
 
   it "should have the name of the project (method style)" do
     page.should have_xpath(headline(project_1.name).attrs(:id => 'headline'))
@@ -95,6 +93,18 @@ steps "log in and switch projects", :type => :request do
     end
   end
 
+  it "project 1 should have css class 'current'" do
+    page.should have_selector("#project_picker #project_1.current")
+  end 
+
+  it "project 2 should not have class 'current'" do
+    page.should_not have_selector("#project_picker #project_2.current")
+  end
+
+  def headline(name)
+    xpath = HandyXPaths::Builder.new
+    xpath.descendant(:h1)[xpath.content(name)]
+  end
   def work_unit_listing_xpath
     make_xpath{ css('#content #current_project table.listing') }
   end

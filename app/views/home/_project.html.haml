@@ -3,8 +3,9 @@
 - cssclass += " current" if current
 = content_tag_for(:tr, project, :class => cssclass) do
   %td.project_name
-    = depth_indicator(depth)
-    = switch_to_project_link(project)
+    %div
+      = depth_indicator(depth)
+      = switch_to_project_link(project)
   %td.tools
     - if project.clockable?
       = clock_in_widget(project, :icon)
