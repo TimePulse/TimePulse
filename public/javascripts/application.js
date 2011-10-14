@@ -3,8 +3,19 @@ $('document').ready( function(){
 });
 
 Ninja.orders(function(Ninja){
+    ajaxSubmitConfigs = {
+      busyElement: function(elem){ return $('#timeclock')},
+      actions: {
+        timeclock: function(data) { $("#timeclock").replaceWith(data) },
+        project_picker: function(data) { $("#project_picker").replaceWith(data) }, //probably should select the project
+        current_project: function(data) { $("current_project").replaceWith(data) },
+        recent_work: function(data) { $("recent_work").replaceWith(data) }
+      }
+    }
+
     Ninja.behavior({
         '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
+        '*[data-remote=true]': Ninja.submitsAsAjax(ajaxSubmitConfigs),
         '#debug':        Ninja.suppressChangeEvents(),
         '#task_elapsed':  Ninja.suppressChangeEvents(),
         '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
