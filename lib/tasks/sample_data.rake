@@ -30,11 +30,21 @@ namespace :db do
 
     desc "Fill the database with sample data for demo purposes"
     task :load => [
-      :environment
+      :environment, 
+      :populate_users
       # populate_some_table,
       # populate_populate_other_table,
       ]
-
+    
+    # Load users
+    task :populate_users => :environment do
+      User.create!(:login => 'austinrf',
+                   :name => "Austin", 
+                   :email => "Austin@austin.com", 
+                   :password => 'foobar', 
+                   :password_confirmation => 'foobar')
+    end
+    
     # An example to be deleted or replaced
     task :populate_some_table => :environment do
       require 'populator'
