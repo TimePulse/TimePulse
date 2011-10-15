@@ -18,3 +18,4 @@ Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "clock_time")
 Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "work_units",       :action  =>  "show")
 Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "work_units",       :action  =>  "new")
 
+Project.create(:name => 'root', :client => nil)

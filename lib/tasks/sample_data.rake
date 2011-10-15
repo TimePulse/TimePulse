@@ -38,11 +38,11 @@ namespace :db do
     
     # Load users
     task :populate_users => :environment do
-      User.create!(:login => 'austinrf',
-                   :name => "Austin", 
-                   :email => "Austin@austin.com", 
-                   :password => 'foobar', 
-                   :password_confirmation => 'foobar')
+      user = User.create!(:login => 'austinrf',
+                           :name => "Austin", 
+                           :email => "Austin@austin.com", 
+                           :password => 'foobar', 
+                           :password_confirmation => 'foobar')
     end
     
     # An example to be deleted or replaced
