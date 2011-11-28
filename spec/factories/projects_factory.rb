@@ -18,7 +18,7 @@ Factory.define :project  do |c|
   c.sequence(:name) { |n|  "Foo Project #{n}" }
   c.association :client
   c.clockable true
-  c.parent_id Project.root.id
+  c.parent_id { Project.root.id }
 end
 
 Factory.define :task, :parent => :project do |c|

@@ -88,7 +88,7 @@ GEM
       rbx-require-relative (> 0.0.4)
     logical_authz (0.2.3)
     logical_tabs (0.8.0)
-    lrd_dev_tools (0.1.2)
+    lrd_dev_tools (0.1.3)
     lrd_rack_bug (0.3.1.1)
       uuid (~> 2.3.1)
     lrd_view_tools (0.1.3)
@@ -199,7 +199,7 @@ DEPENDENCIES
   launchy
   logical_authz
   logical_tabs
-  lrd_dev_tools (>= 0.1.1)
+  lrd_dev_tools (>= 0.1.3)
   lrd_rack_bug (>= 0.3.0.4)
   lrd_view_tools (>= 0.1.3)
   mizugumo
