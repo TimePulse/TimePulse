@@ -28,6 +28,45 @@ steps "Admin archives a project", :type => :request do
     end
   end
 
+  it "when I visit the projects page" do
+    click_link "Projects"
+  end
 
+  it "and I click to edit the project" do
+    within "#project_#{project_2.id}" do
+      click_link "Edit"
+    end
+  end
 
+  it "and I check archived" do
+    check "Archived"
+  end
+
+  it "and I submit the form" do
+    click_button "submit"
+  end
+
+  it "then when I revisit the dashboard" do
+    visit root_path
+  end
+
+  it "should show the other projects in the picker" do
+    within '#project_picker' do
+      page.should have_content('Project 3 base')
+      page.should have_content('Project 3a')
+    end
+  end
+
+  it "should not show the archived projects in the picker" do
+    within '#project_picker' do
+      page.should_not have_content('Project 2 base')
+    end
+  end
+
+  it "should not show the archived projects' descendants in the picker" do
+    within '#project_picker' do
+      page.should_not have_content('Project 2a')
+      page.should_not have_content('Project 2b')
+    end
+  end
 end

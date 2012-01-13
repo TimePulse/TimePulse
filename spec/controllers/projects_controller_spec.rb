@@ -144,6 +144,11 @@ describe ProjectsController do
           controller.should be_authorized
           response.should redirect_to(project_url(assigns[:project]))
         end
+
+        it "can set the project to archived" do
+          put :update, :id => @project.id, :project => {:archived => true}
+          @project.reload.should be_archived
+        end
       end
 
       describe "with invalid params" do

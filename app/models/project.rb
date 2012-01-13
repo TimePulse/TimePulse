@@ -32,6 +32,6 @@ class Project < ActiveRecord::Base
   validates_presence_of :name
   cascades :client, :account, :clockable
 
-  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate
+  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived
 end
 
