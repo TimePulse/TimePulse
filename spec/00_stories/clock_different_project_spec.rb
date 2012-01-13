@@ -36,7 +36,7 @@ steps "clock in and out on projects", :type => :request do
   it "Project 2 should be selected in the project picker" do
     page.should have_selector("#project_#{project_2.id}.current")
   end
-  
+
   it "Project 3 should be in the project picker" do
     page.should have_selector("#project_#{project_3.id}")
   end
@@ -49,43 +49,43 @@ steps "clock in and out on projects", :type => :request do
     within "#picker" do
       click_link "clock_in_on_project_#{project_3.id}"
     end
-  end 
+  end
 
   it "should show project 3 in the timeclock" do
-    within "#timeclock" do 
+    within "#timeclock" do
       page.should have_content(project_3.name)
     end
   end
 
-  it "should show a clock-out form and a clock" do 
+  it "should show a clock-out form and a clock" do
     within "#timeclock" do
-      page.should have_selector("form[action='/clock_out']")    
+      page.should have_selector("form[action='/clock_out']")
       page.should have_selector("#task_elapsed")
     end
   end
 
   it "should have created an unfinished work unit in the DB" do
-    WorkUnit.count.should == @work_unit_count +1 
+    WorkUnit.count.should == @work_unit_count +1
     @new_work_unit = WorkUnit.last
     @new_work_unit.stop_time.should be_nil
     @new_work_unit.project.should == project_3
   end
 
   it "I click the clock for project 2 in the picker" do
-    within "#picker" do
-      click_link "clock_in_on_project_#{project_2.id}"
-    end 
+    within "#picker #clock_in_on_project_#{project_2.id}" do
+      page.find("input[type='image']").click
+    end
   end
 
   it "should show project 2 in the timeclock" do
-    within "#timeclock" do 
+    within "#timeclock" do
       page.should have_content(project_2.name)
     end
   end
 
-  it "should show a clock-out form and a clock" do 
+  it "should show a clock-out form and a clock" do
     within "#timeclock" do
-      page.should have_selector("form[action='/clock_out']")    
+      page.should have_selector("form[action='/clock_out']")
       page.should have_selector("#task_elapsed")
     end
   end
