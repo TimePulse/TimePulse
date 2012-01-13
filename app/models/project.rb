@@ -27,6 +27,8 @@ class Project < ActiveRecord::Base
   belongs_to :client
   has_many :work_units
 
+  scope :archived, :conditions => { :archived => true }
+  scope :unarchived, :conditions => { :archived => false }
   # default_scope :joins => :client
 
   validates_presence_of :name

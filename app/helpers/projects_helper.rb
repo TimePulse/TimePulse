@@ -27,7 +27,7 @@ module ProjectsHelper
     String.new.tap do |str|
       [*projects].each do |project|
         Project.each_with_level(project.self_and_descendants) do |project, depth|
-          next if project.self_and_ancestors.any?{ |p| p.archived?}
+          next unless project.self_and_ancestors.archived.blank?
           str << (render :partial => partial, :locals => { :project => project, :depth => depth }) unless project.nil?
         end
       end
