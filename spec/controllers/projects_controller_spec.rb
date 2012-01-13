@@ -6,7 +6,7 @@ describe ProjectsController do
   end
 
   describe "accessed by a normal user" do
-    before(:each) do          
+    before(:each) do
       @user = authenticate(:user)
     end
 
@@ -23,7 +23,7 @@ describe ProjectsController do
         controller.should be_forbidden
       end
     end
-      
+
     describe "forbidden actions" do
       it "should include GET edit" do
         get :edit, :id => @project.id
@@ -45,7 +45,7 @@ describe ProjectsController do
         delete :destroy, :id => @project.id
       end
 
-      after do 
+      after do
         controller.should be_forbidden
       end
     end
@@ -55,12 +55,12 @@ describe ProjectsController do
     before do
       @user = authenticate(:admin)
     end
-    
+
     describe "GET index" do
-      it "assigns all projects as @projects" do
+      it "assigns the root project as @root_project" do
         get :index
         controller.should be_authorized
-        assigns[:projects].should == Project.all
+        assigns[:root_project].should == Project.root
       end
     end
 
@@ -127,7 +127,7 @@ describe ProjectsController do
 
       describe "with valid params" do
         it "updates the requested project" do
-          lambda do 
+          lambda do
             put :update, :id => @project.id, :project => {:name => 'new name'}
             controller.should be_authorized
           end.should change{ @project.reload.name }.to('new name')
@@ -171,7 +171,7 @@ describe ProjectsController do
 
     describe "DELETE destroy" do
       it "reduces project count by one" do
-        lambda do 
+        lambda do
           delete :destroy, :id => @project.id
           controller.should be_authorized
         end.should change(Project, :count).by(-1)

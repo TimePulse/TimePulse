@@ -2,8 +2,8 @@ class ProjectsController < AuthzController
   # GET /projects
   grant_aliases :new => :create, :edit => :update, :index => :show
 
-  def index   
-    @projects = Project.find(:all, :conditions => { :parent_id => nil })
+  def index
+    @root_project = Project.root
   end
 
   # GET /projects/1
@@ -27,9 +27,9 @@ class ProjectsController < AuthzController
 
       if @project.save
         flash[:notice] = 'Project was successfully created.'
-        redirect_to(@project) 
+        redirect_to(@project)
       else
-        render :action => "new" 
+        render :action => "new"
       end
   end
 
@@ -39,9 +39,9 @@ class ProjectsController < AuthzController
 
       if @project.update_attributes(params[:project])
         flash[:notice] = 'Project was successfully updated.'
-        redirect_to(@project) 
+        redirect_to(@project)
       else
-        render :action => "edit" 
+        render :action => "edit"
       end
   end
 
@@ -49,7 +49,7 @@ class ProjectsController < AuthzController
   def destroy
     @project = Project.find(params[:id])
     @project.destroy
-    
+
     redirect_to projects_path
   end
 end
