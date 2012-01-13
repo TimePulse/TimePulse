@@ -5,11 +5,12 @@ describe "/projects/index" do
 
   before(:each) do
     authenticate(:user)
-    assign(:projects, [ Factory(:project), Factory(:project) ])
+    Factory(:project)
+    assign(:root_project, Project.root)
   end
 
   it "should succeed" do
     render
-    
+
   end
 end
