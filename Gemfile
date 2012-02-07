@@ -31,7 +31,8 @@ group :development, :test do
   gem 'rspec'
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'ruby-debug'
+  gem 'ruby-debug', :platform => "ruby_18"
+  gem 'ruby-debug19', :platform => "ruby_19"
   gem 'capybara'
   gem 'launchy'
   gem 'thin'
@@ -44,5 +45,5 @@ group :development do
   gem 'capistrano-ext'
   gem 'annotate'
   gem 'lrd_dev_tools', ">= 0.1.3"
-  gem 'mongrel'
+  gem 'thin'
 end
