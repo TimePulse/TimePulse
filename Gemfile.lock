@@ -6,10 +6,6 @@ GIT
     authlogic (2.1.3)
       activesupport
 
-PATH
-  remote: ../mizugumo/
-  specs:
-    mizugumo (0.1.4)
 
 GEM
   remote: http://lrdesign:quiS6Nef@gems.lrdesign.com/
@@ -56,7 +52,7 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
-    capybara (1.0.1)
+    capybara (1.1.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -64,7 +60,7 @@ GEM
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
     cgi_multipart_eof_fix (2.5.0)
-    childprocess (0.2.2)
+    childprocess (0.2.9)
       ffi (~> 1.0.6)
     columnize (0.3.2)
     daemons (1.1.3)
@@ -80,20 +76,18 @@ GEM
     faker (0.9.5)
       i18n (~> 0.4)
     fastthread (1.0.7)
-    ffi (1.0.9)
+    ffi (1.0.11)
     gem_plugin (0.2.3)
     haml (3.1.2)
     highline (1.6.2)
     i18n (0.5.0)
-    json_pure (1.5.4)
-      spruz (~> 0.2.8)
     launchy (2.0.4)
       addressable (~> 2.2.6)
     linecache (0.46)
       rbx-require-relative (> 0.0.4)
     logical_authz (0.2.3)
     logical_tabs (0.8.0)
-    lrd_dev_tools (0.1.2)
+    lrd_dev_tools (0.1.3)
     lrd_rack_bug (0.3.1.1)
       uuid (~> 2.3.1)
     lrd_view_tools (0.1.3)
@@ -103,12 +97,14 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mime-types (1.16)
+    mime-types (1.17.2)
+    mizugumo (0.1.4)
     mongrel (1.1.5)
       cgi_multipart_eof_fix (>= 2.4)
       daemons (>= 1.0.3)
       fastthread (>= 1.0.1)
       gem_plugin (>= 0.2.3)
+    multi_json (1.0.4)
     mysql2 (0.2.7)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -162,14 +158,13 @@ GEM
       ruby-debug-base (~> 0.10.4.0)
     ruby-debug-base (0.10.4)
       linecache (>= 0.3)
-    rubyzip (0.9.4)
+    rubyzip (0.9.5)
     sass (3.1.1)
-    selenium-webdriver (2.5.0)
-      childprocess (>= 0.2.1)
-      ffi (>= 1.0.7)
-      json_pure
+    selenium-webdriver (2.16.0)
+      childprocess (>= 0.2.5)
+      ffi (~> 1.0.9)
+      multi_json (~> 1.0.4)
       rubyzip
-    spruz (0.2.13)
     thin (1.2.11)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -203,10 +198,10 @@ DEPENDENCIES
   launchy
   logical_authz
   logical_tabs
-  lrd_dev_tools (>= 0.1.1)
+  lrd_dev_tools (>= 0.1.3)
   lrd_rack_bug (>= 0.3.0.4)
   lrd_view_tools (>= 0.1.3)
-  mizugumo!
+  mizugumo
   mongrel
   mysql2 (< 0.3)
   populator

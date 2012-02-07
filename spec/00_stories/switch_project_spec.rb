@@ -72,16 +72,16 @@ steps "log in and switch projects", :type => :request do
       #xp = "//td[contains(.,'Work') and contains(.,'Unit') and and contains(.,'Notes') contains(.,'1')]"
       xp = "//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]"
       #p :xpath => xp, :notes => work_unit.notes
-      page.should have_xpath(xp) 
+      page.should have_xpath(xp)
     end
   end
 
   it "should not list project 2's work units" do
     project_2.work_units.each do |work_unit|
-      page.should_not have_xpath("//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]")        
+      page.should_not have_xpath("//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]")
     end
   end
-  
+
 
   it "should have the name of the project (method style)" do
     page.should have_xpath(headline(project_1.name).attrs(:id => 'headline'))
@@ -94,11 +94,11 @@ steps "log in and switch projects", :type => :request do
   end
 
   it "project 1 should have css class 'current'" do
-    page.should have_selector("#project_picker #project_1.current")
-  end 
+    page.should have_selector("#project_picker #project_#{project_1.id}.current")
+  end
 
   it "project 2 should not have class 'current'" do
-    page.should_not have_selector("#project_picker #project_2.current")
+    page.should_not have_selector("#project_picker #project_#{project_2.id}.current")
   end
 
   def headline(name)

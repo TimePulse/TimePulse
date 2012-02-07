@@ -1891,16 +1891,28 @@ var require, define;
 }());
 
 define('utils',['require','exports','module'],function(){
-    return {
-      log: function(message) {
-        if(false) { //LOGGING TURNED OFF IS 100% faster!
-          try {
-            console.log(message)
-          }
-          catch(e) {} //we're in IE or FF w/o Firebug or something
-        }
-      },
+    function Utils() {
+      this.log_function = null
+    }
 
+    Utils.prototype = {
+      log: function(message) {
+        this.log_function(message)
+      },
+      active_logging: function(message) {
+        try {
+          console.log(message)
+        }
+        catch(e) {} //we're in IE or FF w/o Firebug or something
+      },
+      inactive_logging: function(message) {
+      },
+      disactivate_logging: function() {
+        this.log_function = this.inactive_logging
+      },
+      activate_logging: function() {
+        this.log_function = this.active_logging
+      },
       isArray: function(candidate) {
         return (candidate.constructor == Array)
       },
@@ -1923,12 +1935,33 @@ define('utils',['require','exports','module'],function(){
         }
       }
     }
-  })
+    var utils = new Utils
+    if(typeof NINJASCRIPT_DEBUGGING == 'undefined') {
+      utils.disactivate_logging()
+    } else {
+      utils.activate_logging()
+    }
 
+
+    return utils
+  })
 define('ninja/exceptions',['require','exports','module'],function () {
+    function buildException(named) {
+      var exceptionConstructor = function (message) {
+        Error.call(this, message)
+        if(Error.captureStackTrace) {
+          Error.captureStackTrace(this, this.constructor)
+        }
+        this.name = named; // Used to cause messages like "UserError: message" instead of the default "Error: message"
+        this.message = message; // Used to set the message
+      }
+      exceptionConstructor.prototype = Error.prototype
+      return exceptionConstructor
+    }
+
     return {
-      CouldntChoose: function(){},
-      TransformFailed: function(){}
+      CouldntChoose: buildException("CouldntChoose"),
+      TransformFailed: buildException("TransformFailed")
     }
   })
 define('ninja/behaviors',["ninja/exceptions"], function(Exceptions) {
@@ -1949,7 +1982,7 @@ define('ninja/behaviors',["ninja/exceptions"], function(Exceptions) {
           return chosen.choose(element)
         }
         else {
-          throw new CouldntChooseException
+          throw new CouldntChooseException("Couldn't choose behavior for " . element.toString())
         }
       }
     }
@@ -2050,6 +2083,7 @@ define('ninja/behaviors',["ninja/exceptions"], function(Exceptions) {
       },
       buildHandler: function(context, eventName, previousHandler) {
         var handle
+        var fallThrough = true
         var stopDefault = true
         var stopPropagate = true
         var stopImmediate = false
@@ -2065,7 +2099,13 @@ define('ninja/behaviors',["ninja/exceptions"], function(Exceptions) {
           var len = config.length
           for(var i = 0; i < len; i++) {
             var found = true
-            if (config[i] == "andDoDefault" || config[i] == "allowDefault") {
+            if (config[i] == "dontContinue" ||
+              config[i] == "overridesOthers") {
+              fallThrough = false
+            }
+            if (config[i] == "andDoDefault" || 
+              config[i] == "continues" ||
+              config[i] == "allowDefault") {
               stopDefault = false
             }
             if (config[i] == "allowPropagate" || config[i] == "dontStopPropagation") {
@@ -2083,13 +2123,25 @@ define('ninja/behaviors',["ninja/exceptions"], function(Exceptions) {
             }
           }
         }
-        var handler = function(eventRecord) {
-          handle.call(context, eventRecord, this, previousHandler)
+        var handler = function() {
+          var eventRecord = Array.prototype.shift.call(arguments)
+          Array.prototype.unshift.call(arguments, this)
+          Array.prototype.unshift.call(arguments, eventRecord)
+
+          handle.apply(context, arguments)
+          if(!eventRecord.isFallthroughPrevented()) {
+            previousHandler.apply(context, arguments)
+          }
           if(stopDefault){
             return false
           } else {
             return !eventRecord.isDefaultPrevented()
           }
+        }
+        if(!fallThrough) {
+          handler = this.prependAction(handler, function(eventRecord) {
+              eventRecord.preventFallthrough()
+            })
         }
         if(stopDefault) {
           handler = this.prependAction(handler, function(eventRecord) {
@@ -2111,19 +2163,25 @@ define('ninja/behaviors',["ninja/exceptions"], function(Exceptions) {
               Ninja.tools.fireMutationEvent()
             })
         }
+        handler = this.prependAction(handler, function(eventRecord) {
+            eventRecord.isFallthroughPrevented = function(){ return false };
+            eventRecord.preventFallthrough = function(){
+              eventRecord.isFallthroughPrevented =function(){ return true };
+            }
+          })
 
         return handler
       },
       prependAction: function(handler, doWhat) {
-        return function(eventRecord) {
-          doWhat.call(this, eventRecord)
-          return handler.call(this, eventRecord)
+        return function() {
+          doWhat.apply(this, arguments)
+          return handler.apply(this, arguments)
         }
       },
       appendAction: function(handler, doWhat) {
-        return function(eventRecord) {
-          var result = handler.call(this, eventRecord)
-          doWhat.call(this, eventRecord)
+        return function() {
+          var result = handler.apply(this, arguments)
+          doWhat.apply(this, arguments)
           return result
         }
       },
@@ -3196,22 +3254,9 @@ define('ninja/event-scribe',['require','exports','module'],function() {
     }
 
     EventScribe.prototype = {
-      //I'll be frank: I don't remember what this method is for,
-      //so I'm not comfortable keeping it in play.
-//      makeHandlersRemove: function(element) { 
-//        for(var eventName in this.handlers) {
-//          var handler = this.handlers[eventName]
-//          this.handlers[eventName] = function(eventRecord) {
-//            var res = handler.call(eventRecord)
-//            //jQuery(element).remove()
-//            return res
-//          }
-//        }
-//      },
       recordEventHandlers: function (context, behavior) {
         if(this.currentElement !== context.element) {
           if(this.currentElement !== null) {
-            //this.makeHandlersRemove(this.currentElement)
             this.applyEventHandlers(this.currentElement)
             this.handlers = {}
           }
@@ -3233,11 +3278,13 @@ define('ninja/event-scribe',['require','exports','module'],function() {
     }
     return EventScribe
   })
-define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "ninja/event-scribe", "ninja/exceptions"], 
+define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "ninja/event-scribe", "ninja/exceptions"],
   function(Sizzle, Behaviors, Utils, EventScribe, Exceptions) {
 
     var forEach = Utils.forEach
-    var log = Utils.log
+    function log(message) {
+      Utils.log(message)
+    }
 
     var TransformFailedException = Exceptions.TransformFailed
     var CouldntChooseException = Exceptions.CouldntChoose
@@ -3261,7 +3308,7 @@ define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "n
         }
         else if(behavior instanceof Behaviors.base) {
           this.insertBehavior(selector, behavior)
-        } 
+        }
         else if(behavior instanceof Behaviors.select) {
           this.insertBehavior(selector, behavior)
         }
@@ -3294,8 +3341,8 @@ define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "n
       fireMutationEvent: function() {
         var targets = this.mutationTargets
         if (targets.length > 0 ) {
-          for(var target = targets[0]; 
-            targets.length > 0; 
+          for(var target = targets[0];
+            targets.length > 0;
             target = targets.shift()) {
             jQuery(target).trigger("thisChangedDOM")
           }
@@ -3327,7 +3374,7 @@ define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "n
         if(!eventCovered) {
           uncovered.unshift(evnt)
           this.eventQueue = uncovered
-        } 
+        }
       },
       handleQueue: function(){
         while (this.eventQueue.length != 0){
@@ -3339,8 +3386,8 @@ define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "n
         return this.applyBehaviorsInContext(new this.tools.behaviorContext, element, behaviors)
       },
       applyBehaviorsInContext: function(context, element, behaviors) {
-        var curContext, 
-        applyList = [], 
+        var curContext,
+        applyList = [],
         scribe = new EventScribe
 
         //Move enrich to Utils
@@ -3449,7 +3496,7 @@ define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "n
             })
 
 
-          //        jQuery(root).find(this.selectors[i]).each( 
+          //        jQuery(root).find(this.selectors[i]).each(
           //          function(index, elem){
           //            if (!jQuery(elem).data("ninja-visited")) { //Pure optimization
           //              collection.apply(elem, [], i)
@@ -3506,14 +3553,16 @@ define('ninja/root-context',["utils"], function(Utils) {
     }
   })
 
-define('ninja/tools',[ "ninja/behaviors", "ninja/behavior-collection", "ninja/exceptions", 
+define('ninja/tools',[ "ninja/behaviors", "ninja/behavior-collection", "ninja/exceptions",
     "utils", "ninja/root-context"
   ], function(
-    Behaviors,     BehaviorCollection,      Exceptions,     
+    Behaviors,     BehaviorCollection,      Exceptions,
     Utils,     rootContext
   ) {
-    var CantTransformException = Exceptions.CantTransform
-    var log = Utils.log
+    var TransformFailedException = Exceptions.TransformFailed
+    function log(message) {
+      Utils.log(message)
+    }
 
     function Tools(ninja) {
       this.ninja = ninja
@@ -3591,13 +3640,13 @@ define('ninja/tools',[ "ninja/behaviors", "ninja/behavior-collection", "ninja/ex
         }
       },
       extractMethod: function(element, formData) {
-        if(element.dataset !== undefined && 
-          element.dataset["method"] !== undefined && 
+        if(element.dataset !== undefined &&
+          element.dataset["method"] !== undefined &&
           element.dataset["method"].length > 0) {
           log("Override via dataset: " + element.dataset["method"])
           return element.dataset["method"]
         }
-        if(element.dataset === undefined && 
+        if(element.dataset === undefined &&
           jQuery(element).attr("data-method") !== undefined) {
           log("Override via data-method: " + jQuery(element).attr("data-method"))
           return jQuery(element).attr("data-method")
@@ -3612,12 +3661,12 @@ define('ninja/tools',[ "ninja/behaviors", "ninja/behavior-collection", "ninja/ex
         }
         if(typeof element.method !== "undefined") {
           return element.method
-        } 
+        }
         return "GET"
       },
       //Ninjascript utils
-      cantTransform: function() {
-        throw new TransformFailedException
+      cantTransform: function(message) {
+        throw new TransformFailedException(message)
       },
       applyBehaviors: function(element, behaviors) {
         this.getRootCollection().apply(element, behaviors)
@@ -3651,15 +3700,116 @@ define('ninja/configuration',['require','exports','module'],function() {
       busyLaziness: 200
     }
   })
-define('ninja',["utils", "ninja/tools", "ninja/behaviors", "ninja/configuration"], 
-  function(Utils,     Tools,     Behaviors, Configs) {
-    var log = Utils.log
-    
+define('ninja/tools/json-dispatcher',["utils"], function(Utils) {
+    function JSONDispatcher() {
+      this.handlers = []
+    }
+
+    JSONDispatcher.prototype = {
+      addHandler: function(handler) {
+        this.handlers.push(new JSONHandler(handler))
+      },
+      dispatch: function(json) {
+        var len = this.handlers.length
+        for(var i = 0; i < len; i++) {
+          try {
+            this.handlers[i].receive(json)
+          }
+          catch(problem) {
+            Utils.log("Caught: " + problem + " while handling JSON response.")
+          }
+        }
+      },
+      inspect: function() {
+        var handlers = []
+        Utils.forEach(this.handlers, function(handler){
+            handlers.push(handler.inspect())
+          })
+        return "JSONDispatcher, " + this.handlers.length + " handlers:\n" + handlers.join("\n")
+      }
+    }
+
+    function JSONHandler(desc) {
+      this.desc = desc
+    }
+
+    /**
+     * Intention is to use JSONHandler like this:
+     *
+     * this.ajaxToJson({ 
+     *   item: function(html) {
+     *     $('#items').append($(html))
+     *   },
+     *   item_count: function(html) {
+     *     $('#item_count').replace($(html))
+     *   }
+     *   })
+     *
+     * And the server sends back something like:
+     *
+     * { "item": "<li>A list item<\li>", "item_count": 17 }
+     **/
+
+    JSONHandler.prototype = {
+      receive: function (data) {
+        this.compose([], data, this.desc)
+        return null
+      },
+      compose: function(path, data, desc) {
+        if(typeof desc == "function") {
+          try {
+            desc.call(this, data) //Individual functions can share data through handler
+          }
+          catch(problem) {
+            Utils.log("Caught: " + problem + " while handling JSON at " + path.join("/"))
+          }
+        }
+
+        else {
+          for(var key in data) {
+            if(data.hasOwnProperty(key)) {
+              if( key in desc) {
+                this.compose(path.concat([key]), data[key], desc[key])
+              }
+            }
+          }
+        }
+        return null
+      },
+      inspectTree: function(desc) {
+        var keys = []
+        for(var key in desc) {
+          if(typeof desc[key] == "function") {
+            keys.push(key)
+          }
+          else {
+            Utils.forEach(this.inspectTree(desc[key]), function(subkey) {
+                keys.push(key + "." + subkey)
+              })
+          }
+        }
+        return keys
+      },
+      inspect: function() {
+        return this.inspectTree(this.desc).join("\n")
+      }
+    }
+
+    return JSONDispatcher
+  })
+define('ninja',["utils", "ninja/tools", "ninja/behaviors", "ninja/configuration", 'ninja/tools/json-dispatcher'],
+  function(Utils,     Tools,     Behaviors, Configs, JSONDispatcher) {
+    function log(message) {
+      Utils.log(message)
+    };
+
     function NinjaScript() {
       //NinjaScript-wide configurations.  Currently, not very many
       this.config = Configs
+      this.utils = Utils
 
       this.behavior = this.goodBehavior
+      this.jsonDispatcher = new JSONDispatcher()
       this.tools = new Tools(this)
     }
 
@@ -3685,11 +3835,11 @@ define('ninja',["utils", "ninja/tools", "ninja/behaviors", "ninja/configuration"
 
       goodBehavior: function(dispatching) {
         var collection = this.tools.getRootCollection()
-        for(var selector in dispatching) 
+        for(var selector in dispatching)
         {
           if(typeof dispatching[selector] == "undefined") {
             log("Selector " + selector + " not properly defined - ignoring")
-          } 
+          }
           else {
             collection.addBehavior(selector, dispatching[selector])
           }
@@ -3699,6 +3849,10 @@ define('ninja',["utils", "ninja/tools", "ninja/behaviors", "ninja/configuration"
 
       badBehavior: function(nonsense) {
         throw new Error("Called Ninja.behavior() after Ninja.go() - don't do that.  'Go' means 'I'm done, please proceed'")
+      },
+
+      respondToJson: function(handlerConfig) {
+        this.jsonDispatcher.addHandler(handlerConfig)
       },
 
       go: function() {
@@ -3740,18 +3894,20 @@ define('ninja/behaviors/utility',["ninja"], function(Ninja) {
   })
 define('ninja/behaviors/standard',["ninja", "utils"],
   function(Ninja, Utils) {
-    var log = Utils.log
+    function log(message) {
+      Utils.log(message)
+    }
     Ninja.packageBehaviors( function(ninja){
       return {
         /**
          * Ninja.submitsAsAjax(configs) -> null
-         * - configs(Object): configuration for the behavior, passed directly 
+         * - configs(Object): configuration for the behavior, passed directly
          *   to either submitsAsAjaxLink or submitsAsAjaxForm
          *
          * Converts either a link or a form to send its requests via AJAX - we
-         * eval the Javascript we get back.  We get an busy overlay if 
+         * eval the Javascript we get back.  We get an busy overlay if
          * configured to do so.
-         * 
+         *
          * This farms out the actual behavior to submitsAsAjaxLink and
          * submitsAsAjaxForm, c.f.
          **/
@@ -3776,13 +3932,16 @@ define('ninja/behaviors/standard',["ninja", "utils"],
          * get Javascript back, which is eval'd.  While we're waiting, we'll
          * throw up a busy overlay if configured to do so.  By default, we don't
          * use a busy overlay.
-         * 
+         *
          **/
         submitsAsAjaxLink: function(configs) {
           configs = Ninja.tools.ensureDefaults(configs,
             { busyElement: function(elem) {
                 return $(elem).parents('address,blockquote,body,dd,div,p,dl,dt,table,form,ol,ul,tr')[0]
               }})
+          if(!configs.actions) {
+            configs.actions = configs.expectsJSON
+          }
 
           return new ninja.does({
               priority: 10,
@@ -3799,7 +3958,7 @@ define('ninja/behaviors/standard',["ninja", "utils"],
             })
         },
 
-        /** 
+        /**
          * Ninja.submitAsAjaxForm(configs) -> null
          *
          * Converts a form to send its request via Ajax - we assume that we get
@@ -3808,14 +3967,18 @@ define('ninja/behaviors/standard',["ninja", "utils"],
          * Method input. While we're waiting, we'll throw up a busy overlay if
          * configured to do so.  By default, we use the form itself as the busy
          * element.
-         * 
-         **/ 
+         *
+         **/
         submitsAsAjaxForm: function(configs) {
           configs = Ninja.tools.ensureDefaults(configs,
             { busyElement: undefined })
 
+          if(!configs.actions) {
+            configs.actions = configs.expectsJSON
+          }
+
           return new ninja.does({
-              priority: 20,
+              priority: 10,
               helpers: {
                 findOverlay: function(elem) {
                   return this.deriveElementsFrom(elem, configs.busyElement)
@@ -3830,9 +3993,9 @@ define('ninja/behaviors/standard',["ninja", "utils"],
         },
 
 
-        /** 
+        /**
          * Ninja.becomesAjaxLink( configs ) -> null
-         * 
+         *
          * Converts a whole form into a link that submits via AJAX.  The
          * intention is that you create a <form> elements with hidden inputs and
          * a single submit button - then when we transform it, you don't lose
@@ -3848,7 +4011,7 @@ define('ninja/behaviors/standard',["ninja", "utils"],
           return [ Ninja.submitsAsAjax(configs), Ninja.becomesLink(configs) ]
         },
 
-        /** 
+        /**
          * Ninja.becomesLink( configs ) -> null
          *
          * Replaces a form with a link - the text of the link is based on the
@@ -3872,17 +4035,17 @@ define('ninja/behaviors/standard',["ninja", "utils"],
                 if ((images = jQuery('input[type=image]', form)).size() > 0){
                   image = images[0]
                   linkText = "<img src='" + image.src + "' alt='" + image.alt +"'";
-                } 
+                }
                 else if((submits = jQuery('input[type=submit]', form)).size() > 0) {
                   submit = submits[0]
                   if(submits.size() > 1) {
                     log("Multiple submits.  Using: " + submit)
                   }
                   linkText = submit.value
-                } 
+                }
                 else {
                   log("Couldn't find a submit input in form");
-                  this.cantTransform()
+                  this.cantTransform("Couldn't find a submit input")
                 }
 
                 var link = jQuery("<a rel='nofollow' href='#'>" + linkText + "</a>")
@@ -3900,14 +4063,14 @@ define('ninja/behaviors/standard',["ninja", "utils"],
 
         },
 
-        /** 
+        /**
          * Ninja.decay( configs ) -> null
          *
          * Use for elements that should be transient.  For instance, the
          * default behavior of failed AJAX calls is to insert a message into a
          * div#messages with a "flash" class.  You can use this behavior to
          * have those disappear after a few seconds.
-         * 
+         *
          * Configs: { lifetime: 10000, diesFor: 600 }
          **/
 
@@ -4200,16 +4363,17 @@ define('ninja/behaviors/confirm',["ninja"],
             function confirmDefault(event,elem) {
               if(!confirm(configs.confirmMessage(elem))) {
                 event.preventDefault()
+                event.preventFallthrough()
               }
             }
 
             return new ninja.selects({
                 "form": new ninja.does({
-                  priority: -100,
+                  priority: 20,
                   events: { submit: [confirmDefault, "andDoDefault"] }
                 }),
                 "a,input": new ninja.does({
-                  priority: -100,
+                  priority: 20,
                   events: {  click: [confirmDefault, "andDoDefault"] }
                 })
               })
@@ -4324,60 +4488,10 @@ define('ninja/tools/overlay',["utils", "ninja"],
     return Overlay
   })
 
-define('ninja/tools/json-handler',["ninja"], function(Ninja) {
-      function JSONHandler(desc) {
-        this.desc = desc
-      }
-
-      /**
-       * Intention is to use JSONHandler like this:
-       *
-       * this.ajaxToJson({ 
-       *   item: function(html) {
-       *     $('#items').append($(html))
-       *   },
-       *   item_count: function(html) {
-       *     $('#item_count').replace($(html))
-       *   }
-       *   })
-       *
-       * And the server sends back something like:
-       *
-       * { "item": "<li>A list item<\li>", "item_count": 17 }
-       **/
-
-      JSONHandler.prototype = {
-        receive: function (data) {
-          this.compose([], data, this.desc)
-          return null
-        },
-        compose: function(path, data, desc) {
-          for(var key in data) {
-            if(data.hasOwnProperty(key)) {
-              if( key in desc) {
-                if( typeof desc[key] == "function" ) {
-                  desc[key].call(this, data[key])
-                } 
-                else {
-                  this.compose(path + [key], data[key], desc[key])
-                }
-              }
-            }
-          }
-          return null
-        }
-      }
-
-      Ninja.packageTools({
-          jsonHandler: function(desc) {
-            return new JSONHandler(desc)
-          }
-        })
-
-      return JSONHandler
-    })
-define('ninja/tools/ajax-submitter',["ninja", "utils", "./json-handler", "./overlay"], function(Ninja, Utils, jH, O) {
-    var log = Utils.log
+define('ninja/tools/ajax-submitter',["ninja", "utils", "./json-dispatcher", "./overlay"], function(Ninja, Utils, jH, O) {
+    function log(message) {
+      Utils.log(message)
+    }
 
     function AjaxSubmitter() {
       this.formData = []
@@ -4442,11 +4556,10 @@ define('ninja/tools/ajax-submitter',["ninja", "utils", "./json-handler", "./over
         },
 
         ajaxToJson: function(desc) {
-          var handler = this.jsonHandler(desc)
           var submitter = this.ajaxSubmitter()
           submitter.dataType = 'json'
           submitter.onSuccess = function(xhr, statusText, data) {
-            handler.receive(data)
+            Ninja.jsonDispatcher.dispatch(data)
           }
           return submitter
         },
@@ -4481,7 +4594,7 @@ define('ninja/tools/ajax-submitter',["ninja", "utils", "./json-handler", "./over
 define('ninja/tools/all',[
     "./overlay",
     "./ajax-submitter",
-    "./json-handler"
+    "./json-dispatcher"
   ],
   function() { })
 define('ninja/jquery',["ninja"], function(Ninja) {
@@ -4503,7 +4616,7 @@ require([
     "ninja/behaviors/all",
     "ninja/tools/all",
     "ninja/jquery"
-  ], function(Ninja, stdBehaviors, placeholder, triggerOn, allTools, jquery) {
+  ], function(Ninja, stdBehaviors, allTools, jquery) {
     var ninjaOrders = window["Ninja"].orderList
     var ordersLength = ninjaOrders.length
 

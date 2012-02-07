@@ -1,11 +1,11 @@
-%tr                     
+= content_tag_for(:tr, project) do
   %td
     = depth_indicator(depth)
     = "#{project.name}"
- 
+
   %td= project.client.nil? ? "" : project.client.name
   %td= project.description
   %td
-    = link_to_if_authorized 'Show', project 
-    = link_to_if_authorized 'Edit', edit_project_path(project) 
+    = link_to_if_authorized 'Show', project
+    = link_to_if_authorized 'Edit', edit_project_path(project)
     = link_to_if_authorized 'Destroy', project, :confirm => 'Are you sure?', :method => :delete
