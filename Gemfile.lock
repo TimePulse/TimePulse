@@ -80,7 +80,11 @@ GEM
     faker (0.9.5)
       i18n (~> 0.4)
     ffi (1.0.11)
-    haml (3.1.2)
+    fuubar (0.0.6)
+      rspec (~> 2.0)
+      rspec-instafail (~> 0.1.8)
+      ruby-progressbar (~> 0.0.10)
+    haml (3.1.4)
     highline (1.6.2)
     i18n (0.5.0)
     launchy (2.0.4)
@@ -143,6 +147,7 @@ GEM
     rspec-core (2.6.4)
     rspec-expectations (2.6.0)
       diff-lcs (~> 1.1.2)
+    rspec-instafail (0.1.9)
     rspec-mocks (2.6.0)
     rspec-rails (2.6.0)
       actionpack (~> 3.0)
@@ -164,15 +169,20 @@ GEM
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
       ruby-debug-base19 (>= 0.11.19)
+    ruby-progressbar (0.0.10)
     ruby_core_source (0.1.5)
       archive-tar-minitar (>= 0.5.2)
     rubyzip (0.9.5)
-    sass (3.1.1)
+    sass (3.1.14)
     selenium-webdriver (2.16.0)
       childprocess (>= 0.2.5)
       ffi (~> 1.0.9)
       multi_json (~> 1.0.4)
       rubyzip
+    simplecov (0.5.4)
+      multi_json (~> 1.0.3)
+      simplecov-html (~> 0.5.3)
+    simplecov-html (0.5.3)
     thin (1.2.11)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -202,6 +212,7 @@ DEPENDENCIES
   database_cleaner
   factory_girl_rails
   faker
+  fuubar
   haml (>= 3.1.2)
   launchy
   logical_authz
@@ -221,5 +232,6 @@ DEPENDENCIES
   ruby-debug
   ruby-debug19
   sass
+  simplecov
   thin
   will_paginate (~> 3.0.pre2)

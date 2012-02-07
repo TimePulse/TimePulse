@@ -40,6 +40,11 @@ group :development, :test do
   gem 'rspec-steps'
 end
 
+group :test do
+  gem 'simplecov', :platform => "ruby_19"
+  gem 'fuubar'
+end
+
 group :development do
   gem 'capistrano'
   gem 'capistrano-ext'

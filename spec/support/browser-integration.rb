@@ -11,6 +11,8 @@ Capybara.default_driver = :selenium
 module SaveAndOpenOnFail
   def instance_eval(&block)
     super(&block)
+  rescue RSpec::Core::Pending::PendingDeclaredInExample
+    raise
   rescue Object => ex
     wrapper = ex.exception("#{ex.message}\nLast view at: file://#{save_page}")
     wrapper.set_backtrace(ex.backtrace)
