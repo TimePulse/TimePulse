@@ -227,7 +227,7 @@ DEPENDENCIES
   rack (= 1.2.1)
   rails (= 3.0.10)
   rake (= 0.8.7)
-  rspec
+  rspec (< 2.8)
   rspec-rails
   rspec-steps
   ruby-debug
