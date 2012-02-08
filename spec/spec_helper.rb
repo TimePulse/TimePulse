@@ -17,7 +17,6 @@ RSpec.configure do |config|
     logout
   end
 
-
   config.use_transactional_fixtures = false
 
   DatabaseCleaner.strategy = :transaction

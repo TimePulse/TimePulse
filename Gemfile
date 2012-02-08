@@ -28,7 +28,7 @@ gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => '
 gem 'logical_authz' #, :path => "../LogicalAuthz/"
 
 group :development, :test do
-  gem 'rspec'
+  gem 'rspec', "< 2.8"
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'ruby-debug', :platform => "ruby_18"
@@ -42,6 +42,7 @@ end
 
 group :test do
   gem 'simplecov', :platform => "ruby_19"
+  gem 'simplecov-vim', :platform => "ruby_19"
   gem 'fuubar'
 end
 

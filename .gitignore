@@ -52,3 +52,5 @@ capybara*.html
 .rspec
 public/sitemap.xml
 *.swp
+coverage.vim
+coverage/

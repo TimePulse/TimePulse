@@ -183,6 +183,7 @@ GEM
       multi_json (~> 1.0.3)
       simplecov-html (~> 0.5.3)
     simplecov-html (0.5.3)
+    simplecov-vim (0.0.1)
     thin (1.2.11)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -233,5 +234,6 @@ DEPENDENCIES
   ruby-debug19
   sass
   simplecov
+  simplecov-vim
   thin
   will_paginate (~> 3.0.pre2)

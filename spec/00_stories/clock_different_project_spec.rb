@@ -2,7 +2,8 @@ require 'spec_helper'
 
 steps "clock in and out on projects", :type => :request do
 
-  let! :client_1 do Factory(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
+  let! :client_1 do
+    Factory(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
   let! :client_2 do Factory(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
   let! :project_2 do Factory(:project, :client => client_1, :name => "project 2") end
   let! :project_3 do Factory(:project, :client => client_2, :name => 'project 3') end
