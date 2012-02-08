@@ -13,6 +13,10 @@ RSpec.configure do |config|
   config.mock_with :rspec
 
   #config.backtrace_clean_patterns = {}
+  config.after(:each, :type => :view)  do
+    logout
+  end
+
   config.after(:each, :type => :controller)  do
     logout
   end

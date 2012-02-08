@@ -73,9 +73,7 @@ steps "clock in and out on projects", :type => :request do
   end
 
   it "I click the clock for project 2 in the picker" do
-    within "#picker #clock_in_on_project_#{project_2.id}" do
-      page.find("input[type='image']").click
-    end
+    page.find("#picker #clock_in_on_project_#{project_2.id}").click
   end
 
   it "should show project 2 in the timeclock" do

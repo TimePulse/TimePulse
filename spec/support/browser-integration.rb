@@ -14,9 +14,13 @@ module SaveAndOpenOnFail
   rescue RSpec::Core::Pending::PendingDeclaredInExample
     raise
   rescue Object => ex
-    wrapper = ex.exception("#{ex.message}\nLast view at: file://#{save_page}")
-    wrapper.set_backtrace(ex.backtrace)
-    raise wrapper
+    begin
+      wrapper = ex.exception("#{ex.message}\nLast view at: file://#{save_page}")
+      wrapper.set_backtrace(ex.backtrace)
+      raise wrapper
+    rescue
+      raise ex
+    end
   end
 end
 

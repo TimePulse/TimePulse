@@ -19,7 +19,6 @@ steps "log in and switch projects", :type => :request do
   end
 
   it "should login as a user" do
-    Rails.logger.fatal{"********** visiting root path"}
     visit root_path
     fill_in "Login", :with => user.login
     fill_in "Password", :with => user.password
