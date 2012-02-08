@@ -43,6 +43,8 @@ namespace :db do
                            :email => "Austin@austin.com", 
                            :password => 'foobar', 
                            :password_confirmation => 'foobar')
+      user.groups << Group.find_by_name("Registered Users")
+      user.groups << Group.find_by_name("Administration")
     end
     
     # An example to be deleted or replaced
