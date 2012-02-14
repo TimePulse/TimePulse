@@ -2,6 +2,7 @@
 
 -content_for :aux do
   = render :partial => "shared/timeclock"
+  = render :partial => "shared/week_summary", :locals => { :this_week_units => current_user.work_units.this_week }
   = render :partial => "shared/recent_work"
 
 -content_for :picker do
