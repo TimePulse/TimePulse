@@ -36,4 +36,10 @@ module WorkUnitsHelper
     link_to('Delete', work_unit_path(work_unit), {:method => :delete, :confirm => "Are you sure?"})
   end
 
+  def project_selector(form)
+    form.select(:project_id,
+    Project.where(:clockable => true).collect {|p| [p.name, p.id]}
+    )
+  end
+
 end
