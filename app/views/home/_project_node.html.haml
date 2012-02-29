@@ -1,0 +1,13 @@
+- current = node == current_project
+- cssclass = node.clockable? ? "task" : "category"
+- cssclass += " current" if current
+= content_tag_for(:tr, node, :class => cssclass) do
+  %td.project_name
+    %div
+      = depth_indicator(path.length)
+      = switch_to_project_link(node)
+  %td.tools
+    - if node.clockable?
+      = clock_in_widget(node, :icon)
+- if defined? children
+  = children

@@ -1,5 +1,4 @@
 module ProjectsHelper
-
   def project_parent_selector(form)
     form.select(:parent_id,
     Project.find(:all).collect  {|p| [p.name, p.id]}, { :include_blank => "" }
@@ -21,32 +20,6 @@ module ProjectsHelper
   def client_selector_array
     @client_array ||= Client.find(:all).collect{ |c| [c.name, c.id] }
   end
-
-
-  def list_tree(projects, depth = 0, partial = "projects/project")
-    String.new.tap do |str|
-      [*projects].each do |project|
-        Project.each_with_level(project.self_and_descendants) do |project, depth|
-          next unless project.self_and_ancestors.archived.blank?
-          str << (render :partial => partial, :locals => { :project => project, :depth => depth }) unless project.nil?
-        end
-      end
-      str.html_safe
-    end.html_safe
-  end
-
-
-  def depth_indicator(depth)
-    str = ''
-    if depth > 0
-      depth.times do
-        str << image_tag("/images/icons/spacer.png", :class=> "inline", :size =>"10x12", :alt => "&nbsp;&nbsp;&nbsp;")
-      end
-      str << image_tag("/images/icons/indent_arrow.png", :class=>"inline", :size => "12x12", :alt => '->')
-    end
-    str.html_safe
-  end
-
 
   def short_name_with_client(project)
     return unless project
