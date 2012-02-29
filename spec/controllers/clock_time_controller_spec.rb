@@ -29,6 +29,13 @@ describe ClockTimeController do
         post :create, :id => @project.id
         assigns[:work_unit].start_time.should be_within(1.second).of(Time.now)
       end
+
+      it "should set my current project to the project id" do
+        post :create, :id => @project.id
+        @user.reload
+        @user.current_project.should == @project
+      end
+
       it "should assign a work unit with nil hours" do
         post :create, :id => @project.id
         assigns[:work_unit].hours.should be_nil
@@ -94,7 +101,7 @@ describe ClockTimeController do
 
   describe "DELETE 'destroy'" do
     describe "with invalid conditions - manual hours too high", :pending => "Not implemented yet." do
-      # TODO:  Right now, the app handles invalid hours submissions by just truncating hours when 
+      # TODO:  Right now, the app handles invalid hours submissions by just truncating hours when
       # the WU is clocked out.   So if you clock in for 6 minutes and manually enter 10 hours, you will
       # silently end up with a work unit for 0.10 hours.  Probably ought to be changed in the future, and
       # these specs are here for that.
@@ -104,9 +111,9 @@ describe ClockTimeController do
         @wu.reload   # to clear the microseconds from @wu.start_time
       end
       it "should not mark the unit completed" do
-        lambda do 
+        lambda do
           delete :destroy, :id => @wu.id, :work_unit => { :hours => '7.0' }
-        end.should_not change{ @wu.reload.completed? }.from(false)       
+        end.should_not change{ @wu.reload.completed? }.from(false)
       end
       it "should not set the hours" do
         delete :destroy, :id => @wu.id, :work_unit => { :hours => '7.0' }

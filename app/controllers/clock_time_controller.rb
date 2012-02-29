@@ -11,7 +11,9 @@ class ClockTimeController < AuthzController
     current_unit.clock_out! unless current_unit.nil?
     @work_unit = current_user.work_units.build( :project => @project, :start_time => Time.zone.now )
     @work_unit.save!
-    # Reload the assocations to grab the current_work_unit
+    # Reload the associations to grab the current_work_unit
+    current_user.current_project = @project
+    current_user.save!
     current_user.reload
 
     respond_to do |format|
