@@ -7,7 +7,7 @@
     %th Description
     %th
 
-  = list_tree(@root_project)
+  = list_tree('project', 'home/project_list', @root_project.descendants)
 
 
 = link_to 'New Project', new_project_path
