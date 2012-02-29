@@ -211,6 +211,20 @@ describe WorkUnit do
       WorkUnit.for_client(@client).should_not include(wu2)
     end
   end
-    
+
+  describe "this_week" do
+    before(:each) do
+      this_week = Time.zone.now.beginning_of_week
+      last_week = this_week - 1.week
+      @last_week_unit = Factory(:work_unit, :start_time => last_week, :stop_time => last_week + 2.hours, :hours => 2.0)
+      @this_week_unit = Factory(:work_unit, :start_time => this_week, :stop_time => this_week + 2.hours, :hours => 2.0)
+    end
+    it "should find a WorkUnit created this week" do
+      WorkUnit.this_week.should include(@this_week_unit)
+    end
+    it "should not find a WorkUnit created last week" do
+      WorkUnit.this_week.should_not include(@last_week_unit)
+    end
+  end
 end
 

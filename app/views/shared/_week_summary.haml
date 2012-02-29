@@ -1,0 +1,10 @@
+= page_block("Hours This Week", :id => "this_week") do
+  %table.listing
+    %tr
+      %th Total
+      %th Billable
+      %th Unbillable
+    %tr
+      %td="%.2f" % this_week_units.map{|wu|wu.hours}.sum
+      %td="%.2f" % this_week_units.billable.map{|wu|wu.hours}.sum
+      %td="%.2f" % this_week_units.unbillable.map{|wu|wu.hours}.sum

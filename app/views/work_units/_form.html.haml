@@ -3,6 +3,7 @@
     = f.error_messages
     = f.hidden_field  :calculate, :value => true
 
+    = f.labeled_input(:project_id) { project_selector(f) }
     = labeled_datetimepicker_field f, :start_time
     = labeled_datetimepicker_field f, :stop_time
 
@@ -10,5 +11,5 @@
     = f.labeled_input :notes
     = f.labeled_input(:billable) do
       = f.check_box(:billable)
-    = f.unlabeled_submit
+    = f.unlabeled_submit "Submit"
 

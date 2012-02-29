@@ -52,5 +52,6 @@ capybara*.html
 .rspec
 public/sitemap.xml
 *.swp
+insight.sqlite
 coverage.vim
 coverage/
