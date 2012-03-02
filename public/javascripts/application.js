@@ -4,13 +4,13 @@ $('document').ready( function(){
 
 Ninja.orders(function(Ninja){
     ajaxSubmitConfigs = {
-      busyElement: function(elem){ return $('#timeclock')},
-      actions: {
-        timeclock: function(data) { $("#timeclock").replaceWith(data) },
-        project_picker: function(data) { $("#project_picker").replaceWith(data) }, //probably should select the project
-        current_project: function(data) { $("current_project").replaceWith(data) },
-        recent_work: function(data) { $("recent_work").replaceWith(data) }
-      }
+      busyElement: function(elem){ return $('#timeclock')}
+//      actions: {
+//        timeclock: function(data) { $("#timeclock").replaceWith(data) },
+//        project_picker: function(data) { $("#project_picker").replaceWith(data) }, //probably should select the project
+//        current_project: function(data) { $("current_project").replaceWith(data) },
+//        recent_work: function(data) { $("recent_work").replaceWith(data) }
+//      }
     }
 
     Ninja.behavior({

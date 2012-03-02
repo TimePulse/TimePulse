@@ -19,6 +19,7 @@ module SaveAndOpenOnFail
       wrapper.set_backtrace(ex.backtrace)
       raise wrapper
     rescue
+      p ex
       raise ex
     end
   end
