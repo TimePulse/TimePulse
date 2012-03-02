@@ -12,21 +12,21 @@ Tracks::Application.configure do
   # Specifies the header that your server uses for sending files
   config.action_dispatch.x_sendfile_header = "X-Sendfile"
 
-  config.middleware.use 'Rack::Bug',
-    :secret_key => '7370ca22d6be47dd8392a54db32a64a9d2cfb030e698e50252a7682da89de2e5aa80488f6bf73d3d8b1cf7939468774382739c56c3d687d326780bdbe53c899f',
-    :panel_classes => [
-       Rack::Bug::RailsInfoPanel,
-       Rack::Bug::TimerPanel,
-       Rack::Bug::RequestVariablesPanel,
-       Rack::Bug::ActiveRecordPanel,
-       Rack::Bug::TemplatesPanel,
-       Rack::Bug::LogPanel,
-       Rack::Bug::SQLPanel,    # -- adds ~10 sec to load time
-       # Rack::Bug::CachePanel,  # -- adds ~10 sec to load time
-       Rack::Bug::MemoryPanel
-     ]
-
-
+#  config.middleware.use 'Rack::Bug',
+#    :secret_key => '7370ca22d6be47dd8392a54db32a64a9d2cfb030e698e50252a7682da89de2e5aa80488f6bf73d3d8b1cf7939468774382739c56c3d687d326780bdbe53c899f',
+#    :panel_classes => [
+#       Rack::Bug::RailsInfoPanel,
+#       Rack::Bug::TimerPanel,
+#       Rack::Bug::RequestVariablesPanel,
+#       Rack::Bug::ActiveRecordPanel,
+#       Rack::Bug::TemplatesPanel,
+#       Rack::Bug::LogPanel,
+#       Rack::Bug::SQLPanel,    # -- adds ~10 sec to load time
+#       # Rack::Bug::CachePanel,  # -- adds ~10 sec to load time
+#       Rack::Bug::MemoryPanel
+#     ]
+#
+#
 
   # For nginx:
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect'
