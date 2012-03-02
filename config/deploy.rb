@@ -1,3 +1,4 @@
+$:.push "."
 default_run_options[:pty] = true
 #ssh_options[:verbose] = :debug
 #ssh_options[:keys] = %w{~/.ssh/lrd_rsa} # uncomment if you need to use a different key
@@ -61,4 +62,3 @@ namespace :gems do
     run "cd #{current_path} && #{sudo} rake RAILS_ENV=production gems:install"
   end
 end
-

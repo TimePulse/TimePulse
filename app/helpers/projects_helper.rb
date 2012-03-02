@@ -39,7 +39,7 @@ module ProjectsHelper
    end
 
   def clock_in_widget(project, style = nil)
-    title = "Clock in on #{project.name}"
+    title = "Clock in on #{short_name_with_client(project)}"
     cssid = "clock_in_on_" + dom_id(project)
     if style == :icon
       link_to(image_tag('/images/icons/clock_in.png', :alt => title), clock_in_path(:id => project), :method => :post, :title => title, :id => cssid)
