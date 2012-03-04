@@ -17,7 +17,7 @@
 
   - for work_unit in @work_units
     %tr
-      %td= work_unit.project.name
+      %td= project_name_with_client(work_unit.project)
       %td= work_unit.user.name
       %td= work_unit.start_time
       %td= work_unit.stop_time
