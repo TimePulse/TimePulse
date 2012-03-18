@@ -32,9 +32,7 @@
       - sanity_sum += hrs
       %tr
         %td
-          = proj.client.abbreviation
-          &#8212;
-          = proj.name
+          = project_name_with_client(proj)
         %td= hrs
     %tr
       %td
@@ -49,9 +47,7 @@
       %td.nobr
         %b= wu.hours    
       %td
-        = wu.project.client.abbreviation
-        &#8212;
-        = wu.project.name
+        = project_name_with_client(wu.project)
       %td= wu.notes
       %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)                                                          
 
