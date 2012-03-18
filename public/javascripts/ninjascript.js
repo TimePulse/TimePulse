@@ -3387,6 +3387,7 @@ define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "n
       },
       applyBehaviorsInContext: function(context, element, behaviors) {
         var curContext,
+        rootContext = context,
         applyList = [],
         scribe = new EventScribe
 
@@ -3413,7 +3414,6 @@ define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "n
 
         forEach(behaviors,
           function(behavior){
-            //XXX This needs to have exception handling back
             try {
               curContext = behavior.inContext(context)
               element = behavior.applyTransform(curContext, element)
@@ -3434,6 +3434,9 @@ define('ninja/behavior-collection',["sizzle-1.0", "ninja/behaviors", "utils", "n
             }
           }
         )
+
+        rootContext.visibleElement = element
+
         jQuery(element).data("ninja-visited", context)
 
         scribe.applyEventHandlers(element)
@@ -3844,6 +3847,11 @@ define('ninja',["utils", "ninja/tools", "ninja/behaviors", "ninja/configuration"
             collection.addBehavior(selector, dispatching[selector])
           }
         }
+        this.failSafeGo()
+      },
+
+      failSafeGo: function() {
+        this.failSafeGo = function(){}
         jQuery(window).load( function(){ Ninja.go() } )
       },
 
@@ -3862,7 +3870,7 @@ define('ninja',["utils", "ninja/tools", "ninja/behaviors", "ninja/configuration"
           Ninja.tools.getRootCollection().mutationEventTriggered(evnt);
         }
 
-        if(this.behavior != this.misbehavior) {
+        if(this.behavior != this.badBehavior) {
           var rootOfDocument = this.tools.getRootOfDocument()
           rootOfDocument.bind("DOMSubtreeModified DOMNodeInserted thisChangedDOM", handleMutation);
           //If we ever receive either of the W3C DOMMutation events, we don't need our IE based
@@ -3952,7 +3960,7 @@ define('ninja/behaviors/standard',["ninja", "utils"],
               },
               events: {
                 click:  function(evnt) {
-                  this.overlayAndSubmit(evnt.target, evnt.target.href, configs.actions)
+                  this.overlayAndSubmit(this.visibleElement, evnt.target, evnt.target.href, configs.actions)
                 }
               }
             })
@@ -3986,7 +3994,7 @@ define('ninja/behaviors/standard',["ninja", "utils"],
               },
               events: {
                 submit: function(evnt) {
-                  this.overlayAndSubmit(evnt.target, evnt.target.action, configs.actions)
+                  this.overlayAndSubmit(this.visibleElement, evnt.target, evnt.target.action, configs.actions)
                 }
               }
             })
@@ -4564,8 +4572,8 @@ define('ninja/tools/ajax-submitter',["ninja", "utils", "./json-dispatcher", "./o
           return submitter
         },
 
-        overlayAndSubmit: function(target, action, jsonHandling) {
-          var overlay = this.busyOverlay(this.findOverlay(target))
+        overlayAndSubmit: function(overlaid, target, action, jsonHandling) {
+          var overlay = this.busyOverlay(this.findOverlay(overlaid))
 
           var submitter
           if( typeof jsonHandling == "undefined" ) {

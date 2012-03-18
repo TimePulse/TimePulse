@@ -21,13 +21,13 @@ gem "faker"
 gem "mysql2", "< 0.3"
 gem "activerecord"
 gem "lrd_view_tools", ">= 0.1.3"
-gem "logical-insight"
 gem "logical_tabs"
 gem "awesome_nested_set"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem 'logical_authz' #, :path => "../LogicalAuthz/"
 
 group :development, :test do
+  gem "logical-insight"
   gem 'rspec', "< 2.8"
   gem 'rspec-rails'
   gem 'factory_girl_rails'
