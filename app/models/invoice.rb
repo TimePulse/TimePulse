@@ -25,6 +25,8 @@ class Invoice < ActiveRecord::Base
   attr_accessible :notes, :due_on, :client, :client_id, :paid_on, :reference_number
   accepts_nested_attributes_for :work_units, :reject_if => :all_blank, :allow_destroy => :false
 
+  before_destroy :dissociate_work_units
+
   # TODO: Reimplement this with i18n
   # attr_human_name :reference_number => 'Ref #'
 
@@ -34,6 +36,14 @@ class Invoice < ActiveRecord::Base
 
   def paid?
     !paid_on.nil?
+  end
+
+  private
+  def dissociate_work_units
+    self.work_units.each do |wu|
+      wu.invoice = nil
+      wu.save
+    end
   end
 
 end

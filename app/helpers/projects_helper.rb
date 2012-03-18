@@ -21,13 +21,16 @@ module ProjectsHelper
     @client_array ||= Client.find(:all).collect{ |c| [c.name, c.id] }
   end
 
-  def short_name_with_client(project)
+  def project_name_with_client(project, short=false)
     return unless project
     String.new.tap do |str|
-      str << "[#{project.client.abbreviation.try(:upcase)}]" unless project.client.nil?
-      str << "&nbsp;"
-      str << truncate(project.name, :length => 20, :omission => '...')
+      str << "[#{project.client.abbreviation.try(:upcase)}]&nbsp;" unless project.client.nil?
+      str << (short ? truncate(project.name, :length => 20, :omission => '...') : project.name)
     end.html_safe
+  end
+
+  def short_name_with_client(project)
+    project_name_with_client(project, true)
   end
 
   def switch_to_project_link(project)

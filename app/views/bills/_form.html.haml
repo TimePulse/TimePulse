@@ -28,9 +28,7 @@
               = wu_form.check_box(wu.id, :class => 'work_unit_checkbox')
               = wu_form.label(wu.hours, nil, :class => 'hours')
             %td
-              = wu.project.client.abbreviation
-              &#8212;
-              = wu.project.name
+              = project_name_with_client(wu.project)
             %td= wu.notes
             %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
             %td.nobr= wu.stop_time.try(:to_s, :time)

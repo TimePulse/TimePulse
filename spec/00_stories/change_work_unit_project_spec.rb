@@ -2,7 +2,7 @@ require 'spec_helper'
 
 steps "edit a work unit to move it from one project to another", :type => :request do
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
-  let! :client_2 do Factory(:client, :name => 'Bar, Inc.') end
+  let! :client_2 do Factory(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
   let! :project_1 do Factory(:project, :client => client_1) end
   let! :project_2 do Factory(:project, :client => client_2) end
   let! :user      do Factory(:user, :current_project => project_1) end
@@ -39,6 +39,12 @@ steps "edit a work unit to move it from one project to another", :type => :reque
   it "should show a project <select> element" do
     within "form#edit_work_unit_#{work_unit.id}" do
       page.should have_selector("#work_unit_project_id")
+    end
+  end
+
+  it "should show a client abbreviation in the project picker if available" do
+    within "#work_unit_project_id option[value='#{project_2.id}']" do
+      page.should have_content(project_2.client.abbreviation)
     end
   end
 
