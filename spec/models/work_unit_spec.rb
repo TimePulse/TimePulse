@@ -51,6 +51,13 @@ describe WorkUnit do
     it "should be invalid if the stop time is in the future" do
       Factory.build(:work_unit, :stop_time => Time.now + 1.minute).should_not be_valid            
     end
+    
+    it "should be invalid if stop time is earlier than start time" do
+      Factory.build(:work_unit, :start_time => Time.now, :stop_time => Time.now - 5.minutes).should_not be_valid
+    end
+    it "should be invalid if hours is negative" do
+      Factory.build(:work_unit, :hours => -1).should_not be_valid
+    end
   end
 
   describe "in_progress" do
