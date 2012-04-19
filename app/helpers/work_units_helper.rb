@@ -16,8 +16,8 @@ module WorkUnitsHelper
           ["Project:",    short_name_with_client(work_unit.project)],
           ["Notes:",      work_unit.notes],
           ["Hours:",      work_unit.hours],
-          ["Started:",    work_unit.start_time.to_s(:short_datetime)],
-          ["Finished:",   work_unit.stop_time.to_s(:short_datetime)]
+          ["Started:",    work_unit.start_time.nil? ? "-" : work_unit.start_time.to_s(:short_datetime)],
+          ["Finished:",   work_unit.stop_time.nil? ? "-" : work_unit.stop_time.to_s(:short_datetime)]
           ].map{ |line| "<dt>#{line[0]}</dt><dd>#{line[1]}</dd>".html_safe }.join().html_safe
       end
     end
