@@ -52,7 +52,6 @@ steps "clock in and out on projects", :type => :request do
 
 
   it "should have an unclocked timeclock" do
-    debugger
     within "#timeclock" do
       page.should have_content("You are not clocked in")
       page.should_not have_selector("#timeclock #task_elapsed")
