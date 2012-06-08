@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   end
 
   def recent_work_units
-    work_units.completed.recent
+    work_units.completed.recent.includes(:project => :client)
   end
 
   def time_on_project(project)
