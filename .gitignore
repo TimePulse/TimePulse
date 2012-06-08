@@ -56,3 +56,4 @@ insight.sqlite
 coverage.vim
 coverage/
 .idea
+db_backups/

@@ -52,6 +52,7 @@ steps "clock in and out on projects", :type => :request do
 
 
   it "should have an unclocked timeclock" do
+    debugger
     within "#timeclock" do
       page.should have_content("You are not clocked in")
       page.should_not have_selector("#timeclock #task_elapsed")
@@ -123,6 +124,7 @@ steps "clock in and out on projects", :type => :request do
   end
 
   it "should update 'Hours this week' with the created work units" do
+
     within "#this_week" do
       hours = WorkUnit.this_week.map{|wu|wu.hours}.sum
       page.should have_content("%.2f" % hours)
