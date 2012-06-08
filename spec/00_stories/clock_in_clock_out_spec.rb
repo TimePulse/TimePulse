@@ -123,6 +123,7 @@ steps "clock in and out on projects", :type => :request do
   end
 
   it "should update 'Hours this week' with the created work units" do
+
     within "#this_week" do
       hours = WorkUnit.this_week.map{|wu|wu.hours}.sum
       page.should have_content("%.2f" % hours)

@@ -1,3 +1,4 @@
 $('#timeclock').replaceWith("<%= escape_javascript(render :partial => 'shared/timeclock') %>")
 $('#recent_work').replaceWith("<%= escape_javascript(render :partial => 'shared/recent_work') %>")
 $('#project_picker').replaceWith("<%= escape_javascript(render :partial => 'shared/project_picker') %>")
+$('#this_week').replaceWith("<%= escape_javascript(render :partial => 'shared/week_summary', :locals => {:this_week_units => current_user.work_units.this_week}) %>")
