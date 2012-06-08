@@ -4,6 +4,4 @@
       %th Project / Notes
       %th Hrs
       %th
-
-    - current_user.recent_work_units.each do |wu|
-      = render :partial => "shared/work_unit_narrow", :locals => { :work_unit => wu }
+    = render :partial => "shared/work_unit_narrow", :collection => current_user.recent_work_units, :as => :work_unit
