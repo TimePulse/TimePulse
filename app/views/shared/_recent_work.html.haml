@@ -4,4 +4,4 @@
       %th Project / Notes
       %th Hrs
       %th
-    = render :partial => "shared/work_unit_narrow", :collection => current_user.recent_work_units, :as => :work_unit
+    = render :partial => "shared/work_unit_narrow", :collection => current_user.reload.recent_work_units, :as => :work_unit

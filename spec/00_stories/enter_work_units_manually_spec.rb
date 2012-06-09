@@ -25,29 +25,30 @@ steps "User manually enters work units", :type => :request do
   end
 
   it "when I fill in valid work unit information" do
-    fill_in "Start time", :with => Time.now - 1.hour
-    fill_in "Stop time", :with => Time.now
+    fill_in "Start time", :with => (Time.now - 1.hour).to_s(:short_datetime)
+    fill_in "Stop time", :with => Time.now.to_s(:short_datetime)
     fill_in "Notes", :with => "An hour of work"
+    click_button "Done"
     click_button "Save Changes"
   end
 
   it "should add a work unit to the database" do
-    WorkUnit.count.should == @work_unit_count + 1
+    wait_until { WorkUnit.count == @work_unit_count + 1 }
     @workUnit
   end
 
   it "should have the correct values for the work unit" do
     @work_unit = WorkUnit.last
     @work_unit.hours.should == 1.00
-    @work_unit.notes.should == "An hour of work"   
+    @work_unit.notes.should == "An hour of work"
   end
-
   it "should show the work unit in recent work" do
     within "#recent_work" do
-      page.should have_content("1.00")
+      wait_until { page.has_content?("1.00") }
       page.should have_link("Edit", "/work_units/#{@work_unit.id}/edit")
-    end 
+    end
   end
+
 
   it "should show the work unit in current project report" do
     within "#current_project" do

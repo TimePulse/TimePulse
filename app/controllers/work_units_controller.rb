@@ -54,9 +54,9 @@ class WorkUnitsController < ApplicationController
       if @work_unit.save
         flash[:notice] = 'WorkUnit was successfully created.'
         format.html { redirect_to(@work_unit) }
-        format.js { 
-          @work_unit = WorkUnit.new 
-          @work_units = current_user.work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil) 
+        format.js {
+          @work_unit = WorkUnit.new
+          @work_units = current_user.work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil)
         }
       else
         format.html { render :action => "new" }
