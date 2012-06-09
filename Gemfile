@@ -25,6 +25,7 @@ gem "logical_tabs"
 gem "awesome_nested_set"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem 'logical_authz' #, :path => "../LogicalAuthz/"
+gem "chronic"
 
 group :development, :test do
   gem "logical-insight"
