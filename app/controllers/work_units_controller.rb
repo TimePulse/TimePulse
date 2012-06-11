@@ -45,6 +45,7 @@ class WorkUnitsController < ApplicationController
 
   # POST /work_units
   def create
+    parse_date_params
     @work_unit = WorkUnit.new(params[:work_unit])
     @work_unit.user = current_user
     compute_some_fields
@@ -54,9 +55,9 @@ class WorkUnitsController < ApplicationController
       if @work_unit.save
         flash[:notice] = 'WorkUnit was successfully created.'
         format.html { redirect_to(@work_unit) }
-        format.js { 
-          @work_unit = WorkUnit.new 
-          @work_units = current_user.work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil) 
+        format.js {
+          @work_unit = WorkUnit.new
+          @work_units = current_user.work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil)
         }
       else
         format.html { render :action => "new" }
@@ -67,6 +68,7 @@ class WorkUnitsController < ApplicationController
 
   # PUT /work_units/1
   def update
+    parse_date_params
     Rails.logger.debug{params.inspect}
     @work_unit.attributes = params[:work_unit]
     compute_some_fields
@@ -85,6 +87,14 @@ class WorkUnitsController < ApplicationController
   end
 
   private
+  def parse_date_params
+
+    if wu_p = params[:work_unit]
+      wu_p[:start_time] = Chronic.parse(wu_p[:start_time]) if wu_p[:start_time]
+      wu_p[:stop_time] = Chronic.parse(wu_p[:stop_time]) if wu_p[:stop_time]
+    end
+  end
+
   def find_work_unit
     @work_unit = WorkUnit.find(params[:id])
     raise ArgumentError, 'Invalid work_unit id provided' unless @work_unit

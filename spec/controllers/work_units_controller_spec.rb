@@ -70,7 +70,7 @@ describe WorkUnitsController do
           @start = Time.now - 2 * 60 * 60
           @time = Time.now
           post :create, :work_unit => { :project_id => project.id,
-            :start_time => @start, :calculate => true, :hours => '2'
+            :start_time => @start.to_s, :calculate => true, :hours => '2'
           }
         end
 
@@ -112,11 +112,10 @@ describe WorkUnitsController do
 
       describe "for a work unit with a 'calc' hours" do
         before do
-          @time = Time.now
           @start = Time.now - 2 * 60 * 60
           @stop = @start + 1.5 * 3600
           post :create, :work_unit => { :project_id => project.id,
-            :start_time => @start, :stop_time => @stop, :calculate => true
+            :start_time => @start.to_s, :stop_time => @stop.to_s, :calculate => true
           }
         end
 
@@ -129,7 +128,7 @@ describe WorkUnitsController do
         before do
           @valid_create_params = {
             :project_id => project.id,
-            :start_time => Time.now
+            :start_time => Time.now.to_s
           }
         end
 
@@ -174,7 +173,7 @@ describe WorkUnitsController do
           end
           it "should set the work units list" do
             post :create, :work_unit => @valid_create_params
-            assigns(:work_units).should ==  @user.work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1) 
+            assigns(:work_units).should ==  @user.work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1)
           end
         end
       end
@@ -184,7 +183,7 @@ describe WorkUnitsController do
           #invalid because work units require a project
           @valid_create_params = {
             :project_id => nil,
-            :start_time => Time.now
+            :start_time => Time.now.to_s
           }
         end
 
@@ -222,14 +221,14 @@ describe WorkUnitsController do
 
         it "should redirect " do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
-            :start_time => @start, :calculate => "true", :hours => '2'
+            :start_time => @start.to_s, :calculate => "true", :hours => '2'
           }
           response.should be_redirect
         end
 
         it "should create a work unit with a real stop time" do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
-            :start_time => @start, :calculate => "true", :hours => '2'
+            :start_time => @start.to_s, :calculate => "true", :hours => '2'
           }
           assigns[:work_unit].stop_time.should be_within(90.seconds).of(Time.zone.now.utc)
         end
@@ -242,8 +241,8 @@ describe WorkUnitsController do
           stop = start + 1.5.hours
           put :update, :id => @work_unit.id, :work_unit => {
             :project_id => project.id,
-            :start_time => start,
-            :stop_time => stop,
+            :start_time => start.to_s,
+            :stop_time => stop.to_s,
             :hours => nil, :calculate => "true"
           }
         end
