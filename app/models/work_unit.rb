@@ -59,6 +59,9 @@ class WorkUnit < ActiveRecord::Base
 
   # can't have a stop time without hours also specified
   validates_presence_of :hours, :if => Proc.new{ |wu| wu.stop_time }
+  
+  # can't have negative hours
+  validates_numericality_of :hours, :greater_than_or_equal_to => 0, :if => Proc.new{ |wu| wu.hours }
 
   # A work unit is in progress if it has been started
   # but does not have hours yet.
