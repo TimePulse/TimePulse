@@ -25,11 +25,11 @@ steps "clock out after a while", :type => :request do
     @work_unit = WorkUnit.new(:project => project_1, :start_time => 1.hour.ago, :stop_time => nil)
     @work_unit.user = user
     @work_unit.save
-    visit root_path        
-  end 
+    visit root_path
+  end
 
   it "should show a clock-in form and a clock" do
-    page.should have_selector("form[action='/clock_out']")    
+    page.should have_selector("form[action='/clock_out']")
     page.should have_selector("#timeclock #task_elapsed")
   end
 
@@ -39,22 +39,23 @@ steps "clock out after a while", :type => :request do
     within("#timeclock"){ click_button "Clock Out" }
   end
 
+  it "should have an unclocked timeclock" do
+    within "#timeclock" do
+      wait_until { page.has_content? "You are not clocked in"}
+      page.should_not have_selector("#timeclock #task_elapsed")
+    end
+  end
+
   it "the work unit should be clocked out with an end time" do
     @work_unit.reload.hours.should be_within(0.01).of(1.00)
     @work_unit.stop_time.should be_within(2.seconds).of(Time.now)
   end
 
-  it "should have an unclocked timeclock" do
-    within "#timeclock" do
-      page.should have_content("You are not clocked in")
-      page.should_not have_selector("#timeclock #task_elapsed")
-    end
-  end
 
   it "should list the work unit in recent work" do
     within "#recent_work" do
       #within ".work_unit_#{@work_unit.id}" do
-      page.should have_link("Edit", edit_work_unit_path(@work_unit))
+      page.should have_css("a[href='#{edit_work_unit_path(@work_unit)}']")
     end
   end
 
