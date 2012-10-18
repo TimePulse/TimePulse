@@ -57,3 +57,4 @@ coverage.vim
 coverage/
 .idea
 db_backups/
+*.esproj
