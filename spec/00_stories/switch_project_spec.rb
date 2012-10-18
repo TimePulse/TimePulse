@@ -82,7 +82,6 @@ steps "log in and switch projects", :type => :request do
     end
   end
 
-
   it "should have the name of the project (method style)" do
     page.should have_xpath(headline(project_1.name).attrs(:id => 'headline'))
   end
@@ -101,6 +100,54 @@ steps "log in and switch projects", :type => :request do
     page.should_not have_selector("#project_picker #project_#{project_2.id}.current")
   end
 
+  it "when I click project 2" do
+    click_link project_2.name
+  end
+  
+  it "project 2 should have css class 'current'" do
+    page.should have_selector("#project_picker #project_#{project_2.id}.current")
+  end
+
+  it "project 1 should not have class 'current'" do
+    page.should_not have_selector("#project_picker #project_#{project_1.id}.current")
+  end
+  
+  it "should have the name of project 2" do
+    within "h1#headline" do
+      page.should have_content(project_2.name)
+    end
+  end
+  
+  it "should have a timeclock with the name of the project" do
+    within "div#timeclock" do
+      page.should have_content(project_2.name)
+    end
+  end
+  
+  it "when the page is reloaded" do
+    visit(current_path)
+  end
+  
+  it "project 2 should have css class 'current'" do
+    page.should have_selector("#project_picker #project_#{project_2.id}.current")
+  end
+
+  it "project 1 should not have class 'current'" do
+    page.should_not have_selector("#project_picker #project_#{project_1.id}.current")
+  end
+  
+  it "should have the name of project 2" do
+    within "h1#headline" do
+      page.should have_content(project_2.name)
+    end
+  end
+  
+  it "should have a timeclock with the name of the project" do
+    within "div#timeclock" do
+      page.should have_content(project_2.name)
+    end
+  end
+    
   def headline(name)
     xpath = HandyXPaths::Builder.new
     xpath.descendant(:h1)[xpath.content(name)]
