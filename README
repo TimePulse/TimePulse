@@ -39,3 +39,6 @@ lrd_dev_tools provides a few convenient default rake tasks:
   (coming soon)
   copies config/database.yml.example to config/database.yml, and does the same
   with other credentialed files in config/initializers
+
+test
+

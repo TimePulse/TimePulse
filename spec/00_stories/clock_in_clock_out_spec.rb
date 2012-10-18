@@ -30,7 +30,9 @@ steps "clock in and out on projects", :type => :request do
   end
 
   it "user clicks on the clock in link in the timeclock" do
-    click_link "Clock in on #{project_1.name}"
+    #click_link "Clock in on [#{project_1.client.abbreviation}]
+    ##{project_1.name}"
+    click_link "clock_in_on_project_#{project_1.id}"
   end
 
   it "should show a clock-in form and a clock" do
@@ -60,7 +62,8 @@ steps "clock in and out on projects", :type => :request do
 
 
   it "user clicks on the clock in link in the timeclock" do
-    click_link "Clock in on #{project_1.name}"
+    click_link "clock_in_on_project_#{project_1.id}"
+    #click_link "Clock in on #{project_1.name}"
     @new_work_unit = WorkUnit.last
   end
 

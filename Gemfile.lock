@@ -228,7 +228,7 @@ DEPENDENCIES
   populator
   rack (= 1.2.1)
   rails (= 3.0.10)
-  rake (= 0.8.7)
+  rake
   rspec (< 2.8)
   rspec-rails
   rspec-steps

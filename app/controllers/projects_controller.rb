@@ -36,13 +36,14 @@ class ProjectsController < AuthzController
   # PUT /projects/1
   def update
     @project = Project.find(params[:id])
-
-      if @project.update_attributes(params[:project])
-        flash[:notice] = 'Project was successfully updated.'
-        redirect_to(@project)
-      else
-        render :action => "edit"
-      end
+    if @project.update_attributes(params[:project])
+      expire_fragment "picker_node_#{@project.id}"
+      expire_fragment "project_picker"
+      flash[:notice] = 'Project was successfully updated.'
+      redirect_to(@project)
+    else
+      render :action => "edit"
+    end
   end
 
   # DELETE /projects/1
