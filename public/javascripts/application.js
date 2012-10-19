@@ -1,5 +1,6 @@
 $('document').ready( function(){
   startClock();
+  addCurrentClassToCurrentProject();
 });
 
 Ninja.orders(function(Ninja){
@@ -130,4 +131,9 @@ function zeropad(field) {
     return "0"+field;
   else
     return field;
+}
+
+function addCurrentClassToCurrentProject() {
+  var current_project_selector= "#project_" + $('meta[name="current project"]').attr("content");
+  $(current_project_selector).addClass("current");
 }
