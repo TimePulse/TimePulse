@@ -74,6 +74,8 @@ class WorkUnitsController < ApplicationController
     compute_some_fields
     if @work_unit.save
       flash[:notice] = 'WorkUnit was successfully updated.'
+      expire_fragment("work_unit_narrow_#{@work_unit.id}")
+      expire_fragment("work_unit_one_line_#{@work_unit.id}")
       redirect_to(@work_unit)
     else
       render :action => "edit"

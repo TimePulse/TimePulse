@@ -26,9 +26,9 @@ gem "awesome_nested_set"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
 gem 'logical_authz' #, :path => "../LogicalAuthz/"
 gem "chronic"
+gem "logical-insight"
 
 group :development, :test do
-  gem "logical-insight"
   gem 'rspec', "< 2.8"
   gem 'rspec-rails'
   gem 'factory_girl_rails'
