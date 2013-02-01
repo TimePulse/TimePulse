@@ -1,12 +1,9 @@
 #nav
   %ul
-    - authorized_menu(["Dashboard", root_path],  ["Clients", clients_path], ["Projects", projects_path], ["Bills", bills_path ], ["Invoices", invoices_path]) do |items|
-      -items.each do |name, path|
-        -if authorized_url?(path)
-          %li= link_to(name, path)
+    %li= link_to("Dashboard", root_path)
   %ul.right
     - if logged_in?
       %li= link_to("Account Settings", edit_user_path(current_user))
-    %li
-      = link_to_if_authorized("Logout", logout_path) do
-        - link_to("Login", login_path)
+      %li= link_to("Logout", logout_path)
+    -else
+      %li= link_to("Login", login_path)
