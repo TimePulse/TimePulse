@@ -1,6 +1,4 @@
-- current = node == current_project
 - cssclass = node.clockable? ? "task" : "category"
-- cssclass += " current" if current
 - unless node.archived?
   = content_tag_for(:tr, node, :class => cssclass) do
     = cache("picker_node_#{node.id}") do

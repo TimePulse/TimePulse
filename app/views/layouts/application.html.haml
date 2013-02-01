@@ -9,6 +9,9 @@
     - if content_for?(:description)
       %meta{"name" => "description", "content" => yield(:description)}
 
+    - if current_project
+      %meta{"name" => "current project", "content" => current_project.id}
+    
     %title=  @title ? @title : "LRD Time Tracking System"
 
     = stylesheet_link_tag 'universal', :media=>'all'
@@ -29,7 +32,6 @@
     = javascript_include_tag 'logical_tabs_jquery'
     = javascript_include_tag 'jquery.tools.min'
     = javascript_include_tag 'application.js'
-
 
     = csrf_meta_tag
     = yield :header
