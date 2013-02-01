@@ -1,0 +1,4 @@
+MAILTO="sysadmin@lrdesign.com"
+
+@hourly /home/lrd/bin/backup.sh
+@weekly /usr/sbin/logrotate -f -s /home/lrd/etc/logrotate.status /home/lrd/etc/logrotate.conf
