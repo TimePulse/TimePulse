@@ -40,8 +40,8 @@ steps "User manually enters work units", :type => :request do
     @work_unit = WorkUnit.last
     @work_unit.hours.should == 1.00
     @work_unit.notes.should == "An hour of work"
-    @work_unit.start_time.to_s.should == @start_time.to_s
-    @work_unit.stop_time.to_s.should == @stop_time.to_s
+    @work_unit.start_time.to_time.to_s(:rfc822).should == @start_time.to_s(:rfc822)
+    @work_unit.stop_time.to_time.to_s(:rfc822).should == @stop_time.to_s(:rfc822)
 
   end
   it "should show the work unit in recent work" do
