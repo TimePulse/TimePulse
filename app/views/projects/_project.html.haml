@@ -9,3 +9,5 @@
     = link_to_if_authorized 'Show', node
     = link_to_if_authorized 'Edit', edit_project_path(node)
     = link_to_if_authorized 'Destroy', node, :confirm => 'Are you sure?', :method => :delete
+- if defined? children
+  = children
