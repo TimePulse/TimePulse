@@ -15,6 +15,7 @@ Ninja.orders(function(Ninja){
     //}
 
     Ninja.behavior({
+        '.fix_work_unit_button': Ninja.submitAsAjax(),
         '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
         '*[data-remote=true]': Ninja.submitsAsAjax(),
         '#debug':        Ninja.suppressChangeEvents(),

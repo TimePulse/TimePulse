@@ -19,7 +19,7 @@ Tracks::Application.routes.draw do
   # match '/group_user' => 'groups_users#create', :as => :group_user, :via => post
 
   match '/work_units/switch' => 'work_units#switch', :as => :switch_work_unit, :via => :post
-  match '/fix_work_unit/:id' => 'work_units_fixer#create', :as => :fix_work_unit, :via => :post
+  match '/fix_work_unit/:id' => 'work_unit_fixer#create', :as => :fix_work_unit
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
   match '/login' => 'user_sessions#new', :as => :login
   match '/logout' => 'user_sessions#destroy', :as => :logout
