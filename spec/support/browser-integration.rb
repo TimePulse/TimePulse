@@ -1,12 +1,9 @@
 require 'capybara/rspec'
 require 'selenium-webdriver'
 require 'rspec-steps'
+require 'capybara/poltergeist'
 
-Capybara.register_driver(:selenium_chrome) do |app|
-  Capybara::Selenium::Driver.new(app, :browser => :chrome)
-end
-
-Capybara.default_driver = :selenium
+Capybara.default_driver = :poltergeist
 
 module SaveAndOpenOnFail
   def instance_eval(&block)

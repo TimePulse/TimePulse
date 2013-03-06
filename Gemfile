@@ -39,6 +39,7 @@ group :development, :test do
   gem 'thin'
   gem 'database_cleaner'
   gem 'rspec-steps'
+  gem 'poltergeist'
 end
 
 group :test do
