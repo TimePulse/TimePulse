@@ -4,7 +4,7 @@ class WorkUnitFixerController < ApplicationController
     @work_unit = WorkUnit.find(params[:id])
     if (@work_unit.stop_time.present?)
       redirect_to :back
-    ends
+    end
     @work_unit.stop_time = @work_unit.start_time + @work_unit.hours.hours
     @work_unit.save
 
