@@ -34,7 +34,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'ruby-debug', :platform => "ruby_18"
   gem 'ruby-debug19', :platform => "ruby_19"
-  gem 'capybara'
+  gem 'capybara', '1.1.4'
   gem 'launchy'
   gem 'thin'
   gem 'database_cleaner'
