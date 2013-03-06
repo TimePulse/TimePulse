@@ -28,7 +28,6 @@ steps "User manually enters work units", :type => :request do
     fill_in "Start time", :with => (@start_time = (Time.now - 1.hour)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
     fill_in "Notes", :with => "An hour of work"
-    click_button "Done"
     click_button "Save Changes"
   end
 
