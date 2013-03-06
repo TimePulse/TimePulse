@@ -15,7 +15,7 @@ module InvoicesHelper
   end
 
   def work_unit_stop_time(work_unit)
-    if (work_unit.stop_time)
+    if (work_unit.stop_time.present?)
       work_unit.stop_time.try(:to_s, :time)
     else
      link_to("Fix",
