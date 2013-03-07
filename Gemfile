@@ -8,8 +8,8 @@ if File::exists?(gemrc)
 end
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.10'
-gem 'rack', '1.2.1'
+gem 'rails', '3.1'
+gem 'rack', '1.3.2'
 
 gem 'rake'
 gem "haml", ">= 3.1.2"
@@ -24,7 +24,6 @@ gem "lrd_view_tools", ">= 0.1.3"
 gem "logical_tabs"
 gem "awesome_nested_set"
 gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
-gem 'logical_authz' #, :path => "../LogicalAuthz/"
 gem "chronic"
 gem "logical-insight"
 

@@ -5,18 +5,7 @@ class WorkUnitsController < ApplicationController
 
   before_filter :convert_hours_from_hhmm, :only => [ :update, :create ]
 
-  before_filter :find_work_unit, :only => [ :show, :edit, :update, :destroy ]
-
-  #FIXME:  Judson, I couldn't figure out how to combine these into one
-  # call, but I suspect it's possible
-  owner_authorized(:edit) do |user, id|
-    WorkUnit.find(id).user == user
-  end
-  owner_authorized(:destroy) do |user, id|
-    WorkUnit.find(id).user == user
-  end
-
-  grant_aliases :new => [:switch, :create], :edit => :update, :index => :show
+  before_filter :find_work_unit_and_authenticate, :only => [ :show, :edit, :update, :destroy ]
 
   # GET /work_units
   def index
@@ -97,9 +86,10 @@ class WorkUnitsController < ApplicationController
     end
   end
 
-  def find_work_unit
+  def find_work_unit_and_authenticate
     @work_unit = WorkUnit.find(params[:id])
     raise ArgumentError, 'Invalid work_unit id provided' unless @work_unit
+    authenticate_owner(@work_unit.user)
   end
 
   # compute a few fields based on sensible defaults, if "calculate" param was passed

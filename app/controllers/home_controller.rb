@@ -1,4 +1,5 @@
-class HomeController < AuthzController
+class HomeController < ApplicationController
+  before_filter :authenticate_user
   def index
     @user = current_user
     if (@current_project = current_user.current_project )

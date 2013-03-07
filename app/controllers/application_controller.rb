@@ -2,13 +2,8 @@ require 'authenticated_system'
 
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
-  include LogicalAuthz::Application
 
   helper :all # include all helpers, all the time
-
-  protect_from_forgery
-  needs_authorization
-  admin_authorized
 
   helper_method :current_user_session, :current_user
   before_filter :set_current_time
@@ -23,6 +18,18 @@ class ApplicationController < ActionController::Base
     ensure
       self.formats = old_formats
     end
+  end
+
+  def authenticate_user
+    redirect_to(default_unauthorized_path) unless current_user
+  end
+
+  def authenticate_admin
+    redirect_to(default_unauthorized_path) unless current_user.admin?
+  end
+
+  def authenticate_owner(user)
+    redirect_to(default_unauthorized_path) unless (current_user.admin? or current_user == user)
   end
 
   def store_location

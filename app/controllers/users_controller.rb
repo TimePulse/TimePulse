@@ -1,7 +1,6 @@
-class UsersController < AuthzController
-  owner_authorized :show, :edit, :update
+class UsersController < ApplicationController
 
-  before_filter :get_user, :only => [:show, :edit, :update]
+  before_filter :get_user_and_authenticate, :only => [:show, :edit, :update]
   
   def new
     @user = User.new
@@ -36,8 +35,9 @@ class UsersController < AuthzController
   end  
 
   private
-  def get_user
+  def get_user_and_authenticate
     Rails.logger.debug params.inspect
     @user = User.find(params[:id])
+    authenticate_owner(@user)
   end
 end

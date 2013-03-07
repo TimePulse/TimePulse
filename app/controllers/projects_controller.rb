@@ -1,6 +1,6 @@
-class ProjectsController < AuthzController
+class ProjectsController < ApplicationController
+  before_filter :authenticate_admin
   # GET /projects
-  grant_aliases :new => :create, :edit => :update, :index => :show
 
   def index
     @root_project = Project.root
