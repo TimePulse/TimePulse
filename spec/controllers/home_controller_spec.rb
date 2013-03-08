@@ -10,7 +10,6 @@ describe HomeController do
     describe "GET 'index'" do
       it "should be successful" do
         get 'index'
-
       end
 
       it "should be authorized" do
@@ -44,7 +43,7 @@ describe HomeController do
     before{ logout }
     it "is not authorizee" do
       get 'index'
-      controller.should be_redirect
+      response.should be_redirect
     end
   end
 end

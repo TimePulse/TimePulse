@@ -33,8 +33,9 @@ module AuthlogicTestHelper
 
   def logout
     activate_authlogic
+    debugger
     @current_user_session = nil
-    UserSession.find.destroy if UserSession.find
+    UserSession.find.try(:destroy)
   end
 
   def enable_authlogic_without_login

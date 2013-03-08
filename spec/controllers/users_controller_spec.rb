@@ -54,11 +54,6 @@ describe UsersController do
           put :update, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
         end.should change{ @user.reload.crypted_password }
         response.should_not redirect_to(default_unauthorized_path)
-        
-      end
-      
-      it "should succeed" do
-        
       end
     end
   end

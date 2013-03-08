@@ -31,13 +31,12 @@ group :development, :test do
   gem 'rspec', "< 2.8"
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'ruby-debug', :platform => "ruby_18"
-  gem 'ruby-debug19', :platform => "ruby_19"
   gem 'capybara', '1.1.4'
   gem 'launchy'
   gem 'thin'
   gem 'database_cleaner'
   gem 'rspec-steps'
+  gem 'debugger'
 end
 
 group :test do
