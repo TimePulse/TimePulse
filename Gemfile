@@ -28,7 +28,7 @@ gem "chronic"
 gem "logical-insight"
 
 group :development, :test do
-  gem 'rspec', "< 2.8"
+  gem 'rspec', "~> 2.8"
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'capybara', '1.1.4'
