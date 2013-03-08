@@ -23,7 +23,7 @@ gem "activerecord"
 gem "lrd_view_tools", ">= 0.1.3"
 gem "logical_tabs"
 gem "awesome_nested_set"
-gem 'authlogic', :git => 'git://github.com/odorcicd/authlogic.git', :branch => 'rails3'
+gem 'authlogic'
 gem "chronic"
 gem "logical-insight"
 

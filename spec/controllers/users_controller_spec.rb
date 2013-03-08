@@ -8,7 +8,7 @@ describe UsersController do
   describe "accessed by guest" do
     it "should forbid index" do
       get :index
-      controller.should be_forbidden
+      response.should be_redirect
     end
   end
 
@@ -20,27 +20,27 @@ describe UsersController do
     describe "get show" do
       it "should allow viewing own user" do 
         get :show, :id => @user.id
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
       end
 
       it "should forbid viewing another user" do
         @other = Factory.create(:user)
         get :show, :id => @other.id
-        controller.should be_forbidden
+        response.should be_redirect
       end
     end
     
     describe "get edit" do
       it "should allow editing own user" do
         get :edit, :id => @user.id
-        controller.should be_authorized        
+        response.should_not redirect_to(default_unauthorized_path)        
       end
     end
     
     describe "PUT update" do
       it "should be authorized" do
         put :update, :id => @user.id, :user => { :email => @user.email }
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
       end
       it "should allow a user to update his own current task" do
         @task = Factory(:task)
@@ -53,7 +53,7 @@ describe UsersController do
         lambda do 
           put :update, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
         end.should change{ @user.reload.crypted_password }
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
         
       end
       
@@ -86,7 +86,7 @@ describe UsersController do
       attributes =  Factory.attributes_for(:user)
       attributes.delete :groups
       post :create, :user => attributes
-      controller.should be_authorized
+      response.should_not redirect_to(default_unauthorized_path)
       user = assigns[:user]
       user.groups.should include(Group.find_by_name("Registered Users"))
     end

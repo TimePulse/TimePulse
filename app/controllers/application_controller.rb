@@ -21,25 +21,40 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_user
-    redirect_to(default_unauthorized_path) unless current_user
+    if (!current_user)
+      store_location
+      redirect_to(default_unauthorized_path)
+    end
   end
 
   def authenticate_admin
-    redirect_to(default_unauthorized_path) unless current_user.admin?
+    if (!current_user.admin?)
+      store_location
+      redirect_to(default_unauthorized_path)
+    end
   end
 
   def authenticate_owner(user)
-    redirect_to(default_unauthorized_path) unless (current_user.admin? or current_user == user)
+    if (!current_user.admin? and current_user != user)
+      store_location
+      redirect_to(default_unauthorized_path)
+    end
   end
 
   def store_location
-    session[:return_to] = request.request_uri
+    session[:return_to] = request.fullpath;
   end
 
   def redirect_back_or_default(default)
     redirect_to(session[:return_to] || default)
     session[:return_to] = nil
   end
+
+  def redirect_to_last_unauthorized(message)
+    flash[:notice] = message
+    redirect_back_or_default(root_path)
+  end
+
 
   def set_current_time
     @server_time_now = Time.zone.now

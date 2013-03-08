@@ -15,7 +15,7 @@ describe HomeController do
 
       it "should be authorized" do
         get 'index'
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
       end
     end
 
@@ -44,7 +44,7 @@ describe HomeController do
     before{ logout }
     it "is not authorizee" do
       get 'index'
-      controller.should be_forbidden
+      controller.should be_redirect
     end
   end
 end

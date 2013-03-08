@@ -13,14 +13,14 @@ describe ProjectsController do
     describe "GET index" do
       it "assigns all projects as @projects" do
         get :index
-        controller.should be_forbidden
+        response.should be_redirect
       end
     end
 
     describe "GET show" do
       it "assigns the requested project as @project" do
         get :show, :id => @project.id
-        controller.should be_forbidden
+        response.should be_redirect
       end
     end
 
@@ -46,7 +46,7 @@ describe ProjectsController do
       end
 
       after do
-        controller.should be_forbidden
+        response.should be_redirect
       end
     end
   end
@@ -59,7 +59,7 @@ describe ProjectsController do
     describe "GET index" do
       it "assigns the root project as @root_project" do
         get :index
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
         assigns[:root_project].should == Project.root
       end
     end
@@ -67,7 +67,7 @@ describe ProjectsController do
     describe "GET show" do
       it "assigns the requested project as @project" do
         get :show, :id => @project.id
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
         assigns[:project].should ==  @project
       end
     end
@@ -75,7 +75,7 @@ describe ProjectsController do
     describe "GET new" do
       it "assigns a new project as @project" do
         get :new
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
         assigns[:project].should be_a(Project)
         assigns[:project].should be_new_record
       end
@@ -84,7 +84,7 @@ describe ProjectsController do
     describe "GET edit" do
       it "assigns the requested project as @project" do
         get :show, :id => @project.id
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
         assigns[:project].should ==  @project
       end
     end
@@ -94,14 +94,14 @@ describe ProjectsController do
       describe "with valid params" do
         it "assigns a newly created project as @project" do
           post :create, :project => { :name => 'Cool Project' }
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
           assigns[:project].should be_a(Project)
           assigns[:project].should_not be_new_record
         end
 
         it "redirects to the created project" do
           post :create, :project => { :name => 'Cool Project' }
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
           response.should redirect_to(project_url(assigns[:project]))
         end
       end
@@ -109,14 +109,14 @@ describe ProjectsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved project as @project" do
           post :create, :project => { :name => '' }
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
           assigns[:project].should be_a(Project)
           assigns[:project].should be_new_record
         end
 
         it "re-renders the 'new' template" do
           post :create, :project => { :name => '' }
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
           response.should render_template('new')
         end
       end
@@ -129,19 +129,19 @@ describe ProjectsController do
         it "updates the requested project" do
           lambda do
             put :update, :id => @project.id, :project => {:name => 'new name'}
-            controller.should be_authorized
+            response.should_not redirect_to(default_unauthorized_path)
           end.should change{ @project.reload.name }.to('new name')
         end
 
         it "assigns the requested project as @project" do
           put :update, :id => @project.id, :project => {:name => 'new name'}
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
           assigns[:project].should == @project
         end
 
         it "redirects to the project" do
           put :update, :id => @project.id, :project => {:name => 'new name'}
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
           response.should redirect_to(project_url(assigns[:project]))
         end
 
@@ -155,19 +155,19 @@ describe ProjectsController do
         it "doesn't change the record" do
           lambda do
             put :update, :id => @project.id, :project => {:name => nil }
-            controller.should be_authorized
+            response.should_not redirect_to(default_unauthorized_path)
           end.should_not change{ @project.reload }
         end
 
         it "assigns the project as @project" do
           put :update, :id => @project.id, :project => {:name => nil }
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
           assigns[:project].should == @project
         end
 
         it "re-renders the 'edit' template" do
           put :update, :id => @project.id, :project => {:name => nil }
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
           response.should render_template('edit')
         end
       end
@@ -178,19 +178,19 @@ describe ProjectsController do
       it "reduces project count by one" do
         lambda do
           delete :destroy, :id => @project.id
-          controller.should be_authorized
+          response.should_not redirect_to(default_unauthorized_path)
         end.should change(Project, :count).by(-1)
       end
 
       it "should make the project unfindable in the DB" do
         delete :destroy, :id => @project.id
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
         lambda{ Project.find(@project.id)}.should raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "redirects to the projects list" do
         delete :destroy, :id => @project.id
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
         response.should redirect_to(projects_url)
       end
     end

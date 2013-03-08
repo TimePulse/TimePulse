@@ -28,4 +28,28 @@ module ApplicationHelper
   def labeled_datetimepicker_field(form, field_name, options = {})
     labeled_datepicker_field(form, field_name, options.merge!( :class => :datetime_entry ))
   end
+
+  def link_to_if_authorized(authorized_test, name, options = nil, html_options = nil)
+    options ||= {}
+    html_options ||= {}
+    url = options
+    if authorized_test
+      return link_to(name, options, html_options)
+    else
+      if block_given?
+        yield
+      end
+      return ""
+    end
+  end
+
+  def link_to_if_admin_authorized(name, options = nil, html_options = nil)
+    authorized_test = current_user and current_user.admin?
+    link_to_if_authorized(authorized_test, name, options, html_options)
+  end
+
+  def link_to_if_owner_authorized(owner, name, options = nil, html_options = nil)
+    authorized_test = current_user and (current_user.admin? or current_user == owner)
+    link_to_if_authorized(authorized_test, name, options, html_options)
+  end
 end

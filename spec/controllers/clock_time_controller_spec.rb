@@ -10,7 +10,7 @@ describe ClockTimeController do
     describe "with valid parameters" do
       it "should be authorized" do
         post :create, :id => @project.id
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
       end
       it "should succeed" do
         post :create, :id => @project.id

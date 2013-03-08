@@ -1,5 +1,5 @@
 class ClientsController < ApplicationController
-  before_filter :authunticate_admin
+  before_filter :authenticate_admin
 
   # GET /clients
   def index
