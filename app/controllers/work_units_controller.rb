@@ -89,7 +89,7 @@ class WorkUnitsController < ApplicationController
   def find_work_unit_and_authenticate
     @work_unit = WorkUnit.find(params[:id])
     raise ArgumentError, 'Invalid work_unit id provided' unless @work_unit
-    authenticate_owner(@work_unit.user)
+    authenticate_owner!(@work_unit.user)
   end
 
   # compute a few fields based on sensible defaults, if "calculate" param was passed

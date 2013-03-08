@@ -3,6 +3,7 @@ require "spec_helper"
 describe UsersController do
   before do
     sign_out :user
+    request.env['devise.mapping'] = Devise.mappings[:user]
   end
 
   describe "accessed by guest" do
@@ -32,27 +33,27 @@ describe UsersController do
     
     describe "get edit" do
       it "should allow editing own user" do
-        get :edit, :id => @user.id
+        get :edit_as_admin, :id => @user.id
         verify_authorization_successful        
       end
     end
     
     describe "PUT update" do
       it "should be authorized" do
-        put :update, :id => @user.id, :user => { :email => @user.email }
+        put :update_as_admin, :id => @user.id, :user => { :email => @user.email }
         verify_authorization_successful
       end
       it "should allow a user to update his own current task" do
         @task = Factory(:task)
         lambda do 
-          put :update, :id => @user.id, :user => { :current_project_id => @task.id }
+          put :update_as_admin, :id => @user.id, :user => { :current_project_id => @task.id }
         end.should change{ @user.reload.current_project}.from(nil).to(@task)
       end
       
       it "should allow changing password" do
         lambda do 
-          put :update, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
-        end.should change{ @user.reload.crypted_password }
+          put :update_as_admin, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
+        end.should change{ @user.reload.encrypted_password }
         verify_authorization_successful
       end
     end

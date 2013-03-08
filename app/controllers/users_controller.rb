@@ -1,14 +1,14 @@
 class UsersController < Devise::RegistrationsController
 
   before_filter :authenticate_user!, :only => [:index, :new, :create]
-  before_filter :get_user_and_authenticate, :only => [:show, :edit, :update]
+  before_filter :get_user_and_authenticate, :only => [:show, :edit_as_admin, :update_as_admin]
   
   def new
     @user = User.new
   end
   
   def create
-    super
+    @user = User.new(params[:user])
     @user.groups << Group.find_by_name("Registered Users")
     if @user.save
       flash[:notice] = "Account registered!"
@@ -25,10 +25,10 @@ class UsersController < Devise::RegistrationsController
   def show
   end
  
-  def edit
+  def edit_as_admin
   end
   
-  def update
+  def update_as_admin
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
     end
@@ -39,6 +39,6 @@ class UsersController < Devise::RegistrationsController
   def get_user_and_authenticate
     Rails.logger.debug params.inspect
     @user = User.find(params[:id])
-    authenticate_owner(@user)
+    authenticate_owner!(@user)
   end
 end
