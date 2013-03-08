@@ -10,7 +10,7 @@ describe ClockTimeController do
     describe "with valid parameters" do
       it "should be authorized" do
         post :create, :id => @project.id
-        response.should_not redirect_to(default_unauthorized_path)
+        verify_authorization_successful
       end
       it "should succeed" do
         post :create, :id => @project.id
@@ -51,7 +51,7 @@ describe ClockTimeController do
       it "should cause the user to become clocked in" do
         lambda do
           post :create, :id => @project.id
-        end.should change{ current_user.reload.clocked_in? }.from(false).to(true)
+        end.should change{ @user.reload.clocked_in? }.from(false).to(true)
       end
 
       describe "with AJAX" do
@@ -137,7 +137,7 @@ describe ClockTimeController do
       it "should cause the user to become clocked out" do
         lambda do
           delete :destroy
-        end.should change{ current_user.clocked_in? }.from(true).to(false)
+        end.should change{ @user.clocked_in? }.from(true).to(false)
       end
 
       describe "with Unobtrusive" do

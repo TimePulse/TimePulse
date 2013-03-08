@@ -2,7 +2,6 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'authlogic/test_case'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -12,12 +11,17 @@ RSpec.configure do |config|
   config.mock_with :rspec
 
   #config.backtrace_clean_patterns = {}
+
+  config.include Devise::TestHelpers, :type => :view
+  config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::TestHelpers, :type => :helper
+
   config.after(:each, :type => :view)  do
-    logout
+    sign_out :user
   end
 
   config.after(:each, :type => :controller)  do
-    logout
+    sign_out :user
   end
 
   config.use_transactional_fixtures = false

@@ -1,5 +1,4 @@
-module AuthlogicTestHelper
-  include Authlogic::TestCase
+module DeviseExtraTestHelper
 
   def current_user(stubs = {})
     return nil if current_user_session.nil?
@@ -16,7 +15,6 @@ module AuthlogicTestHelper
   end
 
   def login_as(user)
-    activate_authlogic
     user = case user
            when Symbol
              User.find_by_login(user.to_s) || Factory.create(user)
@@ -25,32 +23,29 @@ module AuthlogicTestHelper
            else
              user
            end
-    @current_session = UserSession.create(user)
+    sign_in user
     user
   end
   alias authenticate login_as
 
-
-  def logout
-    activate_authlogic
-    @current_user_session = nil
-    UserSession.find.try(:destroy)
+  def verify_authorization_successful
+    response.should_not redirect_to(login_path)
   end
 
-  def enable_authlogic_without_login
-    activate_authlogic
+  def verify_authorization_unsuccessful
+    response.should redirect_to(login_path)
   end
 
 end
 
 module RSpec::Rails::ControllerExampleGroup
-  include AuthlogicTestHelper
+  include DeviseExtraTestHelper
 end
 
 module RSpec::Rails::ViewExampleGroup
-  include AuthlogicTestHelper
+  include DeviseExtraTestHelper
 end
 
 module RSpec::Rails::HelperExampleGroup
-  include AuthlogicTestHelper
+  include DeviseExtraTestHelper
 end

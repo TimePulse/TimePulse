@@ -14,7 +14,7 @@ describe HomeController do
 
       it "should be authorized" do
         get 'index'
-        response.should_not redirect_to(default_unauthorized_path)
+        verify_authorization_successful
       end
     end
 
@@ -40,10 +40,10 @@ describe HomeController do
   end
 
   describe "logged out" do
-    before{ logout }
+    before{ sign_out :user }
     it "is not authorizee" do
       get 'index'
-      response.should be_redirect
+      verify_authorization_unsuccessful
     end
   end
 end

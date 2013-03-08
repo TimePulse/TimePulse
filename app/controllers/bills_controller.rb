@@ -1,6 +1,6 @@
 class BillsController < ApplicationController
   before_filter :find_bill, :only => [ :show, :edit, :update, :destroy ]
-  before_filter :authenticate_admin
+  before_filter :authenticate_admin!
 
   # GET /bills
   def index

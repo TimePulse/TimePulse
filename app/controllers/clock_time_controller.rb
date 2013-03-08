@@ -1,7 +1,7 @@
 require 'hhmm_to_decimal'
 
 class ClockTimeController < ApplicationController
-  before_filter :authenticate_user
+  before_filter :authenticate_user!
 
   include HhmmToDecimal
 

@@ -2,13 +2,13 @@ require "spec_helper"
 
 describe UsersController do
   before do
-    logout
+    sign_out :user
   end
 
   describe "accessed by guest" do
     it "should forbid index" do
       get :index
-      response.should be_redirect
+      verify_authorization_unsuccessful
     end
   end
 
@@ -20,27 +20,27 @@ describe UsersController do
     describe "get show" do
       it "should allow viewing own user" do 
         get :show, :id => @user.id
-        response.should_not redirect_to(default_unauthorized_path)
+        verify_authorization_successful
       end
 
       it "should forbid viewing another user" do
         @other = Factory.create(:user)
         get :show, :id => @other.id
-        response.should be_redirect
+        verify_authorization_unsuccessful
       end
     end
     
     describe "get edit" do
       it "should allow editing own user" do
         get :edit, :id => @user.id
-        response.should_not redirect_to(default_unauthorized_path)        
+        verify_authorization_successful        
       end
     end
     
     describe "PUT update" do
       it "should be authorized" do
         put :update, :id => @user.id, :user => { :email => @user.email }
-        response.should_not redirect_to(default_unauthorized_path)
+        verify_authorization_successful
       end
       it "should allow a user to update his own current task" do
         @task = Factory(:task)
@@ -53,7 +53,7 @@ describe UsersController do
         lambda do 
           put :update, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
         end.should change{ @user.reload.crypted_password }
-        response.should_not redirect_to(default_unauthorized_path)
+        verify_authorization_successful
       end
     end
   end
@@ -81,7 +81,7 @@ describe UsersController do
       attributes =  Factory.attributes_for(:user)
       attributes.delete :groups
       post :create, :user => attributes
-      response.should_not redirect_to(default_unauthorized_path)
+      verify_authorization_successful
       user = assigns[:user]
       user.groups.should include(Group.find_by_name("Registered Users"))
     end

@@ -28,7 +28,7 @@ describe GroupsController do
       it "assigns all groups as @groups" do
         Group.stub!(:all).and_return([mock_group])
         get :index
-        response.should_not redirect_to(default_unauthorized_path)
+        verify_authorization_successful
         assigns[:groups].should == [mock_group]
       end
     end

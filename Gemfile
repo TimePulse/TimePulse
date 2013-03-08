@@ -28,8 +28,8 @@ gem "chronic"
 gem "logical-insight"
 
 group :development, :test do
-  gem 'rspec', "~> 2.8"
-  gem 'rspec-rails'
+  gem 'rspec', '2.8'
+  gem 'rspec-rails', '2.8'
   gem 'factory_girl_rails'
   gem 'capybara', '1.1.4'
   gem 'launchy'

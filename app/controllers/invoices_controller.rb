@@ -1,6 +1,6 @@
 class InvoicesController < ApplicationController
   before_filter :find_invoice, :only => [ :show, :edit, :update, :destroy ]
-  before_filter :authenticate_admin
+  before_filter :authenticate_admin!
 
   # GET /invoices
   def index

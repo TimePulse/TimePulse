@@ -1,6 +1,6 @@
-class UsersController < ApplicationController
+class UsersController < Devise::RegistrationsController
 
-  before_filter :authenticate_user, :only => [:index, :new, :create]
+  before_filter :authenticate_user!, :only => [:index, :new, :create]
   before_filter :get_user_and_authenticate, :only => [:show, :edit, :update]
   
   def new
@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
   
   def create
-    @user = User.new(params[:user])
+    super
     @user.groups << Group.find_by_name("Registered Users")
     if @user.save
       flash[:notice] = "Account registered!"

@@ -25,8 +25,8 @@
 
 class User < ActiveRecord::Base
 
-  #devise :database_authenticatable, :registerable,
-   #    :recoverable, :rememberable, :trackable, :validatable, :confirmable
+  devise :database_authenticatable, :registerable,
+       :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   belongs_to :current_project, :class_name => "Project"
   has_many :work_units
@@ -36,6 +36,8 @@ class User < ActiveRecord::Base
 
   attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation
 
+  has_and_belongs_to_many :groups
+  
   def reset_current_work_unit
     @cwu = nil
   end

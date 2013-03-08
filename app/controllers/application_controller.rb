@@ -3,6 +3,8 @@ require 'authenticated_system'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 
+  protect_from_forgery 
+
   helper :all # include all helpers, all the time
 
   helper_method :current_user_session, :current_user
@@ -20,24 +22,24 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def authenticate_user
+  def authenticate_user!
     if (!current_user)
       store_location
-      redirect_to(default_unauthorized_path)
+      redirect_to(login_path)
     end
   end
 
-  def authenticate_admin
+  def authenticate_admin!
     if (!current_user.admin?)
       store_location
-      redirect_to(default_unauthorized_path)
+      redirect_to(login_path)
     end
   end
 
-  def authenticate_owner(user)
+  def authenticate_owner!(user)
     if (!current_user.admin? and current_user != user)
       store_location
-      redirect_to(default_unauthorized_path)
+      redirect_to(login_path)
     end
   end
 
@@ -50,8 +52,7 @@ class ApplicationController < ActionController::Base
     session[:return_to] = nil
   end
 
-  def redirect_to_last_unauthorized(message)
-    flash[:notice] = message
+  def after_sign_in_path_for(resource)
     redirect_back_or_default(root_path)
   end
 
