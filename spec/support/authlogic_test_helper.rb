@@ -33,7 +33,6 @@ module AuthlogicTestHelper
 
   def logout
     activate_authlogic
-    debugger
     @current_user_session = nil
     UserSession.find.try(:destroy)
   end
