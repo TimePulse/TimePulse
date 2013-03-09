@@ -1,24 +1,6 @@
 class ConvertUsersTableToDevise < ActiveRecord::Migration
-  class UserSession < Authlogic::Session::Base
-  end
-  class ConversionUser < ActiveRecord::Base
-     set_table_name "users"
-     acts_as_authentic do |c|
-        c.session_class = UserSession
-     end
-  end
-  
   def up
-
-    add_column :users,  :encrypted_password, :string
-
-    ConversionUser.all.each do |u|
-        du = User.find(u.id)
-        password = u.password
-        du.password = password
-        du.password_confirmation = password
-        du.save
-    end
+    rename_column :users, :crypted_password, :encrypted_password
 
     add_column :users, :confirmation_token, :string, :limit => 255
     add_column :users, :confirmed_at, :timestamp
