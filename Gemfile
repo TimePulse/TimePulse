@@ -24,6 +24,7 @@ gem "lrd_view_tools", ">= 0.1.3"
 gem "logical_tabs"
 gem "awesome_nested_set"
 gem 'devise'
+gem 'authlogic'
 gem "chronic"
 gem "logical-insight"
 

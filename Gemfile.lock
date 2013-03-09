@@ -34,6 +34,9 @@ GEM
     addressable (2.2.8)
     annotate (2.4.0)
     arel (2.2.3)
+    authlogic (3.2.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
     awesome_nested_set (2.0.0)
       activerecord (>= 3.0.0)
     bcrypt-ruby (3.0.1)
@@ -206,6 +209,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   annotate
+  authlogic
   awesome_nested_set
   capistrano
   capistrano-ext
