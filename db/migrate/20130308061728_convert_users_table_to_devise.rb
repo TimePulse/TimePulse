@@ -5,14 +5,14 @@ class ConvertUsersTableToDevise < ActiveRecord::Migration
      set_table_name "users"
      acts_as_authentic do |c|
         c.session_class = UserSession
-    end
+     end
   end
   
   def up
 
     add_column :users,  :encrypted_password, :string
 
-    ConversionUser.find(:all).each do |u|
+    ConversionUser.all.each do |u|
         du = User.find(u.id)
         password = u.password
         du.password = password
