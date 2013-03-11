@@ -1,5 +1,6 @@
 class UsersController < Devise::RegistrationsController
 
+  skip_before_filter :require_no_authentication
   before_filter :authenticate_user!, :only => [:index, :new, :create]
   before_filter :get_user_and_authenticate, :only => [:show, :edit_as_admin, :update_as_admin]
   
