@@ -37,17 +37,6 @@ class User < ActiveRecord::Base
   attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation
 
   has_and_belongs_to_many :groups
-  
-  def valid_password?(password)
-    begin
-      super(password)
-    rescue BCrypt::Errors::InvalidHash
-      return false unless Digest::SHA512.hexdigest([password, password_salt].compact) == encrypted_password
-      logger.info "User #{email} is using the old password hashing method, updating attribute."
-      self.password = password
-      true
-    end
-  end
 
   def reset_current_work_unit
     @cwu = nil

@@ -1,6 +1,14 @@
 class ConvertUsersTableToDevise < ActiveRecord::Migration
   def up
-    rename_column :users, :crypted_password, :encrypted_password
+    add_column :users, :encrypted_password, :string
+    remove_column :users, :crypted_password
+    remove_column :users, :password_salt
+
+    User.all.each do |u|
+        u.password = "resetme"
+        u.password_confirmation = "resetme"
+        u.save
+    end    
 
     add_column :users, :confirmation_token, :string, :limit => 255
     add_column :users, :confirmed_at, :timestamp
