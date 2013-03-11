@@ -8,8 +8,8 @@ if File::exists?(gemrc)
 end
 source 'http://rubygems.org'
 
-gem 'rails', '3.1'
-gem 'rack', '1.3.2'
+gem 'rails', '3.2'
+gem 'rack', '~> 1.4.0'
 
 gem 'rake'
 gem "haml", ">= 3.1.2"
@@ -18,7 +18,7 @@ gem "mizugumo"#, :path => "../mizugumo/"
 gem "will_paginate", "~> 3.0.pre2"
 gem "populator"
 gem "faker"
-gem "mysql2", "< 0.3.7"
+gem "mysql2", "~> 0.3.10"
 gem "activerecord"
 gem "lrd_view_tools", ">= 0.1.3"
 gem "logical_tabs"
