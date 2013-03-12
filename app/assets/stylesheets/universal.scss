@@ -1,0 +1,14 @@
+@import "reset.scss";
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden; }
+
+a:focus {
+  -moz-outline-style: none; }
+
+.nobr {
+  white-space: nowrap; }

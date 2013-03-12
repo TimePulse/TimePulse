@@ -13,7 +13,7 @@ gem 'rack', '~> 1.4.0'
 
 gem 'rake'
 gem "haml", ">= 3.1.2"
-gem "sass"
+gem "sass-rails"
 gem "mizugumo"#, :path => "../mizugumo/"
 gem "will_paginate", "~> 3.0.pre2"
 gem "populator"
