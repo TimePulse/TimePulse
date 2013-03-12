@@ -41,6 +41,8 @@ last_run
 *~
 vendor/**/**/doc/*
 vendor/plugins/footnotes/*
+vendor/cache
+.sass_cache
 rsa_key*
 sphinx/*
 db/sphinx/*
@@ -59,3 +61,4 @@ coverage/
 .idea
 db_backups/
 *.esproj
+
