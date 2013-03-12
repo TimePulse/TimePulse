@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate_admin!
-    if (!current_user.admin?)
+    if !current_user or !(current_user.admin?)
       store_location
       redirect_to(login_path)
     end
