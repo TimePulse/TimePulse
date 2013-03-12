@@ -17,7 +17,8 @@
     = stylesheet_link_tag 'universal', :media=>'all'
     = stylesheet_link_tag 'screen', :media=>'screen, projection'
     = stylesheet_link_tag 'print', :media=>'print'
-
+    = stylesheet_link_tag 'application'
+    
     - if Rails.env.production?
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"

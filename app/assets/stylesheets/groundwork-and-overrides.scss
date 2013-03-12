@@ -1,0 +1,12 @@
+$socialPath:   "../assets/groundworkcss/social-icons" !default;
+$fontAwesomePath:   "../assets/groundworkcss" !default;
+
+@import "groundworkcss-scss/groundwork";
+
+body {
+	background: url("groundworkcss/pw_maze_white.png");
+}
+
+header{
+	background: white;
+}
