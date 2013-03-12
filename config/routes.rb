@@ -17,7 +17,8 @@ Tracks::Application.routes.draw do
   devise_for :users, :controllers => {:registrations => 'users' }
   devise_scope :user do
     get "/login" => "devise/sessions#new", :as => :login
-    delete "/logout" => "devise/sessions#destroy", :as => :logout
+    match "/logout" => "devise/sessions#destroy", :as => :logout
+    get "/users/new" => "users#new", :as => :new_user
     get "/users" => "users#index", :as => :users
     get "/users/:id" => "users#show", :as => :user
     get "/users/:id/edit_as_admin" => "users#edit_as_admin", :as => :edit_user

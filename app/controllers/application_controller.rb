@@ -7,9 +7,7 @@ class ApplicationController < ActionController::Base
 
   helper :all # include all helpers, all the time
 
-  helper_method :current_user_session, :current_user
   before_filter :set_current_time
-
 
   # see http://stackoverflow.com/questions/339130/how-do-i-render-a-partial-of-a-different-format-in-rails
   def with_format(format, &block)
