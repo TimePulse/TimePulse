@@ -1,0 +1,20 @@
+-set_headline "Permissions"
+
+%ul.actions
+  %li= link_to_if_authorized("Grant New Permission", new_permission_path)
+
+%table.listing
+  %tr
+    %th Group
+    %th Controller
+    %th Action
+    %th Object ID
+  - @permissions.each do |permission|
+    %tr
+      %td= permission.group.name
+      %td= permission.controller
+      %td= permission.action || "*"
+      %td= permission.subject_id || "*"
+      %td
+        = link_to_if_authorized("Edit", edit_permission_path(permission))
+        = link_to_if_authorized("Delete", permission_path(permission), :method => :delete)
