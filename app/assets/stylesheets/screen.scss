@@ -141,6 +141,11 @@ p {
   margin: 0.5em 0 1em 0;
 }
 
+li {
+  list-style: disc;
+  margin-left: 2em;
+}
+
 dl.values dt {
   font-weight: bold;
   display: run-in;
@@ -162,7 +167,6 @@ body {
   border: 0;
   margin: 0;
   padding: 0;
-  font-size: 12px;
 }
 
 #inset {
@@ -170,8 +174,7 @@ body {
 }
 
 #wrap {
-  width: 980px;
-  margin: 0 auto;
+   @extend %container;
 }
 
 #header {
@@ -219,28 +222,33 @@ body {
 }
 
 #aux {
-  width: 240px;
   margin-top: 2em;
-  float: right;
+  @extend .one;
+  @extend .fifth;
+  @extend .right-four;
 }
 
 #picker {
-  width: 200px;
   margin-top: 2em;
   padding: 0;
-  float: left;
-  margin-right: 5px;
+  @extend .one;
+  @extend .fifth;
+  @extend .left-one;
 }
 
 #content-column {
-  width: 729px;
-  float: left;
+  @extend .three;
+  @entend .fourths;
   margin-top: 2em;
   h1 {
     margin-top: 0;
   }
   &.with_picker {
-    width: 522px;
+    @extend .three;
+    @extend .fifths;
+    @extend .left-one;
+    padding-right: 20px;
+    padding-left: 20px
   }
 }
 
@@ -318,16 +326,9 @@ a:focus {
 }
 
 #admin_nav {
-  @extend .inline;
-  @extend .row;
-  ul {
-    li {
-      @extend .one;
-      @extend .seventh;
-      a {
-        background: #3ad932;;
-      }
-    }
+  background: #3ad932;
+  ul li:hover {
+    background: #1ab912;
   }
 }
 
@@ -355,7 +356,9 @@ a:focus {
   float: right;
 }
 
-#nav a {
+$admin_nav_color: #3ad932;
+
+#nav a, #admin_nav a {
   text-decoration: none;
   font-weight: bold;
   color: black;
@@ -363,7 +366,15 @@ a:focus {
   padding: 2px 2em;
 }
 
-#nav ul li {
+#admin_nav a {
+  border: 0px;
+  border-radius: 0px;
+  background: $admin_nav_color;
+  &:hover {
+    background: darken($admin_nav_color, 15%);
+  }
+}
+#nav ul li, #admin_nav ul li {
   list-style: none;
   font-weight: bold;
   display: block;
@@ -377,8 +388,13 @@ a:focus {
   background: #eeeeee;
   color: black;
   ul {
+    margin-bottom: 0px;
     li:hover {
       background: #cccccc;
+    }
+    &.left {
+      margin-left: 0px;
+      float: left;
     }
     &.right {
       float: right;
@@ -514,7 +530,6 @@ li {
 }
 
 #aux {
-  float: right;
   margin-top: 2em;
   overflow: hidden;
   .block_inner {
@@ -538,6 +553,7 @@ li {
 
 #picker .block {
   border: 1px #666666 solid;
+  @extend .row;
   background: white;
   margin-bottom: 1em;
 }
@@ -559,13 +575,14 @@ li {
     color: white;
   }
   table.project_picker {
-    width: 198px;
+    @extend .one;
+    @extend .whole;
+    border: 1px solid transparent !important;
     margin: 0;
     padding: 0;
     border: 0;
     border-collapse: collapse;
     table-layout: fixed;
-    font-size: 12px;
     td {
       white-space: nowrap;
       overflow: hidden;
@@ -583,18 +600,14 @@ li {
         padding: 0;
         margin: 0;
       }
-      &.tools {
+      div.tools {
         padding: 0;
-        width: 20px;
+        float: right;
         text-align: center;
       }
-      &.project_name {
-        width: 170px;
+      div.project_name {
+        float: left;
         overflow: hidden;
-        div {
-          width: 170px;
-          overflow: hidden;
-        }
       }
     }
     tr {
@@ -619,7 +632,7 @@ li {
 
 .tooltip {
   display: none;
-  background: #d0d0f0;
+  background: #d0d0f0 !important;
   padding: 5px;
   font-size: 11px;
   color: black;
