@@ -16,7 +16,7 @@
       = f.labeled_input :hours, :size => 15
       = f.labeled_input :stop_time, :size => 15
       = f.labeled_input :notes, :size => 15
-      = f.unlabeled_submit "Clock Out"
+      = f.submit "Clock Out"
   - else
     %h3 You are not clocked in.
     - if current_user.current_project && current_project.clockable?
