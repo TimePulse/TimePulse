@@ -10,7 +10,8 @@ $fontAwesomePath:   "../assets/groundworkcss" !default;
 @import "groundworkcss-scss/variables";
 
 $font-size: 12px;
-
+$button-color: darken(#aaaacc, 10%);
+$button-active: darken($button-color, 20%);
 @import "groundworkcss-scss/mixins";
 
 // ====================

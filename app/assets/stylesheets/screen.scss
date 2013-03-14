@@ -224,32 +224,34 @@ body {
 #aux {
   margin-top: 2em;
   @extend .one;
-  @extend .fifth;
-  @extend .right-four;
+  @extend .fourth;
+  @extend .right-three;
 }
 
 #picker {
   margin-top: 2em;
   padding: 0;
   @extend .one;
-  @extend .fifth;
+  @extend .fourth;
   @extend .left-one;
 }
 
 #content-column {
-  @extend .three;
-  @entend .fourths;
   margin-top: 2em;
   h1 {
     margin-top: 0;
   }
   &.with_picker {
-    @extend .three;
-    @extend .fifths;
+    @extend .two;
     @extend .left-one;
     padding-right: 20px;
     padding-left: 20px;
   }
+  &.without_picker {
+    @extend .three;
+    @extend .centered;
+  }
+  @extend .fourths;
 }
 
 #content-wrap:after {
@@ -651,7 +653,6 @@ li {
       }
       div.project_name {
         float: left;
-        overflow: hidden;
       }
     }
     tr {
@@ -847,4 +848,11 @@ input.ninja_placeholder, textarea.ninja_placeholder {
   color: #666688;
   font-style: italic;
   opacity: 0.75;
+}
+
+.new_work_unit, .edit_work_unit {
+  @include border-radius(5px);
+  border: 1px solid gray;
+  @extend .clearfix;
+  padding: 10px;
 }

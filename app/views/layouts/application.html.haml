@@ -60,7 +60,7 @@
         #content-wrap
           = render :partial => 'layouts/aux'
 
-          - klass = "with_picker" if content_for?(:picker)
+          - klass = content_for?(:picker) ? "with_picker" : "without_picker"
           #content-column{ :class => klass }
 
             #content
