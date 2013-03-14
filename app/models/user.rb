@@ -24,9 +24,9 @@
 #
 
 class User < ActiveRecord::Base
-  acts_as_authentic do |c|
-    c.session_class = UserSession
-  end
+
+  devise :database_authenticatable, :registerable,
+       :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   belongs_to :current_project, :class_name => "Project"
   has_many :work_units

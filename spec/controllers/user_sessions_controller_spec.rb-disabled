@@ -2,7 +2,8 @@ require "spec_helper"
 
 describe UserSessionsController do
   it "should be authorized" do
-    LogicalAuthz::is_authorized?(:controller => "user_sessions", :action => "new").should be_true
+    get :new
+    response.should be_success
   end
   
   describe "POST create" do
@@ -17,7 +18,7 @@ describe UserSessionsController do
       end
 
       it "should be authorized" do
-        controller.should be_authorized
+        response.should_not redirect_to(default_unauthorized_path)
       end
 
       it "should succeed" do

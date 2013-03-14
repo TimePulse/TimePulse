@@ -7,6 +7,6 @@
   %dt Login
   %dd= @user.login
 %ul
-  %li=link_to_if_authorized("Edit", :action => :edit)
-  %li=link_to_if_authorized("List", :action => :index)
+  %li=link_to_if_owner_authorized(@user, "Edit", :action => :edit)
+  %li=link_to_if_owner_authorized(@user, "List", :action => :index)
   %li=link_to("Dashboard", root_path)

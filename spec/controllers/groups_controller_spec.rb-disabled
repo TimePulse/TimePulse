@@ -28,7 +28,7 @@ describe GroupsController do
       it "assigns all groups as @groups" do
         Group.stub!(:all).and_return([mock_group])
         get :index
-        controller.should be_authorized
+        verify_authorization_successful
         assigns[:groups].should == [mock_group]
       end
     end

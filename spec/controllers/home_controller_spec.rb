@@ -10,12 +10,11 @@ describe HomeController do
     describe "GET 'index'" do
       it "should be successful" do
         get 'index'
-
       end
 
       it "should be authorized" do
         get 'index'
-        controller.should be_authorized
+        verify_authorization_successful
       end
     end
 
@@ -41,10 +40,10 @@ describe HomeController do
   end
 
   describe "logged out" do
-    before{ logout }
+    before{ sign_out :user }
     it "is not authorizee" do
       get 'index'
-      controller.should be_forbidden
+      verify_authorization_unsuccessful
     end
   end
 end

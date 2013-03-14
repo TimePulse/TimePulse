@@ -1,7 +1,8 @@
-class UsersController < AuthzController
-  owner_authorized :show, :edit, :update
+class UsersController < Devise::RegistrationsController
 
-  before_filter :get_user, :only => [:show, :edit, :update]
+  skip_before_filter :require_no_authentication
+  before_filter :authenticate_user!, :only => [:index, :new, :create]
+  before_filter :get_user_and_authenticate, :only => [:show, :edit_as_admin, :update_as_admin]
   
   def new
     @user = User.new
@@ -25,10 +26,10 @@ class UsersController < AuthzController
   def show
   end
  
-  def edit
+  def edit_as_admin
   end
   
-  def update
+  def update_as_admin
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
     end
@@ -36,8 +37,9 @@ class UsersController < AuthzController
   end  
 
   private
-  def get_user
+  def get_user_and_authenticate
     Rails.logger.debug params.inspect
     @user = User.find(params[:id])
+    authenticate_owner!(@user)
   end
 end

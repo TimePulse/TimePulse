@@ -8,8 +8,6 @@ Tracks::Application.routes.draw do
   resources :permissions
   resources :work_units
   resources :clients
-  resource :user_session
-  resources :users
   resources :projects
 
   # TODO: Reenable these once LAz is working
@@ -18,14 +16,21 @@ Tracks::Application.routes.draw do
   # match '/ungroup_user' => 'groups_users#destroy', :as => :ungroup_user, :via => delete
   # match '/group_user' => 'groups_users#create', :as => :group_user, :via => post
 
+  devise_for :users, :controllers => {:registrations => 'users' }
+  devise_scope :user do
+    get "/login" => "devise/sessions#new", :as => :login
+    delete "/logout" => "devise/sessions#destroy", :as => :logout
+    get "/users" => "users#index", :as => :users
+    get "/users/:id" => "users#show", :as => :user
+    get "/users/:id/edit_as_admin" => "users#edit_as_admin", :as => :edit_user
+    put "/users/:id" => "users#update_as_admin", :as => :user
+  end
   match '/work_units/switch' => 'work_units#switch', :as => :switch_work_unit, :via => :post
   match '/fix_work_unit/:id' => 'work_unit_fixer#create', :as => :fix_work_unit
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
-  match '/login' => 'user_sessions#new', :as => :login
-  match '/logout' => 'user_sessions#destroy', :as => :logout
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
   match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete
-  match '/login' => 'user_sessions#new', :as => :default_unauthorized
+  
 
   root :to => 'home#index'
 

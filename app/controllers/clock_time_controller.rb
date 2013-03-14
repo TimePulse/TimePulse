@@ -1,6 +1,8 @@
 require 'hhmm_to_decimal'
 
-class ClockTimeController < AuthzController
+class ClockTimeController < ApplicationController
+  before_filter :authenticate_user!
+
   include HhmmToDecimal
 
   before_filter :convert_hours_from_hhmm
