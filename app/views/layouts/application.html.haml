@@ -46,7 +46,7 @@
       #wrap
         #header
           #logo
-            =link_to image_tag('/images/logo.png', :alt => "logo"), root_url
+            =link_to image_tag('logo.png', :alt => "logo"), root_url
           #message
             - if logged_in?
               %h2= "Hello, #{current_user.name} "
