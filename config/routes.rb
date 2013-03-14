@@ -1,5 +1,7 @@
 Tracks::Application.routes.draw do
 
+  
+
   resources :invoices
   resources :bills
   resources :groups
@@ -25,6 +27,7 @@ Tracks::Application.routes.draw do
     put "/users/:id" => "users#update_as_admin", :as => :user
   end
   match '/work_units/switch' => 'work_units#switch', :as => :switch_work_unit, :via => :post
+  match '/fix_work_unit/:id' => 'work_unit_fixer#create', :as => :fix_work_unit
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
   match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete

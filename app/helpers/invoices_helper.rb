@@ -13,4 +13,16 @@ module InvoicesHelper
        c.id
     ]}
   end
+
+  def work_unit_stop_time(work_unit)
+    if (work_unit.stop_time.present?)
+      work_unit.stop_time.try(:to_s, :time)
+    else
+     link_to("Fix",
+       fix_work_unit_path(:id => work_unit.id),
+       :id => "fix_" + dom_id(work_unit),
+       :class => 'fix_work_unit_button'
+     )
+    end
+  end
 end
