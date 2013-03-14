@@ -248,7 +248,7 @@ body {
     @extend .fifths;
     @extend .left-one;
     padding-right: 20px;
-    padding-left: 20px
+    padding-left: 20px;
   }
 }
 
@@ -327,8 +327,48 @@ a:focus {
 
 #admin_nav {
   background: #3ad932;
-  ul li:hover {
-    background: #1ab912;
+  span {
+      display: none;
+  }
+  ul {
+    li:hover {
+      background: #1ab912;
+    }
+  }
+}
+
+@include small-tablet {
+  #admin_nav {
+    span {
+      display: block;
+    }
+  }
+  .toggler:after {
+    width: 0px;
+    height: 0px;
+    display: inline-block;
+    content: "&darr;";
+    text-indent: -99999px;
+    vertical-align: top;
+    margin-top: 8px;
+    margin-left: 4px;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #fff;
+    filter: alpha(opacity=50);
+    -khtml-opacity: 0.5;
+    -moz-opacity: 0.5;
+    opacity: 0.5;
+  }
+  .toggle-target {
+    display: none;
+  }
+  #timeclock .block_content {
+    display: block !important;
+  }
+  #content-column.with_picker {
+    padding-right: 0px;
+    padding-left: 0px;
   }
 }
 
@@ -359,14 +399,18 @@ a:focus {
 $admin_nav_color: #3ad932;
 
 #nav a, #admin_nav a {
+  display: block;
+}
+
+#nav a, #admin_nav a, #admin_nav span{
   text-decoration: none;
   font-weight: bold;
   color: black;
-  display: block;
+  
   padding: 2px 2em;
 }
 
-#admin_nav a {
+#admin_nav a, #admin_nav span {
   border: 0px;
   border-radius: 0px;
   background: $admin_nav_color;

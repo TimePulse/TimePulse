@@ -22,6 +22,14 @@ Ninja.orders(function(Ninja){
         '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
         '.datetime_entry': { transform: function(elem){ $(elem).datetimepicker() }},
         '#work_unit_select_all': { click: selectAllWorkUnits },
+        '.toggler': { click: function(evnt, elem) {
+            var target = "#" + $(elem).data('target');
+            $(target).slideToggle("fast");
+        },
+            transform: function(elem) {
+            var target = "#" + $(elem).data('target');
+            $(target).addClass("toggle-target");
+            }},
         '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "andDoDefault"] },
 
         '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
@@ -58,6 +66,10 @@ Ninja.orders(function(Ninja){
 function selectAllWorkUnits() {
   $('.work_unit_checkbox').attr('checked', true);
   updateWorkUnitHoursTotal();
+}
+
+function showHideDropdown() {
+
 }
 
 var task_elapsed;

@@ -1,6 +1,7 @@
 - if current_user and current_user.admin?
   - items = ["Users", users_path], ["Groups", groups_path], ["Permissions", permissions_path], ["Clients", clients_path], ["Projects", projects_path], ["Bills", bills_path ], ["Invoices", invoices_path]
   %nav#admin_nav
-    %ul
+    = slide_toggle_tag(:span, "Admin Menu", "admin_menu")
+    %ul#admin_menu
       -items.each do |name, path|
         %li= link_to(name, path)

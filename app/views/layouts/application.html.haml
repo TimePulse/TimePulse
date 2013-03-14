@@ -64,7 +64,7 @@
           #content-column{ :class => klass }
 
             #content
-              %h1#headline= yield :headline if content_for?(:headline)
+              = slide_toggle_tag(:h1, content_for(:headline), "content-body", :id => "headline") if content_for?(:headline)
               #content-body
                 = render :partial => 'layouts/flash' , :locals => { :flash => flash }
                 = yield

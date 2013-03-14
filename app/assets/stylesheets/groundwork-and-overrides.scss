@@ -13,6 +13,47 @@ $font-size: 12px;
 
 @import "groundworkcss-scss/mixins";
 
+// ====================
+//  media query helpers
+// ====================
+
+@mixin large-desktop {
+  @media only screen and (min-width:1201px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width:1025px) {
+    @content;
+  }
+}
+
+@mixin ipad {
+  @media only screen and (min-width:768px) and (max-width:1024px) {
+    @content;
+  }
+}
+
+@mixin small-tablet {
+  @media only screen and (max-width:767px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media only screen and (max-width:480px) {
+    @content;
+  }
+}
+
+@mixin small-mobile {
+  @media only screen and (max-width:319px) {
+    @content;
+  }
+}
+
+
 // set the stage
 @import "groundworkcss-scss/reset";
 @import "groundworkcss-scss/global";
