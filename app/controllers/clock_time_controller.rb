@@ -24,9 +24,6 @@ class ClockTimeController < ApplicationController
     respond_to do |format|
       format.html { flash[:success] = "Clocked in."; redirect_to root_path }
       format.js
-      format.json do
-        render :json => build_json_response
-      end
     end
   rescue ActiveRecord::RecordNotFound
     flash[:error] = "Could not find the project you specified, or you are not authorized to use it."
@@ -41,21 +38,7 @@ class ClockTimeController < ApplicationController
     respond_to do |format|
       format.html { flash[:success] = "Clocked out."; redirect_to root_path }
       format.js
-      format.json do
-        render :json => build_json_response
-      end
     end
   end
 
-
-  def build_json_response
-    with_format :html do
-      tc = render_to_string(:partial => 'shared/timeclock.html.haml')
-      rw = render_to_string(:partial => 'shared/recent_work.html.haml')
-      {
-        :timeclock => tc,
-        :recent_work => rw
-      }
-    end
-  end
 end
