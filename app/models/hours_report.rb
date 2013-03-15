@@ -43,10 +43,10 @@ class HoursReport
 
   private
   def project_scope(project)
-    @base_scope.for_project(project)
+    ProjectWorkQuery.new(@base_scope).find_for_project(project)
   end
   def exclusive_scope(project)
-    @base_scope.for_project_exclusive(project)
+    ProjectWorkQuery.new(@base_scope).find_for_project(project, :exclusive => true)
   end
 
   def build_totals_row

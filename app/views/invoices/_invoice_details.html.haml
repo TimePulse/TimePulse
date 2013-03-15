@@ -6,7 +6,7 @@
     %th Hours
     - sanity_sum = 0
     - @invoice.work_units.collect{ |wu| wu.project if wu.project.clockable }.compact.uniq.each do |proj|
-      - hrs = @invoice.work_units.for_project(proj).sum(:hours)
+      - hrs = ProjectWorkQuery.new(@invoice.work_units).find_for_project(proj).sum(:hours)
       - sanity_sum += hrs
       %tr
         %td= proj.name
