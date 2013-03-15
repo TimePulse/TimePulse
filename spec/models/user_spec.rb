@@ -103,28 +103,28 @@ describe User do
       @wu1 = Factory(:work_unit, :user => @user, :project => @proj, :hours => 3.0)      
     end
     it "should return a work unit associated with the specified project" do
-      @user.work_units_for(@proj).should include(@wu1)
+      @user.completed_work_units_for(@proj).should include(@wu1)
     end               
     it "should return a work unit associated with a subproject" do
       @proj2 = Factory(:project, :parent => @proj)        
       @proj.reload.self_and_descendants.should include(@proj2)
       @wu2 = Factory(:work_unit, :user => @user, :project => @proj2, :hours => 3.0)      
-      @user.work_units_for(@proj).should include(@wu2)           
+      @user.completed_work_units_for(@proj).should include(@wu2)           
     end                                                          
     it "should not return a work unit for another user" do
       @other = Factory(:user)
       @wu3 = Factory(:work_unit, :user => @other, :project => @proj, :hours => 3.0)      
-      @user.work_units_for(@proj).should_not include(@wu3)
+      @user.completed_work_units_for(@proj).should_not include(@wu3)
     end
     it "should not return a work unit for a project outside the heirarchy" do
       @proj3 = Factory(:project)
       @wu3 = Factory(:work_unit, :user => @user, :project => @proj3, :hours => 3.0)      
-      @user.work_units_for(@proj).should_not include(@wu3)
+      @user.completed_work_units_for(@proj).should_not include(@wu3)
     end 
     it "should not include a work unit for a parent project" do
       @proj2 = Factory(:project, :parent => @proj)        
       @proj.reload.self_and_descendants.should include(@proj2)
-      @user.work_units_for(@proj2).should_not include(@wu1)
+      @user.completed_work_units_for(@proj2).should_not include(@wu1)
     end
   end  
   
