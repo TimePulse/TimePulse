@@ -1,0 +1,56 @@
+$socialPath:   "../assets/groundworkcss/social-icons" !default;
+$fontAwesomePath:   "../assets/groundworkcss" !default;
+
+/* =============================================
+ *       GroundworkCSS by Gary Hepting
+ *          Last Updated:2013-1-28
+ * ===========================================*/
+
+// variables & mixins
+@import "groundworkcss-scss/variables";
+
+$font-size: 12px;
+$button-color: darken(#aaaacc, 10%);
+$button-active: darken($button-color, 20%);
+@import "groundworkcss-scss/mixins";
+
+// set the stage
+@import "groundworkcss-scss/reset";
+@import "groundworkcss-scss/global";
+
+// webfonts
+@import "groundworkcss-scss/webfonts";
+
+// components
+@import "groundworkcss-scss/grid";
+@if $classes {
+  @include grid-classes();
+}
+
+@import "groundworkcss-scss/typography";
+@import "groundworkcss-scss/buttons";
+@import "groundworkcss-scss/forms";
+@import "groundworkcss-scss/navigation";
+@import "groundworkcss-scss/tabs";
+@import "groundworkcss-scss/ui-elements";
+@import "groundworkcss-scss/tables";
+@import "groundworkcss-scss/font-awesome";
+@import "groundworkcss-scss/social-icons";
+//@import "groundworkcss-scss/tooltips";
+@import "groundworkcss-scss/popovers";
+@import "groundworkcss-scss/modals";
+@import "groundworkcss-scss/orbit";
+
+// helper classes
+@import "groundworkcss-scss/layout";
+
+// responsive adjustments
+@import "groundworkcss-scss/responsive";
+
+body {
+	background: url("groundworkcss/pw_maze_white.png");
+}
+
+header{
+	background: white;
+}

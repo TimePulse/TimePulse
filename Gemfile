@@ -27,6 +27,7 @@ gem 'devise'
 gem 'authlogic'
 gem "chronic"
 gem "logical-insight"
+gem 'groundworkcss-rails'
 
 group :development, :test do
   gem 'rspec', '2.8'

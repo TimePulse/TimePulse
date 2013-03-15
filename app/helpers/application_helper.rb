@@ -52,4 +52,19 @@ module ApplicationHelper
     authorized_test = current_user and (current_user.admin? or current_user == owner)
     link_to_if_authorized(authorized_test, name, options, html_options)
   end
+
+  def slide_toggle_tag(tag, title, target, options = {})
+    options["data-target"] = target
+    options[:class] = "toggler"
+    content_tag(tag, title, options)
+  end
+
+  def block_title(title, cssid)
+    if (cssid.present?)
+      slide_toggle_tag(:h2, title.upcase, "#{cssid.to_s} .block_content")
+    else
+      content_tag(:h2, title.upcase)
+    end
+  end
+  
 end
