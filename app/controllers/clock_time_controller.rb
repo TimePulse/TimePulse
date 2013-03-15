@@ -8,9 +8,9 @@ class ClockTimeController < ApplicationController
   before_filter :convert_hours_from_hhmm
 
   def create
+    clock_out_current_work_unit
+
     @project = Project.find(params[:id])
-    current_unit = current_user.current_work_unit
-    current_unit.clock_out! unless current_unit.nil?
     @work_unit = current_user.work_units.build( :project => @project, :start_time => Time.zone.now )
     @work_unit.save!
     expire_fragment("work_unit_narrow_#{@work_unit.id}")
@@ -31,13 +31,21 @@ class ClockTimeController < ApplicationController
   end
 
   def destroy
-    @work_unit = current_user.current_work_unit
-    @work_unit.update_attributes(params[:work_unit]) if params[:work_unit]
-    @work_unit.clock_out!
+    if params[:work_unit]
+      current_user.current_work_unit.update_attributes(params[:work_unit])
+    end
+    clock_out_current_work_unit
+
     current_user.reload
     respond_to do |format|
       format.html { flash[:success] = "Clocked out."; redirect_to root_path }
       format.js
+    end
+  end
+
+  def clock_out_current_work_unit
+    if @work_unit = current_user.current_work_unit
+      @work_unit.clock_out!
     end
   end
 
