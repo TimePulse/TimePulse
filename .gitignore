@@ -41,7 +41,10 @@ last_run
 *~
 vendor/**/**/doc/*
 vendor/plugins/footnotes/*
+<<<<<<< HEAD
 .sass_cache
+=======
+>>>>>>> parent of 95968c3... Fix git ignore
 rsa_key*
 sphinx/*
 db/sphinx/*
@@ -60,4 +63,3 @@ coverage/
 .idea
 db_backups/
 *.esproj
-
