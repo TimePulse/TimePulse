@@ -20,7 +20,7 @@ describe ProjectWorkQuery do
   describe "without exclusive" do
     it "should find all work_units for specified project" do
       @query = ProjectWorkQuery.new
-      @results = @query.find_for_project(@project1, false)
+      @results = @query.find_for_project(@project1)
       @results.count.should == 2
       @results.should include(@work_unit_for_project1)
       @results.should include(@work_unit_for_subproject)
@@ -31,7 +31,7 @@ describe ProjectWorkQuery do
     
     it "should find all work_units for specified project" do
       @query = ProjectWorkQuery.new
-      @results = @query.find_for_project(@project1, true)
+      @results = @query.find_for_project(@project1, :exclusive => true)
       @results.count.should == 1
       @results.should include(@work_unit_for_project1)
       @results.should_not include(@work_unit_for_subproject)
@@ -41,7 +41,7 @@ describe ProjectWorkQuery do
   describe "with an existing relationship" do
     it "should find all work_units for specified project that satisfy the existing relationship" do
       @query_for_user = ProjectWorkQuery.new(WorkUnit.where(:user_id => @user1))
-      @results = @query_for_user.find_for_project(@project2, true)
+      @results = @query_for_user.find_for_project(@project2, :exclusive => true)
       @results.count.should == 1
       @results.should include(@work_unit_for_project2)
       @results.should_not include(@work_unit_for_other_user)

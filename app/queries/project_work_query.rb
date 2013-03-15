@@ -4,15 +4,15 @@ class ProjectWorkQuery
     @relation = relation
   end
 
-  def find_for_project(project, exclusive = true)
+  def find_for_project(project, options = {})
 
-    if exclusive
+    if options[:exclusive]
       ids = project.id
     else
       ids = project.self_and_descendants.map{ |p| p.id }
     end
     @relation.where(:project_id => ids)
-    
+
   end
 
 end
