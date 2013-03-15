@@ -23,14 +23,6 @@ module WorkUnitsHelper
     end
   end
 
-  def format_title(title)
-    if title
-      title.to_s.titleize + ": "
-    else
-      ""
-    end
-  end
-
   def widget_links(work_unit)
     link_to( 'Edit', edit_work_unit_path(work_unit)) + " " +
     link_to('Delete', work_unit_path(work_unit), {:method => :delete, :confirm => "Are you sure?"})
