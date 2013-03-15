@@ -43,7 +43,7 @@ steps "Admin archives a project", :type => :request do
   end
 
   it "and I submit the form" do
-    click_button "submit"
+    click_button "Submit"
   end
 
   it "then when I revisit the dashboard" do
