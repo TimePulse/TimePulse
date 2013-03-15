@@ -11,13 +11,11 @@ class ClockTimeController < ApplicationController
     clock_out_current_work_unit
 
     @project = Project.find(params[:id])
-    @work_unit = current_user.work_units.build( :project => @project, :start_time => Time.zone.now )
-    @work_unit.save!
+    @work_unit = current_user.work_units.create( :project => @project, :start_time => Time.zone.now )
     @prior_project = current_user.current_project
+
     # Reload the associations to grab the current_work_unit
-    current_user.current_project = @project
-    current_user.save!
-    current_user.reload
+    current_user.update_attribute(:current_project, @project)
 
     respond_to do |format|
       format.html { flash[:success] = "Clocked in."; redirect_to root_path }

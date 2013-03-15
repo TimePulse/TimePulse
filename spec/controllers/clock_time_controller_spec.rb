@@ -32,7 +32,9 @@ describe ClockTimeController do
 
       it "should set my current project to the project id" do
         post :create, :id => @project.id
-        Controller.current_user.current_project.should == @project
+        controller.current_user.current_project.should == @project
+        controller.current_user.reload.current_project.should == @project
+
         #@user.reload
         #@user.current_project.should == @project
       end
