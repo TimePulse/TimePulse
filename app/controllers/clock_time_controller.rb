@@ -13,8 +13,6 @@ class ClockTimeController < ApplicationController
     @project = Project.find(params[:id])
     @work_unit = current_user.work_units.build( :project => @project, :start_time => Time.zone.now )
     @work_unit.save!
-    expire_fragment("work_unit_narrow_#{@work_unit.id}")
-    expire_fragment("work_unit_one_line_#{@work_unit.id}")
     @prior_project = current_user.current_project
     # Reload the associations to grab the current_work_unit
     current_user.current_project = @project
