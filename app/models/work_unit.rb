@@ -31,13 +31,6 @@ class WorkUnit < ActiveRecord::Base
 
   scope :unbillable, :conditions => { :billable => false }
 
-
-  scope :for_project, lambda {|project|
-    { :conditions => {:project_id => project.self_and_descendants.map{ |p| p.id } } }
-  }
-  scope :for_project_exclusive, lambda { |project|
-    { :conditions => { :project_id => project.id }}
-  }
   scope :for_client, lambda { |client|
     projects = client.projects.map{ |p| p.self_and_descendants.map{|q| q.id } }.flatten.uniq
     { :conditions => { :project_id => projects }}

@@ -56,19 +56,19 @@ class User < ActiveRecord::Base
   end
 
   def time_on_project(project)
-    work_units.for_project(project).sum(:hours)
+    ProjectWorkQuery.new(work_units).find_for_project(project).sum(:hours)
   end
 
   def unbilled_time_on_project(project)
-    work_units.unbilled.for_project(project).sum(:hours)
+    ProjectWorkQuery.new(work_units).find_for_project(project).unbilled.sum(:hours)
   end
 
   def unbillable_time_on_project(project)
-    work_units.unbillable.for_project(project).sum(:hours)
+    ProjectWorkQuery.new(work_units).find_for_project(project).unbillable.sum(:hours)
   end
 
   def work_units_for(project)
-    work_units.completed.for_project(project)
+    ProjectWorkQuery.new(work_units).find_for_project(project).completed
   end
 
   def current_project_hours_report
