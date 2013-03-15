@@ -1,5 +1,6 @@
 @charset "UTF-8";
 @import "jquery-ui.scss";
+@import "sass/mizugumo";
 @import "groundwork-and-overrides";
 
 clearfix:after {
@@ -45,9 +46,11 @@ h4 {
 }
 
 #content {
+  @extend .row;
   border: 1px #666666 solid;
   background: white;
   h1 {
+    @extend .row;
     border-bottom: 1px #666666 solid;
     padding: 0.25em;
     background: #000044;
@@ -70,8 +73,12 @@ h4 {
   margin-bottom: 10px;
   label {
     float: left;
+    clear: both;
   }
   input {
+    width: auto;
+  }
+  select {
     width: auto;
   }
   .comment {
@@ -244,14 +251,25 @@ body {
   &.with_picker {
     @extend .two;
     @extend .left-one;
+    @extend .fourths;
     padding-right: 20px;
     padding-left: 20px;
   }
   &.without_picker {
     @extend .three;
-    @extend .centered;
+    #content-body {
+      @extend .row;
+    }
+    &.without_aux {
+      @extend .centered;
+    }
+    &.with_aux {
+      @extend .left-one;
+      padding-right: 20px;
+    }
+    @extend .fourths;
   }
-  @extend .fourths;
+
 }
 
 #content-wrap:after {
@@ -339,41 +357,6 @@ a:focus {
   }
 }
 
-@include small-tablet {
-  #admin_nav {
-    span {
-      display: block;
-    }
-  }
-  .toggler:after {
-    width: 0px;
-    height: 0px;
-    display: inline-block;
-    content: "&darr;";
-    text-indent: -99999px;
-    vertical-align: top;
-    margin-top: 8px;
-    margin-left: 4px;
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid #fff;
-    filter: alpha(opacity=50);
-    -khtml-opacity: 0.5;
-    -moz-opacity: 0.5;
-    opacity: 0.5;
-  }
-  .toggle-target {
-    display: none;
-  }
-  #timeclock .block_content {
-    display: block !important;
-  }
-  #content-column.with_picker {
-    padding-right: 0px;
-    padding-left: 0px;
-  }
-}
-
 .admin_tool {
   border: 1px solid black;
   padding: 5px;
@@ -392,6 +375,13 @@ a:focus {
     border: 1px solid #bbbbbb;
   }
 }
+
+.block {
+  .block_title {
+    @extend .row;
+  }
+}
+
 
 #person_groups {
   width: 120px;
@@ -850,9 +840,22 @@ input.ninja_placeholder, textarea.ninja_placeholder {
   opacity: 0.75;
 }
 
-.new_work_unit, .edit_work_unit {
+form {
   @include border-radius(5px);
   border: 1px solid gray;
   @extend .clearfix;
   padding: 10px;
+  &.mizugumo_graceful_form {
+    @include border-radius(0px);
+    border: 0px;
+    padding: 0px;
+  }
+}
+
+table td {
+  font-size: 1em;
+}
+
+.invoice-client-selector, .bills-user-selector {
+  margin-bottom: 1em;
 }

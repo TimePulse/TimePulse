@@ -23,8 +23,10 @@ Ninja.orders(function(Ninja){
         '.datetime_entry': { transform: function(elem){ $(elem).datetimepicker() }},
         '#work_unit_select_all': { click: selectAllWorkUnits },
         '.toggler': { click: function(evnt, elem) {
-            var target = "#" + $(elem).data('target');
-            $(target).slideToggle("fast");
+            if (window.matchMedia("(max-width: 767px)").matches) {
+              var target = "#" + $(elem).data('target');
+              $(target).slideToggle("fast");
+            }
         },
             transform: function(elem) {
             var target = "#" + $(elem).data('target');

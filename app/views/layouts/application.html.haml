@@ -14,9 +14,10 @@
     
     %title=  @title ? @title : "LRD Time Tracking System"
 
-    = stylesheet_link_tag 'application', :media => "all"
+
     = stylesheet_link_tag 'universal', :media=>'all'
     = stylesheet_link_tag 'screen', :media=>'screen, projection'
+    = stylesheet_link_tag 'responsive', :media=>'screen, projection'
     = stylesheet_link_tag 'print', :media=>'print'
     
 
@@ -60,7 +61,7 @@
         #content-wrap
           = render :partial => 'layouts/aux'
 
-          - klass = content_for?(:picker) ? "with_picker" : "without_picker"
+          - klass = (content_for?(:picker) ? "with_picker" : "without_picker") + " " + (content_for?(:aux) ? "with_aux" : "without_aux")
           #content-column{ :class => klass }
 
             #content

@@ -59,4 +59,12 @@ module ApplicationHelper
     content_tag(tag, title, options)
   end
 
+  def block_title(title, cssid)
+    if (cssid.present?)
+      slide_toggle_tag(:h2, title.upcase, "#{cssid.to_s} .block_content")
+    else
+      content_tag(:h2, title.upcase)
+    end
+  end
+  
 end

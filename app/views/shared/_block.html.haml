@@ -4,7 +4,7 @@
 %div{ :class => klass.to_s, :id => cssid.to_s  }
   -if title
     .block_title
-      = slide_toggle_tag(:h2, title.upcase, "#{cssid.to_s} .block_content")
+      = block_title(title, cssid)
       - if defined?(extratitle)
         .extratitle= extratitle
   .block_content
