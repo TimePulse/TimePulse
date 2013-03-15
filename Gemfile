@@ -8,7 +8,7 @@ if File::exists?(gemrc)
 end
 source 'http://rubygems.org'
 
-gem 'rails', '3.2'
+gem 'rails', '3.2.12'
 gem 'rack', '~> 1.4.0'
 
 gem 'rake'

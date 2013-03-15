@@ -59,7 +59,7 @@ class WorkUnit < ActiveRecord::Base
 
   # can't have a stop time without hours also specified
   validates_presence_of :hours, :if => Proc.new{ |wu| wu.stop_time }
-  
+
   # can't have negative hours
   validates_numericality_of :hours, :greater_than_or_equal_to => 0, :if => Proc.new{ |wu| wu.hours }
 
@@ -112,28 +112,38 @@ class WorkUnit < ActiveRecord::Base
     end
   end
 
-  validate :validate_integrity
-  # Users are not allowed to have two work units in progress simultaneously.
-  def validate_integrity
+  validate :no_double_clocking
+  validate :hours_within_time_range
+  validate :not_in_the_future
+  validate :has_stop_time_if_completed
+  after_validation :set_defaults, :on => :create
+
+  private
+
+  def no_double_clocking
     if in_progress? && (@other = user.current_work_unit) && @other != self
       errors.add :base, "You may not clock in twice at the same time."
     end
+  end
+
+  def hours_within_time_range
     if stop_time && start_time && hours
       if hours > WorkUnit.decimal_hours_between(start_time, stop_time)
         errors.add :base, "Hours must not be greater than the difference between start and stop times."
       end
     end
-    # errors.add(:hours, "must be greater than 0.00") if hours and hours <= 0.0
+  end
+
+  def has_stop_time_if_completed
     errors.add(:base, "Completed work units must have a stop time") if (hours && !stop_time)
-    # errors.add(:notes, "are required for work units over 30 minutes") if hours && (hours > 0.5)  && notes.blank?
+  end
+
+  def not_in_the_future
     errors.add(:stop_time, "must not be in the future") if stop_time && stop_time > Time.now
     errors.add(:start_time, "must not be in the future") if start_time && start_time > Time.now
   end
 
-
-  after_validation :set_defaults, :on => :create
   def set_defaults
-    # debugger
     self.billable = project.billable if project
   end
 end

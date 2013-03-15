@@ -3,22 +3,11 @@ require 'authenticated_system'
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
 
-  protect_from_forgery 
+  protect_from_forgery
 
   helper :all # include all helpers, all the time
 
   before_filter :set_current_time
-
-  # see http://stackoverflow.com/questions/339130/how-do-i-render-a-partial-of-a-different-format-in-rails
-  def with_format(format, &block)
-    old_formats = formats
-    begin
-      self.formats = [format]
-      return block.call
-    ensure
-      self.formats = old_formats
-    end
-  end
 
   def authenticate_user!
     if (!current_user)
