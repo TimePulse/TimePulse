@@ -45,21 +45,37 @@ describe InvoiceReport do
       Factory.create(:invoice, :work_units => work_units)
     end
 
-
-    #before do
-      #debugger
-      #'foo'
-     #end
     its(:days) { should have(5).days }
     its(:days) { should include(date_ago(4)) }
     its(:days) { should include(date_ago(0)) }
     its(:days) { should_not include(date_ago(5)) }
 
-
     def date_ago(days)
       days.days.ago.beginning_of_day.to_date
     end
 
+  end
+
+  describe InvoiceReport::DateReport do
+    context "with one contributing user" do
+      let :work_units do
+        [ Factory(:work_unit, :user => user_1),
+          Factory(:work_unit, :user => user_1)
+        ]
+      end
+
+      subject { InvoiceReport::DateReport.new(work_units) }
+      its(:report) { should have(1).rows }
+    end
+    context "with two contributing users" do
+      let :work_units do
+        [ Factory(:work_unit, :user => user_1),
+          Factory(:work_unit, :user => user_2)
+        ]
+      end
+      subject { InvoiceReport::DateReport.new(work_units) }
+      its(:report) { should have(2).rows }
+    end
   end
 
 end
