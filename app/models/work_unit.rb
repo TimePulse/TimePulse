@@ -36,9 +36,10 @@ class WorkUnit < ActiveRecord::Base
     { :conditions => { :project_id => projects }}
   }
 
-  scope :today, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.to_date ] } }
-  scope :this_week, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.beginning_of_week.to_date ] } }
-  scope :in_last, lambda { |num_days| { :conditions => [ "stop_time > ? ", (Time.zone.now - num_days.days).to_date ] } }
+  scope :recent, lambda { |date| { :conditions => [ "stop_time > ? ", date ] } }
+  scope :today, lambda { recent(Time.zone.now.to_date) }
+  scope :this_week, lambda { recent(Time.zone.now.beginning_of_week.to_date) }
+  scope :in_last, lambda { |num_days| recent((Time.zone.now - num_days.days).to_date) }
   attr_accessible :project_id, :project, :notes, :start_time, :stop_time, :hours, :billable
 
   belongs_to :user
