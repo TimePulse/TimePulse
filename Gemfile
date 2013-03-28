@@ -45,6 +45,7 @@ group :test do
   gem 'simplecov', :platform => "ruby_19"
   gem 'simplecov-vim', :platform => "ruby_19"
   gem 'fuubar'
+  gem 'ruby-debug'
 end
 
 group :development do
