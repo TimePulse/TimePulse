@@ -36,7 +36,6 @@ class InvoiceReport
 
     def initialize(date_scoped_units)
       @units = date_scoped_units
-      p :date_scoped_units => date_scoped_units.map{|wu| "#{wu.id} #{wu.hours} #{wu.user.name} #{wu.stop_time.to_date}"}
       @report = []
       @units.map{|wu| wu.user}.uniq.each do |user|
         @report << [ user.name,
