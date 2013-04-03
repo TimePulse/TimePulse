@@ -31,6 +31,6 @@
               = project_name_with_client(wu.project)
             %td= wu.notes
             %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
-            %td.nobr= wu.stop_time.try(:to_s, :time)
+            %td.nobr= work_unit_stop_time(wu)
 
   = f.unlabeled_submit
