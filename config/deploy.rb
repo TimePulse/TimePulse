@@ -1,27 +1,31 @@
 $:.push "."
 default_run_options[:pty] = true
 #ssh_options[:verbose] = :debug
-#ssh_options[:keys] = %w{~/.ssh/lrd_rsa} # uncomment if you need to use a different key
 ssh_options[:auth_methods] = %w{publickey password}
 ssh_options[:forward_agent] = true
 
 # Overwrite the default deploy start/stop/restart actions with passenger ones
-require 'config/deploy/passenger'
-require 'config/deploy/remote_sync'
+require 'lib/capistrano/remote_sync'
+require 'lib/capistrano/passenger'
+require 'capistrano/ext/multistage'
+require 'bundler'
 require 'bundler/capistrano'
 
 set :sync_directories, ["public/system"]
 
 set :stages, %w(staging production)
 set :default_stage, 'production'
-require 'capistrano/ext/multistage'
 
 set :repository,  "git@github.com:LRDesign/Tracks.git"
 # set :deploy_via, :remote_cache
 set :scm, 'git'
-# set :git_shallow_clone, 1
 set :scm_verbose, true
 
+set :use_sudo, false
+
+set :user,   'root'
+set :runner, 'apache'
+set :group,  'web'
 
 role(:app) { domain }
 role(:web) { domain }
@@ -32,10 +36,6 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfsT #{shared_path}/db_backups #{release_path}/db_backups"
     run "ln -sfn #{shared_path}/config/rb_password #{release_path}/config/rb_password"
-  end
-
-  after 'deploy:update_code' do
-    link_shared_files
   end
 
   desc "Recycle the database"
@@ -56,9 +56,4 @@ namespace :sample_data do
   end
 end
 
-namespace :gems do
-  desc "Install gems"
-  task :install, :roles => :app do
-    run "cd #{current_path} && #{sudo} rake RAILS_ENV=production gems:install"
-  end
-end
+before "deploy:assets:precompile", "deploy:link_shared_files"

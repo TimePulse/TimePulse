@@ -250,4 +250,4 @@ DEPENDENCIES
   simplecov
   simplecov-vim
   thin
-  will_paginate (~> 3.0.pre2)
+  will_paginate
