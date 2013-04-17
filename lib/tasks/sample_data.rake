@@ -30,23 +30,71 @@ namespace :db do
 
     desc "Fill the database with sample data for demo purposes"
     task :load => [
-      :environment, 
-      :populate_users
-      # populate_some_table,
-      # populate_populate_other_table,
+      :environment,
+      :populate_users,
+      :populate_clients_and_projects,
+      :populate_work_units
       ]
-    
+
+    task :reload => [ :clear, :load ]
+
+    task :clear => :environment do
+      User.destroy_all
+      Client.destroy_all
+      Project.destroy_all
+      Rails.cache.clear
+    end
+
+
     # Load users
     task :populate_users => :environment do
-      user = User.create!(:login => 'austinrf',
-                           :name => "Austin", 
-                           :email => "Austin@austin.com", 
-                           :password => 'foobar', 
+      user = User.create!(:login => 'evan',
+                           :name => "Evan",
+                           :email => "evan@idahoev.com",
+                           :password => 'foobar',
                            :password_confirmation => 'foobar')
       user.groups << Group.find_by_name("Registered Users")
       user.groups << Group.find_by_name("Administration")
+      user.confirm!
     end
-    
+
+    task :populate_clients_and_projects => :environment do
+
+      4.times do |nn|
+        client = Client.create!(
+          :name => "Client #{nn}",
+          :abbreviation => "CL#{nn}",
+          :billing_email => "client_#{nn}@example.com"
+        )
+        proj = Project.create!(
+          :client => client,
+          :name => client.name,
+          :clockable => false,
+          :billable => true,
+          :parent => Project.root
+        )
+        Project.create!(:client => client, :name => 'Planning',    :clockable => true, :billable => true, :parent => proj)
+        Project.create!(:client => client, :name => 'Development', :clockable => true, :billable => true, :parent => proj)
+        Project.create!(:client => client, :name => 'Deployment',  :clockable => true, :billable => true, :parent => proj)
+      end
+    end
+
+    task :populate_work_units do
+      projects = Project.where(:clockable => true).to_a
+      User.all.each do |user|
+        (10..20).each do |nn|
+          wu = WorkUnit.new(
+            :project => projects.pick,
+            :start_time => Time.now - nn.days - nn.hours,
+            :stop_time => Time.now - nn.days - nn.hours + 45.minutes,
+            :notes => Populator.words(2..6)
+          )
+          wu.user = user
+          wu.clock_out!
+        end
+      end
+    end
+
     # An example to be deleted or replaced
     task :populate_some_table => :environment do
       require 'populator'

@@ -8,7 +8,7 @@ class ConvertUsersTableToDevise < ActiveRecord::Migration
         u.password = "resetme"
         u.password_confirmation = "resetme"
         u.save
-    end    
+    end
 
     add_column :users, :confirmation_token, :string, :limit => 255
     add_column :users, :confirmed_at, :timestamp
@@ -27,6 +27,7 @@ class ConvertUsersTableToDevise < ActiveRecord::Migration
     rename_column :users, :failed_login_count, :failed_attempts
     add_column :users, :unlock_token, :string, :limit => 255
     add_column :users, :locked_at, :timestamp
+    add_column :users, :unconfirmed_email, :string
 
     remove_column :users, :persistence_token
     remove_column :users, :perishable_token
