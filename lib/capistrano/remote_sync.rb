@@ -59,21 +59,20 @@ Capistrano::Configuration.instance.load do
 
         filename = "database.#{stage}.#{Time.now.strftime '%Y-%m-%d_%H:%M:%S'}.sql.bz2"
         local_filename = LOCAL_SQL_PATH + filename
-        system "mkdir -p #{LOCAL_SQL_PATH}"
         on_rollback { delete "#{shared_path}/sync/#{filename}" }
 
-        # Remote DB dump
-        username, password, database, host = remote_database_config(stage)
+        username, password, database, host = remote_database_config(rails_env)
         hostcmd = host.nil? ? '' : "-h #{host}"
         puts "hostname was #{host}"
         puts "database was #{database}"
-        run "mkdir -p #{shared_path}/sync"
         run "mysqldump -u #{username} --password='#{password}' #{hostcmd} #{database} | bzip2 -9 > #{shared_path}/sync/#{filename}" do |channel, stream, data|
           puts data
         end
         purge_old_backups "database"
 
+
         # Download dump
+        system "mkdir -p #{LOCAL_SQL_PATH}"
         download "#{shared_path}/sync/#{filename}", local_filename
 
         # Local DB import
@@ -93,7 +92,6 @@ Capistrano::Configuration.instance.load do
         server, port = host_and_port
 
         Array(fetch(:sync_directories, [])).each do |syncdir|
-          puts "syncing #{syncdir}"
           unless File.directory? "#{syncdir}"
             logger.info "create local '#{syncdir}' folder"
             Dir.mkdir "#{syncdir}"
@@ -136,7 +134,7 @@ Capistrano::Configuration.instance.load do
         end
 
         # Make a backup before importing
-        username, password, database, host = remote_database_config(stage)
+        username, password, database, host = remote_database_config(rails_env)
         p "hostname was #{host}"
         hostcmd = host.nil? ? '' : "-h #{host}"
         run "mysqldump -u #{username} --password='#{password}' #{hostcmd} #{database} | bzip2 -9 > #{shared_path}/sync/#{filename}" do |channel, stream, data|
@@ -146,12 +144,13 @@ Capistrano::Configuration.instance.load do
         # Local DB export
         filename = "dump.local.#{Time.now.strftime '%Y-%m-%d_%H:%M:%S'}.sql.bz2"
         username, password, database = database_config('development')
+        system "mkdir -p #{LOCAL_SQL_PATH}"
         system "mysqldump -u #{username} --password='#{password}' #{database} | bzip2 -9 > #{local_filename}"
         upload local_filename, "#{shared_path}/sync/#{filename}"
         system "rm -f #{local_filename}"
 
         # Remote DB import
-        username, password, database, host = remote_database_config(stage)
+        username, password, database, host = remote_database_config(rails-env)
         hostcmd = host.nil? ? '' : "-h #{host}"
         run "bzip2 -d -c #{shared_path}/sync/#{filename} | mysql -u #{username} --password='#{password}' #{hostcmd} #{database}; rm -f #{shared_path}/sync/#{filename}"
         purge_old_backups "database"
@@ -195,7 +194,8 @@ Capistrano::Configuration.instance.load do
     #
     def database_config(db)
       database = YAML::load_file('config/database.yml')
-      return database["#{db}"]['username'], database["#{db}"]['password'], database["#{db}"]['database'], database["#{db}"]['host']
+      db = database["#{db}"]
+      return (db['username']  || db['user']), db['password'], db['database'], db['host']
     end
 
 
