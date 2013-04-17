@@ -7,11 +7,6 @@ class WorkUnitsController < ApplicationController
 
   before_filter :find_work_unit_and_authenticate, :only => [ :show, :edit, :update, :destroy ]
 
-  # GET /work_units
-  def index
-    @work_units = WorkUnit.find(:all)
-  end
-
   # GET /work_units/1
   def show
   end
