@@ -20,14 +20,18 @@ $tools_padding: 2px
     td, a, td img
       :padding 0
       :margin 0
-    td.tools
-      :padding 0
-      :width $tools_width
-      :text-align center
+    td
+      .tools
+        :padding 0
+        :width $tools_width
+        :text-align center
+        :float right
 
-    td.project_name, td.project_name div
-      :width $picker_width - 2px - (2 * $tools_padding) - $tools_width - 4px
-      :overflow hidden
+      .project_name, .project_name div
+        :width $picker_width - 2px - (2 * $tools_padding) - $tools_width - 4px
+        :overflow hidden
+        :float left
+
     tr.category td
       :font-weight bold
       :padding-top .75em
