@@ -32,7 +32,8 @@ namespace :db do
     task :load => [
       :environment,
       :populate_users,
-      :populate_clients_and_projects
+      :populate_clients_and_projects,
+      :populate_work_units
       ]
 
     task :reload => [ :clear, :load ]
@@ -75,6 +76,22 @@ namespace :db do
         Project.create!(:client => client, :name => 'Planning',    :clockable => true, :billable => true, :parent => proj)
         Project.create!(:client => client, :name => 'Development', :clockable => true, :billable => true, :parent => proj)
         Project.create!(:client => client, :name => 'Deployment',  :clockable => true, :billable => true, :parent => proj)
+      end
+    end
+
+    task :populate_work_units do
+      projects = Project.where(:clockable => true).to_a
+      User.all.each do |user|
+        (10..20).each do |nn|
+          wu = WorkUnit.new(
+            :project => projects.pick,
+            :start_time => Time.now - nn.days - nn.hours,
+            :stop_time => Time.now - nn.days - nn.hours + 45.minutes,
+            :notes => Populator.words(2..6)
+          )
+          wu.user = user
+          wu.clock_out!
+        end
       end
     end
 
