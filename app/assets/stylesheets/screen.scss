@@ -49,6 +49,7 @@ h4 {
   @extend .row;
   border: 1px #666666 solid;
   background: white;
+  border-radius: 3px;
   h1 {
     @extend .row;
     border-bottom: 1px #666666 solid;
@@ -373,6 +374,8 @@ a:focus {
 }
 
 .block {
+  border-radius: 3px;
+
   .block_title {
     @extend .row;
   }
@@ -465,6 +468,9 @@ $admin_nav_color: #3ad932;
 }
 
 #timeclock {
+  .block_content {
+    padding: 0.5em;
+  }
   table {
     margin-bottom: 1em;
     border-collapse: collapse;
@@ -561,18 +567,15 @@ li {
   }
 }
 
+.block_content > table.listing {
+  margin: 0;
+  width: 100%;
+  border: 0;
+}
+
 #aux {
   margin-top: 2em;
   overflow: hidden;
-  #recent_work {
-    .block_inner {
-      margin: 0;
-    }
-    table.listing {
-      margin: 0;
-      width: 100%;
-    }
-  }
   .block {
     border: 1px #666666 solid;
     background: white;
