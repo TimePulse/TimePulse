@@ -1,0 +1,42 @@
+@import _constants.sass
+$tools_width: 20px
+$tools_padding: 2px
+
+
+#picker
+  table.project_picker
+    :width $picker_width - 2px
+    :margin 0
+    :padding 0
+    :border 0
+    :border-collapse collapse
+    :table-layout fixed
+    :font-size 12px
+    td
+      :white-space nowrap
+      :overflow hidden
+      :padding 2px 0 0 0
+      :margin 0
+    td, a, td img
+      :padding 0
+      :margin 0
+    td.tools
+      :padding 0
+      :width $tools_width
+      :text-align center
+
+    td.project_name, td.project_name div
+      :width $picker_width - 2px - (2 * $tools_padding) - $tools_width - 4px
+      :overflow hidden
+    tr.category td
+      :font-weight bold
+      :padding-top .75em
+    tr.current
+      td
+        :background #ff9
+        :padding-top 3px
+        :padding-bottom 3px
+      td.tools img
+        :display none
+  .block_inner
+    :margin 0

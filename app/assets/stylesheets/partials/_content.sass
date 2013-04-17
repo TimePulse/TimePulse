@@ -1,0 +1,80 @@
+@import constants.sass
+
+$bcolor: #666
+
+#content
+  :border 1px $bcolor solid
+  :background white
+
+  h1
+    :border-bottom 1px $bcolor solid
+    :padding .25em
+    :background $title_bg_color
+    :color $title_text_color
+    :margin-bottom 0
+
+  #content-body
+    :padding 1em
+  #content-body:after
+    +clearfix
+
+table.listing
+  :border-collapse collapse
+  :margin 1em 0
+  :border 1px solid black
+  :border-bottom-width 2px
+
+  td, th
+    :border 1px solid black
+    :padding 3px .25em
+  th
+    :font-weight bold
+    :background #cce
+
+  tr.odd
+    :background #fff
+  tr.even
+    :background #eee
+  tr.info td
+    :border-top-width 2px
+  tr.description td
+    :border-bottom-width 2px
+
+  tr.work_unit:hover
+    :background-color #ff9
+
+  tr.one_line td
+    :white-space nowrap
+    :overflow hidden
+  td.date, td.tools
+    :white-space nowrap
+
+#hours_report
+  :margin-bottom 1em
+  .panes
+    .pane
+      :padding-top 0
+      :padding-bottom 0
+    table
+      :margin-top 0
+      :margin-bottom 0
+
+p
+  :margin .5em 0 1em 0
+
+li
+  :list-style disc
+  :margin-left 2em
+
+dl.values
+  dt
+    :font-weight bold
+    :display run-in
+  dt:after
+    :content ": "
+
+#work_unit_form
+  :margin 1em 0
+  :border 1px solid gray
+  :background #ccf
+  :padding .5em
