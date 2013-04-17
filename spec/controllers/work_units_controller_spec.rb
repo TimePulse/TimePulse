@@ -10,15 +10,6 @@ describe WorkUnitsController do
 
     let! :project do Factory(:project) end
 
-    ########################################################################################
-    #                                      GET INDEX
-    ########################################################################################
-    describe "GET index" do
-      it "should expose all work_units as @work_units" do
-        get :index
-        assigns[:work_units].should == [@work_unit]
-      end
-    end
 
     ########################################################################################
     #                                      GET SHOW
