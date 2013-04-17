@@ -28,6 +28,7 @@ gem 'authlogic'
 gem "chronic"
 gem "logical-insight"
 gem 'groundworkcss-rails'
+gem 'dynamic_form'
 
 group :development, :test do
   gem 'rspec', '2.8'
