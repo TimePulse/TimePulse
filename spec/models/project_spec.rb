@@ -81,6 +81,9 @@ describe Project do
         @project = Factory(:project, :account => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.account.should == "account2"
+
+        @grandparent.reload.descendants.should include(@parent)
+        @grandparent.reload.descendants.should include(@project)
       end
     end
   end
