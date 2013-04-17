@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe WorkUnitsController do
   describe "routing" do
-    it "recognizes and generates #index" do
-      { :get => "/work_units" }.should route_to(:controller => "work_units", :action => "index")
+    it "doesnt route index" do
+      { :get => '/work_units' }.should_not be_routable
     end
 
     it "recognizes and generates #new" do
@@ -19,15 +19,15 @@ describe WorkUnitsController do
     end
 
     it "recognizes and generates #create" do
-      { :post => "/work_units" }.should route_to(:controller => "work_units", :action => "create") 
+      { :post => "/work_units" }.should route_to(:controller => "work_units", :action => "create")
     end
 
     it "recognizes and generates #update" do
-      { :put => "/work_units/1" }.should route_to(:controller => "work_units", :action => "update", :id => "1") 
+      { :put => "/work_units/1" }.should route_to(:controller => "work_units", :action => "update", :id => "1")
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/work_units/1" }.should route_to(:controller => "work_units", :action => "destroy", :id => "1") 
+      { :delete => "/work_units/1" }.should route_to(:controller => "work_units", :action => "destroy", :id => "1")
     end
   end
 end

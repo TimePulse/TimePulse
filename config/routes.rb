@@ -1,12 +1,12 @@
 Tracks::Application.routes.draw do
 
-  
+
 
   resources :invoices
   resources :bills
   resources :groups
   resources :permissions
-  resources :work_units
+  resources :work_units, :except => :index
   resources :clients
   resources :projects
 
@@ -31,7 +31,7 @@ Tracks::Application.routes.draw do
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
   match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete
-  
+
 
   root :to => 'home#index'
 
