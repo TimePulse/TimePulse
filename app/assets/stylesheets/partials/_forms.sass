@@ -12,20 +12,29 @@ label
   label
     :display block
     :float left
-    :width 6em
     :text-align right
     :font-weight bold
+    :clear both
+    :width 15%
 
   .assignable
 
   .comment
-    :display inline
+    :display block
     :font-style italic
     :margin-left 1em
+    :width 25%
+    :float left
+    :overflow hidden
   select
     :width 20em
   input
     :margin-right .5em
+    :width 50%
+    :float left
+
+  &:after
+    +clearfix
 
 .required label
   :font-weight bold
