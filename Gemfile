@@ -54,4 +54,5 @@ group :development do
   gem 'annotate'
   gem 'lrd_dev_tools', ">= 0.1.3"
   gem 'thin'
+  gem 'pivotal-github'
 end

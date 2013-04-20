@@ -19,6 +19,9 @@
   :background $nav_background_color
   :color black
 
+  ul
+    :margin 0
+
   ul li:hover
     :background $nav_hover_color
 
@@ -26,5 +29,5 @@
     :float right
 
 
-.nav:after
+.nav, #nav, #admin_nav
   +clearfix

@@ -11,15 +11,11 @@
 
     - if current_project
       %meta{"name" => "current project", "content" => current_project.id}
-    
+
     %title=  @title ? @title : "LRD Time Tracking System"
 
 
-    = stylesheet_link_tag 'universal', :media=>'all'
-    = stylesheet_link_tag 'screen', :media=>'screen, projection'
-    = stylesheet_link_tag 'responsive', :media=>'screen, projection'
-    = stylesheet_link_tag 'print', :media=>'print'
-    
+    = stylesheet_link_tag 'application', :media=>'all'
 
     - if Rails.env.production?
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"

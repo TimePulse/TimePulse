@@ -15,7 +15,6 @@ $bcolor: #666
 
   #content-body
     :padding 1em
-  #content-body:after
     +clearfix
 
 table.listing
@@ -29,7 +28,7 @@ table.listing
     :padding 3px .25em
   th
     :font-weight bold
-    :background #cce
+    :background $contrast_background_color
 
   tr.odd
     :background #fff
@@ -73,8 +72,3 @@ dl.values
   dt:after
     :content ": "
 
-#work_unit_form
-  :margin 1em 0
-  :border 1px solid gray
-  :background #ccf
-  :padding .5em

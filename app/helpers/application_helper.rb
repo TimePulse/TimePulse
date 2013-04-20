@@ -63,8 +63,8 @@ module ApplicationHelper
     if (cssid.present?)
       slide_toggle_tag(:h2, title.upcase, "#{cssid.to_s} .block_content")
     else
-      content_tag(:h2, title.upcase)
+      content_tag(:h2, title.upcase, :class => 'block_title')
     end
   end
-  
+
 end

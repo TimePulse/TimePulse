@@ -1,5 +1,6 @@
+@import constants.sass
+
 #aux
-  :float right
   :margin-top 2em
   :overflow hidden
 
@@ -14,9 +15,10 @@
 
 #aux, #picker
   .block
-    :border 1px $bcolor solid
+    :border none
     :background white
     :margin-bottom 1em
+    +round
 
     h2
       :border-bottom 1px $bcolor solid
@@ -25,3 +27,5 @@
       :margin 0
       :color $title_text_color
 
+.block_content > table.listing
+  :margin 0
