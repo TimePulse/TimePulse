@@ -39,9 +39,9 @@ namespace :db do
     task :reload => [ :clear, :load ]
 
     task :clear => :environment do
-      User.destroy_all
-      Client.destroy_all
-      Project.destroy_all
+      User.delete_all
+      Client.delete_all
+      Project.delete_all
       Rails.cache.clear
     end
 

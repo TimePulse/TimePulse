@@ -1,5 +1,10 @@
 @import constants.sass
 
+form
+  :border 1px solid gray
+  :padding 1em
+  +round
+  +clearfix
 
 label
   :font-weight bold
@@ -8,6 +13,7 @@ label
 .labeled_input
   :margin-bottom .25em
   :margin-left 1em
+  +clearfix
 
   label
     :display block
@@ -32,9 +38,10 @@ label
     :margin-right .5em
     :width 50%
     :float left
-
-  &:after
     +clearfix
+
+  input, select
+    :max-width 250px
 
 .required label
   :font-weight bold

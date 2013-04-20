@@ -13,12 +13,18 @@ $bcolor: white
 
 $column_spacing: 5px
 
-=clearfix
-  :content "."
-  :display block
-  :height 0
-  :clear both
-  :visibility hidden
+@mixin clearfix
+  &:after
+    :content "."
+    :display block
+    :height 0
+    :clear both
+    :visibility hidden
+  * html &
+    :height 1px
+
+@mixin round
+  :border-radius 5px
 
 =error_notice_colors
   :border-width 2px
