@@ -14,6 +14,7 @@ Capistrano::Configuration.instance.load do
       run "chmod 0666 #{shared_path}/log/*.log"
       make_tmp_writable
       make_sitemap_writable
+      make_logs_writable
     end
 
     task :make_tmp_writable do
@@ -21,6 +22,12 @@ Capistrano::Configuration.instance.load do
       run "mkdir #{release_path}/tmp/cache"
       run "chown -R #{runner}:#{group} #{release_path}/tmp/cache"
       run "chmod -R g+rw #{release_path}/tmp"
+    end
+
+    task :make_logs_writable do
+      run "touch #{runner}:#{group} #{shared_path}/logs/#{rails_env}.log"
+      run "chown #{runner}:#{group} #{shared_path}/logs/#{rails_env}.log"
+      run "chmod 0666 #{runner}:#{group} #{shared_path}/logs/#{rails_env}.log"
     end
 
     task :make_sitemap_writable do
