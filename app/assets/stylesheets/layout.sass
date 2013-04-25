@@ -1,5 +1,5 @@
 @import 'partials/constants'
-@import 'groundwork-and-overrides'
+@import 'foundation_and_overrides'
 
 body
   :font-family helvetica, "sans-serif"
@@ -14,7 +14,6 @@ body
 
 #wrap
   @extend %container
-
 
 #header
   :height 40px
@@ -43,43 +42,31 @@ body
   +clearfix
 
 #aux
-  :margin-top 2em
-  @extend .one
-  @extend .fourth
-  @extend .right-three
+  :margin-top 1em
 
 #picker
-  :margin-top 2em
+  :margin-top 0em
   :padding 0
-  @extend .one
-  @extend .fourth
-  @extend .left-one
 
 #content-column
   :float left
-  :margin-top 2em
+  :margin-top 0em
   h1
     :margin-top 0
   &.with_picker
-    @extend .two
-    @extend .left-one
-    @extend .fourths
-    padding-right: 20px
-    padding-left: 20px
+    padding-right: 0px
+    padding-left: 0px
 
   &.without_picker
-    @extend .three
+    display: block
     #content-body
-      @extend .row
+      @include grid-row
 
     &.without_aux
-      @extend .centered
 
     &.with_aux
-      @extend .left-one
-      padding-right: 20px
+      padding-right: 0px
 
-    @extend .fourths
 
 #content-wrap
   +clearfix

@@ -1,3 +1,12 @@
+//= require rails
+//= require ninjascript
+// javascript_include_tag "jquery.ui.datetimepicker.js"
+//= require jquery.timepicker
+//= require logical_tabs_jquery
+//= require jquery.tools.min
+//= require foundation
+//
+
 $('document').ready( function(){
   startClock();
   addCurrentClassToCurrentProject();
@@ -152,3 +161,6 @@ function addCurrentClassToCurrentProject() {
   var current_project_selector= "#project_" + $('meta[name="current project"]').attr("content");
   $(current_project_selector).addClass("current");
 }
+$(function(){ $(document).foundation(); });
+
+$(document).foundation();
