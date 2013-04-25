@@ -93,7 +93,13 @@ GEM
       actionpack (>= 3.1)
       execjs
       railties (>= 3.1)
-    haml (3.1.7)
+    haml (4.0.2)
+      tilt
+    haml-rails (0.4)
+      actionpack (>= 3.1, < 4.1)
+      activesupport (>= 3.1, < 4.1)
+      haml (>= 3.1, < 4.1)
+      railties (>= 3.1, < 4.1)
     highline (1.6.18)
     hike (1.2.1)
     i18n (0.6.4)
@@ -205,6 +211,9 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
+    uglifier (2.0.1)
+      execjs (>= 0.3.0)
+      multi_json (~> 1.0, >= 1.0.2)
     uuid (2.3.5)
       macaddr (~> 1.0)
     warden (1.2.1)
@@ -234,7 +243,7 @@ DEPENDENCIES
   faker
   fuubar
   groundworkcss-rails
-  haml (>= 3.1.2)
+  haml-rails
   launchy
   logical-insight
   logical_tabs
@@ -254,4 +263,5 @@ DEPENDENCIES
   simplecov
   simplecov-vim
   thin
+  uglifier
   will_paginate

@@ -12,7 +12,7 @@ gem 'rails', '3.2.12'
 gem 'rack', '~> 1.4.0'
 
 gem 'rake'
-gem "haml", ">= 3.1.2"
+gem "haml-rails"
 gem "sass-rails"
 gem "mizugumo"
 gem "will_paginate"
@@ -29,6 +29,10 @@ gem "chronic"
 gem "logical-insight"
 gem 'groundworkcss-rails'
 gem 'dynamic_form'
+
+group :assets do
+  gem 'uglifier'
+end
 
 group :development, :test do
   gem 'rspec', '2.8'
