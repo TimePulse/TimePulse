@@ -27,7 +27,7 @@ gem 'devise'
 gem 'authlogic'
 gem "chronic"
 gem "logical-insight"
-gem 'groundworkcss-rails'
+gem 'groundworkcss-rails', "0.2.2"
 gem 'dynamic_form'
 
 group :assets do
