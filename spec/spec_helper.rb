@@ -52,7 +52,6 @@ RSpec.configure do |config|
   end
 
   config.include(SaveAndOpenOnFail, :type => :feature)
-  config.include(HandyXPaths, :type => :feature)
 end
 
 def content_for(name)

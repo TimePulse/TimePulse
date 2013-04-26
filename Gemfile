@@ -37,12 +37,13 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'rspec', '2.8'
-  gem 'rspec-rails', '2.8'
+  gem 'rspec'
+  gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'capybara', '1.1.4'
+  gem 'capybara'
   gem 'launchy'
   gem 'thin'
+  gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'rspec-steps'
   gem 'debugger'

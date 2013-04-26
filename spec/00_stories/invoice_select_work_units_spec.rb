@@ -63,7 +63,7 @@ steps "Selects all boxes", :type => :feature do
   end
 end
 
-steps "Select a few work units", :type => :request do
+steps "Select a few work units", :type => :feature do
   perform_steps "for an invoicing task", :wu_count => 5
 
   def click_checkbox(id)
