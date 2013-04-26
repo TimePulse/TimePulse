@@ -37,7 +37,7 @@ shared_steps "for an invoicing task" do |opt_hash|
 end
 
 
-steps "Selects all boxes", :type => :request do
+steps "Selects all boxes", :type => :feature do
   perform_steps "for an invoicing task"
 
   it "should select all work units" do

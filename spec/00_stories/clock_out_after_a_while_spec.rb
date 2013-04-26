@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "clock out after a while", :type => :request do
+steps "clock out after a while", :type => :feature do
 
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
   let! :project_1 do Factory(:project, :client => client_1) end

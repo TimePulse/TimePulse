@@ -28,21 +28,21 @@ RSpec.configure do |config|
 
   DatabaseCleaner.strategy = :transaction
 
-  config.before :all, :type => :request do
+  config.before :all, :type => :feature do
     Rails.application.config.action_dispatch.show_exceptions = true
     DatabaseCleaner.clean_with :truncation
     load 'db/seeds.rb'
   end
 
-  config.after :all, :type => :request do
+  config.after :all, :type => :feature do
     DatabaseCleaner.clean_with :truncation
     load 'db/seeds.rb'
   end
 
-  config.before :each, :type => proc{ |value| value != :request } do
+  config.before :each, :type => proc{ |value| value != :feature } do
     DatabaseCleaner.start
   end
-  config.after :each, :type => proc{ |value| value != :request } do
+  config.after :each, :type => proc{ |value| value != :feature } do
     DatabaseCleaner.clean
   end
 
@@ -51,8 +51,8 @@ RSpec.configure do |config|
     load 'db/seeds.rb'
   end
 
-  config.include(SaveAndOpenOnFail, :type => :request)
-  config.include(HandyXPaths, :type => :request)
+  config.include(SaveAndOpenOnFail, :type => :feature)
+  config.include(HandyXPaths, :type => :feature)
 end
 
 def content_for(name)

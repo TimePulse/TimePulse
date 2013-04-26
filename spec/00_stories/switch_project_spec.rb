@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "log in and switch projects", :type => :request do
+steps "log in and switch projects", :type => :feature do
 
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
   let! :client_2 do Factory(:client, :name => 'Bar, Inc.') end
