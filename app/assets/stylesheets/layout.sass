@@ -1,9 +1,9 @@
 @import 'partials/constants'
-@import 'groundwork-and-overrides'
+@import 'foundation_and_overrides'
 
 body
   :font-family helvetica, "sans-serif"
-  :background $page_background image-url('background.png') top left repeat
+  :background $page_background image-url('background.png') top left repeat !important
   :border 0
   :margin 0
   :padding 0
@@ -13,9 +13,8 @@ body
   :background image-url('top_background.png') top left repeat-x
 
 #wrap
-  @extend %container
-
-
+  @include grid-row
+  
 #header
   :height 40px
   :margin-bottom 1px
@@ -38,48 +37,38 @@ body
   :margin 0
   :float left
 
+#admin_nav
+  ul li
+    float: none
 #nav
   :border 0px
   +clearfix
 
 #aux
-  :margin-top 2em
-  @extend .one
-  @extend .fourth
-  @extend .right-three
+  :margin-top 1em
 
 #picker
-  :margin-top 2em
+  :margin-top 0em
   :padding 0
-  @extend .one
-  @extend .fourth
-  @extend .left-one
 
 #content-column
-  :float left
-  :margin-top 2em
+  :margin-top 0em
   h1
     :margin-top 0
   &.with_picker
-    @extend .two
-    @extend .left-one
-    @extend .fourths
-    padding-right: 20px
-    padding-left: 20px
+    padding-right: 0px
+    padding-left: 0px
 
   &.without_picker
-    @extend .three
+    display: block
     #content-body
-      @extend .row
+      @include grid-row
 
     &.without_aux
-      @extend .centered
 
     &.with_aux
-      @extend .left-one
-      padding-right: 20px
+      padding-right: 0px
 
-    @extend .fourths
 
 #content-wrap
   +clearfix

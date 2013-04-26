@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "clock out after a while", :type => :request do
+steps "clock out after a while", :type => :feature do
 
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
   let! :project_1 do Factory(:project, :client => client_1) end
@@ -35,13 +35,15 @@ steps "clock out after a while", :type => :request do
 
 
   it "when I clock out with a message" do
-    fill_in "Notes", :with => "Did a an hour's work on project #1"
-    within("#timeclock"){ click_button "Clock Out" }
+    within "#timeclock" do
+      fill_in "Notes", :with => "Did a an hour's work on project #1"
+      click_button "Clock Out"
+    end
   end
 
   it "should have an unclocked timeclock" do
     within "#timeclock" do
-      wait_until { page.has_content? "You are not clocked in"}
+      page.should have_content("You are not clocked in")
       page.should_not have_selector("#timeclock #task_elapsed")
     end
   end

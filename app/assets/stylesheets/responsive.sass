@@ -1,0 +1,43 @@
+@import 'partials/constants'
+@import 'foundation_and_overrides'
+
+@media only screen and (min-width: #{$small-screen})
+  #admin_nav
+    span.toggler
+      display: none
+    ul li
+      float: left
+
+  #aux 
+    margin-top: 2em
+    @include grid-column(3, $push: 9)
+
+  #picker
+    :margin-top 2em
+    :padding 0
+    @include grid-column(3, $pull: 3)
+
+  #content-column
+    :float left
+    :margin-top 2em
+    h1
+      :margin-top 0
+    &.with_picker
+      @include grid-column(6, $pull: 3)
+      padding-right: 20px
+      padding-left: 20px
+
+    &.without_picker
+
+      &.without_aux
+        @include grid-column(9, $center: true)
+
+      &.with_aux
+        @include grid-column(9, $pull: 3)
+        padding-right: 20px
+
+  .toggle-target
+    display: block !important
+
+  .toggle-target
+    display: block !important

@@ -24,6 +24,7 @@ module SaveAndOpenOnFail
     end
   end
 end
+=begin
 
 module HandyXPaths
   class Builder <  XPath::Expression::Self
@@ -62,3 +63,4 @@ end
 class XPath::Expression
   include HandyXPaths::Attrs
 end
+=end

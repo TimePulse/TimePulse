@@ -13,7 +13,6 @@ gem 'rack', '~> 1.4.0'
 
 gem 'rake'
 gem "haml-rails"
-gem "sass-rails"
 gem "mizugumo"
 gem "will_paginate"
 gem "populator"
@@ -27,20 +26,25 @@ gem 'devise'
 gem 'authlogic'
 gem "chronic"
 gem "logical-insight"
-gem 'groundworkcss-rails', "0.2.2"
 gem 'dynamic_form'
 
 group :assets do
-  gem 'uglifier'
+  gem 'sass-rails',   '~> 3.2.3'
+  gem 'coffee-rails', '~> 3.2.1'
+  gem 'uglifier', '>= 1.0.3'
+
+  gem 'zurb-foundation', '~> 4.0.0'
+  gem 'quiet_assets'
 end
 
 group :development, :test do
-  gem 'rspec', '2.8'
-  gem 'rspec-rails', '2.8'
+  gem 'rspec'
+  gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'capybara', '1.1.4'
+  gem 'capybara'
   gem 'launchy'
   gem 'thin'
+  gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'rspec-steps'
   gem 'debugger'
@@ -57,6 +61,6 @@ group :development do
   gem 'capistrano-ext'
   gem 'annotate'
   gem 'lrd_dev_tools', ">= 0.1.3"
-  gem 'thin'
+  gem 'unicorn-rails'
   gem 'pivotal-github'
 end

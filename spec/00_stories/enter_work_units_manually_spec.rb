@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "User manually enters work units", :type => :request do
+steps "User manually enters work units", :type => :feature do
 
   let! :client do Factory(:client, :name => 'Foo, Inc.') end
   let! :project do Factory(:project, :client => client) end
@@ -19,9 +19,9 @@ steps "User manually enters work units", :type => :request do
   end
 
   it "should have the name of the project" do
-    page.should have_xpath(make_xpath(project.name){|name|
-      descendant(:h1).all(attr(:id) == 'headline', content(name))
-    })
+    within "h1#headline" do
+      page.should have_content(project.name)
+    end
   end
 
   it "when I fill in valid work unit information" do
@@ -29,10 +29,6 @@ steps "User manually enters work units", :type => :request do
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
     fill_in "Notes", :with => "An hour of work"
     click_button "Save Changes"
-  end
-
-  it "should add a work unit to the database" do
-    wait_until { WorkUnit.count == @work_unit_count + 1 }
   end
 
   it "should have the correct values for the work unit" do
@@ -45,7 +41,7 @@ steps "User manually enters work units", :type => :request do
   end
   it "should show the work unit in recent work" do
     within "#recent_work" do
-      wait_until { page.has_content?("1.00") }
+      page.should have_content("1.00")
       page.should have_css("a[href='/work_units/#{@work_unit.id}/edit']")
     end
   end
