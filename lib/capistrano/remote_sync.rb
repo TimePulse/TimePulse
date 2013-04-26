@@ -57,27 +57,24 @@ Capistrano::Configuration.instance.load do
   DESC
       task :db, :roles => :db, :only => { :primary => true } do
 
-        filename = "database.#{stage}.#{Time.now.strftime '%Y-%m-%d_%H:%M:%S'}.sql.bz2"
-        local_filename = LOCAL_SQL_PATH + filename
-        on_rollback { delete "#{shared_path}/sync/#{filename}" }
+        filename = "synced_#{stage}.pg"
+        local_filename = File.join(LOCAL_SQL_PATH, filename)
+        remote_dir = File.join(shared_path, REMOTE_SQL_PATH, 'latest.pg')
+        remote_filename = File.join(
+            remote_dir,
+            Dir.new(remote_dir).find { |f| ['latest.pg.gz', 'latest.pg'].include?(f) }
+          )
+        Dir.mkdir(LOCAL_SQL_PATH) unless Dir.exists?(LOCAL_SQL_PATH)
 
-        username, password, database, host = remote_database_config(rails_env)
-        hostcmd = host.nil? ? '' : "-h #{host}"
-        puts "hostname was #{host}"
-        puts "database was #{database}"
-        run "mysqldump -u #{username} --password='#{password}' #{hostcmd} #{database} | bzip2 -9 > #{shared_path}/sync/#{filename}" do |channel, stream, data|
-          puts data
-        end
-        purge_old_backups "database"
+        # Remote DB dump
+        #run "cd #{current_path}; mkdir -p #{REMOTE_SQL_PATH}"
+        #run "cd #{current_path}; RAILS_ENV=#{stage} bundle exec
+        #rakedb:backups:create[#{REMOTE_SQL_PATH},#{filename}]"
 
+        download remote_filename, local_filename
 
-        # Download dump
-        system "mkdir -p #{LOCAL_SQL_PATH}"
-        download "#{shared_path}/sync/#{filename}", local_filename
-
-        # Local DB import
-        username, password, database = database_config('development')
-        system "bzip2 -d -c #{local_filename} | mysql -u #{username} --password='#{password}' #{database}"#{}"; rm -f #{filename}"
+        # Local DB importcd /var/cd
+        system "bundle exec rake db:backups:restore[#{local_filename}]"
 
         logger.important "sync database from the stage '#{stage}' to local finished"
       end
