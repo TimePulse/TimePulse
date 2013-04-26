@@ -48,8 +48,10 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "should clock out with a message" do
-    fill_in "Notes", :with => "Did a little work on project #1"
-    within("#timeclock"){ click_button "Clock Out" }
+    within "#timeclock" do
+      fill_in "Notes", :with => "Did a little work on project #1"
+      click_button "Clock Out"
+    end
   end
 
 
@@ -98,9 +100,11 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "and I fill in nine hours and clock out" do
-    fill_in "Hours", :with => '9.0'
-    fill_in "Notes", :with => "I worked all day on this"
-    within("#timeclock"){ click_button "Clock Out" }
+    within "#timeclock" do
+      fill_in "Hours", :with => '9.0'
+      fill_in "Notes", :with => "I worked all day on this"
+      click_button "Clock Out"
+    end
   end
 
   it "should have an unclocked timeclock" do
