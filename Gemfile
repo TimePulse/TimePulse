@@ -34,6 +34,7 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 
   gem 'zurb-foundation', '~> 4.0.0'
+  gem 'quiet_assets'
 end
 
 group :development, :test do

@@ -1,4 +1,3 @@
-//= require rails
 //= require ninjascript
 // javascript_include_tag "jquery.ui.datetimepicker.js"
 //= require jquery.timepicker
