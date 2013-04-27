@@ -8,6 +8,7 @@ Capistrano::Configuration.instance.load do
     before "deploy:assets:precompile", 'deploy:set_app_ownership'
     task :set_app_ownership do
       run "chown #{runner}:#{group} #{release_path}/config/application.rb"
+      run "chown #{runner}:#{group} #{release_path}/config/environment.rb"
       run "chown #{runner}:#{group} #{shared_path}/log/*.log"
       run "chmod ug+rwx #{shared_path}/db_backups"
       run "chmod ug+rwx #{shared_path}/log"
