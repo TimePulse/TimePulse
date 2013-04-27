@@ -35,6 +35,8 @@ group :assets do
 
   gem 'zurb-foundation', '~> 4.0.0'
   gem 'quiet_assets'
+  gem 'turbo-sprockets-rails3'
+
 end
 
 group :development, :test do
