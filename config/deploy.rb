@@ -43,7 +43,7 @@ namespace :deploy do
   end
 
   task :cache_clear do
-    run("cd #{current_path}; /usr/bin/rake tmp:cache:clear RAILS_ENV=#{rails_env}")
+    run("cd #{current_path} && bundle exec rake tmp:cache:clear RAILS_ENV=#{rails_env}")
   end
 
 end
