@@ -42,8 +42,11 @@
             =link_to image_tag('logo.png', :alt => "logo"), root_url
           #message
             - if logged_in?
-              %h2= "Hello, #{current_user.name} "
-            %h1 LRD Tracking System
+              %h2.unimportant= "Hello, #{current_user.name} "
+            %h1
+              %span.unimportant LRD
+              Tracking
+              %span.unimportant System
 
         = render :partial => 'layouts/admin_menu'
         = render :partial => 'layouts/nav'
