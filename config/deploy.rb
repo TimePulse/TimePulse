@@ -41,6 +41,11 @@ namespace :deploy do
   task :db_install do
      run("cd #{current_path}; /usr/bin/rake db:install RAILS_ENV=#{rails_env}")
   end
+
+  task :cache_clear do
+    run("cd #{current_path}; /usr/bin/rake tmp:cache:clear RAILS_ENV=#{rails_env}")
+  end
+
 end
 
 namespace :sample_data do
@@ -52,4 +57,5 @@ end
 
 before "deploy:assets:precompile", "deploy:link_shared_files"
 after 'deploy:update', 'deploy:cleanup'
+after 'deploy:update', 'deploy:cache_clear'
 
