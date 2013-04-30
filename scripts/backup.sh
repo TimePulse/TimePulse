@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DEPLOY_DIR=/var/www/tracks.lrdesign.com
-PROJECT_TLA=mve
+PROJECT_TLA=tracks
 S3_DIR=s3://appserver-backups/$PROJECT_TLA/
 
 export RAILS_ENV=production
