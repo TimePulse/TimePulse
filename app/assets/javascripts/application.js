@@ -24,7 +24,8 @@ Ninja.orders(function(Ninja){
 
     Ninja.behavior({
         'input[name="authenticity_token"]': {
-          transform: updateInputAuthenticityToken
+          transform: updateInputAuthenticityToken,
+          priority: -1
         },
         '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
         '.fix_work_unit_button': Ninja.submitsAsAjax(),
