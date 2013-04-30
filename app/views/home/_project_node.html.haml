@@ -1,13 +1,13 @@
 - cssclass = node.clockable? ? "task" : "category"
 - unless node.archived?
   = content_tag_for(:tr, node, :class => cssclass) do
-    -#= cache("picker_node_#{node.id}") do
-    %td
-      .project_name
-        = depth_indicator(path.length)
-        = switch_to_project_link(node)
-      .tools
-        - if node.clockable?
-          = clock_in_widget(node, :icon)
+    = cache("picker_node_#{node.id}") do
+      %td
+        .project_name
+          = depth_indicator(path.length)
+          = switch_to_project_link(node)
+        .tools
+          - if node.clockable?
+            = clock_in_widget(node, :icon)
   - if defined? children
     = children
