@@ -63,7 +63,8 @@ Ninja.orders(function(Ninja){
           transform: function(elem){
             $(elem).tooltip({
                 tip: "#tooltip_for_" + $(elem).attr('id'),
-                offset: [ -10, 2 ]
+                offset: [ -10, 2 ],
+                relative: true
               })
             return elem;
           }

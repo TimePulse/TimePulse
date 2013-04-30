@@ -10,7 +10,7 @@ module WorkUnitsHelper
   end
 
   def tooltip_for(work_unit, token)
-    content_tag( :div, :id => "tooltip_for_#{token}", :class => "tooltip") do
+    content_tag( :div, :id => "tooltip_for_#{token}", :class => "lrd-tooltip") do
       content_tag(:dl) do
          [
           ["Project:",    short_name_with_client(work_unit.project)],
