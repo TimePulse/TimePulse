@@ -10,15 +10,6 @@ describe WorkUnitsController do
 
     let! :project do Factory(:project) end
 
-    ########################################################################################
-    #                                      GET INDEX
-    ########################################################################################
-    describe "GET index" do
-      it "should expose all work_units as @work_units" do
-        get :index
-        assigns[:work_units].should == [@work_unit]
-      end
-    end
 
     ########################################################################################
     #                                      GET SHOW
@@ -173,7 +164,7 @@ describe WorkUnitsController do
           end
           it "should set the work units list" do
             post :create, :work_unit => @valid_create_params
-            assigns(:work_units).should ==  @user.work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1)
+            assigns(:work_units).should ==  @user.completed_work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1)
           end
         end
       end

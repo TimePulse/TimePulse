@@ -24,9 +24,9 @@
 #
 
 class User < ActiveRecord::Base
-  acts_as_authentic do |c|
-    c.session_class = UserSession
-  end
+
+  devise :database_authenticatable, :registerable,
+       :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
   belongs_to :current_project, :class_name => "Project"
   has_many :work_units
@@ -56,19 +56,19 @@ class User < ActiveRecord::Base
   end
 
   def time_on_project(project)
-    work_units.for_project(project).sum(:hours)
+    work_units_for(project).sum(:hours)
   end
 
   def unbilled_time_on_project(project)
-    work_units.unbilled.for_project(project).sum(:hours)
+    work_units_for(project).unbilled.sum(:hours)
   end
 
   def unbillable_time_on_project(project)
-    work_units.unbillable.for_project(project).sum(:hours)
+    work_units_for(project).unbillable.sum(:hours)
   end
 
-  def work_units_for(project)
-    work_units.completed.for_project(project)
+  def completed_work_units_for(project)
+    work_units_for(project).completed
   end
 
   def current_project_hours_report
@@ -83,6 +83,11 @@ class User < ActiveRecord::Base
     groups.include?(Group.admin_group)
   end
 
+  protected
+
+  def work_units_for(project)
+    ProjectWorkQuery.new(work_units).find_for_project(project)
+  end
 
 end
 

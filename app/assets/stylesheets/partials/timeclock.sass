@@ -1,0 +1,54 @@
+@import constants.sass
+$labelwidth: 10em
+$ddmargins: 0.5em
+
+#timeclock
+  .block_content
+    padding: 0.5em
+    display: block
+
+  table
+    :margin-bottom 1em
+    :border-collapse collapse
+    :border 1px solid black
+    :width 100%
+  th
+    :background $contrast_background_color
+    :font-weight bold
+  td, th
+    :padding 2px 4px
+    :overflow hidden
+
+  #task_elapsed
+    :text-align center
+    :font-size 24px
+    :font-family 'DigitaldreamFatRegular', serif
+    :color #0f0
+    :background #300
+    :border 2px solid green
+    :padding 0 5px 7px 5px
+
+
+  label
+    :font-weight bold
+    :margin-right .5em
+
+  .labeled_input
+    :margin-bottom .25em
+    :margin-left 1em
+
+    label
+      :display block
+      :float left
+      :width 5em
+      :text-align right
+      :font-weight bold
+
+    .comment
+      :display inline
+      :font-style italic
+      :margin-left 1em
+    select
+      :width 20em
+    input
+      :margin-right .5em

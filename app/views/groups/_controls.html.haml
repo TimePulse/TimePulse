@@ -1,0 +1,18 @@
+-page ||= @page
+                 
+- content_for(:aux) do
+  - page_block("Admin Tool: Permissions", :cssclass => "narrowcolumn admin") do
+ 
+    %p Set view and edit permissions on this page.
+    %table.listing         
+      %tr
+        %th Group
+        %th View?
+        %th Edit?
+      
+      - for group in Group.all
+        %tr
+          %td= h group.name
+        
+
+

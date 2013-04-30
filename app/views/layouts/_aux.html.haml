@@ -1,7 +1,7 @@
-- if yield :aux
+- if content_for?(:aux).present?
   #aux
     = yield :aux 
     
-- if yield :picker
+- if content_for?(:picker).present?
   #picker
     = yield :picker

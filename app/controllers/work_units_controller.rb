@@ -5,23 +5,7 @@ class WorkUnitsController < ApplicationController
 
   before_filter :convert_hours_from_hhmm, :only => [ :update, :create ]
 
-  before_filter :find_work_unit, :only => [ :show, :edit, :update, :destroy ]
-
-  #FIXME:  Judson, I couldn't figure out how to combine these into one
-  # call, but I suspect it's possible
-  owner_authorized(:edit) do |user, id|
-    WorkUnit.find(id).user == user
-  end
-  owner_authorized(:destroy) do |user, id|
-    WorkUnit.find(id).user == user
-  end
-
-  grant_aliases :new => [:switch, :create], :edit => :update, :index => :show
-
-  # GET /work_units
-  def index
-    @work_units = WorkUnit.find(:all)
-  end
+  before_filter :find_work_unit_and_authenticate, :only => [ :show, :edit, :update, :destroy ]
 
   # GET /work_units/1
   def show
@@ -57,7 +41,7 @@ class WorkUnitsController < ApplicationController
         format.html { redirect_to(@work_unit) }
         format.js {
           @work_unit = WorkUnit.new
-          @work_units = current_user.work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil)
+          @work_units = current_user.completed_work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil)
         }
       else
         format.html { render :action => "new" }
@@ -97,9 +81,10 @@ class WorkUnitsController < ApplicationController
     end
   end
 
-  def find_work_unit
+  def find_work_unit_and_authenticate
     @work_unit = WorkUnit.find(params[:id])
     raise ArgumentError, 'Invalid work_unit id provided' unless @work_unit
+    authenticate_owner!(@work_unit.user)
   end
 
   # compute a few fields based on sensible defaults, if "calculate" param was passed

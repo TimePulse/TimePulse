@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "edit a work unit to move it from one project to another", :type => :request do
+steps "edit a work unit to move it from one project to another", :type => :feature do
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
   let! :client_2 do Factory(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
   let! :project_1 do Factory(:project, :client => client_1) end

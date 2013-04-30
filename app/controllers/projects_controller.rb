@@ -1,6 +1,6 @@
-class ProjectsController < AuthzController
+class ProjectsController < ApplicationController
+  before_filter :authenticate_admin!
   # GET /projects
-  grant_aliases :new => :create, :edit => :update, :index => :show
 
   def index
     @root_project = Project.root
@@ -49,8 +49,12 @@ class ProjectsController < AuthzController
   # DELETE /projects/1
   def destroy
     @project = Project.find(params[:id])
+    @id = params[:id]
     @project.destroy
 
-    redirect_to projects_path
+    respond_to do |format|
+      format.html { redirect_to projects_path }
+      format.js
+    end
   end
 end

@@ -1,4 +1,4 @@
-= cache "project_picker" do
-  = page_block("Projects", :id => 'project_picker') do
-    %table.project_picker
-      = list_tree('home/project_node', 'home/project_list', Project.root.descendants)
+-#= cache "project_picker" do
+= page_block("Projects", :id => 'project_picker') do
+  %table.project_picker
+    = list_tree('home/project_node', 'home/project_list', Project.root.descendants)

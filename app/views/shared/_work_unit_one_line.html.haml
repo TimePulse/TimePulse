@@ -1,5 +1,5 @@
 - cache("work_unit_one_line_#{work_unit.id}") do
-  - token = ActiveSupport::SecureRandom.hex(8)
+  - token = SecureRandom.hex(8)
 
   %tr.work_unit.one_line.has_tooltip{ :id => token }
     %td= work_unit.try(:project).try(:client).try(:abbreviation)

@@ -41,6 +41,7 @@ last_run
 *~
 vendor/**/**/doc/*
 vendor/plugins/footnotes/*
+.sass_cache
 rsa_key*
 sphinx/*
 db/sphinx/*

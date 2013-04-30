@@ -11,8 +11,8 @@
       %td= client.name
       %td= client.billing_email
       %td
-        = link_to_if_authorized('Show', client) {}
-        = link_to_if_authorized('Edit', edit_client_path(client)) {}
-        = link_to_if_authorized('Destroy', client, :confirm => 'Are you sure?', :method => :delete) {}
+        = link_to_if_admin_authorized('Show', client) {}
+        = link_to_if_admin_authorized('Edit', edit_client_path(client)) {}
+        = link_to_if_admin_authorized('Destroy', client, :confirm => 'Are you sure?', :method => :delete) {}
 
 = link_to 'New client', new_client_path

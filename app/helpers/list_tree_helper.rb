@@ -33,9 +33,9 @@ module ListTreeHelper
     str = ''
     if depth > 0
       depth.times do
-        str << image_tag("/images/icons/spacer.png", :class=> "inline", :size =>"10x12", :alt => "&nbsp;&nbsp;&nbsp;")
+        str << image_tag("icons/spacer.png", :class=> "inline", :size =>"10x12", :alt => "&nbsp;&nbsp;&nbsp;")
       end
-      str << image_tag("/images/icons/indent_arrow.png", :class=>"inline", :size => "12x12", :alt => '->')
+      str << image_tag("icons/indent_arrow.png", :class=>"inline", :size => "12x12", :alt => '->')
     end
     str.html_safe
   end
