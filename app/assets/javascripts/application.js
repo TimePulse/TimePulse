@@ -23,6 +23,9 @@ Ninja.orders(function(Ninja){
     //}
 
     Ninja.behavior({
+        'input[name="authenticity_token"]': {
+          transform: updateInputAuthenticityToken
+        },
         '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
         '.fix_work_unit_button': Ninja.submitsAsAjax(),
         '*[data-remote=true]': Ninja.submitsAsAjax(),
@@ -74,6 +77,12 @@ Ninja.orders(function(Ninja){
     Ninja.go();
   })
 
+function updateInputAuthenticityToken(elem) {
+  token = $('meta[name="csrf-token"]').attr('content');
+  if (token) {
+    $(elem).val(token);
+  }
+}
 
 function selectAllWorkUnits() {
   $('.work_unit_checkbox').attr('checked', true);
