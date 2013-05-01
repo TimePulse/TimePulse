@@ -12,12 +12,12 @@ if [ ! $? ]; then
  cat tmp/backup.output
 fi
 
-s3cmd sync --skip-existing --delete-removed $DEPLOY_DIR/current/db_backups $S3_DIR 2>&1 >> tmp/backup.output
+s3cmd sync --skip-existing --delete-removed $DEPLOY_DIR/current/db_backups/* $S3_DIR/db_backups/ 2>&1 >> tmp/backup.output
 if [ ! $? ]; then
  cat tmp/backup.output
 fi
 
-s3cmd sync --skip-existing --delete-removed $DEPLOY_DIR/shared/system $S3_DIR 2>&1 >> tmp/backup.output
+s3cmd sync --skip-existing --delete-removed $DEPLOY_DIR/shared/system/* $S3_DIR/shared/ 2>&1 >> tmp/backup.output
 if [ ! $? ]; then
  cat tmp/backup.output
 fi
