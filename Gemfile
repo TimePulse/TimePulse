@@ -27,6 +27,7 @@ gem 'authlogic'
 gem "chronic"
 gem "logical-insight"
 gem 'dynamic_form'
+gem 'i18n_alchemy'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

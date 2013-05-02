@@ -29,7 +29,8 @@ class BillsController < ApplicationController
 
   # POST /invoices
   def create
-    @bill = Bill.new(params[:bill])
+    @bill = Bill.new
+    @bill.localized.attributes = params[:bill]
     add_work_units
     if @bill.save
       flash[:notice] = 'Bill was successfully created.'
@@ -42,7 +43,7 @@ class BillsController < ApplicationController
 
   # PUT /bills/1
   def update
-    if @bill.update_attributes(params[:bill])
+    if @bill.localized.update_attributes(params[:bill])
       flash[:notice] = 'Bill was successfully updated.'
       redirect_to(@bill)
     else
