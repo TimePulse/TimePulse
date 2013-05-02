@@ -105,6 +105,9 @@ GEM
     highline (1.6.18)
     hike (1.2.2)
     i18n (0.6.4)
+    i18n_alchemy (0.1.0)
+      activesupport (~> 3.0)
+      i18n (~> 0.5)
     journey (1.0.4)
     json (1.7.7)
     kgio (2.8.0)
@@ -264,6 +267,7 @@ DEPENDENCIES
   faker
   fuubar
   haml-rails
+  i18n_alchemy
   launchy
   logical-insight
   logical_tabs

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-shared_steps "for an invoicing task" do |opt_hash|
+shared_steps "for an billing task" do |opt_hash|
   opt_hash ||= {}
   let :admin do
     Factory(:admin)
@@ -12,7 +12,7 @@ shared_steps "for an invoicing task" do |opt_hash|
 
   (opt_hash[:wu_count] || 3).times do |idx|
     let! "work_unit_#{idx}" do
-      Factory(:work_unit, :project => project)
+      Factory(:work_unit, :project => project, :user => admin)
     end
   end
 
@@ -24,29 +24,51 @@ shared_steps "for an invoicing task" do |opt_hash|
     page.should have_link("Logout")
   end
 
-  it "should go to invoices" do
-    click_link "Invoices"
-    page.should have_link("New invoice")
+  it "should go to bills" do
+    click_link "Bills"
+    page.should have_link("New bill")
   end
 
-  it "should create a new invoice for client" do
-    click_link "New invoice"
-    page.select project.client.name
+  it "should create a new bills for client" do
+    click_link "New bill"
+    page.select "#{admin.name} - (#{admin.work_units.unbilled.completed.billable.sum(:hours)})"
     click_button "Set Parameters"
   end
 end
 
+shared_steps "to verify bill is visible" do
+
+  it "when I got back to the index" do
+    click_link("Back")
+  end
+
+  it "should be visible from bills index" do
+    all(:xpath, XPath.generate do |doc|
+      doc.descendant(:tr)[doc.attr(:class) == "bill"]
+    end).should have(1).rows
+  end
+
+  it "when I click on show" do
+    within("tr.bill:nth-child(2)") do
+      click_link("Show")
+    end
+  end
+
+  it "should show the bill" do
+    page.should have_content("Bill for #{admin.name}")
+  end
+end
 
 steps "Selects all boxes", :type => :feature do
-  perform_steps "for an invoicing task"
+  perform_steps "for an billing task"
 
   it "should select all work units" do
     click_button "select all"
   end
 
-  it "should create the invoice" do
+  it "should create the bill" do
     named_submit = XPath.generate do |doc|
-      doc.descendant(:form)[doc.attr(:id) == "new_invoice"].descendant(:input)[doc.attr(:type) == "submit"][doc.attr(:name) == "commit"]
+      doc.descendant(:form)[doc.attr(:id) == "new_bill"].descendant(:input)[doc.attr(:type) == "submit"][doc.attr(:name) == "commit"]
     end
     button = find(:xpath, named_submit)
     button.click
@@ -61,24 +83,27 @@ steps "Selects all boxes", :type => :feature do
       doc.descendant(:tr)[doc.attr(:class) == "work_unit"]
     end).should have(3).rows
   end
+
+  perform_steps "to verify bill is visible"
+  
 end
 
 steps "Select a few work units", :type => :feature do
-  perform_steps "for an invoicing task", :wu_count => 5
+  perform_steps "for an billing task", :wu_count => 5
 
   def click_checkbox(id)
     check(id)
   end
 
   it "should select 3 work units" do
-    click_checkbox("invoice_work_unit_ids_1")
-    click_checkbox("invoice_work_unit_ids_2")
-    click_checkbox("invoice_work_unit_ids_3")
+    click_checkbox("bill_work_unit_ids_1")
+    click_checkbox("bill_work_unit_ids_2")
+    click_checkbox("bill_work_unit_ids_3")
   end
 
-  it "should create the invoice" do
+  it "should create the bill" do
     named_submit = XPath.generate do |doc|
-      doc.descendant(:form)[doc.attr(:id) == "new_invoice"].descendant(:input)[doc.attr(:type) == "submit"][doc.attr(:name) == "commit"]
+      doc.descendant(:form)[doc.attr(:id) == "new_bill"].descendant(:input)[doc.attr(:type) == "submit"][doc.attr(:name) == "commit"]
     end
     button = find(:xpath, named_submit)
     button.click
@@ -93,5 +118,7 @@ steps "Select a few work units", :type => :feature do
       doc.descendant(:tr)[doc.attr(:class) == "work_unit"]
     end).should have(3).rows
   end
+
+  perform_steps "to verify bill is visible"
 
 end
