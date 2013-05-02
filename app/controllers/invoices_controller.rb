@@ -31,7 +31,7 @@ class InvoicesController < ApplicationController
   def create
     @invoice = Invoice.new(params[:invoice])
     add_work_units
-    if @invoice.save
+    if @invoice.localized.save
       flash[:notice] = 'Invoice was successfully created.'
       redirect_to(@invoice)
     else
@@ -45,7 +45,7 @@ class InvoicesController < ApplicationController
 
   # PUT /invoices/1
   def update
-    if @invoice.update_attributes(params[:invoice])
+    if @invoice.localized.update_attributes(params[:invoice])
       flash[:notice] = 'Invoice was successfully updated.'
       redirect_to(@invoice)
     else
