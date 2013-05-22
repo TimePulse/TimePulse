@@ -12,5 +12,3 @@ test:
 
 production:
   <<: *development
-
-# cheese
