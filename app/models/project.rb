@@ -33,8 +33,8 @@ class Project < ActiveRecord::Base
   # default_scope :joins => :client
 
   validates_presence_of :name
-  cascades :client, :account, :clockable
+  cascades :client, :account, :clockable, :github_url
 
-  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived
+  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived, :github_url
 end
 
