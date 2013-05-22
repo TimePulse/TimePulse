@@ -31,7 +31,8 @@ class User < ActiveRecord::Base
   belongs_to :current_project, :class_name => "Project"
   has_many :work_units
   has_many :bills
-
+  has_many :activities
+  
   validates_presence_of :name, :email
 
   attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation

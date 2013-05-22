@@ -26,7 +26,8 @@ class Project < ActiveRecord::Base
   acts_as_nested_set
   belongs_to :client
   has_many :work_units
-
+  has_many :activities
+  
   scope :archived, :conditions => { :archived => true }
   scope :unarchived, :conditions => { :archived => false }
   # default_scope :joins => :client
