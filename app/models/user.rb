@@ -84,6 +84,10 @@ class User < ActiveRecord::Base
     groups.include?(Group.admin_group)
   end
 
+  def activity_for(project)
+    ProjectActivityQuery.new(activities).find_for_project(project)
+  end
+  
   def work_units_for(project)
     ProjectWorkQuery.new(work_units).find_for_project(project)
   end

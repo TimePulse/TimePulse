@@ -9,7 +9,7 @@ class GithubUpdate
   attribute :ref, String
   attribute :before, String
   attribute :after, String
-  attirbute :branch, String
+  attribute :branch, String
   
   def save
   end
