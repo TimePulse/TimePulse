@@ -84,8 +84,6 @@ class User < ActiveRecord::Base
     groups.include?(Group.admin_group)
   end
 
-  protected
-
   def work_units_for(project)
     ProjectWorkQuery.new(work_units).find_for_project(project)
   end
