@@ -35,6 +35,15 @@ describe HomeController do
         assigns[:work_units].should include(@wu1)
         assigns[:work_units].should include(@wu2)
       end
+
+      it "should find the git commits" do
+        @co1 = Factory(:activity, :source => "github", :project => @user.current_project, :user => @user)
+        @co2 = Factory(:activity, :source => "github", :project => @user.current_project, :user => @user)
+        get 'index'
+        assigns[:commits].should include(@co1)
+        assigns[:commits].should include(@co2)
+      end
+      
     end
 
   end

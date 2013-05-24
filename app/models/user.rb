@@ -76,6 +76,10 @@ class User < ActiveRecord::Base
     work_units_for(project).completed
   end
 
+  def git_commits_for(project)
+    activity_for(project).git_commits
+  end
+  
   def current_project_hours_report
     @cphr ||= hours_report_on(current_project)
   end
