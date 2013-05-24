@@ -1,0 +1,10 @@
+- cache("commit_narrow_#{commit.id}") do
+  - token = SecureRandom.hex(8)
+  = content_tag(:tr, commit, :id => token, :class => ['narrow', 'has_tooltip']) do
+    %td
+      %span.nobr= short_name_with_client(commit.project)
+    %td{ :style => "text-align: center;"}
+      = commit.reference_2[0..5]
+    %td.tools.nobr
+      = commit.description[0..25]
+      = commit_tooltip_for(commit, token).html_safe

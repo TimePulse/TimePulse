@@ -56,6 +56,10 @@ class User < ActiveRecord::Base
     work_units.completed.recent.includes(:project => :client)
   end
 
+  def recent_commits
+    activities.git_commits.recent.includes(:project => :client)
+  end
+
   def time_on_project(project)
     work_units_for(project).sum(:hours)
   end
@@ -87,7 +91,7 @@ class User < ActiveRecord::Base
   def activity_for(project)
     ProjectActivityQuery.new(activities).find_for_project(project)
   end
-  
+
   def work_units_for(project)
     ProjectWorkQuery.new(work_units).find_for_project(project)
   end

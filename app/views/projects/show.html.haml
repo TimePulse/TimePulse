@@ -14,6 +14,11 @@
   %br
   =h @project.description 
 
+%p
+  <b>Github URL:</b>
+  %br
+  =h @project.github_url
+
 %br
   = link_to 'Edit', edit_project_path(@project)  |
   = link_to 'Back', projects_path 

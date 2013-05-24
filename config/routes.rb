@@ -1,7 +1,5 @@
 Tracks::Application.routes.draw do
 
-
-
   resources :invoices
   resources :bills
   resources :groups
@@ -9,6 +7,8 @@ Tracks::Application.routes.draw do
   resources :work_units, :except => :index
   resources :clients
   resources :projects
+
+  resource :github, :only => [:create], :controller => 'github'
 
   # TODO: Reenable these once LAz is working
   # match '/forbid' => 'permissions#destroy', :as => :forbid, :via => delete
