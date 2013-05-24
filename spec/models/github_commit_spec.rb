@@ -32,7 +32,7 @@ describe GithubCommit do
   let :valid_commit_params do
     params = commit_params
     params[:timestamp] = timestamp
-    params[:project] = project
+    params[:project_id] = project.id
     params[:author][:username] = "georgeofjungle"
     params
   end
@@ -40,7 +40,7 @@ describe GithubCommit do
   let :just_out_params do
     params = commit_params
     params[:timestamp] = close_time
-    params[:project] = project
+    params[:project_id] = project.id
     params[:author][:username] = "georgeofjungle"
     params
   end
@@ -48,7 +48,7 @@ describe GithubCommit do
   let :recent_commit_params do
     params = commit_params
     params[:timestamp] = DateTime.now.advance(:minutes => -5).xmlschema
-    params[:project] = project
+    params[:project_id] = project.id
     params[:author][:username] = "georgeofjungle"
     params
   end
@@ -56,14 +56,14 @@ describe GithubCommit do
   let :no_user_params do
     params = commit_params
     params[:timestamp] = timestamp
-    params[:project] = project
+    params[:project_id] = project.id
     params
   end
 
   let :invalid_commit_params do
     params = commit_params
     params[:timestamp] = timestamp
-    params[:project] = nil
+    params[:project_id] = nil
     params[:author][:username] = "georgeofjungle"
     params
   end

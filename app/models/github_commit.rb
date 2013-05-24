@@ -9,15 +9,17 @@ class GithubCommit
   attribute :message, String
   attribute :timestamp, DateTime
   attribute :branch, String
+  attribute :project_id, Integer
 
   attr_accessor :user, :project, :work_unit, :activity, :author
 
+  def valid?
+    build
+  end
+
   def save
-    find_user
-    find_work_unit
-    @activity = Activity.new(activity_params)
-    if @activity.valid?
-      @activity.save
+    if valid?
+      activity.save
       true
     else
       false
@@ -25,6 +27,20 @@ class GithubCommit
   end
 
   private
+
+  def build
+    unless activity
+      find_project
+      find_user
+      find_work_unit
+      @activity = Activity.new(activity_params)
+    end
+    if activity.valid?
+      true
+    else
+      false
+    end
+  end
 
   def activity_params
     {
@@ -40,6 +56,12 @@ class GithubCommit
     }
   end
 
+  def find_project
+    if (project_id)
+      @project = Project.find(project_id)
+    end
+  end
+  
   def find_work_unit
     if user and project
       possible_work_units = user.work_units_for(project)
