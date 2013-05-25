@@ -7,7 +7,8 @@ Tracks::Application.routes.draw do
   resources :work_units, :except => :index
   resources :clients
   resources :projects
-
+  resources :invoice_reports, :only => :show
+  
   resource :github, :only => [:create], :controller => 'github'
 
   # TODO: Reenable these once LAz is working

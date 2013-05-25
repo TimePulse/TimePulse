@@ -32,6 +32,8 @@ class InvoiceReport
 
 
   class DateReport
+    include ActionView::Helpers::TextHelper
+
     attr_accessor :report
 
     def initialize(date_scoped_units)
@@ -40,8 +42,15 @@ class InvoiceReport
       @units.map{|wu| wu.user}.uniq.each do |user|
         @report << [ user.name,
           units_by_user(user).map{|wu| wu.hours }.sum.to_s,
-          units_by_user(user).map(&:notes).select(&:present?).join("\n")
+          units_by_user(user).map(&:notes).select(&:present?).join("\n"),
+          units_by_user(user).map{|wu| work_unit_commits(wu)}.flatten.join("\n")
         ]
+      end
+    end
+
+    def work_unit_commits(work_unit)
+      work_unit.activities.git_commits.all.map do |commit|
+        truncate(commit.reference_1, :length => 10) + " \"#{commit.description}\""
       end
     end
 
@@ -59,7 +68,7 @@ class InvoiceReport
     def print
       report.each do |user_row|
         puts "\t#{user_row.first}: #{user_row[1]}"
-        puts "\t" + user_row.last.gsub(/\n/, "\n\t")
+
         puts
       end
     end
