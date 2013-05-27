@@ -1,4 +1,5 @@
 table.invoice-report
+  width: 100%
   background: none
   border: none
   tr 
@@ -12,6 +13,14 @@ table.invoice-report
         h4
           padding-bottom: 0px
           text-decoration: underline
+    &.user_work
+      td
+        padding-top: 0px
+    &.user_row, &.user_work
+      td
+        width: 50%
+        &:first-child
+          padding-left: 20px
 
 @media print
   body

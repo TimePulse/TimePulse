@@ -67,6 +67,12 @@ Ninja.orders(function(Ninja){
             $(elem).delay(10000).slideUp(600, function(){$(elem).remove()})
           }
         },
+        '.print-report-button': {
+          click: function(evnt, elem) {
+            print_target = "#" + $(elem).data('print-target');
+            $(print_target)[0].contentWindow.print();
+          }
+        },
         '#timeclock input#work_unit_hours': {
           click: function(evnt, elem) {
             $(elem).val(hours_format(task_elapsed))
