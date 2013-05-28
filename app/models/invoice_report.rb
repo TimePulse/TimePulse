@@ -42,8 +42,9 @@ class InvoiceReport
       @units.map{|wu| wu.user}.uniq.each do |user|
         @report << [ user.name,
           units_by_user(user).map{|wu| wu.hours }.sum.to_s,
-          units_by_user(user).map(&:notes).select(&:present?).join("\n"),
-          units_by_user(user).map{|wu| work_unit_commits(wu)}.flatten.join("\n")
+          units_by_user(user).map(&:notes).select(&:present?),
+          units_by_user(user).map{|wu| work_unit_commits(wu)}.flatten,
+          units_by_user(user).map{|wu| work_unit_pivotal_updates(wu)}.flatten
         ]
       end
     end
@@ -51,6 +52,12 @@ class InvoiceReport
     def work_unit_commits(work_unit)
       work_unit.activities.git_commits.all.map do |commit|
         truncate(commit.reference_1, :length => 10) + " \"#{commit.description}\""
+      end
+    end
+
+    def work_unit_pivotal_updates(work_unit)
+      work_unit.activities.pivotal_updates.all.map do |pivotal|
+        truncate(pivotal.reference_1, :length => 10) + " #{pivotal.description}"
       end
     end
 
