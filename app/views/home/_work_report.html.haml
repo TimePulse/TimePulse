@@ -27,3 +27,16 @@
           %th= "Branch"
           %th= "Time"
         = render :partial => "shared/commit_one_line", :as => :commit, :collection => @commits
+
+  = tp.add_tab("Pivotal Updates") do
+    -if @pivotal_updates.blank?
+      %p No pivotal updates to show.
+    -else
+      = will_paginate(@pivotal_updates, :param_name => :pivotal_updates_page)
+      %table.listing
+        %tr
+          %th= "Client"
+          %th= "Project"
+          %th= "Message"
+          %th= "Time"
+        = render :partial => "shared/pivotal_one_line", :as => :pivotal, :collection => @pivotal_updates

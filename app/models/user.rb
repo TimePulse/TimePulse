@@ -60,6 +60,10 @@ class User < ActiveRecord::Base
     activities.git_commits.recent.includes(:project => :client)
   end
 
+  def recent_pivotal_updates
+    activities.pivotal_updates.recent.includes(:project => :client)
+  end
+
   def time_on_project(project)
     work_units_for(project).sum(:hours)
   end
@@ -78,6 +82,10 @@ class User < ActiveRecord::Base
 
   def git_commits_for(project)
     activity_for(project).git_commits
+  end
+  
+  def pivotal_updates_for(project)
+    activity_for(project).pivotal_updates
   end
   
   def current_project_hours_report
