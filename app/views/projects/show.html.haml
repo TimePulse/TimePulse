@@ -19,6 +19,11 @@
   %br
   =h @project.github_url
 
+%p
+  <b>Pivotal Project ID:</b>
+  %br
+  =h @project.pivotal_id
+
 %br
   = link_to 'Edit', edit_project_path(@project)  |
   = link_to 'Back', projects_path 

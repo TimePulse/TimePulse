@@ -8,6 +8,8 @@
   %dd= @user.login
   %dt Github User
   %dd= @user.github_user
+  %dt Pivotal Name
+  %dd= @user.pivotal_name
 %ul
   %li=link_to_if_owner_authorized(@user, "Edit", :action => :edit)
   %li=link_to_if_owner_authorized(@user, "List", :action => :index)
