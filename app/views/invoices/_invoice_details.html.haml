@@ -21,7 +21,7 @@
 %table.listing
   - @invoice.work_units.each do |wu|
     = content_tag_for(:tr, wu) do
-      %td.nobr
+      %td.hours
         %b= wu.hours
       %td= wu.user.login
       %td= wu.notes

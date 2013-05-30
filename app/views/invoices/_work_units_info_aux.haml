@@ -20,4 +20,4 @@
       %tr
         %th Shown
         %td= @work_units.count
-        %td= @work_units.inject(0.0){ |sum, wu| sum += wu.hours }
+        %td= number_with_precision(@work_units.inject(0.0){ |sum, wu| sum += wu.hours }, :precision => 2)
