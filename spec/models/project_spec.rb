@@ -22,6 +22,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Project do
 
+  let :github_url do "https://github.com/Awesome/McAwesome" end
+
   let :root_project do Project.root end
 
   it "should create a new instance given valid attributes" do
@@ -81,6 +83,32 @@ describe Project do
         @project = Factory(:project, :account => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.account.should == "account2"
+
+        @grandparent.reload.descendants.should include(@parent)
+        @grandparent.reload.descendants.should include(@project)
+      end
+    end
+    describe "github_url" do
+      it "should return a project's github URL" do
+        Factory(:project, :github_url => github_url ).github_url.should == github_url
+      end
+      it "should return a project's parent's github URL if the project has no github URL" do
+        @parent = Factory(:project, :github_url => github_url )
+        Factory(:project, :github_url => nil , :parent => @parent).github_url.should == github_url
+      end
+      it "should return a project's grandparent's github URL if the project and parent have no github URL" do
+        @grandparent = Factory(:project, :github_url => github_url, :name => 'GP')
+        @parent = Factory(:project, :parent => @grandparent, :github_url => nil, :name => "P")
+        @project = Factory(:project, :github_url => nil, :parent => @parent)
+        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+        @project.github_url.should == github_url
+      end
+      it "should return a project's parent's github URL if the project has no github URL  and the grandparent has a different github URL" do
+        @grandparent = Factory(:project, :github_url => "https://github.com/Awesome/NotAwesome")
+        @parent = Factory(:project, :parent => @grandparent, :github_url => github_url)
+        @project = Factory(:project, :github_url => nil, :parent => @parent)
+        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+        @project.github_url.should == github_url
 
         @grandparent.reload.descendants.should include(@parent)
         @grandparent.reload.descendants.should include(@project)

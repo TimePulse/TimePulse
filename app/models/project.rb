@@ -26,14 +26,15 @@ class Project < ActiveRecord::Base
   acts_as_nested_set
   belongs_to :client
   has_many :work_units
-
+  has_many :activities
+  
   scope :archived, :conditions => { :archived => true }
   scope :unarchived, :conditions => { :archived => false }
   # default_scope :joins => :client
 
   validates_presence_of :name
-  cascades :client, :account, :clockable
+  cascades :client, :account, :clockable, :github_url
 
-  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived
+  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived, :github_url
 end
 

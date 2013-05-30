@@ -37,6 +37,7 @@ GEM
       activesupport (>= 3.0.0)
     awesome_nested_set (2.1.6)
       activerecord (>= 3.0.0)
+    backports (2.6.7)
     bcrypt-ruby (3.0.1)
     builder (3.0.4)
     capistrano (2.15.2)
@@ -73,6 +74,7 @@ GEM
     debugger-linecache (1.1.2)
       debugger-ruby_core_source (>= 1.1.1)
     debugger-ruby_core_source (1.2.0)
+    descendants_tracker (0.0.1)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -237,6 +239,9 @@ GEM
       unicorn
     uuid (2.3.5)
       macaddr (~> 1.0)
+    virtus (0.5.4)
+      backports (~> 2.6.1)
+      descendants_tracker (~> 0.0.1)
     warden (1.2.1)
       rack (>= 1.0)
     websocket (1.0.7)
@@ -292,5 +297,6 @@ DEPENDENCIES
   turbo-sprockets-rails3
   uglifier (>= 1.0.3)
   unicorn-rails
+  virtus
   will_paginate
   zurb-foundation (~> 4.0.0)

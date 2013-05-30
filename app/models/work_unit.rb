@@ -39,13 +39,14 @@ class WorkUnit < ActiveRecord::Base
   scope :today, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.to_date ] } }
   scope :this_week, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.beginning_of_week.to_date ] } }
   scope :in_last, lambda { |num_days| { :conditions => [ "stop_time > ? ", (Time.zone.now - num_days.days).to_date ] } }
-  attr_accessible :project_id, :project, :notes, :start_time, :stop_time, :hours, :billable
-
+  attr_accessible :project_id, :project, :notes, :start_time, :stop_time, :hours, :billable, :user
+  attr_accessor :time_zone
   belongs_to :user
   belongs_to :project
   belongs_to :invoice
   belongs_to :bill
-
+  has_many :activities
+  
   validates_presence_of :project_id
   validates_presence_of :user_id
   validates_presence_of :start_time

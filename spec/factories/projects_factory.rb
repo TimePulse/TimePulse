@@ -18,6 +18,7 @@ Factory.define :project  do |c|
   c.sequence(:name) { |n|  "Foo Project #{n}" }
   c.association :client
   c.clockable true
+  c.github_url "https://github.com/LRDesign/Foobar"
   c.parent_id { Project.root.id }
 end
 

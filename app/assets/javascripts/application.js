@@ -33,7 +33,16 @@ Ninja.orders(function(Ninja){
         '#debug':        Ninja.suppressChangeEvents(),
         '#task_elapsed':  Ninja.suppressChangeEvents(),
         '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
-        '.datetime_entry': { transform: function(elem){ $(elem).datetimepicker() }},
+        '.datetime_entry': { transform: function(elem){ 
+            $(elem).datetimepicker() 
+          }
+        },
+        '#work_unit_time_zone': { transform: function(elem) {
+            var currentTime = new Date();
+            var zone = -(currentTime.getTimezoneOffset() / 60); //GMT
+            $(elem).val(zone);
+          }
+        },
         '#work_unit_select_all': { click: selectAllWorkUnits },
         '.toggler': { click: function(evnt, elem) {
             if (window.matchMedia("(max-width: 767px)").matches) {
@@ -56,6 +65,12 @@ Ninja.orders(function(Ninja){
         '#messages .flash': {
           transform: function(elem) {
             $(elem).delay(10000).slideUp(600, function(){$(elem).remove()})
+          }
+        },
+        '.print-report-button': {
+          click: function(evnt, elem) {
+            print_target = "#" + $(elem).data('print-target');
+            $(print_target)[0].contentWindow.print();
           }
         },
         '#timeclock input#work_unit_hours': {
