@@ -5,7 +5,7 @@ class ActivityBuilder
   include ActiveModel::Conversion
   include ActiveModel::Validations
   
-  attr_accessor :user, :project, :work_unit, :activity
+  attr_accessor :user, :project, :activity
 
   def valid?
     build
@@ -39,7 +39,6 @@ class ActivityBuilder
     {
       :user_id => (user ? user.id : nil),
       :project_id => (project ? project.id : nil),
-      :work_unit_id => (work_unit ? work_unit.id : nil)
     }
   end
 
