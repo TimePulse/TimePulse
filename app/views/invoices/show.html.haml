@@ -24,6 +24,8 @@
 = render :partial => 'invoice_details'
 
 %p
+  = link_to 'View Report', invoice_report_path(@invoice)
+  |
   = link_to 'Print Report', "#", :class => "print-report-button", :"data-print-target" => "print_iframe"
 
 

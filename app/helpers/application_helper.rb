@@ -11,6 +11,23 @@ module ApplicationHelper
     logged_in? and current_user.admin?
   end
 
+  def body_class
+    klasses = params[:controller].split("/")
+    klasses << params[:action]
+    klasses << 'with_admin' if admin?
+    klasses << @body_classes if @body_classes
+    klasses
+  end
+
+  def add_body_class(klass)
+    if @body_classes
+      @body_classes << klass
+    else
+      @body_classes = [klass]
+    end
+  end
+
+
   def clocked_in_project?(project)
     return true if current_work_unit && current_work_unit.project == project
   end
