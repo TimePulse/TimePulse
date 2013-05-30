@@ -17,6 +17,7 @@ doc/*.doc
 doc/*.zip
 config/initializers/session_secret.rb
 config/initializers/smtp.rb
+config/initializers/api_keys.rb
 config/database.yml
 db/schema.sql
 db/schema.rb
