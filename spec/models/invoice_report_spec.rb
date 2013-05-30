@@ -76,6 +76,61 @@ describe InvoiceReport do
       subject { InvoiceReport::DateReport.new(work_units) }
       its(:report) { should have(2).rows }
     end
+    context "with matched commits" do
+      let! :project do Factory.create(:project) end
+      let! :user do Factory.create(:user, :email => "george@jungle.com", :github_user => "georgeofjungle") end
+      let! :work_unit do Factory.create(
+        :work_unit, :user => user, 
+        :project => project, 
+        :start_time => 3.days.ago, 
+        :stop_time => 1.day.ago)
+      end
+      let! :timestamp do DateTime.parse(2.days.ago.to_s).xmlschema end
+      let! :close_time do DateTime.parse((1.day.ago.advance(:minutes => 5)).to_s).xmlschema end
+      let :commit_params do
+        {
+          :message   => "Fixed some stuff",
+          :url       => "http://github.com/Awesome/McAwesome/master/abc",
+          :added     => [],
+          :removed   => [],
+          :modified  => [],
+          :author    => {
+            :name  => "George of the Jungle",
+            :email => "george@jungle.com",
+          },
+          :branch => "1234_fix_stuff"
+        }
+      end
+
+      let :valid_commit_params do
+        params = commit_params
+        params[:id] = "1234"
+        params[:timestamp] = timestamp
+        params[:project_id] = project.id
+        params[:author][:username] = "georgeofjungle"
+        params
+      end
+
+      let! :valid_commit do GithubCommit.new(valid_commit_params).save; Activity.last end
+
+      let :just_out_params do
+        params = commit_params
+        params[:id] = "4321"
+        params[:timestamp] = close_time
+        params[:project_id] = project.id
+        params[:author][:username] = "georgeofjungle"
+        params
+      end
+  
+      let! :just_out_commit do GithubCommit.new(just_out_params).save; Activity.last end
+
+      it "should match commits" do
+        @report = InvoiceReport::DateReport.new([work_unit])
+        @commits = @report.report[0][3]
+        @commits.count.should == 2
+      end
+    end
+
   end
 
 end
