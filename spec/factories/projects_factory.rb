@@ -19,6 +19,7 @@ Factory.define :project  do |c|
   c.association :client
   c.clockable true
   c.github_url "https://github.com/LRDesign/Foobar"
+  c.pivotal_id 123
   c.parent_id { Project.root.id }
 end
 

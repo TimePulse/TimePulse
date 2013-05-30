@@ -10,7 +10,8 @@ Tracks::Application.routes.draw do
   resources :invoice_reports, :only => :show
   
   resource :github, :only => [:create], :controller => 'github'
-
+  resource :pivotal, :only => [:create], :controller => 'pivotal'
+  
   # TODO: Reenable these once LAz is working
   # match '/forbid' => 'permissions#destroy', :as => :forbid, :via => delete
   # match '/permit' => 'permissions#create', :as => :permit, :via => post

@@ -6,7 +6,7 @@
 %table.invoice-report
   - @invoice_report.report.each do |date_row|
     %tr.day_row
-      %td{:colspan => "2" }
+      %td{:colspan => "3" }
         %h3= date_row.first.to_s
     - date_row.last.report.each do |user_row|
       %tr.user_row
@@ -14,8 +14,18 @@
           %h4= "#{user_row.first}: #{user_row[1]}"
         %td
           Commits:
+        %td
+          Pivotal Activity:
       %tr.user_work
         %td
-          = user_row[2]
+          - user_row[2].each do |note|
+            = note
+            %br
         %td
-          = user_row.last
+          - user_row[3].each do |commit|
+            = commit
+            %br
+        %td
+          - user_row.last.each do |pivotal|
+            = pivotal
+            %br

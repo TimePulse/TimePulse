@@ -23,6 +23,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Project do
 
   let :github_url do "https://github.com/Awesome/McAwesome" end
+  let :pivotal_id do 12345 end
 
   let :root_project do Project.root end
 
@@ -109,6 +110,32 @@ describe Project do
         @project = Factory(:project, :github_url => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.github_url.should == github_url
+
+        @grandparent.reload.descendants.should include(@parent)
+        @grandparent.reload.descendants.should include(@project)
+      end
+    end
+    describe "pivotal_id" do
+      it "should return a project's github URL" do
+        Factory(:project, :pivotal_id => pivotal_id ).pivotal_id.should == pivotal_id
+      end
+      it "should return a project's parent's github URL if the project has no github URL" do
+        @parent = Factory(:project, :pivotal_id => pivotal_id )
+        Factory(:project, :pivotal_id => nil , :parent => @parent).pivotal_id.should == pivotal_id
+      end
+      it "should return a project's grandparent's github URL if the project and parent have no github URL" do
+        @grandparent = Factory(:project, :pivotal_id => pivotal_id, :name => 'GP')
+        @parent = Factory(:project, :parent => @grandparent, :pivotal_id => nil, :name => "P")
+        @project = Factory(:project, :pivotal_id => nil, :parent => @parent)
+        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+        @project.pivotal_id.should == pivotal_id
+      end
+      it "should return a project's parent's github URL if the project has no github URL  and the grandparent has a different github URL" do
+        @grandparent = Factory(:project, :pivotal_id => 54321)
+        @parent = Factory(:project, :parent => @grandparent, :pivotal_id => pivotal_id)
+        @project = Factory(:project, :pivotal_id => nil, :parent => @parent)
+        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+        @project.pivotal_id.should == pivotal_id
 
         @grandparent.reload.descendants.should include(@parent)
         @grandparent.reload.descendants.should include(@project)

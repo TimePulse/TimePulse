@@ -43,7 +43,15 @@ describe HomeController do
         assigns[:commits].should include(@co1)
         assigns[:commits].should include(@co2)
       end
-      
+
+      it "should find the pivotal_updates" do
+        @pu1 = Factory(:activity, :source => "pivotal", :project => @user.current_project, :user => @user)
+        @pu2 = Factory(:activity, :source => "pivotal", :project => @user.current_project, :user => @user)
+        get 'index'
+        assigns[:pivotal_updates].should include(@pu1)
+        assigns[:pivotal_updates].should include(@pu2)
+      end
+
     end
 
   end

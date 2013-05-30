@@ -35,7 +35,7 @@ class User < ActiveRecord::Base
   
   validates_presence_of :name, :email
 
-  attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user
+  attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user, :pivotal_name
 
   has_and_belongs_to_many :groups
 
@@ -60,6 +60,10 @@ class User < ActiveRecord::Base
     activities.git_commits.recent.includes(:project => :client)
   end
 
+  def recent_pivotal_updates
+    activities.pivotal_updates.recent.includes(:project => :client)
+  end
+
   def time_on_project(project)
     work_units_for(project).sum(:hours)
   end
@@ -78,6 +82,10 @@ class User < ActiveRecord::Base
 
   def git_commits_for(project)
     activity_for(project).git_commits
+  end
+  
+  def pivotal_updates_for(project)
+    activity_for(project).pivotal_updates
   end
   
   def current_project_hours_report
