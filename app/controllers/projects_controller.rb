@@ -57,4 +57,10 @@ class ProjectsController < ApplicationController
       format.js
     end
   end
+
+  # POST /projects/1/github_pull
+  def github_pull
+    @project = Project.find(params[:id])
+  end
+
 end

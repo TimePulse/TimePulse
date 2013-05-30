@@ -92,11 +92,20 @@ GEM
       railties (>= 3.0.0)
     faker (0.9.5)
       i18n (~> 0.4)
+    faraday (0.7.6)
+      addressable (~> 2.2)
+      multipart-post (~> 1.1)
+      rack (~> 1.1)
     ffi (1.8.1)
     fuubar (0.0.6)
       rspec (~> 2.0)
       rspec-instafail (~> 0.1.8)
       ruby-progressbar (~> 0.0.10)
+    github_api (0.4.10)
+      faraday (~> 0.7.6)
+      hashie (~> 1.2.0)
+      multi_json (~> 1.0)
+      oauth2 (~> 0.5.2)
     haml (4.0.2)
       tilt
     haml-rails (0.4)
@@ -104,6 +113,7 @@ GEM
       activesupport (>= 3.1, < 4.1)
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
+    hashie (1.2.0)
     highline (1.6.18)
     hike (1.2.2)
     i18n (0.6.4)
@@ -131,6 +141,7 @@ GEM
     mime-types (1.23)
     mizugumo (0.2.0)
     multi_json (1.0.4)
+    multipart-post (1.2.0)
     mysql2 (0.3.11)
     net-scp (1.1.0)
       net-ssh (>= 2.6.5)
@@ -140,6 +151,9 @@ GEM
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     nokogiri (1.5.9)
+    oauth2 (0.5.2)
+      faraday (~> 0.7)
+      multi_json (~> 1.0)
     orm_adapter (0.4.0)
     pivotal-github (0.6.12)
     polyglot (0.3.3)
@@ -271,6 +285,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   fuubar
+  github_api
   haml-rails
   i18n_alchemy
   launchy

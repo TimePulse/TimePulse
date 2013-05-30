@@ -29,5 +29,10 @@ describe ProjectsController do
     it "recognizes and generates #destroy" do
       { :delete => "/projects/1" }.should route_to(:controller => "projects", :action => "destroy", :id => "1") 
     end
+
+    it "recognizes and generates #github_pull" do
+      { :post => "/projects/1/github_pull" }.should route_to(:controller => "projects", :action => "github_pull", :id => "1") 
+    end
+
   end
 end
