@@ -43,20 +43,26 @@ class InvoiceReport
         @report << [ user.name,
           units_by_user(user).map{|wu| wu.hours }.sum.to_s,
           units_by_user(user).map(&:notes).select(&:present?),
-          units_by_user(user).map{|wu| work_unit_commits(wu)}.flatten,
-          units_by_user(user).map{|wu| work_unit_pivotal_updates(wu)}.flatten
+          units_by_user(user).map{|wu| work_unit_commits(wu)}.flatten.uniq,
+          units_by_user(user).map{|wu| work_unit_pivotal_updates(wu)}.flatten.uniq
         ]
       end
     end
 
     def work_unit_commits(work_unit)
-      work_unit.activities.git_commits.all.map do |commit|
+      start_time = work_unit.start_time.advance(:minutes => -15)
+      stop_time = work_unit.stop_time.advance(:minutes => 15)
+      commits = work_unit.user.git_commits_for(work_unit.project).where("time >= ? and time <= ?", start_time, stop_time)
+      commits.all.map do |commit|
         truncate(commit.reference_1, :length => 10) + " \"#{commit.description}\""
       end
     end
 
     def work_unit_pivotal_updates(work_unit)
-      work_unit.activities.pivotal_updates.all.map do |pivotal|
+      start_time = work_unit.start_time.advance(:minutes => -15)
+      stop_time = work_unit.stop_time.advance(:minutes => 15)
+      pivotal_updates = work_unit.user.pivotal_updates_for(work_unit.project).where("time >= ? and time <= ?", start_time, stop_time)
+      pivotal_updates.all.map do |pivotal|
         truncate(pivotal.reference_1, :length => 10) + " #{pivotal.description}"
       end
     end

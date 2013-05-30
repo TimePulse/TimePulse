@@ -21,15 +21,6 @@ describe PivotalController do
   let :start_time do DateTime.parse("Mon, 27 May 2013 06:25:17 +0000").advance(:minutes => -15) end
   let :stop_time do DateTime.parse("Mon, 27 May 2013 06:25:17 +0000").advance(:minutes => 5) end
 
-  let! :work_unit do
-    Factory.create(:work_unit, 
-      :user => user,
-      :project => project,
-      :start_time => start_time,
-      :stop_time => stop_time,
-      :hours => 0.1)
-  end
-
   let :last_activity do Activity.last end
 
   describe "POST create" do
@@ -49,7 +40,6 @@ describe PivotalController do
       last_activity.reference_2.should == "unscheduled"
       last_activity.project.should == project
       last_activity.user.should == user
-      last_activity.work_unit.should == work_unit
     end
   end
 end
