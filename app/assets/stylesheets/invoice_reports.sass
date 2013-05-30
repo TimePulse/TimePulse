@@ -2,7 +2,15 @@ table.invoice-report
   width: 100%
   background: none
   border: none
-  tr 
+  h4
+    padding-bottom: 0px
+    text-decoration: underline
+    font-size: 120%
+    :text-align left
+  th
+    :vertical-align bottom
+    :text-align left
+  tr
     &.even,
     &.alt,
     &:nth-of-type(even)
@@ -10,12 +18,11 @@ table.invoice-report
     &.user_row
       td
         padding-bottom: 0px
-        h4
-          padding-bottom: 0px
-          text-decoration: underline
     &.user_work
       td
         padding-top: 0px
+      td:first
+        padding-left: 2em
     &.user_row, &.user_work
       td
         width: 33%
@@ -72,7 +79,7 @@ table.invoice-report
     border: none
     margin: 0px
     padding: 0px
-    color: black              
+    color: black
   #content-body
     display: block
     width: 100%
