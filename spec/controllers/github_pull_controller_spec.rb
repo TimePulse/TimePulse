@@ -29,18 +29,20 @@ describe GithubPullController, :vcr => {} do
 
     describe "POST create" do
       let :github_project do
-        Factory(:project, :github_url => "http://github.com/hannahhoward/activerecord-postgis-array")
+        Factory(:project, :github_url => "http://github.com/hannahhoward/tracks_tester")
       end
+
+      let :number_of_commits_in_repository do 5 end
 
       it "should get git commits" do
         post :create, :project_id => github_project
-        assigns(:github_pull).commits.count.should > 200
+        assigns(:github_pull).commits.count.should == number_of_commits_in_repository
       end
 
       it "should save them to the database, but not resave on a subsequent pull" do
         expect do
           post :create, :project_id => github_project
-        end.to change{Activity.count}.by_at_least(200)
+        end.to change{Activity.count}.by(number_of_commits_in_repository)
         expect do
           post :create, :project_id => github_project
         end.to_not change{Activity.count}
