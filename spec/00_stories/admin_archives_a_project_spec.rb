@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "Admin archives a project",  :type => :feature do
+steps "Admin archives a project", :type => :feature do
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
   let! :client_2 do Factory(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
   let! :project_2 do Factory(:project, :client => client_1, :name => "Project 2 base") end
