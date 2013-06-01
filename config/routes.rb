@@ -7,9 +7,7 @@ Tracks::Application.routes.draw do
   resources :work_units, :except => :index
   resources :clients
   resources :projects do
-    member do
-      post 'github_pull'
-    end
+    resource :github_pull, :controller => 'github_pull', :only => [:create]
   end
   
   resources :invoice_reports, :only => :show

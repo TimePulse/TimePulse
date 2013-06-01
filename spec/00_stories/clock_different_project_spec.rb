@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "clock in and out on projects", :type => :feature do
+steps "clock in and out on projects",  :type => :feature do
 
   let! :client_1 do
     Factory(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end

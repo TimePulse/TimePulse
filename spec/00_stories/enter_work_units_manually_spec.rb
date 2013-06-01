@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "User manually enters work units", :type => :feature do
+steps "User manually enters work units",  :type => :feature do
 
   let! :client do Factory(:client, :name => 'Foo, Inc.') end
   let! :project do Factory(:project, :client => client) end

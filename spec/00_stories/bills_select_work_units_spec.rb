@@ -59,7 +59,7 @@ shared_steps "to verify bill is visible" do
   end
 end
 
-steps "Selects all boxes", :type => :feature do
+steps "Selects all boxes",  :type => :feature do
   perform_steps "for an billing task"
 
   it "should select all work units" do
@@ -88,7 +88,7 @@ steps "Selects all boxes", :type => :feature do
   
 end
 
-steps "Select a few work units", :type => :feature do
+steps "Select a few work units",  :type => :feature do
   perform_steps "for an billing task", :wu_count => 5
 
   def click_checkbox(id)

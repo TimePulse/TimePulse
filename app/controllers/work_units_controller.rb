@@ -99,7 +99,6 @@ class WorkUnitsController < ApplicationController
   def compute_some_fields
     if params["work_unit"]["calculate"]
       @work_unit.stop_time = Time.zone.now if @work_unit.stop_time.blank?
-
       if @work_unit.hours.blank?
         @work_unit.hours = WorkUnit.decimal_hours_between(@work_unit.start_time, @work_unit.stop_time)
       end
