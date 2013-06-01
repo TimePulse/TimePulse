@@ -7,6 +7,12 @@ class GithubCommit < ActivityBuilder
   attribute :project_id, Integer
   attr_accessor :author
 
+  def build
+    # double check to make sure a commit with this sha is not already in DB
+    @activity = Activity.find_by_reference_1(id)
+    super
+  end
+
   private
   
   def activity_params

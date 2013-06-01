@@ -6,7 +6,10 @@ Tracks::Application.routes.draw do
   resources :permissions
   resources :work_units, :except => :index
   resources :clients
-  resources :projects
+  resources :projects do
+    resource :github_pull, :controller => 'github_pull', :only => [:create]
+  end
+  
   resources :invoice_reports, :only => :show
   
   resource :github, :only => [:create], :controller => 'github'
