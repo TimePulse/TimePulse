@@ -15,7 +15,9 @@ class GithubCommitSaver
         saved_commits << saved_commit
       end
       saved_commits.each do |saved_commit|
-        saved_commit.save
+        if !saved_commit.persisted?
+          saved_commit.save
+        end
       end
       return true
     else

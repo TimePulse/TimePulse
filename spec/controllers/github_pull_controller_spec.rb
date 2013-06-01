@@ -44,6 +44,7 @@ describe GithubPullController, :vcr => {} do
           post :create, :project_id => github_project
         end.to change{Activity.count}.by(number_of_commits_in_repository)
         expect do
+          Activity.any_instance.should_not_receive(:save)
           post :create, :project_id => github_project
         end.to_not change{Activity.count}
       end
