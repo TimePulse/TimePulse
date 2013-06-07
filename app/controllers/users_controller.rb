@@ -30,10 +30,19 @@ class UsersController < Devise::RegistrationsController
   end
 
   def update
+    nil_unused_params
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
     end
     render :action => :edit
+  end
+
+  def nil_unused_params
+    [ :password, :password_confirmation].each do |param|
+      if params[:user][param] and params[:user][param].blank?
+        params[:user].delete(param)
+      end
+    end
   end
 
   private

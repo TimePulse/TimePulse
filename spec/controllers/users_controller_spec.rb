@@ -39,20 +39,33 @@ describe UsersController do
     end
 
     describe "PUT update" do
+      let :base_params do
+        { :password => '', :password_confirmation => '' }
+      end
+
+      let :task do
+        Factory.create(:task)
+      end
       it "should be authorized" do
-        put :update, :id => @user.id, :user => { :email => @user.email }
+        put :update, :id => @user.id, :user => base_params.merge({ :email => @user.email })
         verify_authorization_successful
       end
+
       it "should allow a user to update his own current task" do
-        @task = Factory(:task)
         lambda do
-          put :update, :id => @user.id, :user => { :current_project_id => @task.id }
-        end.should change{ @user.reload.current_project}.from(nil).to(@task)
+          put :update, :id => @user.id, :user => base_params.merge({ :current_project_id => task.id })
+        end.should change{ @user.reload.current_project}.from(nil).to(task)
+      end
+
+      it "should allow adding the github username" do
+        lambda do
+          put :update, :id => @user.id, :user => base_params.merge({ :github_user => 'whoohoo' })
+        end.should change{ @user.reload.github_user }.to('whoohoo')
       end
 
       it "should allow changing password" do
         lambda do
-          put :update, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
+          put :update, :id => @user.id, :user => base_params.merge({ :password => "barfoo", :password_confirmation => "barfoo" })
         end.should change{ @user.reload.encrypted_password }
         verify_authorization_successful
       end
