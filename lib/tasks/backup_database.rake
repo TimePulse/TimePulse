@@ -35,6 +35,15 @@ namespace :db do
       system(cmd)
       system "ln -sfn #{BACKUP_DIR}/#{filename} #{BACKUP_DIR}/latest.sql.bz2"
     end
+
+    desc "Restores the latest.sql.bz2 from the production (symlink) directory"
+    task :restore_from_production do
+      username, password, database, host = database_config("staging")
+
+      command = "bzip2 -d -c production/current/db_backups/latest.sql.bz2 | mysql -u #{username} --password='#{password}' -h #{host} #{database}"
+      puts "Executing: #{command}"
+      system command
+    end
   end
 end
 
