@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_filter :authenticate_admin!
+  before_filter :require_admin!
   # GET /projects
 
   def index
@@ -27,6 +27,8 @@ class ProjectsController < ApplicationController
 
       if @project.save
         flash[:notice] = 'Project was successfully created.'
+        expire_fragment "picker_node_#{@project.id}"
+        expire_fragment "project_picker"
         redirect_to(@project)
       else
         render :action => "new"

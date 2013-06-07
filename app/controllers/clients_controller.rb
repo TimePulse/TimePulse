@@ -1,5 +1,5 @@
 class ClientsController < ApplicationController
-  before_filter :authenticate_admin!
+  before_filter :require_admin!
 
   # GET /clients
   def index

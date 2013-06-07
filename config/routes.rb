@@ -9,12 +9,12 @@ Tracks::Application.routes.draw do
   resources :projects do
     resource :github_pull, :controller => 'github_pull', :only => [:create]
   end
-  
+
   resources :invoice_reports, :only => :show
-  
+
   resource :github, :only => [:create], :controller => 'github'
   resource :pivotal, :only => [:create], :controller => 'pivotal'
-  
+
   # TODO: Reenable these once LAz is working
   # match '/forbid' => 'permissions#destroy', :as => :forbid, :via => delete
   # match '/permit' => 'permissions#create', :as => :permit, :via => post
@@ -28,8 +28,8 @@ Tracks::Application.routes.draw do
     get "/users/new" => "users#new", :as => :new_user
     get "/users" => "users#index", :as => :users
     get "/users/:id" => "users#show", :as => :user
-    get "/users/:id/edit_as_admin" => "users#edit_as_admin", :as => :edit_user
-    put "/users/:id" => "users#update_as_admin", :as => :user
+    get "/users/:id/edit" => "users#edit", :as => :edit_user
+    put "/users/:id" => "users#update", :as => :user
   end
   match '/work_units/switch' => 'work_units#switch', :as => :switch_work_unit, :via => :post
   match '/fix_work_unit/:id' => 'work_unit_fixer#create', :as => :fix_work_unit
