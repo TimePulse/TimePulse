@@ -24,6 +24,8 @@
   %br
   =h @project.pivotal_id
 
+%p
+  = link_to 'Pull Commit History', project_github_pull_path(:project_id => @project), :method => :post
 %br
   = link_to 'Edit', edit_project_path(@project)  |
   = link_to 'Back', projects_path 

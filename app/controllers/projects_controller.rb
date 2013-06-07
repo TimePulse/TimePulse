@@ -57,4 +57,5 @@ class ProjectsController < ApplicationController
       format.js
     end
   end
+
 end

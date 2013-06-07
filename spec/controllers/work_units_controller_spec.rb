@@ -212,14 +212,14 @@ describe WorkUnitsController do
 
         it "should redirect " do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
-            :start_time => @start.to_s, :calculate => "true", :hours => '2'
+            :start_time => @start.to_s, :stop_time => "", :calculate => "true", :hours => '2'
           }
           response.should be_redirect
         end
 
         it "should create a work unit with a real stop time" do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
-            :start_time => @start.to_s, :calculate => "true", :hours => '2'
+            :start_time => @start.to_s, :stop_time => "", :calculate => "true", :hours => '2'
           }
           assigns[:work_unit].stop_time.should be_within(90.seconds).of(Time.zone.now.utc)
         end

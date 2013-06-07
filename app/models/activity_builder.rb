@@ -20,6 +20,10 @@ class ActivityBuilder
     end
   end
 
+  def persisted?
+    activity.persisted?
+  end
+  
   protected
 
   def build

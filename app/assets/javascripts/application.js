@@ -4,7 +4,7 @@
 //= require logical_tabs_jquery
 //= require jquery.tools.min
 //= require foundation
-//
+//= require ajax_flash
 
 $('document').ready( function(){
   startClock();
@@ -189,3 +189,4 @@ function addCurrentClassToCurrentProject() {
 $(function(){ $(document).foundation(); });
 
 $(document).foundation();
+
