@@ -27,6 +27,8 @@ class ProjectsController < ApplicationController
 
       if @project.save
         flash[:notice] = 'Project was successfully created.'
+        expire_fragment "picker_node_#{@project.id}"
+        expire_fragment "project_picker"
         redirect_to(@project)
       else
         render :action => "new"
