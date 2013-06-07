@@ -1,5 +1,5 @@
 class InvoiceReportsController < ApplicationController
-  before_filter :authenticate_admin!
+  before_filter :require_admin!
   def show
      @invoice = Invoice.find(params[:id])
      @invoice_report = InvoiceReport.new(@invoice)

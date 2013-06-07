@@ -19,7 +19,7 @@ describe UsersController do
     end
 
     describe "get show" do
-      it "should allow viewing own user" do 
+      it "should allow viewing own user" do
         get :show, :id => @user.id
         verify_authorization_successful
       end
@@ -30,35 +30,35 @@ describe UsersController do
         verify_authorization_unsuccessful
       end
     end
-    
+
     describe "get edit" do
       it "should allow editing own user" do
-        get :edit_as_admin, :id => @user.id
-        verify_authorization_successful        
+        get :edit, :id => @user.id
+        verify_authorization_successful
       end
     end
-    
+
     describe "PUT update" do
       it "should be authorized" do
-        put :update_as_admin, :id => @user.id, :user => { :email => @user.email }
+        put :update, :id => @user.id, :user => { :email => @user.email }
         verify_authorization_successful
       end
       it "should allow a user to update his own current task" do
         @task = Factory(:task)
-        lambda do 
-          put :update_as_admin, :id => @user.id, :user => { :current_project_id => @task.id }
+        lambda do
+          put :update, :id => @user.id, :user => { :current_project_id => @task.id }
         end.should change{ @user.reload.current_project}.from(nil).to(@task)
       end
-      
+
       it "should allow changing password" do
-        lambda do 
-          put :update_as_admin, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
+        lambda do
+          put :update, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
         end.should change{ @user.reload.encrypted_password }
         verify_authorization_successful
       end
     end
   end
-  
+
 
   describe "accessed by admin" do
 
@@ -74,7 +74,7 @@ describe UsersController do
       attributes =  Factory.attributes_for(:user)
       attributes.delete :groups
       post :create, :user => attributes
-      
+
       response.should be_redirect
     end
 

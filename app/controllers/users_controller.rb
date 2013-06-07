@@ -1,13 +1,13 @@
 class UsersController < Devise::RegistrationsController
 
   skip_before_filter :require_no_authentication
-  before_filter :authenticate_user!, :only => [:index, :new, :create]
-  before_filter :get_user_and_authenticate, :only => [:show, :edit_as_admin, :update_as_admin]
-  
+  before_filter :require_user!, :only => [:index, :new, :create]
+  before_filter :get_user_and_authenticate, :only => [:show, :edit, :update]
+
   def new
     @user = User.new
   end
-  
+
   def create
     @user = User.new(params[:user])
     @user.groups << Group.find_by_name("Registered Users")
@@ -18,28 +18,28 @@ class UsersController < Devise::RegistrationsController
       render :action => :new
     end
   end
-  
+
   def index
     @users = User.all
   end
 
   def show
   end
- 
-  def edit_as_admin
+
+  def edit
   end
-  
-  def update_as_admin
+
+  def update
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
     end
     render :action => :edit
-  end  
+  end
 
   private
   def get_user_and_authenticate
     Rails.logger.debug params.inspect
     @user = User.find(params[:id])
-    authenticate_owner!(@user)
+    require_owner!(@user)
   end
 end

@@ -1,11 +1,11 @@
 class GithubPullController < ApplicationController
-  before_filter :authenticate_admin!
+  before_filter :require_admin!
 
   # POST /projects/1/github_pull
   def create
-    
+
     @github_pull = GithubPull.new(:project_id => params[:project_id])
-    
+
     if @github_pull.save
       flash[:notice] = 'Commits successfully saved.'
     else
