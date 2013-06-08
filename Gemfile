@@ -30,6 +30,7 @@ gem 'dynamic_form'
 gem 'i18n_alchemy'
 gem 'virtus'
 gem 'github_api', "~> 0.10.1"
+gem 'pivotal-tracker', :git => 'https://github.com/hannahhoward/pivotal-tracker'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
