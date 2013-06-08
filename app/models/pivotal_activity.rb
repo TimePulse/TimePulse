@@ -8,6 +8,12 @@ class PivotalActivity < ActivityBuilder
   attribute :author, String
   attribute :project_id, Integer
   attribute :description, String
+  
+  def build
+    # double check to make sure a commit with this sha is not already in DB
+    @activity = Activity.find_by_reference_1(id)
+    super
+  end
 
   private
 
