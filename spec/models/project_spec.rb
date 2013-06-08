@@ -42,11 +42,14 @@ describe Project do
         @client2 = Factory(:client)
       end
       it "should return a project's client" do
-        Factory(:project, :client => @client).client.should == @client
+        @leaf = Factory(:project, :client => @client)
+        @leaf.client.should == @client
+        @leaf.client_source.should == @leaf
       end
       it "should return a project's parent's client if the project has no client" do
         @parent = Factory(:project, :client => @client)
-        Factory(:project, :client_id => nil, :parent => @parent).client.should == @client
+        @leaf = Factory(:project, :client_id => nil, :parent => @parent)
+        @leaf.client_source.should == @parent
       end
       it "should return a project's grandparent's client if the project and parent have no client" do
         @grandparent = Factory(:project, :client => @client, :name => 'GP')
@@ -54,6 +57,7 @@ describe Project do
         @project = Factory(:project, :client_id => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.client.should == @client
+        @project.client_source.should == @grandparent
       end
       it "should return a project's parent's client if the project has no client and the grandparent has a different client" do
         @grandparent = Factory(:project, :client => @client)
@@ -61,6 +65,7 @@ describe Project do
         @project = Factory(:project, :client_id => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.client.should == @client2
+        @project.client_source.should == @parent
       end
     end
     describe "account" do

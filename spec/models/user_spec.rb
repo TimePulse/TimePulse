@@ -181,6 +181,13 @@ describe User do
       @proj.reload.self_and_descendants.should include(@proj2)
       @user.git_commits_for(@proj2).should_not include(@ac1)
     end
+    it "should include an activity if only the parent has a github/pivotal url" do
+      @proj.github_url = "https://github.com/Awesome"
+      @proj.save
+      @proj2 = Factory(:project, :parent => @proj)        
+      @proj.reload.self_and_descendants.should include(@proj2)
+      @user.git_commits_for(@proj2).should include(@ac1)
+    end
   end 
 
   describe "hours_report_for" do
