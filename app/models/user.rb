@@ -81,11 +81,15 @@ class User < ActiveRecord::Base
   end
 
   def git_commits_for(project)
-    activity_for(project).git_commits
+    source = project.github_url_source
+    source ||= project
+    activity_for(source).git_commits
   end
   
   def pivotal_updates_for(project)
-    activity_for(project).pivotal_updates
+    source = project.pivotal_id_source
+    source ||= project
+    activity_for(source).pivotal_updates
   end
   
   def current_project_hours_report
