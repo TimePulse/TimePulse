@@ -22,13 +22,15 @@ class PivotalActivity < ActivityBuilder
   end
   
   def activity_params
+    story_id = stories[0]["id"] if stories.present?
+    current_state = stories[0]["current_state"] if stories.present?
     super.merge({
       :source => "pivotal",
       :action => event_type,
       :description => description,
       :time => occurred_at,
-      :reference_1 => stories[0]["id"],
-      :reference_2 => stories[0]["current_state"],
+      :reference_1 => story_id,
+      :reference_2 => current_state,
       :reference_3 => id.to_s
     })
   end
