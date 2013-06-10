@@ -1,8 +1,5 @@
 - set_headline "Invoice for #{@invoice.client.name}"
 
-- content_for :header do
-  = stylesheet_link_tag "invoice_reports", :media =>'all'
-
 %table.invoice-report
   - @invoice_report.report.each do |date_row|
     %tr.day_row
