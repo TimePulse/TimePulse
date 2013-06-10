@@ -11,7 +11,7 @@ class PivotalActivity < ActivityBuilder
   
   def build
     # double check to make sure a commit with this sha is not already in DB
-    @activity = Activity.find_by_reference_1(id)
+    @activity = Activity.find_by_reference_3(id.to_s)
     super
   end
 
@@ -29,6 +29,7 @@ class PivotalActivity < ActivityBuilder
       :time => occurred_at,
       :reference_1 => stories[0]["id"],
       :reference_2 => stories[0]["current_state"],
+      :reference_3 => id.to_s
     })
   end
 
