@@ -8,5 +8,6 @@ class Activity < ActiveRecord::Base
   scope :recent, :limit => 8, :order => "time DESC"
   scope :git_commits, where(:source => "github")
   scope :pivotal_updates, where(:source => "pivotal")
+  scope :story_changes, where("reference_2 IS NOT NULL")
 end
 

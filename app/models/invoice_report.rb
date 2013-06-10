@@ -61,7 +61,7 @@ class InvoiceReport
     def work_unit_pivotal_updates(work_unit)
       start_time = work_unit.start_time.advance(:minutes => -15)
       stop_time = work_unit.stop_time.advance(:minutes => 15)
-      pivotal_updates = work_unit.user.pivotal_updates_for(work_unit.project).where("time >= ? and time <= ?", start_time, stop_time)
+      pivotal_updates = work_unit.user.pivotal_updates_for(work_unit.project).story_changes.where("time >= ? and time <= ?", start_time, stop_time)
       pivotal_updates.all.map do |pivotal|
         truncate(pivotal.reference_1, :length => 10) + " #{pivotal.description}"
       end
