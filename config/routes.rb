@@ -8,6 +8,7 @@ Tracks::Application.routes.draw do
   resources :clients
   resources :projects do
     resource :github_pull, :controller => 'github_pull', :only => [:create]
+    resource :pivotal_pull, :controller => 'pivotal_pull', :only => [:create]
   end
 
   resources :invoice_reports, :only => :show
