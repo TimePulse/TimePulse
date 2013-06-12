@@ -1,0 +1,7 @@
+= page_block("Recent Commits", :id => "recent_commits") do
+  %table.listing
+    %tr
+      %th Project
+      %th Branch
+      %th Message
+    = render :partial => "shared/commit_narrow", :collection => current_user.reload.recent_commits, :as => :commit

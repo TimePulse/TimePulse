@@ -28,6 +28,9 @@ gem "chronic"
 gem "logical-insight"
 gem 'dynamic_form'
 gem 'i18n_alchemy'
+gem 'virtus'
+gem 'github_api', "~> 0.10.1"
+gem 'pivotal-tracker', "= 0.5.13", :git => 'https://github.com/hannahhoward/pivotal-tracker'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -57,6 +60,8 @@ group :test do
   gem 'simplecov', :platform => "ruby_19"
   gem 'simplecov-vim', :platform => "ruby_19"
   gem 'fuubar'
+  gem 'vcr'
+  gem 'fakeweb'
 end
 
 group :development do

@@ -74,24 +74,31 @@ class WorkUnitsController < ApplicationController
 
   private
   def parse_date_params
-
     if wu_p = params[:work_unit]
-      wu_p[:start_time] = Chronic.parse(wu_p[:start_time]) if wu_p[:start_time]
-      wu_p[:stop_time] = Chronic.parse(wu_p[:stop_time]) if wu_p[:stop_time]
+      if wu_p[:time_zone]
+        old_time_zone = Time.zone
+        Time.zone = (wu_p[:time_zone].to_i).hours
+        Chronic.time_class = Time.zone
+        wu_p[:start_time] = Chronic.parse(wu_p[:start_time]) if wu_p[:start_time]
+        wu_p[:stop_time] = Chronic.parse(wu_p[:stop_time]) if wu_p[:stop_time]
+        Time.zone = old_time_zone
+      else
+        wu_p[:start_time] = Chronic.parse(wu_p[:start_time]) if wu_p[:start_time]
+        wu_p[:stop_time] = Chronic.parse(wu_p[:stop_time]) if wu_p[:stop_time]
+      end
     end
   end
 
   def find_work_unit_and_authenticate
     @work_unit = WorkUnit.find(params[:id])
     raise ArgumentError, 'Invalid work_unit id provided' unless @work_unit
-    authenticate_owner!(@work_unit.user)
+    require_owner!(@work_unit.user)
   end
 
   # compute a few fields based on sensible defaults, if "calculate" param was passed
   def compute_some_fields
     if params["work_unit"]["calculate"]
       @work_unit.stop_time = Time.zone.now if @work_unit.stop_time.blank?
-
       if @work_unit.hours.blank?
         @work_unit.hours = WorkUnit.decimal_hours_between(@work_unit.start_time, @work_unit.stop_time)
       end

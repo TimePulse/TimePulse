@@ -21,6 +21,9 @@ Factory.define :user , :class => User do |u|
   u.sequence(:confirmation_token) { |n| "Q#{n}g5di9Q3GKGxHX4YzjM"}
   u.sequence(:confirmed_at) { |n| n.weeks.ago}
   u.sequence(:confirmation_sent_at) { |n| (n+1).weeks.ago }
+
+  u.github_user "quentinjohnson"
+  u.pivotal_name "Quentin Johnson"
 end
 
 Factory.define :admin, :parent => :user do |u|
