@@ -1,8 +1,8 @@
 GIT
   remote: https://github.com/hannahhoward/pivotal-tracker
-  revision: 5c6dd2b184746686efd9246ca78912ffe91e8e7b
+  revision: 3c738617558e4734f261bc881688d2d4f83136ca
   specs:
-    pivotal-tracker (0.5.13)
+    pivotal-tracker (0.5.14)
       builder
       builder
       crack
@@ -332,7 +332,7 @@ DEPENDENCIES
   mizugumo
   mysql2 (~> 0.3.10)
   pivotal-github
-  pivotal-tracker (= 0.5.13)!
+  pivotal-tracker (= 0.5.14)!
   populator
   quiet_assets
   rack (~> 1.4.0)
