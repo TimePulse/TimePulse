@@ -1,8 +1,8 @@
 
 #TODO: R3 respond_with
 class GroupsController < ApplicationController
-  
-  before_filter :authenticate_admin!
+
+  before_filter :require_admin!
 
   PER_PAGE = 20
 
@@ -32,7 +32,7 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = Group.find(params[:id])      
+    @group = Group.find(params[:id])
   end
 
   # GET /groups/new
@@ -74,5 +74,5 @@ class GroupsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
+
 end

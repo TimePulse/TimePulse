@@ -32,6 +32,15 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "should have the correct values for the work unit" do
+
+    # although the section below checks the work unit manually, this integration test
+    # is important because it forces the ajax request in capybara to complete so changes
+    # are written to the database
+
+    within("#recent_work") do
+      page.should have_content("1.00")
+    end
+    
     @work_unit = WorkUnit.last
     @work_unit.hours.should == 1.00
     @work_unit.notes.should == "An hour of work"

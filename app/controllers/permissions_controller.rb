@@ -1,7 +1,7 @@
 
-class PermissionsController < ApplicationController        
+class PermissionsController < ApplicationController
 
-  before_filter :authenticate_admin!
+  before_filter :require_admin!
 
   before_filter :get_permission, :only => [:edit, :update, :destroy]
 
@@ -35,8 +35,8 @@ class PermissionsController < ApplicationController
     return if group.nil?
 
     permission_selector = {
-      :controller => params[:p_controller], 
-      :action => params[:p_action], 
+      :controller => params[:p_controller],
+      :action => params[:p_action],
       :subject_id => params[:object],
       :group_id => group.id
     }
@@ -44,12 +44,12 @@ class PermissionsController < ApplicationController
     if params["permission"] == "true"
       Permission.create!(permission_selector)
     else
-      perms = group.permissions.find(:all, :conditions => permission_selector)        
+      perms = group.permissions.find(:all, :conditions => permission_selector)
       perms.each {|perm| perm.destroy}
     end
 
     respond_to do |format|
-      format.js 
+      format.js
       format.html do
         redirect_to :back
       end

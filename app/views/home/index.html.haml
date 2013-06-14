@@ -4,6 +4,8 @@
   = render :partial => "shared/timeclock"
   = render :partial => "shared/week_summary", :locals => { :this_week_units => current_user.work_units.this_week }
   = render :partial => "shared/recent_work"
+  = render :partial => "shared/recent_commits"
+  = render :partial => "shared/recent_pivotal_updates"
 
 -content_for :picker do
   = render :partial => "shared/project_picker"

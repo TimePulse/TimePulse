@@ -1,7 +1,9 @@
 require 'authenticated_system'
+require 'ajax_flash'
 
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
+  include AJAXFlash
 
   protect_from_forgery
 
@@ -9,21 +11,21 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_current_time
 
-  def authenticate_user!
+  def require_user!
     if (!current_user)
       store_location
       redirect_to(login_path)
     end
   end
 
-  def authenticate_admin!
+  def require_admin!
     if !current_user or !(current_user.admin?)
       store_location
       redirect_to(login_path)
     end
   end
 
-  def authenticate_owner!(user)
+  def require_owner!(user)
     if (!current_user.admin? and current_user != user)
       store_location
       redirect_to(login_path)

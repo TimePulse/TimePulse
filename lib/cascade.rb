@@ -27,6 +27,19 @@ module Cascade
               read_attribute(:#{attrib})
             end
           end
+
+          def #{attrib}_source
+            if read_attribute(:#{attrib}).blank?
+              if(ancestor = ancestors.reverse.find{|a| !a.read_attribute(:#{attrib}).blank? }).nil?
+                nil
+              else
+                ancestor
+              end
+            else       
+              self
+            end
+          end
+
           EOM
         else
           
@@ -42,7 +55,20 @@ module Cascade
             else   
               #{attrib}_without_cascade
             end
-          end                                 
+          end
+
+          def #{attrib}_source
+            if #{attrib}_without_cascade.blank?
+              if(ancestor = ancestors.reverse.find{|a| !a.#{attrib}_without_cascade.blank? }).nil?
+                nil
+              else                
+                ancestor
+              end
+            else   
+              self
+            end
+          end   
+                                           
           EOM2
           alias_method_chain attrib, :cascade
         end

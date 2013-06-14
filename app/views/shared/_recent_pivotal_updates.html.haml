@@ -1,0 +1,7 @@
+= page_block("Pivotal Activity", :id => "recent_pivotal_updates") do
+  %table.listing
+    %tr
+      %th Project
+      %th Story ID
+      %th State
+    = render :partial => "shared/pivotal_narrow", :collection => current_user.reload.recent_pivotal_updates, :as => :pivotal

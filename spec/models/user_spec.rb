@@ -96,6 +96,26 @@ describe User do
     end
   end    
   
+  describe "activities association" do
+    before(:each) do
+      @user = Factory(:user)
+      @user2 = Factory(:user)
+      @proj = Factory(:project)
+      @ac1 = Factory(:activity, :user => @user, :project => @proj)
+      @ac2 = Factory(:activity, :user => @user, :project => @proj)
+      @ac3 = Factory(:activity, :user => @user2, :project => @proj)
+    end
+        
+    it "should return work units assigned to the user" do
+      @user.activities.should include(@ac1)
+      @user.activities.should include(@ac2)
+    end
+    
+    it "should not return work units assigned to other users" do
+      @user.activities.should_not include(@ac3)      
+    end
+  end  
+
   describe "work_units_for" do
     before(:each) do
       @user = Factory(:user)
@@ -128,6 +148,48 @@ describe User do
     end
   end  
   
+  describe "activties_for" do
+    before(:each) do
+      @user = Factory(:user)
+      @proj = Factory(:project)
+      @ac1 = Factory(:activity, :user => @user, :project => @proj, :source => "github")      
+    end
+
+    it "should return an activity associated with the specified project" do
+      @user.git_commits_for(@proj).should include(@ac1)
+    end      
+
+    it "should return an activity associated with a subproject" do
+      @proj2 = Factory(:project, :parent => @proj)        
+      @proj.reload.self_and_descendants.should include(@proj2)
+      @ac2 = Factory(:activity, :user => @user, :project => @proj2, :source => "github")      
+      @user.git_commits_for(@proj).should include(@ac2)           
+    end  
+
+    it "should not return a work unit for another user" do
+      @other = Factory(:user)
+      @ac3 = Factory(:activity, :user => @other, :project => @proj, :source => "github")      
+      @user.git_commits_for(@proj).should_not include(@ac3)
+    end
+    it "should not return a work unit for a project outside the heirarchy" do
+      @proj3 = Factory(:project)
+      @ac3 = Factory(:activity, :user => @user, :project => @proj3, :source => "github")      
+      @user.git_commits_for(@proj).should_not include(@ac3)
+    end 
+    it "should not include a work unit for a parent project" do
+      @proj2 = Factory(:project, :parent => @proj)        
+      @proj.reload.self_and_descendants.should include(@proj2)
+      @user.git_commits_for(@proj2).should_not include(@ac1)
+    end
+    it "should include an activity if only the parent has a github/pivotal url" do
+      @proj.github_url = "https://github.com/Awesome"
+      @proj.save
+      @proj2 = Factory(:project, :parent => @proj)        
+      @proj.reload.self_and_descendants.should include(@proj2)
+      @user.git_commits_for(@proj2).should include(@ac1)
+    end
+  end 
+
   describe "hours_report_for" do
  
     it "should return a hash" do

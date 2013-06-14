@@ -1,5 +1,6 @@
 my_formats = {
   :short_date => '%-m/%-d/%Y',              # 3/2/2010
+  :short_date_and_time => '%Y-%d-%m %-I:%M %p', # 3/2/2010
   :time => "%-I:%M %p ",                    # 2:06 pm
   :month_year => "%b %Y",                   # Mar 2010
   :month_day_year => "%d, %B, %Y",          # March 2, 2010

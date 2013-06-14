@@ -23,6 +23,34 @@ module WorkUnitsHelper
     end
   end
 
+  def commit_tooltip_for(commit, token)
+    content_tag( :div, :id => "tooltip_for_#{token}", :class => "lrd-tooltip") do
+      content_tag(:dl) do
+         [
+          ["Project:",    short_name_with_client(commit.project)],
+          ["Message:",      commit.description],
+          ["Commit ID:",      commit.reference_1],
+          ["Branch",    commit.reference_2],
+          ["Time:",   commit.time.to_s(:short_datetime)]
+          ].map{ |line| "<dt>#{line[0]}</dt><dd>#{line[1]}</dd>".html_safe }.join().html_safe
+      end
+    end
+  end
+
+  def pivotal_tooltip_for(pivotal, token)
+    content_tag( :div, :id => "tooltip_for_#{token}", :class => "lrd-tooltip") do
+      content_tag(:dl) do
+         [
+          ["Project:",    short_name_with_client(pivotal.project)],
+          ["Description:",      pivotal.description],
+          ["Story ID:",      pivotal.reference_1],
+          ["Current State",    pivotal.reference_2],
+          ["Time:",   pivotal.time.to_s(:short_datetime)]
+          ].map{ |line| "<dt>#{line[0]}</dt><dd>#{line[1]}</dd>".html_safe }.join().html_safe
+      end
+    end
+  end
+
   def widget_links(work_unit)
     link_to( 'Edit', edit_work_unit_path(work_unit)) + " " +
     link_to('Delete', work_unit_path(work_unit), {:method => :delete, :confirm => "Are you sure?"})
