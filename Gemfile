@@ -53,6 +53,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'rspec-steps'
+  gem 'poltergeist'
   gem 'debugger'
 end
 
