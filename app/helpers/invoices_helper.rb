@@ -1,9 +1,9 @@
 module InvoicesHelper
   def invoice_client_selector()
     if @client
-      select_tag( :client_id, options_for_select(client_selector_array_with_hours, @client.id), { :include_blank => "" })
+      select_tag( :client_id, options_for_select(client_selector_array_with_hours, @client.id), { :include_blank => "", :class => "invoice-client-selector" })
     else
-      select_tag( :client_id, options_for_select(client_selector_array_with_hours), { :include_blank => "" })
+      select_tag( :client_id, options_for_select(client_selector_array_with_hours), { :include_blank => "", :class => "invoice-client-selector"  })
     end
   end
 
@@ -13,4 +13,5 @@ module InvoicesHelper
        c.id
     ]}
   end
+
 end

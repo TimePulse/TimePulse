@@ -1,0 +1,33 @@
+@import constants.sass
+
+#aux
+
+  .block_inner
+    :margin .5em
+
+  #recent_work, #recent_commits, #recent_pivotal_updates
+    .block_inner, table.listing
+      :margin 0
+  table.listing
+    :width 100%
+
+  #this_week
+    table.listing
+      :width 100%
+
+#aux, #picker
+  .block
+    :border none
+    :background white
+    :margin-bottom 1em
+    +round
+
+    h2
+      :border-bottom 1px $bcolor solid
+      :padding .25em
+      :background $title_bg_color
+      :margin 0
+      :color $title_text_color
+
+.block_content > table.listing
+  :margin 0

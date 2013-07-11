@@ -2,13 +2,14 @@ require "spec_helper"
 
 describe UsersController do
   before do
-    logout
+    sign_out :user
+    request.env['devise.mapping'] = Devise.mappings[:user]
   end
 
   describe "accessed by guest" do
     it "should forbid index" do
       get :index
-      controller.should be_forbidden
+      verify_authorization_unsuccessful
     end
   end
 
@@ -18,51 +19,59 @@ describe UsersController do
     end
 
     describe "get show" do
-      it "should allow viewing own user" do 
+      it "should allow viewing own user" do
         get :show, :id => @user.id
-        controller.should be_authorized
+        verify_authorization_successful
       end
 
       it "should forbid viewing another user" do
         @other = Factory.create(:user)
         get :show, :id => @other.id
-        controller.should be_forbidden
+        verify_authorization_unsuccessful
       end
     end
-    
+
     describe "get edit" do
       it "should allow editing own user" do
         get :edit, :id => @user.id
-        controller.should be_authorized        
+        verify_authorization_successful
       end
     end
-    
+
     describe "PUT update" do
+      let :base_params do
+        { :password => '', :password_confirmation => '' }
+      end
+
+      let :task do
+        Factory.create(:task)
+      end
       it "should be authorized" do
-        put :update, :id => @user.id, :user => { :email => @user.email }
-        controller.should be_authorized
+        put :update, :id => @user.id, :user => base_params.merge({ :email => @user.email })
+        verify_authorization_successful
       end
+
       it "should allow a user to update his own current task" do
-        @task = Factory(:task)
-        lambda do 
-          put :update, :id => @user.id, :user => { :current_project_id => @task.id }
-        end.should change{ @user.reload.current_project}.from(nil).to(@task)
+        lambda do
+          put :update, :id => @user.id, :user => base_params.merge({ :current_project_id => task.id })
+        end.should change{ @user.reload.current_project}.from(nil).to(task)
       end
-      
+
+      it "should allow adding the github username" do
+        lambda do
+          put :update, :id => @user.id, :user => base_params.merge({ :github_user => 'whoohoo' })
+        end.should change{ @user.reload.github_user }.to('whoohoo')
+      end
+
       it "should allow changing password" do
-        lambda do 
-          put :update, :id => @user.id, :user => { :password => "barfoo", :password_confirmation => "barfoo" }
-        end.should change{ @user.reload.crypted_password }
-        controller.should be_authorized
-        
-      end
-      
-      it "should succeed" do
-        
+        lambda do
+          put :update, :id => @user.id, :user => base_params.merge({ :password => "barfoo", :password_confirmation => "barfoo" })
+        end.should change{ @user.reload.encrypted_password }
+        verify_authorization_successful
       end
     end
   end
-  
+
 
   describe "accessed by admin" do
 
@@ -78,7 +87,7 @@ describe UsersController do
       attributes =  Factory.attributes_for(:user)
       attributes.delete :groups
       post :create, :user => attributes
-      
+
       response.should be_redirect
     end
 
@@ -86,7 +95,7 @@ describe UsersController do
       attributes =  Factory.attributes_for(:user)
       attributes.delete :groups
       post :create, :user => attributes
-      controller.should be_authorized
+      verify_authorization_successful
       user = assigns[:user]
       user.groups.should include(Group.find_by_name("Registered Users"))
     end

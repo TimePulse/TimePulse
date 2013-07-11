@@ -1,5 +1,5 @@
 - cache("work_unit_narrow_#{work_unit.id}") do
-  - token = ActiveSupport::SecureRandom.hex(8)
+  - token = SecureRandom.hex(8)
   = content_tag(:tr, work_unit, :id => token, :class => ['narrow', 'has_tooltip']) do
     %td
       %span.nobr= short_name_with_client(work_unit.project)

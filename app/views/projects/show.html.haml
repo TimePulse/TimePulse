@@ -14,6 +14,21 @@
   %br
   =h @project.description 
 
+%p
+  <b>Github URL:</b>
+  %br
+  =h @project.github_url
+
+%p
+  <b>Pivotal Project ID:</b>
+  %br
+  =h @project.pivotal_id
+
+%p
+  = link_to 'Pull Commit History', project_github_pull_path(:project_id => @project), :method => :post
+%p
+  = link_to 'Pull Pivotal Stories', project_pivotal_pull_path(:project_id => @project), :method => :post
+
 %br
   = link_to 'Edit', edit_project_path(@project)  |
   = link_to 'Back', projects_path 

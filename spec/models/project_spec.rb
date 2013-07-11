@@ -22,6 +22,9 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Project do
 
+  let :github_url do "https://github.com/Awesome/McAwesome" end
+  let :pivotal_id do 12345 end
+
   let :root_project do Project.root end
 
   it "should create a new instance given valid attributes" do
@@ -39,11 +42,14 @@ describe Project do
         @client2 = Factory(:client)
       end
       it "should return a project's client" do
-        Factory(:project, :client => @client).client.should == @client
+        @leaf = Factory(:project, :client => @client)
+        @leaf.client.should == @client
+        @leaf.client_source.should == @leaf
       end
       it "should return a project's parent's client if the project has no client" do
         @parent = Factory(:project, :client => @client)
-        Factory(:project, :client_id => nil, :parent => @parent).client.should == @client
+        @leaf = Factory(:project, :client_id => nil, :parent => @parent)
+        @leaf.client_source.should == @parent
       end
       it "should return a project's grandparent's client if the project and parent have no client" do
         @grandparent = Factory(:project, :client => @client, :name => 'GP')
@@ -51,6 +57,7 @@ describe Project do
         @project = Factory(:project, :client_id => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.client.should == @client
+        @project.client_source.should == @grandparent
       end
       it "should return a project's parent's client if the project has no client and the grandparent has a different client" do
         @grandparent = Factory(:project, :client => @client)
@@ -58,6 +65,7 @@ describe Project do
         @project = Factory(:project, :client_id => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.client.should == @client2
+        @project.client_source.should == @parent
       end
     end
     describe "account" do
@@ -81,6 +89,61 @@ describe Project do
         @project = Factory(:project, :account => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.account.should == "account2"
+
+        @grandparent.reload.descendants.should include(@parent)
+        @grandparent.reload.descendants.should include(@project)
+      end
+    end
+    describe "github_url" do
+      it "should return a project's github URL" do
+        Factory(:project, :github_url => github_url ).github_url.should == github_url
+      end
+      it "should return a project's parent's github URL if the project has no github URL" do
+        @parent = Factory(:project, :github_url => github_url )
+        Factory(:project, :github_url => nil , :parent => @parent).github_url.should == github_url
+      end
+      it "should return a project's grandparent's github URL if the project and parent have no github URL" do
+        @grandparent = Factory(:project, :github_url => github_url, :name => 'GP')
+        @parent = Factory(:project, :parent => @grandparent, :github_url => nil, :name => "P")
+        @project = Factory(:project, :github_url => nil, :parent => @parent)
+        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+        @project.github_url.should == github_url
+      end
+      it "should return a project's parent's github URL if the project has no github URL  and the grandparent has a different github URL" do
+        @grandparent = Factory(:project, :github_url => "https://github.com/Awesome/NotAwesome")
+        @parent = Factory(:project, :parent => @grandparent, :github_url => github_url)
+        @project = Factory(:project, :github_url => nil, :parent => @parent)
+        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+        @project.github_url.should == github_url
+
+        @grandparent.reload.descendants.should include(@parent)
+        @grandparent.reload.descendants.should include(@project)
+      end
+    end
+    describe "pivotal_id" do
+      it "should return a project's github URL" do
+        Factory(:project, :pivotal_id => pivotal_id ).pivotal_id.should == pivotal_id
+      end
+      it "should return a project's parent's github URL if the project has no github URL" do
+        @parent = Factory(:project, :pivotal_id => pivotal_id )
+        Factory(:project, :pivotal_id => nil , :parent => @parent).pivotal_id.should == pivotal_id
+      end
+      it "should return a project's grandparent's github URL if the project and parent have no github URL" do
+        @grandparent = Factory(:project, :pivotal_id => pivotal_id, :name => 'GP')
+        @parent = Factory(:project, :parent => @grandparent, :pivotal_id => nil, :name => "P")
+        @project = Factory(:project, :pivotal_id => nil, :parent => @parent)
+        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+        @project.pivotal_id.should == pivotal_id
+      end
+      it "should return a project's parent's github URL if the project has no github URL  and the grandparent has a different github URL" do
+        @grandparent = Factory(:project, :pivotal_id => 54321)
+        @parent = Factory(:project, :parent => @grandparent, :pivotal_id => pivotal_id)
+        @project = Factory(:project, :pivotal_id => nil, :parent => @parent)
+        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+        @project.pivotal_id.should == pivotal_id
+
+        @grandparent.reload.descendants.should include(@parent)
+        @grandparent.reload.descendants.should include(@project)
       end
     end
   end

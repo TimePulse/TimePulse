@@ -1,4 +1,4 @@
-%tr
+= content_tag_for(:tr, bill) do
   %td= bill.user.name
   %td= bill.hours
   %td.date= bill.created_at.to_s(:date)

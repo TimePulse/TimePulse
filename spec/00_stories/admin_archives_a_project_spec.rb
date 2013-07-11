@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "Admin archives a project", :type => :request do
+steps "Admin archives a project", :type => :feature do
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
   let! :client_2 do Factory(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
   let! :project_2 do Factory(:project, :client => client_1, :name => "Project 2 base") end
@@ -43,7 +43,7 @@ steps "Admin archives a project", :type => :request do
   end
 
   it "and I submit the form" do
-    click_button "submit"
+    click_button "Submit"
   end
 
   it "then when I revisit the dashboard" do

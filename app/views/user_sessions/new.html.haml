@@ -1,9 +1,0 @@
-- set_headline "Login"
-
-= form_for @user_session, :url => user_session_path do |f|
-  = f.error_messages
-
-  = f.labeled_input :login
-  = f.labeled_input :password do
-    = f.password_field(:password)
-  = f.unlabeled_submit "Login"

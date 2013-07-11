@@ -1,0 +1,9 @@
+- set_headline "Login"
+
+= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| 
+  = f.error_messages
+
+  = f.labeled_input :login
+  = f.labeled_input :password do
+    = f.password_field(:password)
+  = f.unlabeled_submit "Login"

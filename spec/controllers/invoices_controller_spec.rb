@@ -35,7 +35,7 @@ describe InvoicesController do
       end        
       it "should be authorized" do
         get :index
-        controller.should be_authorized       
+        verify_authorization_successful       
       end
     end
 
@@ -53,7 +53,7 @@ describe InvoicesController do
       end           
       it "should be authorized" do
         get :show, :id => @invoice.id
-        controller.should be_authorized       
+        verify_authorization_successful       
       end
     end
 
@@ -68,7 +68,7 @@ describe InvoicesController do
       end    
       it "should be authorized" do
         get :new
-        controller.should be_authorized       
+        verify_authorization_successful       
       end
       describe "client selection" do
         before :each  do
@@ -154,7 +154,7 @@ describe InvoicesController do
       end            
       it "should be authorized" do
         get :edit, :id => @invoice.id   
-        controller.should be_authorized       
+        verify_authorization_successful       
       end
     end
 
@@ -176,7 +176,7 @@ describe InvoicesController do
                    
         it "should be authorized" do
           post :create, :invoice => @valid_create_params
-          controller.should be_authorized
+          verify_authorization_successful
         end
         it "should create a new invoice in the database" do
           lambda do 
@@ -291,7 +291,7 @@ describe InvoicesController do
                
         it "should be authorized" do
           put :update, :id => @invoice.id, :invoice => @valid_update_params   
-          controller.should be_authorized
+          verify_authorization_successful
         end
         it "should update the requested invoice in the database" do          
           lambda do
@@ -346,7 +346,7 @@ describe InvoicesController do
       end           
       it "should be authorized" do
         delete :destroy, :id => @invoice.id
-        controller.should be_authorized        
+        verify_authorization_successful        
       end
       it "should reduce invoice count by one" do
         lambda do

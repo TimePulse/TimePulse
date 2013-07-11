@@ -1,0 +1,42 @@
+= tabbed_panel(:base_id => "work_report") do |tp|
+  = tp.add_tab("Work Units") do
+    -if @work_units.blank?
+      %p No work units to show.
+    -else
+      = will_paginate(@work_units, :param_name => :work_units_page)
+      %table.listing
+        %tr
+          %th= "Client"
+          %th= "Project"
+          %th= "Notes"
+          %th= "Hrs"
+          %th= "Date"
+          %th
+        = render :partial => "shared/work_unit_one_line", :as => :work_unit, :collection => @work_units
+
+  = tp.add_tab("Commits") do
+    -if @commits.blank?
+      %p No commits to show.
+    -else
+      = will_paginate(@commits, :param_name => :commits_page)
+      %table.listing
+        %tr
+          %th= "Client"
+          %th= "Project"
+          %th= "Message"
+          %th= "Branch"
+          %th= "Time"
+        = render :partial => "shared/commit_one_line", :as => :commit, :collection => @commits
+
+  = tp.add_tab("Pivotal Updates") do
+    -if @pivotal_updates.blank?
+      %p No pivotal updates to show.
+    -else
+      = will_paginate(@pivotal_updates, :param_name => :pivotal_updates_page)
+      %table.listing
+        %tr
+          %th= "Client"
+          %th= "Project"
+          %th= "Message"
+          %th= "Time"
+        = render :partial => "shared/pivotal_one_line", :as => :pivotal, :collection => @pivotal_updates

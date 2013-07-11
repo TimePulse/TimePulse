@@ -1,0 +1,76 @@
+@import 'partials/constants'
+@import 'foundation_and_overrides'
+
+body
+  :font-family helvetica, "sans-serif"
+  :background $page_background image-url('background.png') top left repeat !important
+  :border 0
+  :margin 0
+  :padding 0
+  :font-size 12px
+
+#inset
+  :background image-url('top_background.png') top left repeat-x
+
+#wrap
+  @include grid-row
+  
+#header
+  :height 40px
+  :margin-bottom 1px
+  :color white
+
+#message
+  :text-align center
+  h2
+    :text-align right
+    :float right
+    :font-size 14px
+    :padding-top 6px
+  h1
+    :padding-top 10px
+    :margin 0
+
+#logo, #logo a
+  :height 40px
+  :width 57px
+  :margin 0
+  :float left
+
+#admin_nav
+  ul li
+    float: none
+#nav
+  :border 0px
+  +clearfix
+
+#aux
+  :margin-top 1em
+
+#picker
+  :margin-top 0em
+  :padding 0
+
+#content-column
+  :margin-top 0em
+  h1
+    :margin-top 0
+  &.with_picker
+    padding-right: 0px
+    padding-left: 0px
+
+  &.without_picker
+    display: block
+    #content-body
+      display: block
+      @include grid-row
+
+    &.without_aux
+
+    &.with_aux
+      padding-right: 0px
+
+
+#content-wrap
+  +clearfix
+

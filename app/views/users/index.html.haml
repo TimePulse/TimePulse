@@ -1,5 +1,5 @@
 %ul.actions
-  %li= link_to_if_authorized("New User", new_user_path)
+  %li= link_to_if_admin_authorized("New User", new_user_path)
 
 %table.listing
   %tr
@@ -8,7 +8,7 @@
     %th Current Project
   - @users.each do |user|
     %tr
-      %td= link_to_if_authorized(user.name, user)
+      %td= link_to_if_owner_authorized(user, user.name, user)
       %td= user.email
       %td= user.current_project.try(:name) || "(none)"
-      %td= link_to_if_authorized("Edit", edit_user_path(user)) {}
+      %td= link_to_if_owner_authorized(user, "Edit", edit_user_path(user)) {}

@@ -1,0 +1,8 @@
+= error_messages_for :permission
+- form_for @permission, :url => permissions_path do |f|
+  = hidden_field_tag(:permission, true)
+  = labeled_input f, :group, :input => select(:permission, :group_id, groups)
+  = labeled_input f, :controller, :input => select(:permission, :controller, controller_pairs)
+  = labeled_input f, :action
+  = labeled_input f, :subject_id, :text => "id"
+  = unlabeled_submit(f)
