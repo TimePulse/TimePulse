@@ -30,8 +30,8 @@ class GithubPull < GithubCommitSaver
     url_parts = project.github_url.split("/")
     repo = url_parts.pop
     user = url_parts.pop
-    Github.new(:oauth_token => API_KEYS[:github], 
-      :auto_pagination => true, 
+    Github.new(:oauth_token => ::API_KEYS[:github],
+      :auto_pagination => true,
       :user => user, 
       :repo => repo)
   end
