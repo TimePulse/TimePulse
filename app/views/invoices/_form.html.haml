@@ -17,8 +17,8 @@
         %th Work Units
         %th Hours
       %tr
-        %td#work_unit_count
-        %td#hours_total
+        %td#work_unit_count 0
+        %td#hours_total 0
 
     %table.listing
       = f.fields_for :work_unit_ids do |wu_form|
@@ -26,7 +26,7 @@
           = content_tag_for(:tr, wu) do
             %td.hours
               = wu_form.check_box(wu.id, :class => 'work_unit_checkbox')
-              = wu_form.label(wu.hours, nil, :class => 'hours')
+              = wu_form.label(wu.hours, nil, :class => 'hours_count')
             %td= wu.user.login
             %td= wu.notes
             %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)

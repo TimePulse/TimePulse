@@ -101,7 +101,7 @@ function updateInputAuthenticityToken(elem) {
 }
 
 function selectAllWorkUnits() {
-  $('.work_unit_checkbox').attr('checked', true);
+  $('.work_unit_checkbox').prop('checked', true);
   updateWorkUnitHoursTotal();
 }
 
@@ -114,12 +114,12 @@ var task_elapsed;
 function updateWorkUnitHoursTotal() {
   var total = 0.0;
   var count = 0;
-  $('#new_invoice tr.work_unit .hours, #new_bill tr.work_unit .hours').each(function() {
-      if ($(this).siblings('.work_unit_checkbox').attr('checked')) {
-        total += $(this).html() * 1.0;
-        count++;
-      }
-    });
+  $('#new_invoice .work_unit .hours, #new_bill .work_unit .hours').each(function() {
+    if ($(this).find('.work_unit_checkbox').is(':checked')) {
+      total += $(this).find('.hours_count').html() * 1.0;
+      count++;
+    }
+  });
   $('#work_unit_count').html(count);
   $('#hours_total').html(Math.round(total*100)/100);
 }
