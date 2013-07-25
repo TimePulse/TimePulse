@@ -27,13 +27,14 @@ class Project < ActiveRecord::Base
   belongs_to :client
   has_many :work_units
   has_many :activities
-  
+  has_many :rates
+
   scope :archived, :conditions => { :archived => true }
   scope :unarchived, :conditions => { :archived => false }
   # default_scope :joins => :client
 
   validates_presence_of :name
-  cascades :client, :account, :clockable, :github_url, :pivotal_id
+  cascades :client, :account, :clockable, :github_url, :pivotal_id, :rates
 
   attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived, :github_url, :pivotal_id
 end
