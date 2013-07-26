@@ -14,25 +14,27 @@ class ProjectsController < ApplicationController
   # GET /projects/new
   def new
     @project = Project.new
+    @project.rates.build
   end
 
   # GET /projects/1/edit
   def edit
     @project = Project.find(params[:id])
+    @project.rates.build
   end
 
   # POST /projects
   def create
     @project = Project.new(params[:project])
 
-      if @project.save
-        flash[:notice] = 'Project was successfully created.'
-        expire_fragment "picker_node_#{@project.id}"
-        expire_fragment "project_picker"
-        redirect_to(@project)
-      else
-        render :action => "new"
-      end
+    if @project.save
+      flash[:notice] = 'Project was successfully created.'
+      expire_fragment "picker_node_#{@project.id}"
+      expire_fragment "project_picker"
+      redirect_to(@project)
+    else
+      render :action => "new"
+    end
   end
 
   # PUT /projects/1

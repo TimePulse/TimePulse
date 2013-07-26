@@ -1,0 +1,22 @@
+fieldset {
+  &.general, &.rates {
+    float: left;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    legend {
+      margin-bottom: 1ex;
+      background: none; } }
+  &.general {
+    width: 70%; }
+  &.rates {
+    width: 30%;
+    input {
+      margin: 0;
+      font-size: 1em; }
+    tfoot {
+      display: none;
+      td {
+        text-align: right !important; } }
+    a {
+      font-weight: normal; } } }

@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: rates
+# Table name: hourly_rates
 #
 #  id         :integer(4)      not null, primary key
 #  name       :string(255)
@@ -11,7 +11,7 @@
 
 require 'spec_helper'
 
-describe Rate do
+describe HourlyRate do
   before(:each) do
     @valid_attributes = {
       :name => 'Rate 0',
@@ -21,11 +21,11 @@ describe Rate do
   end
 
   it "should create a new instance given valid attributes" do
-    Rate.create!(@valid_attributes)
+    HourlyRate.create!(@valid_attributes)
   end
 
   it "should allow users to be aassociated" do
-    rate = Rate.new
+    rate = HourlyRate.new
 
     rate.users << Factory(:user)
 
