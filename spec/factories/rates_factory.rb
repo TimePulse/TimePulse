@@ -1,4 +1,4 @@
 Factory.define :rate do |rate|
-  rate.name "value for name"
-  rate.value 1
+  rate.name "amount for name"
+  rate.amount 1
 end

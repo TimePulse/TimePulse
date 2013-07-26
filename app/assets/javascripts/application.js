@@ -9,6 +9,8 @@
 $('document').ready( function(){
   startClock();
   addCurrentClassToCurrentProject();
+
+  $('fieldset.rates tfoot').show();
 });
 
 Ninja.orders(function(Ninja){
@@ -86,6 +88,25 @@ Ninja.orders(function(Ninja){
                 relative: true
               })
             return elem;
+          }
+        },
+        '.rates .add-rate': {
+          click: function(evnt, elem) {
+            evnt.preventDefault();
+            var tbody = $(elem).parents('table').find('tbody');
+            var rows = tbody.find('tr');
+            var rowCount = rows.size();
+            var row = rows.first().clone();
+            var inputs = row.find('input');
+            inputs.val('');
+            inputs.each(function (i, input) {
+              input = $(input);
+              var id = input.attr('id');
+              var name = input.attr('name');
+              input.attr('id', id.replace('0', rowCount));
+              input.attr('name', name.replace('0', rowCount));
+            });
+            tbody.append(row);
           }
         }
       });

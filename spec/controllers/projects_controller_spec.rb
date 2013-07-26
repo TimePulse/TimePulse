@@ -78,14 +78,16 @@ describe ProjectsController do
         verify_authorization_successful
         assigns[:project].should be_a(Project)
         assigns[:project].should be_new_record
+        assigns[:project].rates.size.should == 1
       end
     end
 
     describe "GET edit" do
       it "assigns the requested project as @project" do
-        get :show, :id => @project.id
+        get :edit, :id => @project.id
         verify_authorization_successful
         assigns[:project].should ==  @project
+        assigns[:project].rates.size.should == 1
       end
     end
 
@@ -112,6 +114,7 @@ describe ProjectsController do
           verify_authorization_successful
           assigns[:project].should be_a(Project)
           assigns[:project].should be_new_record
+          assigns[:project].rates.size.should == 1
         end
 
         it "re-renders the 'new' template" do
@@ -163,6 +166,7 @@ describe ProjectsController do
           put :update, :id => @project.id, :project => {:name => nil }
           verify_authorization_successful
           assigns[:project].should == @project
+          assigns[:project].rates.size.should == 1
         end
 
         it "re-renders the 'edit' template" do

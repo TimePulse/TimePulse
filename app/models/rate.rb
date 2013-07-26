@@ -4,7 +4,7 @@
 #
 #  id         :integer(4)      not null, primary key
 #  name       :string(255)
-#  value      :integer(4)
+#  amount     :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
 #
@@ -17,9 +17,9 @@ class Rate < ActiveRecord::Base
   has_many :rates_users
   has_many :users, :through => :rates_users
 
-  attr_accessible :name, :value
+  attr_accessible :name, :amount
 
-  validates_presence_of :name, :value
+  validates_presence_of :name, :amount
 end
 
 # == Schema Information

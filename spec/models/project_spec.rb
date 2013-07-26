@@ -35,6 +35,14 @@ describe Project do
     Factory.build(:project, :name => nil).should_not be_valid
   end
 
+  it "should save rates" do
+    project = Factory(:project)
+    rate = Factory(:rate)
+    project.rates << rate
+    project.save
+    project.rates.size.should == 1
+  end
+
   describe "cascades" do
     describe "client" do
       before(:each) do
@@ -146,40 +154,5 @@ describe Project do
         @grandparent.reload.descendants.should include(@project)
       end
     end
-
-    describe "rates" do
-      before :each do
-        @base = Factory(:project)
-        @base_rate = Factory(:rate, :project => @base)
-        @base.rates << @base_rate
-      end
-
-      it "should return a project's rates" do
-        @base.rates.first.should == @base_rate
-      end
-      it "should return a project's parent's rates if the project has no rates" do
-        Factory(:project, :account => nil, :parent => @base).rates.first.should == @base_rate
-      end
-      it "should return a project's grandparent's rates if the project and parent have no rates" do
-        @base.name = 'GP'
-        @parent = Factory(:project, :parent => @base, :name => "P")
-        @project = Factory(:project, :parent => @parent)
-        @project.ancestors.reverse.should == [ @parent, @base, root_project ]
-        @project.rates.first.should == @base_rate
-      end
-      it "should return a project's parent's rates if the project has no rates and the grandparent has different rates" do
-        new_rate = Factory(:rate, :name => 'Rate 1')
-        @parent = Factory(:project, :parent => @base)
-        @parent.rates = [new_rate]
-        @project = Factory(:project, :parent => @parent)
-        @project.ancestors.reverse.should == [ @parent, @base, root_project ]
-        @project.rates.first.should == new_rate
-
-        @base.reload.descendants.should include(@parent)
-        @base.reload.descendants.should include(@project)
-      end
-    end
   end
-
-
 end

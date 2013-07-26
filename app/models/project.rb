@@ -30,7 +30,7 @@ class Project < ActiveRecord::Base
   # Rates added to sub-project will override parent project rates completely.
   # Users may see rates disappear from a child when adding rates specifically for a child.
   has_many :rates
-  accepts_nested_attributes_for :rates, :allow_destroy => true#, :reject_if => lambda { |attr| attr['name'].blank? || attr['value'].blank? }
+  accepts_nested_attributes_for :rates, :allow_destroy => true, :reject_if => lambda { |attr| attr['name'].blank? || attr['amount'].to_i < 1  }
 
   scope :archived, :conditions => { :archived => true }
   scope :unarchived, :conditions => { :archived => false }

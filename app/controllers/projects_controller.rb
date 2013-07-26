@@ -33,6 +33,7 @@ class ProjectsController < ApplicationController
       expire_fragment "project_picker"
       redirect_to(@project)
     else
+      @project.rates.build
       render :action => "new"
     end
   end
@@ -46,6 +47,7 @@ class ProjectsController < ApplicationController
       flash[:notice] = 'Project was successfully updated.'
       redirect_to(@project)
     else
+      @project.rates.build
       render :action => "edit"
     end
   end

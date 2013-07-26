@@ -2,7 +2,7 @@ class CreateRates < ActiveRecord::Migration
   def change
     create_table :rates do |t|
       t.string :name, :null => false
-      t.integer :value, :null => false
+      t.integer :amount, :null => false
 
       t.references :project
 

@@ -5,6 +5,7 @@ describe "/projects/edit" do
 
   before(:each) do
     assign(:project, @project = Factory(:project))
+    @project.rates.build
   end
 
   it "should succeed" do
@@ -14,5 +15,7 @@ describe "/projects/edit" do
   it "renders the edit project form" do
     render
     rendered.should have_selector("form[action='#{project_path(@project)}'][method='post']")
+    rendered.should have_selector('input[name="project[rates_attributes][0][name]"]')
+    rendered.should have_selector('input[name="project[rates_attributes][0][amount]"]')
   end
 end

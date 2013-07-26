@@ -21,7 +21,7 @@
       %thead
         %tr
           %th Name
-          %th Value
+          %th Amount
       %tfoot
         %tr
           %td{ :colspan => 2 }
@@ -30,6 +30,6 @@
         = f.fields_for :rates do |ff|
           %tr
             %td= ff.text_field :name, :placeholder => 'e.g. \'Engineer\''
-            %td= ff.text_field :value, :placeholder => 'e.g. \'100\''
+            %td= ff.text_field :amount, :placeholder => 'e.g. \'100\''
 
   = f.unlabeled_submit 'Submit'

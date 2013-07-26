@@ -8,6 +8,5 @@ describe "/projects/show" do
 
   it "succeeds" do
     render
-    
   end
 end
