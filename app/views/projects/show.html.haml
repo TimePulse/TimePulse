@@ -1,34 +1,66 @@
+.general
+  %p
+    %strong Name:
+    %br
+    =h @project.name
 
-%p
-  <b>Name:</b> 
+  %p
+    %strong Account:
+    %br
+    =h @project.account
+
+  %p
+    %strong Description:
+    %br
+    =h @project.description
+
+  %p
+    %strong Github URL:
+    %br
+    =h @project.github_url
+
+  %p
+    %strong Pivotal Project ID:
+    %br
+    =h @project.pivotal_id
+
+  %p
+    = link_to 'Pull Commit History', project_github_pull_path(:project_id => @project), :method => :post
+  %p
+    = link_to 'Pull Pivotal Stories', project_pivotal_pull_path(:project_id => @project), :method => :post
+
   %br
-  =h @project.name 
-  
-%p
-  <b>Account:</b>
-  %br
-  =h @project.account 
+    = link_to 'Edit', edit_project_path(@project)  |
+    = link_to 'Back', projects_path
 
-%p
-  <b>Description:</b>
-  %br
-  =h @project.description 
-
-%p
-  <b>Github URL:</b>
-  %br
-  =h @project.github_url
-
-%p
-  <b>Pivotal Project ID:</b>
-  %br
-  =h @project.pivotal_id
-
-%p
-  = link_to 'Pull Commit History', project_github_pull_path(:project_id => @project), :method => :post
-%p
-  = link_to 'Pull Pivotal Stories', project_pivotal_pull_path(:project_id => @project), :method => :post
-
-%br
-  = link_to 'Edit', edit_project_path(@project)  |
-  = link_to 'Back', projects_path 
+.rates
+  - if @project.rates.empty?
+    %p
+      %strong Rates
+      %br
+      None
+  - else
+    %table.rates
+      %caption Rates
+      %thead
+        %tr
+          %th Name
+          %th Amount
+          %th Members
+      %tbody
+        - @project.rates.each do |rate|
+          %tr
+            %td #{h rate.name}
+            %td #{h rate.amount}
+            %td
+              - if @available_rates_users.empty? && rate.users.empty?
+                &nbsp;
+              - else
+                = form_for rate, :method => :put do |f|
+                  - rate.users.each_with_index do |user, i|
+                    %span.rates-user
+                      = check_box :delete_user, nil, { :id => "delete_user_#{i}" }, user.id, nil
+                      = label :delete_user, nil, user.name, { :for => "delete_user_#{i}" }
+                  - unless @available_rates_users.empty?
+                    = select_tag :add_user, content_tag(:option, '- Add User -', :value=>'') + options_from_collection_for_select(@available_rates_users, :id, :name)
+                  = f.submit 'Update'

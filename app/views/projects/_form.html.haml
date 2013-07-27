@@ -29,7 +29,7 @@
       %tbody
         = f.fields_for :rates do |ff|
           %tr
-            %td= ff.text_field :name, :placeholder => 'e.g. \'Engineer\''
-            %td= ff.text_field :amount, :placeholder => 'e.g. \'100\''
+            %td= ff.text_field :name, :class => 'rate-name-field', :placeholder => 'e.g. \'Engineer\''
+            %td= ff.text_field :amount, :class => 'rate-amount-field', :placeholder => 'e.g. \'100\''
 
   = f.unlabeled_submit 'Submit'

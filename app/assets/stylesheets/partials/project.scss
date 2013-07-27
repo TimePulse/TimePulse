@@ -1,3 +1,34 @@
+div.general, div.rates {
+  width: 50%;
+  float: left; }
+
+.rates {
+  table {
+    margin-top: 1ex; }
+  caption {
+    line-height: 1.6; }
+  form {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none; } }
+.rates-user {
+  label {
+    display: inline-block;
+    float: none;
+    min-width: 0;
+    margin: 0 0 0 -2em;
+    padding: .5ex .5em;
+    border: 1px solid #ccf;
+    font-weight: normal;
+    font-size: inherit;
+    background: #fcfcff;
+    border-radius: 4px; }
+  :checked + label {
+    border-color: #f00;
+    color: #c00;
+    background: #fff0f0; } }
+
 fieldset {
   &.general, &.rates {
     float: left;
@@ -8,12 +39,25 @@ fieldset {
       margin-bottom: 1ex;
       background: none; } }
   &.general {
-    width: 70%; }
+    width: 60%;
+    label {
+      width: 25%; }
+    input[type=text] {
+      width: 60%; }
+    .comment {
+      position: relative;
+      top: -1ex;
+      float: none;
+      clear: left;
+      width: auto;
+      margin-left: 27%; } }
   &.rates {
-    width: 30%;
+    width: 40%;
     input {
       margin: 0;
-      font-size: 1em; }
+      font-size: 1em;
+      &.rate-amount-field {
+        width: 5.5em; } }
     tfoot {
       display: none;
       td {

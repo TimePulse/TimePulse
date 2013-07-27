@@ -37,7 +37,7 @@ describe Project do
 
   it "should save rates" do
     project = Factory(:project)
-    rate = Factory(:rate)
+    rate = Factory(:rate, :project => project)
     project.rates << rate
     project.save
     project.rates.size.should == 1

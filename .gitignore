@@ -61,3 +61,4 @@ coverage/
 .idea
 db_backups/
 *.esproj
+.sass-cache

@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   before_filter :require_admin!
-  # GET /projects
 
+  # GET /projects
   def index
     @root_project = Project.root
   end
@@ -9,6 +9,10 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   def show
     @project = Project.find(params[:id])
+
+    all_users = User.find(:all)
+    rates_users = @project.rates.map { |rate| rate.users }.flatten.uniq
+    @available_rates_users = all_users - rates_users
   end
 
   # GET /projects/new
