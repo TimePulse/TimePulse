@@ -11,6 +11,7 @@ $('document').ready( function(){
   addCurrentClassToCurrentProject();
 
   $('fieldset.rates tfoot').show();
+  setupRatesUsersDragDrop();
 });
 
 Ninja.orders(function(Ninja){
@@ -113,6 +114,56 @@ Ninja.orders(function(Ninja){
 
     Ninja.go();
   })
+
+function setupRatesUsersDragDrop() {
+  $('.rates-users-container').each(function() {
+    $form = $(this);
+    $form.find('select, input[type=submit]').hide();
+    $form.submit(function(ev) {
+      ev.preventDefault();
+      $this = $(this);
+      $.post($this.attr('action'), $this.serialize());
+    });
+  });
+
+  var availableUsers = $('.rates-users-container select').first().find('option');
+  var availableUsersContainer = $('<div class="available-users-container"></div>');
+
+  availableUsers.each(function() {
+    $option = $(this);
+
+    if (null != $option.val() && '' != $option.val()) {
+      draggableItem = $('<span class="rates-user" data-user-id="'+$option.val()+'">'+$option.html()+'</span>')
+
+      var $selectedOption = $('.rates-users-container option[value='+$option.val()+']:selected');
+      if ($selectedOption.size() > 0) {
+        $selectedOption.parents('.rates-users-container').append(draggableItem);
+      } else {
+        availableUsersContainer.append(draggableItem);
+      }
+    }
+  });
+  $('div.rates').append('<p><strong>Available Users</strong></p>').append(availableUsersContainer);
+
+  $('.rates-user').draggable();
+  $('.rates-users-container, .available-users-container').droppable({
+    drop: function(event, ui) {
+      var $item = ui.draggable;
+      var $from = $($item.parents('.ui-droppable'))
+      var $to = $(this);
+      var optionSelector = 'option[value='+$item.attr('data-user-id')+']';
+
+      $from.find(optionSelector).attr('selected', false);
+      $to.find(optionSelector).attr('selected', true);
+
+      $to.prepend($item);
+      $item.css({top: 0, left: 0});
+
+      $from.submit();
+      $to.submit();
+    }
+  });
+}
 
 function updateInputAuthenticityToken(elem) {
   token = $('meta[name="csrf-token"]').attr('content');

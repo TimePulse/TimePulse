@@ -70,7 +70,7 @@ describe ProjectsController do
         get :show, :id => @project.id
         verify_authorization_successful
         assigns[:project].should ==  @project
-        assigns[:available_rates_users].should_not be_empty
+        assigns[:all_users].should_not be_empty
       end
     end
 

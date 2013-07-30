@@ -5,13 +5,13 @@ class RatesController < ApplicationController
   def update
     rate = Rate.find(params[:id])
 
-    rate.users << User.find(params[:add_user]) unless params[:add_user].blank?
+    submitted_users = params[:users] ? User.find(params[:users]) : []
 
-    unless params[:delete_user].blank?
-      params[:delete_user].map! { |s| s.to_i }.uniq
-      users_to_delete = User.find params[:delete_user]
-      rate.users.delete users_to_delete
-    end
+    deleted_users = rate.users - submitted_users
+    added_users = submitted_users - rate.users
+
+    rate.users.delete deleted_users
+    rate.users << added_users
 
     rate.save
 

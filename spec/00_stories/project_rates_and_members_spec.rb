@@ -50,3 +50,5 @@ steps "adding rates to a project", :type => :feature do
     page.should have_field('project[rates_attributes][1][amount]')
   end
 end
+
+steps "managing users in a rate group"

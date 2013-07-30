@@ -16,14 +16,15 @@ describe RatesController do
       describe "with valid params" do
         it "adds the requested user" do
           lambda do
-            put :update, :id => @rate.id, :add_user => @user.id
+            put :update, :id => @rate.id, :users => [@user.id]
             verify_authorization_successful
           end.should change{ @rate.reload.users.size }.to(1)
         end
 
-        it "removes the requested user" do
+        it "removes unselected user" do
+          @rate.users << @user
           lambda do
-            put :update, :id => @rate.id, :delete_user => [@user.id]
+            put :update, :id => @rate.id, :users => nil
             verify_authorization_successful
           end.should_not change{ @rate.reload }
         end

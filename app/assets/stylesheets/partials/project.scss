@@ -4,30 +4,30 @@ div.general, div.rates {
 
 .rates {
   table {
+    width: 100%;
     margin-top: 1ex; }
   caption {
     line-height: 1.6; }
+  .actions {
+    text-align: center;
+    label {
+      display: none; } }
   form {
+    width: 100%;
+    min-height: 2ex;
     margin: 0;
     padding: 0;
     border: 0;
     background: none; } }
+
 .rates-user {
-  label {
-    display: inline-block;
-    float: none;
-    min-width: 0;
-    margin: 0 0 0 -2em;
-    padding: .5ex .5em;
-    border: 1px solid #ccf;
-    font-weight: normal;
-    font-size: inherit;
-    background: #fcfcff;
-    border-radius: 4px; }
-  :checked + label {
-    border-color: #f00;
-    color: #c00;
-    background: #fff0f0; } }
+  display: inline-block;
+  margin: 0 .5em 0 0;
+  padding: .5ex .5em;
+  border: 1px solid #ccf;
+  font-weight: normal;
+  background: #fcfcff;
+  border-radius: 4px; }
 
 fieldset {
   &.general, &.rates {

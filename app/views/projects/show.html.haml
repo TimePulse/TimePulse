@@ -53,14 +53,6 @@
             %td #{h rate.name}
             %td #{h rate.amount}
             %td
-              - if @available_rates_users.empty? && rate.users.empty?
-                &nbsp;
-              - else
-                = form_for rate, :method => :put do |f|
-                  - rate.users.each_with_index do |user, i|
-                    %span.rates-user
-                      = check_box :delete_user, nil, { :id => "delete_user_#{i}" }, user.id, nil
-                      = label :delete_user, nil, user.name, { :for => "delete_user_#{i}" }
-                  - unless @available_rates_users.empty?
-                    = select_tag :add_user, content_tag(:option, '- Add User -', :value=>'') + options_from_collection_for_select(@available_rates_users, :id, :name)
-                  = f.submit 'Update'
+              = form_for rate, :method => :put, :html => {:class => 'rates-users-container'} do |f|
+                = select_tag :users, options_for_rates_users(rate), :multiple => true
+                = f.submit 'Update'
