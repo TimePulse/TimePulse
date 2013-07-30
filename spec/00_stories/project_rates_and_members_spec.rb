@@ -7,10 +7,16 @@ shared_steps "for a project rates task" do |opt_hash|
     Factory(:admin)
   end
 
+  let! :rate do
+    Factory(:rate)
+  end
+
   let! :project do
     project = Factory(:project)
-    project.rates.build
-    project
+  end
+
+  let! :all_users do
+    [Factory(:user)]
   end
 
   it "should login as an admin" do
@@ -51,4 +57,26 @@ steps "adding rates to a project", :type => :feature do
   end
 end
 
-steps "managing users in a rate group"
+steps "managing users in a rate group", :type => :feature do
+  perform_steps "for a project rates task"
+
+  it "should have rate form and available user list." do
+    first(:link, 'Show').click
+
+    page.should have_selector('.available-users-container .rates-user')
+  end
+
+  it "should add a user to a rate" do
+    item = first('.available-users-container .rates-user')
+    item.drag_to first('.rates-users-container')
+
+    page.should have_selector('.rates-users-container .rates-user')
+  end
+
+  it "should remove a user from a rate" do
+    item = first('.rates-users-container .rates-user')
+    item.drag_to first('.available-users-container')
+
+    page.should have_selector('.available-users-container .rates-user')
+  end
+end
