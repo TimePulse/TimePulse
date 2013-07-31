@@ -16,6 +16,7 @@ class Invoice < ActiveRecord::Base
   include I18n::Alchemy
   belongs_to :client
   has_many :work_units
+  has_many :invoice_items
 
   validates_presence_of :client_id
 
@@ -26,6 +27,7 @@ class Invoice < ActiveRecord::Base
   attr_accessible :notes, :due_on, :client, :client_id, :paid_on, :reference_number
   accepts_nested_attributes_for :work_units, :reject_if => :all_blank, :allow_destroy => :false
 
+  before_save :generate_invoice_items
   before_destroy :dissociate_work_units
 
   # TODO: Reimplement this with i18n
@@ -40,6 +42,15 @@ class Invoice < ActiveRecord::Base
   end
 
   private
+
+  def generate_invoice_items
+    return true
+
+    self.work_units.each do |wu|
+      wu_rate = wu.user.project_rate(wu.project)
+    end
+  end
+
   def dissociate_work_units
     self.work_units.each do |wu|
       wu.invoice = nil
