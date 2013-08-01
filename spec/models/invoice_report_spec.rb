@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe InvoiceReport do
 
+  let :project do Factory.create(:project, :client => Factory(:client)) end
+
   let :user_1 do Factory(:user) end
   let :user_2 do Factory(:user) end
   let :user_3 do Factory(:user) end
@@ -23,10 +25,8 @@ describe InvoiceReport do
       Factory.create(:invoice, :work_units => [work_unit_1, work_unit_2])
     end
 
-
     its(:users) { should include(user_1, user_2) }
     its(:users) { should_not include(user_3) }
-
   end
 
   describe "days" do
@@ -77,7 +77,6 @@ describe InvoiceReport do
       its(:report) { should have(2).rows }
     end
     context "with matched commits" do
-      let! :project do Factory.create(:project) end
       let! :user do Factory.create(:user, :email => "george@jungle.com", :github_user => "georgeofjungle") end
       let! :work_unit do Factory.create(
         :work_unit, :user => user, 
@@ -121,7 +120,7 @@ describe InvoiceReport do
         params[:author][:username] = "georgeofjungle"
         params
       end
-  
+
       let! :just_out_commit do GithubCommit.new(just_out_params).save; Activity.last end
 
       it "should match commits" do

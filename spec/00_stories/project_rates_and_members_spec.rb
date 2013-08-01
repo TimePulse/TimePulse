@@ -41,6 +41,8 @@ steps "adding rates to a project", :type => :feature do
   end
 
   it "should have empty fields for a new rate" do
+    select 'root', :from => 'project[parent_id]'
+
     page.should have_field('project[rates_attributes][0][name]')
     page.should have_field('project[rates_attributes][0][amount]')
   end

@@ -28,13 +28,13 @@
       %th Rate
       %th Total Hours
       %th Total Cost
+  = invoice_item_footer @invoice.invoice_items
   %tbody
     - @invoice.invoice_items.each do |item|
       %tr
         %td= item.name
         %td= item.hours
-        %td= item.total
-  = invoice_item_footer @invoice.invoice_items
+        %td= number_to_currency item.total
 
 %hr
 

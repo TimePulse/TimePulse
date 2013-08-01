@@ -15,7 +15,7 @@ module InvoicesHelper
   end
 
   def invoice_item_footer(items)
-    totals = { :hours => 0.0, :total => 0.0 }
+    totals = { :hours => 0, :total => 0 }
     items.each do |item|
       totals[:hours] += item.hours
       totals[:total] += item.total
@@ -23,7 +23,7 @@ module InvoicesHelper
     content_tag(:tfoot) do
       content_tag(:th, 'Total') +
       content_tag(:th, totals[:hours]) +
-      content_tag(:th, totals[:total])
+      content_tag(:th, number_to_currency(totals[:total]))
     end
   end
 end

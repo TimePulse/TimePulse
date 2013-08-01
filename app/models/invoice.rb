@@ -46,7 +46,7 @@ class Invoice < ActiveRecord::Base
   def generate_invoice_items
     client_project = Project.where(:client_id => client.id, :parent_id => Project.root.id).first
     if client_project.nil?
-      errors.add :invoice_units, "This client has no assigned rates."
+      errors.add :invoice_units, "This client has no projects."
       return false
     end
 
