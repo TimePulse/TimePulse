@@ -2,6 +2,7 @@ require 'spec_helper'
 
 shared_steps "for an invoicing task" do |opt_hash|
   opt_hash ||= {}
+
   let :admin do
     Factory(:admin)
   end

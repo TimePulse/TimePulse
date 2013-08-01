@@ -16,7 +16,7 @@ class Invoice < ActiveRecord::Base
   include I18n::Alchemy
   belongs_to :client
   has_many :work_units
-  has_many :invoice_items
+  has_many :invoice_items, :autosave => true, :dependent => :destroy
 
   validates_presence_of :client_id
 
@@ -27,7 +27,7 @@ class Invoice < ActiveRecord::Base
   attr_accessible :notes, :due_on, :client, :client_id, :paid_on, :reference_number
   accepts_nested_attributes_for :work_units, :reject_if => :all_blank, :allow_destroy => :false
 
-  before_save :generate_invoice_items
+  before_save :generate_invoice_items, :if => :new_record?
   before_destroy :dissociate_work_units
 
   # TODO: Reimplement this with i18n
@@ -44,10 +44,36 @@ class Invoice < ActiveRecord::Base
   private
 
   def generate_invoice_items
-    return true
+    client_project = Project.where(:client_id => client.id, :parent_id => Project.root.id).first
+    if client_project.nil?
+      errors.add :invoice_units, "This client has no assigned rates."
+      return false
+    end
+
+    items = {}
+    rates = client_project.rates
+    rates.each do |rate|
+      items[rate.id] = { :name => rate.name, :hours => 0.0, :amount => rate.amount.to_f, :total => 0.0 }
+    end
 
     self.work_units.each do |wu|
-      wu_rate = wu.user.project_rate(wu.project)
+      user_rate = wu.user.project_rate(client_project)
+      if item = items[user_rate.id]
+        item[:hours] += wu.hours
+        item[:total] += wu.hours * item[:amount]
+      else
+        errors.add :invoice_units, "There is no rate assigned to #{wu.user.name} for this client."
+        return false
+      end
+    end
+
+    items.values.each do |item|
+      invoice_item = InvoiceItem.create
+      invoice_item.name = item[:name]
+      invoice_item.hours = item[:hours]
+      invoice_item.amount = item[:amount]
+      invoice_item.total = item[:total]
+      invoice_items << invoice_item
     end
   end
 

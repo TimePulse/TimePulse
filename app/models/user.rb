@@ -115,7 +115,8 @@ class User < ActiveRecord::Base
   end
 
   def project_rate(project)
-    RatesUser.joins(:rate).where(:user_id => id).where('rates.project_id = ?', project.id).first.rate
+    project = project.parent unless project.is_base_project?
+    Rate.joins(:rates_users).where(:project_id => project.id).where('rates_users.user_id = ?', id).first
   end
 
 end

@@ -1,5 +1,5 @@
 class InvoiceItem < ActiveRecord::Base
-  belongs_to :invoices
+  belongs_to :invoice
 
-  attr_accessible :amount, :hours, :name
+  attr_accessible :amount, :hours, :total, :name
 end

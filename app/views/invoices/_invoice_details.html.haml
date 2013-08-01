@@ -1,5 +1,6 @@
+%hr
 
-%h2 Hours Report:
+%h2 Hours Report
 %table.listing
   %tr
     %th Project
@@ -18,7 +19,26 @@
       %td
         %b= sanity_sum
 
-%hr Work Unit Details:
+%hr
+
+%h2 Invoice Items
+%table.listing.invoice-items
+  %thead
+    %tr
+      %th Rate
+      %th Total Hours
+      %th Total Cost
+  %tbody
+    - @invoice.invoice_items.each do |item|
+      %tr
+        %td= item.name
+        %td= item.hours
+        %td= item.total
+  = invoice_item_footer @invoice.invoice_items
+
+%hr
+
+%h2 Work Unit Details
 %table.listing
   - @invoice.work_units.each do |wu|
     = content_tag_for(:tr, wu) do

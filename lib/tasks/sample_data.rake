@@ -33,7 +33,8 @@ namespace :db do
       :environment,
       :populate_users,
       :populate_clients_and_projects,
-      :populate_work_units
+      :populate_work_units,
+      :populate_rates
       ]
 
     task :reload => [ :clear, :load ]
@@ -103,6 +104,11 @@ namespace :db do
           wu.clock_out!
         end
       end
+    end
+
+    task :populate_rates do
+      project = Project.where(:parent_id => Project.root.id).first
+      project.rates << Rate.create!(:name => 'Rate 1', :amount => 100, :users => [User.first])
     end
 
     # An example to be deleted or replaced
