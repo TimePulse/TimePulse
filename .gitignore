@@ -1,3 +1,4 @@
+db_backups/*
 log/*
 screenlog.*
 *.log
@@ -16,6 +17,7 @@ doc/*.doc
 doc/*.zip
 config/initializers/session_secret.rb
 config/initializers/smtp.rb
+config/initializers/api_keys.rb
 config/database.yml
 db/schema.sql
 db/schema.rb
@@ -40,6 +42,7 @@ last_run
 *~
 vendor/**/**/doc/*
 vendor/plugins/footnotes/*
+.sass_cache
 rsa_key*
 sphinx/*
 db/sphinx/*
@@ -57,3 +60,4 @@ coverage.vim
 coverage/
 .idea
 db_backups/
+*.esproj

@@ -58,6 +58,10 @@ describe WorkUnit do
     it "should be invalid if hours is negative" do
       Factory.build(:work_unit, :hours => -1).should_not be_valid
     end
+    
+    it "should be invalid if hours is greater than (stop time - start time)" do
+      Factory.build(:work_unit, :hours => 99999).should_not be_valid
+    end
   end
 
   describe "in_progress" do

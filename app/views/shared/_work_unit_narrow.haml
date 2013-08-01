@@ -1,10 +1,11 @@
-- token = ActiveSupport::SecureRandom.hex(8)
-= content_tag(:tr, work_unit, :id => token, :class => ['narrow', 'has_tooltip']) do
-  %td
-    %span.nobr= short_name_with_client(work_unit.project)
-  %td{ :style => "text-align: center;"}
-    = "%.2f" % work_unit.hours
-  %td.tools.nobr
-    = link_to 'Edit', edit_work_unit_path(work_unit)
-    = link_to 'Delete', work_unit_path(work_unit), :method => :delete, :confirm => "Are you sure?"
-    = tooltip_for(work_unit, token).html_safe
+- cache("work_unit_narrow_#{work_unit.id}") do
+  - token = SecureRandom.hex(8)
+  = content_tag(:tr, work_unit, :id => token, :class => ['narrow', 'has_tooltip']) do
+    %td
+      %span.nobr= short_name_with_client(work_unit.project)
+    %td{ :style => "text-align: center;"}
+      = "%.2f" % work_unit.hours
+    %td.tools.nobr
+      = link_to 'Edit', edit_work_unit_path(work_unit)
+      = link_to 'Delete', work_unit_path(work_unit), :method => :delete, :confirm => "Are you sure?"
+      = tooltip_for(work_unit, token).html_safe

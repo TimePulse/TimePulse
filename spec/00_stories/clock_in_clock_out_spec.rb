@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "clock in and out on projects", :type => :request do
+steps "clock in and out on projects", :type => :feature do
 
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
   let! :project_1 do Factory(:project, :client => client_1) end
@@ -30,7 +30,9 @@ steps "clock in and out on projects", :type => :request do
   end
 
   it "user clicks on the clock in link in the timeclock" do
-    click_link "Clock in on #{project_1.name}"
+    within "#timeclock" do
+      click_link "clock_in_on_project_#{project_1.id}"
+    end
   end
 
   it "should show a clock-in form and a clock" do
@@ -46,8 +48,10 @@ steps "clock in and out on projects", :type => :request do
   end
 
   it "should clock out with a message" do
-    fill_in "Notes", :with => "Did a little work on project #1"
-    within("#timeclock"){ click_button "Clock Out" }
+    within "#timeclock" do
+      fill_in "Notes", :with => "Did a little work on project #1"
+      click_button "Clock Out"
+    end
   end
 
 
@@ -60,7 +64,9 @@ steps "clock in and out on projects", :type => :request do
 
 
   it "user clicks on the clock in link in the timeclock" do
-    click_link "Clock in on #{project_1.name}"
+    within "#timeclock" do
+      click_link "clock_in_on_project_#{project_1.id}"
+    end
     @new_work_unit = WorkUnit.last
   end
 
@@ -94,9 +100,11 @@ steps "clock in and out on projects", :type => :request do
   end
 
   it "and I fill in nine hours and clock out" do
-    fill_in "Hours", :with => '9.0'
-    fill_in "Notes", :with => "I worked all day on this"
-    within("#timeclock"){ click_button "Clock Out" }
+    within "#timeclock" do
+      fill_in "Hours", :with => '9.0'
+      fill_in "Notes", :with => "I worked all day on this"
+      click_button "Clock Out"
+    end
   end
 
   it "should have an unclocked timeclock" do

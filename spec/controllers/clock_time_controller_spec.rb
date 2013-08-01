@@ -10,7 +10,7 @@ describe ClockTimeController do
     describe "with valid parameters" do
       it "should be authorized" do
         post :create, :id => @project.id
-        controller.should be_authorized
+        verify_authorization_successful
       end
       it "should succeed" do
         post :create, :id => @project.id
@@ -32,8 +32,11 @@ describe ClockTimeController do
 
       it "should set my current project to the project id" do
         post :create, :id => @project.id
-        @user.reload
-        @user.current_project.should == @project
+        controller.current_user.current_project.should == @project
+        controller.current_user.reload.current_project.should == @project
+
+        #@user.reload
+        #@user.current_project.should == @project
       end
 
       it "should assign a work unit with nil hours" do
@@ -51,7 +54,7 @@ describe ClockTimeController do
       it "should cause the user to become clocked in" do
         lambda do
           post :create, :id => @project.id
-        end.should change{ current_user.reload.clocked_in? }.from(false).to(true)
+        end.should change{ @user.reload.clocked_in? }.from(false).to(true)
       end
 
       describe "with AJAX" do
@@ -62,23 +65,6 @@ describe ClockTimeController do
         end
       end
 
-      describe "with Unobtrusive" do
-        render_views
-        before do
-          request.env['HTTP_ACCEPT'] = 'application/json'
-        end
-
-        it "should return a JSON document" do
-          post :create, :id => @project.id
-          response.body.should =~ /"timeclock":/
-          response.body.should =~ /"recent_work":/
-        end
-
-        it "should return a timeclock block that is clocked in" do
-          post :create, :id => @project.id
-          response.body.should =~ /TIMECLOCK/
-        end
-      end
 
       describe "on an unbillable project" do
         it "should succesfully clock in" do
@@ -137,25 +123,7 @@ describe ClockTimeController do
       it "should cause the user to become clocked out" do
         lambda do
           delete :destroy
-        end.should change{ current_user.clocked_in? }.from(true).to(false)
-      end
-
-      describe "with Unobtrusive" do
-        render_views
-        before do
-          request.env['HTTP_ACCEPT'] = 'application/json'
-        end
-
-        it "should return a JSON document" do
-          delete :destroy
-          response.body.should =~ /"timeclock":/
-          response.body.should =~ /"recent_work":/
-        end
-
-        it "should return a timeclock block that is clocked out", :pending => "Removal - I think this is wrong.  JDL" do
-          delete :destroy
-          response.body.should =~ /not clocked in/
-        end
+        end.should change{ @user.clocked_in? }.from(true).to(false)
       end
 
       describe "with AJAX" do

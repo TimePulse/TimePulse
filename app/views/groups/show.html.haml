@@ -1,0 +1,6 @@
+-set_headline "Group: " + @group.name
+
+%h3 Members
+%ul
+-@group.members.each do |member|
+  %li= member.name

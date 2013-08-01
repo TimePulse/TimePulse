@@ -2,8 +2,6 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'authlogic/test_case'
-require 'logical_authz/spec_helper'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -13,33 +11,38 @@ RSpec.configure do |config|
   config.mock_with :rspec
 
   #config.backtrace_clean_patterns = {}
+
+  config.include Devise::TestHelpers, :type => :view
+  config.include Devise::TestHelpers, :type => :controller
+  config.include Devise::TestHelpers, :type => :helper
+
   config.after(:each, :type => :view)  do
-    logout
+    sign_out :user
   end
 
   config.after(:each, :type => :controller)  do
-    logout
+    sign_out :user
   end
 
   config.use_transactional_fixtures = false
 
   DatabaseCleaner.strategy = :transaction
 
-  config.before :all, :type => :request do
+  config.before :all, :type => :feature do
     Rails.application.config.action_dispatch.show_exceptions = true
     DatabaseCleaner.clean_with :truncation
     load 'db/seeds.rb'
   end
 
-  config.after :all, :type => :request do
+  config.after :all, :type => :feature do
     DatabaseCleaner.clean_with :truncation
     load 'db/seeds.rb'
   end
 
-  config.before :each, :type => proc{ |value| value != :request } do
+  config.before :each, :type => proc{ |value| value != :feature } do
     DatabaseCleaner.start
   end
-  config.after :each, :type => proc{ |value| value != :request } do
+  config.after :each, :type => proc{ |value| value != :feature } do
     DatabaseCleaner.clean
   end
 
@@ -48,8 +51,7 @@ RSpec.configure do |config|
     load 'db/seeds.rb'
   end
 
-  config.include(SaveAndOpenOnFail, :type => :request)
-  config.include(HandyXPaths, :type => :request)
+  config.include(SaveAndOpenOnFail, :type => :feature)
 end
 
 def content_for(name)

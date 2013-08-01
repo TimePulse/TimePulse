@@ -13,6 +13,7 @@
 #
 
 class Bill < ActiveRecord::Base
+  include I18n::Alchemy
   belongs_to :user
   has_many :work_units
 

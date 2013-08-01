@@ -1,11 +1,11 @@
-class BillsController < AuthzController
+class BillsController < ApplicationController
   before_filter :find_bill, :only => [ :show, :edit, :update, :destroy ]
-  admin_authorized 
+  before_filter :require_admin!
 
   # GET /bills
-  def index           
+  def index
     @unpaid_bills = Bill.unpaid.paginate(:per_page => 10, :page => params[:page], :order => "due_on DESC, created_at DESC")
-    @paid_bills = Bill.paid.paginate(:per_page => 10, :page => params[:page], :order => "paid_on DESC, created_at DESC")    
+    @paid_bills = Bill.paid.paginate(:per_page => 10, :page => params[:page], :order => "paid_on DESC, created_at DESC")
   end
 
   # GET /bills/1
@@ -18,7 +18,7 @@ class BillsController < AuthzController
     @users = User.find(:all, :order => 'name ASC')
     if params[:user_id]
       find_user
-      @bill.user = @user      
+      @bill.user = @user
       @work_units = @user.work_units.completed.billable.unbilled.flatten.uniq
     end
   end
@@ -26,23 +26,24 @@ class BillsController < AuthzController
   # GET /bills/1/edit
   def edit
   end
-  
+
   # POST /invoices
   def create
-    @bill = Bill.new(params[:bill])    
+    @bill = Bill.new
+    @bill.localized.attributes = params[:bill]
     add_work_units
     if @bill.save
       flash[:notice] = 'Bill was successfully created.'
       redirect_to(@bill)
     else
-      params[:user_id] = @bill.user.id if @bill.user 
+      params[:user_id] = @bill.user.id if @bill.user
       render :action => "new"
     end
   end
 
   # PUT /bills/1
   def update
-    if @bill.update_attributes(params[:bill])
+    if @bill.localized.update_attributes(params[:bill])
       flash[:notice] = 'Bill was successfully updated.'
       redirect_to(@bill)
     else
@@ -61,8 +62,8 @@ class BillsController < AuthzController
   def find_bill
     @bill = Bill.find(params[:id])
     raise ArgumentError, 'Invalid bill id provided' unless @bill
-  end        
-  
+  end
+
   def find_user
     @user = User.find_by_id(params[:user_id])
     unless @user
@@ -70,7 +71,7 @@ class BillsController < AuthzController
       redirect_to :back
     end
   end
-  
+
   def add_work_units
     if params[:bill][:work_unit_ids]
       @bill.work_units = []

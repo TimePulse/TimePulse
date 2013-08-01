@@ -1,6 +1,6 @@
-class ProjectsController < AuthzController
+class ProjectsController < ApplicationController
+  before_filter :require_admin!
   # GET /projects
-  grant_aliases :new => :create, :edit => :update, :index => :show
 
   def index
     @root_project = Project.root
@@ -27,6 +27,8 @@ class ProjectsController < AuthzController
 
       if @project.save
         flash[:notice] = 'Project was successfully created.'
+        expire_fragment "picker_node_#{@project.id}"
+        expire_fragment "project_picker"
         redirect_to(@project)
       else
         render :action => "new"
@@ -36,20 +38,26 @@ class ProjectsController < AuthzController
   # PUT /projects/1
   def update
     @project = Project.find(params[:id])
-
-      if @project.update_attributes(params[:project])
-        flash[:notice] = 'Project was successfully updated.'
-        redirect_to(@project)
-      else
-        render :action => "edit"
-      end
+    if @project.update_attributes(params[:project])
+      expire_fragment "picker_node_#{@project.id}"
+      expire_fragment "project_picker"
+      flash[:notice] = 'Project was successfully updated.'
+      redirect_to(@project)
+    else
+      render :action => "edit"
+    end
   end
 
   # DELETE /projects/1
   def destroy
     @project = Project.find(params[:id])
+    @id = params[:id]
     @project.destroy
 
-    redirect_to projects_path
+    respond_to do |format|
+      format.html { redirect_to projects_path }
+      format.js
+    end
   end
+
 end

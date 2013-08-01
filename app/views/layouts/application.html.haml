@@ -1,51 +1,52 @@
 !!!
 %html{"xmlns"=>"http://www.w3.org/1999/xhtml", "xml:lang"=>"en"}
+  //Testing deploy
 
   %head
+    %meta{"name" => "viewport", "content" => "width=device-width, initial-scale=1.0"}
     %meta{"http-equiv" => "content-type", "content" => "text/html;charset=UTF-8" }
     - if content_for?(:keywords)
       %meta{"name" => "keywords", "content" => yield(:keywords)}
     - if content_for?(:description)
       %meta{"name" => "description", "content" => yield(:description)}
 
+    - if current_project
+      %meta{"name" => "current project", "content" => current_project.id}
     %title=  @title ? @title : "LRD Time Tracking System"
 
-    = stylesheet_link_tag 'universal', :media=>'all'
-    = stylesheet_link_tag 'screen', :media=>'screen, projection'
-    = stylesheet_link_tag 'print', :media=>'print'
 
-    - if Rails.env.production?
-      = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
-      = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"
+    = stylesheet_link_tag 'application', :media=>'all'
+
+    = javascript_include_tag "vendor/custom.modernizr"
+    - if Rails.env.production? or Rails.env.staging?
+      = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+      = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"
     -else
-      = javascript_include_tag "jquery-1.4.2.js"
-      = javascript_include_tag "jquery-ui-1.8.4.min.js"
+      = javascript_include_tag "jquery-1.9.1.js"
+      = javascript_include_tag "jquery-ui-1.10.2.js"
 
-    = javascript_include_tag "rails.js"
-    = javascript_include_tag "ninjascript.js"
-    -#= javascript_include_tag "jquery.ui.datetimepicker.js"
-    = javascript_include_tag 'jquery.timepicker.js'
-    = javascript_include_tag 'logical_tabs_jquery'
-    = javascript_include_tag 'jquery.tools.min'
-    = javascript_include_tag 'application.js'
+
     = csrf_meta_tag
     = yield :header
 
   -# TODO: Turn on these admin lines if the site has an admin interface, otherwise delete them.
   -# %body{ :class => admin? ? 'with_admin' : nil }
   -# = render :partial => 'layouts/admin_nav' if admin?
-  %body
+  %body{ :class => body_class }
     - if Rails.env.development? or Rails.env.staging?
       = render :partial => 'layouts/debug'
     #inset
       #wrap
         #header
           #logo
-            =link_to image_tag('/images/logo.png', :alt => "logo"), root_url
+            =link_to image_tag('logo.png', :alt => "logo"), root_url
           #message
             - if logged_in?
-              %h2= "Hello, #{current_user.name} "
-            %h1 LRD Tracking System
+              %h2.unimportant= "Hello, #{current_user.name} "
+            %h1
+              %span.unimportant LRD
+              Tracking
+              %span.unimportant System
 
         = render :partial => 'layouts/admin_menu'
         = render :partial => 'layouts/nav'
@@ -53,11 +54,11 @@
         #content-wrap
           = render :partial => 'layouts/aux'
 
-          - klass = "with_picker" if content_for?(:picker)
+          - klass = (content_for?(:picker) ? "with_picker" : "without_picker") + " " + (content_for?(:aux) ? "with_aux" : "without_aux")
           #content-column{ :class => klass }
 
             #content
-              %h1#headline= yield :headline if content_for?(:headline)
+              = slide_toggle_tag(:h1, content_for(:headline), "content-body", :id => "headline") if content_for?(:headline)
               #content-body
                 = render :partial => 'layouts/flash' , :locals => { :flash => flash }
                 = yield
@@ -67,3 +68,5 @@
 
       %h3 Browser time at page render (sec):
       %span#browsertime
+
+    = javascript_include_tag "application"

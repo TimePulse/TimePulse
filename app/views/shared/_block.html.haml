@@ -3,12 +3,8 @@
 
 %div{ :class => klass.to_s, :id => cssid.to_s  }
   -if title
-    .block_title
-      %h2= title.upcase
-      - if defined?(extratitle)
-        .extratitle= extratitle
-
+    = block_title(title, cssid)
+    - if defined?(extratitle)
+      .extratitle= extratitle
   .block_content
-    .block_inner
-      =body unless body.blank?
-  .block_bottom
+    =body unless body.blank?

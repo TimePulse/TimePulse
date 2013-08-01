@@ -1,28 +1,24 @@
 = tabbed_panel(:base_id => "hours_report") do |tp|
   = tp.add_tab("Totals") do
     %table.listing
-      = render :partial => 'shared/hours_report_header'
+      %tr
+        %th Total
+        %th Unbilled
       = render :partial => 'shared/hours_report_row', :locals => { :row => current_user.current_project_hours_report.totals }
 
   = tp.add_tab("By Date Range") do
     %table.listing
-      = render :partial => 'shared/hours_report_header', :locals => { :row_label => true }
+      %tr
+        %th
+        %th Total
+        %th Unbilled
       - rows = current_user.current_project_hours_report.by_time
       = render :partial => 'shared/hours_report_row', :locals => { :row => rows[:today], :row_label => "Today" }
       = render :partial => 'shared/hours_report_row', :locals => { :row => rows[:last_7], :row_label => "Last 7 Days" }
       = render :partial => 'shared/hours_report_row', :locals => { :row => rows[:last_30], :row_label => "Last 30 Days" }
 
-  = tp.add_tab("By Subproject") do
-    %table.listing
-      = render :partial => 'shared/hours_report_header', :locals => { :row_label => true }
-      - current_user.current_project_hours_report.by_project.each_pair do |k, v|
-        = render :partial => 'shared/hours_report_row', :locals => { :row => v, :row_label => short_name_with_client(k) }
-
--if @work_units.blank?
-  %p No work units to show.
--else
-  = will_paginate(@work_units)
-  %table.listing
-    = render :partial => "shared/work_unit_one_line_header"
-    - @work_units.each do |wu|
-      = render :partial => "shared/work_unit_one_line", :locals => { :work_unit => wu }
+  -#= tp.add_tab("By Subproject") do
+    -#%table.listing
+      -#= render :partial => 'shared/hours_report_header', :locals => { :row_label => true }
+      -#- current_user.current_project_hours_report.by_project.each_pair do |k, v|
+        -#= render :partial => 'shared/hours_report_row', :locals => { :row => v, :row_label => short_name_with_client(k) }

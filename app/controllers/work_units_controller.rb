@@ -5,23 +5,7 @@ class WorkUnitsController < ApplicationController
 
   before_filter :convert_hours_from_hhmm, :only => [ :update, :create ]
 
-  before_filter :find_work_unit, :only => [ :show, :edit, :update, :destroy ]
-
-  #FIXME:  Judson, I couldn't figure out how to combine these into one
-  # call, but I suspect it's possible
-  owner_authorized(:edit) do |user, id|
-    WorkUnit.find(id).user == user
-  end
-  owner_authorized(:destroy) do |user, id|
-    WorkUnit.find(id).user == user
-  end
-
-  grant_aliases :new => [:switch, :create], :edit => :update, :index => :show
-
-  # GET /work_units
-  def index
-    @work_units = WorkUnit.find(:all)
-  end
+  before_filter :find_work_unit_and_authenticate, :only => [ :show, :edit, :update, :destroy ]
 
   # GET /work_units/1
   def show
@@ -57,7 +41,7 @@ class WorkUnitsController < ApplicationController
         format.html { redirect_to(@work_unit) }
         format.js {
           @work_unit = WorkUnit.new
-          @work_units = current_user.work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil)
+          @work_units = current_user.completed_work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil)
         }
       else
         format.html { render :action => "new" }
@@ -74,6 +58,8 @@ class WorkUnitsController < ApplicationController
     compute_some_fields
     if @work_unit.save
       flash[:notice] = 'WorkUnit was successfully updated.'
+      expire_fragment("work_unit_narrow_#{@work_unit.id}")
+      expire_fragment("work_unit_one_line_#{@work_unit.id}")
       redirect_to(@work_unit)
     else
       render :action => "edit"
@@ -88,23 +74,31 @@ class WorkUnitsController < ApplicationController
 
   private
   def parse_date_params
-
     if wu_p = params[:work_unit]
-      wu_p[:start_time] = Chronic.parse(wu_p[:start_time]) if wu_p[:start_time]
-      wu_p[:stop_time] = Chronic.parse(wu_p[:stop_time]) if wu_p[:stop_time]
+      if wu_p[:time_zone]
+        old_time_zone = Time.zone
+        Time.zone = (wu_p[:time_zone].to_i).hours
+        Chronic.time_class = Time.zone
+        wu_p[:start_time] = Chronic.parse(wu_p[:start_time]) if wu_p[:start_time]
+        wu_p[:stop_time] = Chronic.parse(wu_p[:stop_time]) if wu_p[:stop_time]
+        Time.zone = old_time_zone
+      else
+        wu_p[:start_time] = Chronic.parse(wu_p[:start_time]) if wu_p[:start_time]
+        wu_p[:stop_time] = Chronic.parse(wu_p[:stop_time]) if wu_p[:stop_time]
+      end
     end
   end
 
-  def find_work_unit
+  def find_work_unit_and_authenticate
     @work_unit = WorkUnit.find(params[:id])
     raise ArgumentError, 'Invalid work_unit id provided' unless @work_unit
+    require_owner!(@work_unit.user)
   end
 
   # compute a few fields based on sensible defaults, if "calculate" param was passed
   def compute_some_fields
     if params["work_unit"]["calculate"]
       @work_unit.stop_time = Time.zone.now if @work_unit.stop_time.blank?
-
       if @work_unit.hours.blank?
         @work_unit.hours = WorkUnit.decimal_hours_between(@work_unit.start_time, @work_unit.stop_time)
       end

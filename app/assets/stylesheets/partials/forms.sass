@@ -1,0 +1,79 @@
+@import constants.sass
+
+form
+  :padding 0.5em
+  :background-color $contrast_background_color
+  +round
+  +clearfix
+
+label
+  :font-weight bold
+  :margin-right .5em
+
+.labeled_input
+  :margin-bottom .25em
+  :margin-left 1em
+  +clearfix
+
+  label
+    :display block
+    :float left
+    :text-align right
+    :font-weight bold
+    :clear both
+    :width 15%
+
+  .assignable
+
+  .comment
+    :display block
+    :font-style italic
+    :margin-left 1em
+    :width 25%
+    :float left
+    :overflow hidden
+  select
+    :width 20em
+  input
+    :margin-right .5em
+    :width 50%
+    :float left
+    :border 1px solid $input_border_color
+    +clearfix
+
+  input, select
+    :max-width 250px
+
+  textarea
+    :width auto
+
+select
+  :width auto !important
+
+.required label
+  :font-weight bold
+
+.nostretch select
+  :width auto
+
+.errorExplanation
+  +error_notice_colors
+  :padding 1em
+  :margin-bottom 1em
+
+  h2
+    :font-size 120%
+    :color black
+    :margin-top 0
+
+  p, ul
+    :margin-bottom 0.5em
+
+.fieldWithErrors
+  :display inline
+  label
+    :color red
+
+  input, textarea
+    :background-color $error_background
+

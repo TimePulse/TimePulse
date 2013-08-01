@@ -13,6 +13,7 @@
 #
 
 class Invoice < ActiveRecord::Base
+  include I18n::Alchemy
   belongs_to :client
   has_many :work_units
 

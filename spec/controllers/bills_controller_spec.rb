@@ -13,7 +13,7 @@ describe BillsController do
     end
     it "should not be authenticated" do
       get :index
-      controller.should_not be_authorized      
+      verify_authorization_unsuccessful      
     end
   end
 
@@ -47,7 +47,7 @@ describe BillsController do
       end        
       it "should be authorized" do
         get :index
-        controller.should be_authorized       
+        verify_authorization_successful       
       end
     end
 
@@ -61,7 +61,7 @@ describe BillsController do
       end    
       it "should be authorized" do
         get :show, :id => @bill.id
-        controller.should be_authorized       
+        verify_authorization_successful       
       end
     end
 
@@ -76,7 +76,7 @@ describe BillsController do
       end    
       it "should be authorized" do
         get :new
-        controller.should be_authorized       
+        verify_authorization_successful       
       end
       describe "user selection" do
         before :each  do
@@ -166,7 +166,7 @@ describe BillsController do
       end   
       it "should be authorized" do
         get :edit, :id => @bill.id   
-        controller.should be_authorized       
+        verify_authorization_successful       
       end      
     end
 
@@ -187,7 +187,7 @@ describe BillsController do
 
         it "should be authorized" do
           post :create, :bill => @valid_create_params
-          controller.should be_authorized
+          verify_authorization_successful
         end
         it "should create a new bill in the database" do
           lambda do 
@@ -283,7 +283,7 @@ describe BillsController do
             
         it "should be authorized" do
           put :update, :id => @bill.id, :bill => @valid_update_params   
-          controller.should be_authorized
+          verify_authorization_successful
         end
         
         it "should update the requested bill in the database" do          
@@ -335,7 +335,7 @@ describe BillsController do
     describe "DELETE destroy" do
       it "should be authorized" do
         delete :destroy, :id => @bill.id
-        controller.should be_authorized        
+        verify_authorization_successful        
       end
       
       it "should reduce bill count by one" do
