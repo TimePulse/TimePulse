@@ -197,7 +197,7 @@ describe User do
     end
   end
 
-  describe "project_rate" do
+  describe "rate_for" do
     before :each do
       @user = Factory(:user)
       @rate = Factory(:rate)
@@ -209,7 +209,7 @@ describe User do
       @rate.project = @project
       @project.rates << @rate
 
-      @user.project_rate(@project).should == @rate
+      @user.rate_for(@project).should == @rate
     end
   end
 end

@@ -114,9 +114,9 @@ class User < ActiveRecord::Base
     ProjectWorkQuery.new(work_units).find_for_project(project)
   end
 
-  def project_rate(project)
+  def rate_for(project)
     project = project.parent unless project.is_base_project?
-    Rate.joins(:rates_users).where(:project_id => project.id).where('rates_users.user_id = ?', id).first
+    (project.rates & rates).last
   end
 
 end

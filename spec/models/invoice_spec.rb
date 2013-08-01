@@ -15,13 +15,17 @@
 require 'spec_helper'
 
 describe Invoice do
+  let :project do Factory(:project) end
+  let :user do Factory(:user) end
+  let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
+
   before(:each) do
     @valid_attributes = {
       :due_on => Date.today,
       :paid_on => Date.today,
       :notes => "value for notes",
       :reference_number => "value for reference_number",
-      :client => Factory(:client)
+      :client => project.client
     }
   end
 
@@ -33,37 +37,37 @@ describe Invoice do
   describe "hours" do
     it "should give the sum of the hours in contained work units" do
       wus = [
-        Factory(:work_unit, :hours => 1.0),
-        Factory(:work_unit, :hours => 2.0),
-        Factory(:work_unit, :hours => 3.0)
+        Factory(:work_unit, :user => user, :project => project, :hours => 1.0),
+        Factory(:work_unit, :user => user, :project => project, :hours => 2.0),
+        Factory(:work_unit, :user => user, :project => project, :hours => 3.0)
       ]
-      Factory(:invoice, :work_units => wus).hours.should == 6.0
+      Factory(:invoice, :client => project.client, :work_units => wus).hours.should == 6.0
     end
   end
 
   describe "overdue named scope" do
     it "should find a invoice due yesterday" do
-      @wu = Factory(:invoice, :due_on => Date.today - 1.day, :paid_on => nil)
+      @wu = Factory(:invoice, :client => project.client, :due_on => Date.today - 1.day, :paid_on => nil)
       Invoice.overdue.should include(@wu)
     end
     it "should not find a invoice due today" do
-      @wu = Factory(:invoice, :due_on => Date.today, :paid_on => nil)
+      @wu = Factory(:invoice, :client => project.client, :due_on => Date.today, :paid_on => nil)
       Invoice.overdue.should_not include(@wu)
     end
     it "should not find a invoice due tomorrow" do
-      @wu = Factory(:invoice, :due_on => Date.today + 1.day, :paid_on => nil)
+      @wu = Factory(:invoice, :client => project.client, :due_on => Date.today + 1.day, :paid_on => nil)
       Invoice.overdue.should_not include(@wu)
     end
     it "should not find a invoice due yesterday if it has been paid for" do
-      @wu = Factory(:invoice, :due_on => Date.today - 1.day, :paid_on => Date.today - 7.days)
+      @wu = Factory(:invoice, :client => project.client, :due_on => Date.today - 1.day, :paid_on => Date.today - 7.days)
       Invoice.overdue.should_not include(@wu)
     end
   end
 
   describe "paid named scope" do
     before(:each) do
-      @paid_invoice = Factory(:invoice, :due_on => Date.today - 1.day, :paid_on => Date.today - 6.days)
-      @unpaid_invoice = Factory(:invoice, :due_on => Date.today - 1.day, :paid_on => nil)
+      @paid_invoice = Factory(:invoice, :client => project.client, :due_on => Date.today - 1.day, :paid_on => Date.today - 6.days)
+      @unpaid_invoice = Factory(:invoice, :client => project.client, :due_on => Date.today - 1.day, :paid_on => nil)
     end
     it "should find a paid invoice" do
       Invoice.paid.should include(@paid_invoice)
@@ -75,8 +79,8 @@ describe Invoice do
 
   describe "unpaid named scope" do
     before(:each) do
-      @paid_invoice = Factory(:invoice, :due_on => Date.today - 1.day, :paid_on => Date.today - 6.days)
-      @unpaid_invoice = Factory(:invoice, :due_on => Date.today - 1.day, :paid_on => nil)
+      @paid_invoice = Factory(:invoice, :client => project.client, :due_on => Date.today - 1.day, :paid_on => Date.today - 6.days)
+      @unpaid_invoice = Factory(:invoice, :client => project.client, :due_on => Date.today - 1.day, :paid_on => nil)
     end
     it "should not find a paid invoice" do
       Invoice.unpaid.should_not include(@paid_invoice)
@@ -98,9 +102,8 @@ describe Invoice do
 
   describe "deleted invoice" do
     it "should mark associated work units as uninvoiced" do
-      @proj = Factory(:project)
-      @wu = Factory(:work_unit, :project => @proj)
-      @invoice = Factory(:invoice, :work_units => [ @wu ])
+      @wu = Factory(:work_unit, :user => user, :project => project)
+      @invoice = Factory(:invoice, :client => project.client, :work_units => [ @wu ])
       @wu.invoice.should == @invoice
       @invoice.destroy
       @wu.invoice.should be_nil

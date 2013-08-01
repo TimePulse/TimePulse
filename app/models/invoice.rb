@@ -57,7 +57,7 @@ class Invoice < ActiveRecord::Base
     end
 
     self.work_units.each do |wu|
-      user_rate = wu.user.project_rate(client_project)
+      user_rate = wu.user.rate_for(client_project)
       if item = items[user_rate.id]
         item[:hours] += wu.hours
         item[:total] += wu.hours * item[:amount]

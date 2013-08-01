@@ -2,11 +2,13 @@ require 'spec_helper'
 
 describe InvoiceReport do
 
-  let :project do Factory.create(:project, :client => Factory(:client)) end
-
+  let :project do Factory.create(:project) end
   let :user_1 do Factory(:user) end
   let :user_2 do Factory(:user) end
   let :user_3 do Factory(:user) end
+  let! :rates_user_1 do Factory(:rates_user, :rate => project.rates.last, :user => user_1) end
+  let! :rates_user_2 do Factory(:rates_user, :rate => project.rates.last, :user => user_2) end
+  let! :rates_user_3 do Factory(:rates_user, :rate => project.rates.last, :user => user_3) end
 
   subject { InvoiceReport.new(invoice) }
 
@@ -22,7 +24,7 @@ describe InvoiceReport do
     end
 
     let :invoice do
-      Factory.create(:invoice, :work_units => [work_unit_1, work_unit_2])
+      Factory.create(:invoice, :client => project.client, :work_units => [work_unit_1, work_unit_2])
     end
 
     its(:users) { should include(user_1, user_2) }
@@ -30,11 +32,15 @@ describe InvoiceReport do
   end
 
   describe "days" do
+    let :user do Factory(:user) end
+
+    let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
+
     let :work_units do
       [].tap do |arr|
         5.times do |n|
           start = n.days.ago.beginning_of_day
-          arr << Factory(:work_unit, :hours => 1.0,
+          arr << Factory(:work_unit, :hours => 1.0, :user => user,
                          :start_time => start,
                          :stop_time  => start + 1.hour)
         end
@@ -42,7 +48,7 @@ describe InvoiceReport do
     end
 
     let :invoice do
-      Factory.create(:invoice, :work_units => work_units)
+      Factory.create(:invoice, :client => project.client, :work_units => work_units)
     end
 
     its(:days) { should have(5).days }
@@ -78,6 +84,7 @@ describe InvoiceReport do
     end
     context "with matched commits" do
       let! :user do Factory.create(:user, :email => "george@jungle.com", :github_user => "georgeofjungle") end
+      let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
       let! :work_unit do Factory.create(
         :work_unit, :user => user, 
         :project => project, 
