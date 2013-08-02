@@ -9,7 +9,7 @@ Factory.define :user , :class => User do |u|
   u.sequence(:email) {|n| "quentin#{n}@example.com"}
   u.sequence(:reset_password_token) { |n| "hYggoHueyySp#{n}czmffos" }
   u.sequence(:reset_password_sent_at) { |n| n.weeks.ago }
-  
+
   u.sequence(:remember_created_at) { |n| n.weeks.ago}
 
   u.sequence(:sign_in_count) { |n| n}

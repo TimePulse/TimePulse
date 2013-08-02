@@ -86,6 +86,7 @@ describe ProjectsController do
 
     describe "GET edit" do
       it "assigns the requested project as @project" do
+        @project.rates.clear
         get :edit, :id => @project.id
         verify_authorization_successful
         assigns[:project].should ==  @project
@@ -165,6 +166,7 @@ describe ProjectsController do
         end
 
         it "assigns the project as @project" do
+          @project.rates.clear
           put :update, :id => @project.id, :project => {:name => nil }
           verify_authorization_successful
           assigns[:project].should == @project

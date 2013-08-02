@@ -11,7 +11,15 @@ $('document').ready( function(){
   addCurrentClassToCurrentProject();
 
   $('fieldset.rates tfoot').show();
-  setupRatesUsersDragDrop();
+
+  if ($('.rates-users-container').size() > 0) {
+    setupRatesUsersDragDrop();
+  }
+  if ($('select#project_parent_id').val() != 1) { // Not sure the best way to not hard code the ID in this app
+    $('fieldset.rates').hide();
+  }
+
+  $('.hide-initially').removeClass('hide-initially');
 });
 
 Ninja.orders(function(Ninja){
@@ -36,8 +44,8 @@ Ninja.orders(function(Ninja){
         '#debug':        Ninja.suppressChangeEvents(),
         '#task_elapsed':  Ninja.suppressChangeEvents(),
         '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
-        '.datetime_entry': { transform: function(elem){ 
-            $(elem).datetimepicker() 
+        '.datetime_entry': { transform: function(elem){
+            $(elem).datetimepicker();
           }
         },
         '#work_unit_time_zone': { transform: function(elem) {
@@ -84,11 +92,20 @@ Ninja.orders(function(Ninja){
         '.has_tooltip': {
           transform: function(elem){
             $(elem).tooltip({
-                tip: "#tooltip_for_" + $(elem).attr('id'),
-                offset: [ -10, 2 ],
-                relative: true
-              })
+              tip: "#tooltip_for_" + $(elem).attr('id'),
+              offset: [ -10, 2 ],
+              relative: true
+            });
             return elem;
+          }
+        },
+        'select#project_parent_id': {
+          change: function(evnt, elem) {
+            if ($(elem).val() == 1) {
+              $('fieldset.rates').show();
+            } else {
+              $('fieldset.rates').hide();
+            }
           }
         },
         '.rates .add-rate': {
