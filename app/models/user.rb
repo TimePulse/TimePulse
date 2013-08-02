@@ -32,7 +32,9 @@ class User < ActiveRecord::Base
   has_many :work_units
   has_many :bills
   has_many :activities
-  
+  has_many :rates_users
+  has_many :rates, :through => :rates_users
+
   validates_presence_of :name, :email
 
   attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user, :pivotal_name

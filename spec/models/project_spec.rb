@@ -35,6 +35,14 @@ describe Project do
     Factory.build(:project, :name => nil).should_not be_valid
   end
 
+  it "should save rates" do
+    project = Factory(:project)
+    rate = Factory(:rate, :project => project)
+    project.rates << rate
+    project.save
+    project.rates.size.should == 1
+  end
+
   describe "cascades" do
     describe "client" do
       before(:each) do
@@ -147,6 +155,4 @@ describe Project do
       end
     end
   end
-
-
 end
