@@ -21,6 +21,12 @@
     %th Notes
     %td= @invoice.notes
 
+%hr
+
+= render :partial => 'invoice_items'
+
+%hr
+
 = render :partial => 'invoice_details'
 
 %p

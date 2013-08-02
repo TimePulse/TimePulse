@@ -14,29 +14,30 @@
     = f.labeled_input(:flat_rate){ f.check_box(:flat_rate) }
     = f.labeled_input(:archived){ f.check_box(:archived) }
 
-  %fieldset.rates
-    %legend Rates
+  - if @project.new_record? || @project.is_base_project?
+    %fieldset.rates.hide-initially
+      %legend Rates
 
-    %table
-      %thead
-        %tr
-          %th Name
-          %th Amount
-          - unless action_name == 'new'
-            %th.actions Remove
-      %tfoot
-        %tr
-          %td{ :colspan => action_name == 'new' ? 2 : 3 }
-            %a.add-rate{ :href => '#' } Add Rate
-      %tbody
-        = f.fields_for :rates do |ff|
+      %table
+        %thead
           %tr
-            %td= ff.text_field :name, :class => 'rate-name-field', :placeholder => 'e.g. \'Engineer\''
-            %td= ff.text_field :amount, :class => 'rate-amount-field', :placeholder => 'e.g. \'100\''
+            %th Name
+            %th Amount
             - unless action_name == 'new'
-              %td.actions
-                - if ff.object.persisted?
-                  = ff.check_box :_destroy
-                  = ff.label :_destroy, 'Remove'
+              %th.actions Remove
+        %tfoot
+          %tr
+            %td{ :colspan => action_name == 'new' ? 2 : 3 }
+              %a.add-rate{ :href => '#' } Add Rate
+        %tbody
+          = f.fields_for :rates do |ff|
+            %tr
+              %td= ff.text_field :name, :class => 'rate-name-field', :placeholder => 'e.g. \'Engineer\''
+              %td= ff.text_field :amount, :class => 'rate-amount-field', :placeholder => 'e.g. \'100\''
+              - unless action_name == 'new'
+                %td.actions
+                  - if ff.object.persisted?
+                    = ff.check_box :_destroy
+                    = ff.label :_destroy, 'Remove'
 
   = f.unlabeled_submit 'Submit'

@@ -2,8 +2,12 @@ require 'spec_helper'
 
 describe InvoicesController do
 
-  
+
   describe "as an admin" do
+    let :project do Factory(:project) end
+    let :user do Factory(:user) end
+    let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
+
     before(:each) do
       authenticate(:admin)
     end
@@ -12,30 +16,30 @@ describe InvoicesController do
     ########################################################################################
     describe "GET index" do
       before(:each) do
-        @invoice = Factory(:invoice)   
+        @invoice = Factory(:invoice, :client => project.client)
         @client = @invoice.client
-        
+
         @unpaid_invoices = [
             @invoice,
-            Factory(:invoice, :paid_on => nil),
-            Factory(:invoice, :paid_on => nil)
+            Factory(:invoice, :client => project.client, :paid_on => nil),
+            Factory(:invoice, :client => project.client, :paid_on => nil)
         ]
         @paid_invoices = [
-          Factory(:invoice, :paid_on => Date.today - 1.day),
-          Factory(:invoice, :paid_on => Date.today - 1.day)
-        ]  
+          Factory(:invoice, :client => project.client, :paid_on => Date.today - 1.day),
+          Factory(:invoice, :client => project.client, :paid_on => Date.today - 1.day)
+        ]
       end
       it "should paginate all unpaid invoices as @unpaid_invoices" do
         get :index
         assigns[:unpaid_invoices].should include(*(@unpaid_invoices.paginate))
-      end  
+      end
       it "should paginate all paid invoices as @paid_invoices" do
         get :index
         assigns[:paid_invoices].should == @paid_invoices.sort_by(&:created_at).paginate
-      end        
+      end
       it "should be authorized" do
         get :index
-        verify_authorization_successful       
+        verify_authorization_successful
       end
     end
 
@@ -44,45 +48,45 @@ describe InvoicesController do
     ########################################################################################
     describe "responding to GET show" do
       before :each  do
-        @invoice = Factory(:invoice)   
-        @client = @invoice.client        
+        @invoice = Factory(:invoice, :client => project.client)
+        @client = @invoice.client
       end
       it "should expose the requested invoice as @invoice" do
         get :show, :id => @invoice.id
         assigns[:invoice].should == @invoice
-      end           
+      end
       it "should be authorized" do
         get :show, :id => @invoice.id
-        verify_authorization_successful       
+        verify_authorization_successful
       end
     end
 
     ########################################################################################
     #                                      GET NEW
     ########################################################################################
-    describe "responding to GET new" do  
+    describe "responding to GET new" do
       it "should expose a new invoice as @invoice" do
         get :new
         assigns[:invoice].should be_a(Invoice)
         assigns[:invoice].should be_new_record
-      end    
+      end
       it "should be authorized" do
         get :new
-        verify_authorization_successful       
+        verify_authorization_successful
       end
       describe "client selection" do
         before :each  do
-          @clients = [ 
-            Factory(:client, :abbreviation => 'ABC'), 
-            Factory(:client, :abbreviation => 'DEF' ),             
-            Factory(:client, :abbreviation => 'XYZ' ) 
+          @clients = [
+            Factory(:client, :abbreviation => 'ABC'),
+            Factory(:client, :abbreviation => 'DEF' ),
+            Factory(:client, :abbreviation => 'XYZ' )
           ]
-        end        
+        end
         it "should assign a list of clients" do
           get :new
           assigns[:clients].should == Client.find(:all, :order => "abbreviation ASC")
-        end        
-        
+        end
+
         describe "when a specific client is specified" do
           before :each  do
             @client = @clients[0]
@@ -96,7 +100,7 @@ describe InvoicesController do
 
           describe "the list of work units" do
             before :each  do
-              @wu1 = Factory(:work_unit, :project => @project, :billable => true)              
+              @wu1 = Factory(:work_unit, :user => user, :project => @project, :billable => true)
             end
             it "should all belong to that client" do
               get :new, :client_id => @clients[0].id
@@ -104,57 +108,57 @@ describe InvoicesController do
                 wu.project.client.should == @clients[0]
               end
             end
-            
+
             it "should include billable uninvoiced work units" do
-              @wu2 = Factory(:work_unit, :project => @project, :billable => true)              
+              @wu2 = Factory(:work_unit, :user => user, :project => @project, :billable => true)
               get :new, :client_id => @clients[0].id
               assigns[:work_units].should include(@wu1)
-              assigns[:work_units].should include(@wu2)              
-            end  
-              
+              assigns[:work_units].should include(@wu2)
+            end
+
             it "should not include unbillable work units" do
-              @wu2 = Factory(:work_unit, :project => @project)
+              @wu2 = Factory(:work_unit, :user => user, :project => @project)
               @wu2.update_attribute(:billable, false)
               get :new, :client_id => @clients[0].id
               assigns[:work_units].should_not include(@wu2)
-            end          
-            
+            end
+
             it "should not include invoiced work units" do
-              invoiced = [ 
-                Factory(:work_unit, :project => @project, :billable => true),
-                Factory(:work_unit, :project => @project, :billable => true)                              
+              invoiced = [
+                Factory(:work_unit, :user => user, :project => @project, :billable => true),
+                Factory(:work_unit, :user => user, :project => @project, :billable => true)
               ]
-              Factory(:invoice, :work_units => invoiced)                                                       
+              Factory(:invoice, :client => project.client, :work_units => invoiced)
               get :new, :client_id => @clients[0].id
               assigns[:work_units].should_not include(invoiced[0])
-              assigns[:work_units].should_not include(invoiced[1])                          
+              assigns[:work_units].should_not include(invoiced[1])
             end
-            
+
             it "should not include uncompleted work units" do
-              @wu2 = Factory(:work_unit, :project => @project, :stop_time => nil, :hours => nil)
+              @wu2 = Factory(:work_unit, :user => user, :project => @project, :stop_time => nil, :hours => nil)
               get :new, :client_id => @clients[0].id
-              assigns[:work_units].should_not include(@wu2)              
+              assigns[:work_units].should_not include(@wu2)
             end
-          end  
+          end
         end
-      end      
+      end
     end
 
     ########################################################################################
     #                                      GET EDIT
     ########################################################################################
-    describe "responding to GET edit" do  
+    describe "responding to GET edit" do
       before :each  do
-        @invoice = Factory(:invoice)   
+        @invoice = Factory(:invoice, :client => project.client)
         @client = @invoice.client
       end
       it "should expose the requested invoice as @invoice" do
         get :edit, :id => @invoice.id
         assigns[:invoice].should == @invoice
-      end            
+      end
       it "should be authorized" do
-        get :edit, :id => @invoice.id   
-        verify_authorization_successful       
+        get :edit, :id => @invoice.id
+        verify_authorization_successful
       end
     end
 
@@ -163,23 +167,23 @@ describe InvoicesController do
     ########################################################################################
     describe "responding to POST create" do
       before :each  do
-        @client = Factory(:client)
-      end  
+        @client = project.client
+      end
       describe "with valid params" do
         before do
-          @valid_create_params = {    
+          @valid_create_params = {
             :due_on => Date.today,
             :client_id => @client.id,
             :notes => "value for notes"
           }
         end
-                   
+
         it "should be authorized" do
           post :create, :invoice => @valid_create_params
           verify_authorization_successful
         end
         it "should create a new invoice in the database" do
-          lambda do 
+          lambda do
             post :create, :invoice => @valid_create_params
           end.should change(Invoice, :count).by(1)
         end
@@ -198,14 +202,13 @@ describe InvoicesController do
           post :create, :invoice => @valid_create_params
           new_invoice = assigns[:invoice]
           response.should redirect_to(invoice_url(new_invoice))
-        end    
-        
+        end
+
         describe "with specified work unit ids" do
           before :each  do
-            @proj = Factory(:project, :client => @client)
-            @wu1 = Factory(:work_unit, :project => @proj)
-            @wu2 = Factory(:work_unit, :project => @proj)
-            @wu3 = Factory(:work_unit, :project => @proj)
+            @wu1 = Factory(:work_unit, :user => user, :project => project)
+            @wu2 = Factory(:work_unit, :user => user, :project => project)
+            @wu3 = Factory(:work_unit, :user => user, :project => project)
           end
           it "should expose a saved invoice as @invoice" do
             post :create, :invoice => @valid_create_params
@@ -221,7 +224,7 @@ describe InvoicesController do
             post :create, :invoice => @valid_create_params
             new_invoice = assigns[:invoice]
             response.should redirect_to(invoice_url(new_invoice))
-          end    
+          end
           it "should include specified work units in the invoice" do
             post :create, :invoice => @valid_create_params.merge!({ :work_unit_ids => {
               "#{@wu1.id}" => "1",
@@ -238,8 +241,8 @@ describe InvoicesController do
             assigns[:invoice].work_units.should include(@wu1)
             assigns[:invoice].work_units.should_not include(@wu2)
           end
-          
-        end  
+
+        end
       end
 
       describe "with invalid params" do
@@ -247,15 +250,15 @@ describe InvoicesController do
           @invalid_create_params = {
             :due_on => Date.today,
             :client_id => nil,
-            :notes => "value for notes"            
-          } 
+            :notes => "value for notes"
+          }
         end
 
         it "should not create a new invoice in the database" do
-          lambda do 
+          lambda do
             post :create, :invoice => @invalid_create_params
           end.should_not change(Invoice, :count)
-        end      
+        end
 
         it "should expose a newly created invoice as @invoice" do
           post :create, :invoice => @invalid_create_params
@@ -270,8 +273,8 @@ describe InvoicesController do
         it "should re-render the 'new' template" do
           post :create, :invoice => @invalid_create_params
           response.should render_template('new')
-        end      
-      end    
+        end
+      end
     end
 
     ########################################################################################
@@ -279,21 +282,21 @@ describe InvoicesController do
     ########################################################################################
     describe "responding to PUT update" do
       before :each  do
-        @invoice = Factory(:invoice)   
-        @client = @invoice.client        
+        @invoice = Factory(:invoice, :client => project.client)
+        @client = @invoice.client
       end
       describe "with valid params" do
         before do
           @valid_update_params = {
-            :notes => "different notes."              
-          } 
+            :notes => "different notes."
+          }
         end
-               
+
         it "should be authorized" do
-          put :update, :id => @invoice.id, :invoice => @valid_update_params   
+          put :update, :id => @invoice.id, :invoice => @valid_update_params
           verify_authorization_successful
         end
-        it "should update the requested invoice in the database" do          
+        it "should update the requested invoice in the database" do
           lambda do
             put :update, :id => @invoice.id, :invoice => @valid_update_params
           end.should change{ @invoice.reload.notes }.to("different notes.")
@@ -314,11 +317,11 @@ describe InvoicesController do
         before do
           @invalid_update_params = {
             :client_id => nil
-          } 
+          }
         end
 
         it "should not change the invoice in the database" do
-          lambda do 
+          lambda do
             put :update, :id => @invoice.id, :invoice => @invalid_update_params
           end.should_not change{ @invoice.reload }
         end
@@ -341,12 +344,12 @@ describe InvoicesController do
     ########################################################################################
     describe "DELETE destroy" do
       before :each  do
-        @invoice = Factory(:invoice)   
-        @client = @invoice.client        
-      end           
+        @invoice = Factory(:invoice, :client => project.client)
+        @client = @invoice.client
+      end
       it "should be authorized" do
         delete :destroy, :id => @invoice.id
-        verify_authorization_successful        
+        verify_authorization_successful
       end
       it "should reduce invoice count by one" do
         lambda do
@@ -354,9 +357,9 @@ describe InvoicesController do
         end.should change(Invoice, :count).by(-1)
       end
 
-      it "should make the invoices unfindable in the database" do    
+      it "should make the invoices unfindable in the database" do
         delete :destroy, :id => @invoice.id
-        lambda{ Invoice.find(@invoice.id)}.should raise_error(ActiveRecord::RecordNotFound)      
+        lambda{ Invoice.find(@invoice.id)}.should raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "should redirect to the invoices list" do

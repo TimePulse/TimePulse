@@ -37,6 +37,7 @@ describe Project do
 
   it "should save rates" do
     project = Factory(:project)
+    project.rates.clear
     rate = Factory(:rate, :project => project)
     project.rates << rate
     project.save

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 shared_steps "for an invoicing task" do |opt_hash|
   opt_hash ||= {}
+
   let :admin do
     Factory(:admin)
   end
@@ -10,9 +11,12 @@ shared_steps "for an invoicing task" do |opt_hash|
     Factory(:project)
   end
 
+  let :user do Factory(:user) end
+  let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
+
   (opt_hash[:wu_count] || 3).times do |idx|
     let! "work_unit_#{idx}" do
-      Factory(:work_unit, :project => project)
+      Factory(:work_unit, :user => user, :project => project)
     end
   end
 

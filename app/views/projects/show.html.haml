@@ -34,7 +34,8 @@
     = link_to 'Back', projects_path
 
 .rates
-  - if @project.rates.empty?
+  - rates = @project.base_rates
+  - if rates.empty?
     %p
       %strong Rates
       %br
@@ -48,11 +49,14 @@
           %th Amount
           %th Members
       %tbody
-        - @project.rates.each do |rate|
+        - rates.each do |rate|
           %tr
             %td #{h rate.name}
             %td #{h rate.amount}
             %td
-              = form_for rate, :method => :put, :html => {:class => 'rates-users-container'} do |f|
-                = select_tag :users, options_for_rates_users(rate), :multiple => true
-                = f.submit 'Update'
+              - if @project.is_base_project?
+                = form_for rate, :method => :put, :html => {:class => 'rates-users-container hide-initially'} do |f|
+                  = select_tag :users, options_for_rates_users(rate), :multiple => true
+                  = f.submit 'Update'
+              - else
+                = rate.users.map { |user| user.name }.join ', '

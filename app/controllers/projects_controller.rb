@@ -22,7 +22,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project = Project.find(params[:id])
-    @project.rates.build
+    @project.rates.build if @project.parent == Project.root
   end
 
   # POST /projects
