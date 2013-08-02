@@ -27,7 +27,11 @@ class Project < ActiveRecord::Base
   belongs_to :client
   has_many :work_units
   has_many :activities
-  
+  # Rates added to sub-project will override parent project rates completely.
+  # Users may see rates disappear from a child when adding rates specifically for a child.
+  has_many :rates
+  accepts_nested_attributes_for :rates, :allow_destroy => true, :reject_if => lambda { |attr| attr['name'].blank? || attr['amount'].to_i < 1  }
+
   scope :archived, :conditions => { :archived => true }
   scope :unarchived, :conditions => { :archived => false }
   # default_scope :joins => :client
@@ -35,6 +39,22 @@ class Project < ActiveRecord::Base
   validates_presence_of :name
   cascades :client, :account, :clockable, :github_url, :pivotal_id
 
-  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived, :github_url, :pivotal_id
+  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived, :github_url, :pivotal_id, :rates_attributes
+
+  before_save :no_rates_for_children
+
+  def is_base_project?
+    parent == root
+  end
+
+  def base_rates
+    is_base_project? || parent.blank? ? rates : parent.rates
+  end
+
+  private
+
+  def no_rates_for_children
+    rates.clear if parent != root
+  end
 end
 

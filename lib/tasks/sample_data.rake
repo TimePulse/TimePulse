@@ -33,7 +33,8 @@ namespace :db do
       :environment,
       :populate_users,
       :populate_clients_and_projects,
-      :populate_work_units
+      :populate_work_units,
+      :populate_rates
       ]
 
     task :reload => [ :clear, :load ]
@@ -56,6 +57,16 @@ namespace :db do
       user.groups << Group.find_by_name("Registered Users")
       user.groups << Group.find_by_name("Administration")
       user.confirm!
+
+      5.times do |i|
+        generic_user = User.create!(:login => "user#{i}",
+                            :name => "User #{i}",
+                            :email => "user#{i}@example.com",
+                            :password => 'password',
+                            :password_confirmation => 'password')
+        generic_user.groups << Group.find_by_name('Registered Users')
+        generic_user.confirm!
+      end
     end
 
     task :populate_clients_and_projects => :environment do
@@ -93,6 +104,11 @@ namespace :db do
           wu.clock_out!
         end
       end
+    end
+
+    task :populate_rates do
+      project = Project.where(:parent_id => Project.root.id).first
+      project.rates << Rate.create!(:name => 'Rate 1', :amount => 100, :users => [User.first])
     end
 
     # An example to be deleted or replaced

@@ -32,7 +32,9 @@ class User < ActiveRecord::Base
   has_many :work_units
   has_many :bills
   has_many :activities
-  
+  has_many :rates_users
+  has_many :rates, :through => :rates_users
+
   validates_presence_of :name, :email
 
   attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user, :pivotal_name
@@ -85,13 +87,13 @@ class User < ActiveRecord::Base
     source ||= project
     activity_for(source).git_commits
   end
-  
+
   def pivotal_updates_for(project)
     source = project.pivotal_id_source
     source ||= project
     activity_for(source).pivotal_updates
   end
-  
+
   def current_project_hours_report
     @cphr ||= hours_report_on(current_project)
   end
@@ -110,6 +112,11 @@ class User < ActiveRecord::Base
 
   def work_units_for(project)
     ProjectWorkQuery.new(work_units).find_for_project(project)
+  end
+
+  def rate_for(project)
+    project = project.parent unless project.is_base_project?
+    (project.rates & rates).last
   end
 
 end

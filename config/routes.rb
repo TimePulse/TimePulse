@@ -10,6 +10,7 @@ Tracks::Application.routes.draw do
     resource :github_pull, :controller => 'github_pull', :only => [:create]
     resource :pivotal_pull, :controller => 'pivotal_pull', :only => [:create]
   end
+  resources :rates, :only => :update
 
   resources :invoice_reports, :only => :show
 
@@ -37,7 +38,6 @@ Tracks::Application.routes.draw do
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
   match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete
-
 
   root :to => 'home#index'
 

@@ -28,7 +28,11 @@ steps "User manually enters work units", :type => :feature do
     fill_in "Start time", :with => (@start_time = (Time.now - 1.hour)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
     fill_in "Notes", :with => "An hour of work"
-    click_button "Save Changes"
+    # this is not a click button cause at the immediate moment poltergeist interprets
+    # this button as obscured by the JS datepicker. the truly proper solution would
+    # be to click somewhere else, then do a click_button once it's visible, but
+    # honestly it doesn't seem worth it to spend a lot of time on this.
+    find_button("Save Changes").trigger('click')
   end
 
   it "should have the correct values for the work unit" do
@@ -40,7 +44,7 @@ steps "User manually enters work units", :type => :feature do
     within("#recent_work") do
       page.should have_content("1.00")
     end
-    
+
     @work_unit = WorkUnit.last
     @work_unit.hours.should == 1.00
     @work_unit.notes.should == "An hour of work"

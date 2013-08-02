@@ -21,6 +21,7 @@ Factory.define :project  do |c|
   c.github_url ""
   c.pivotal_id 123
   c.parent_id { Project.root.id }
+  c.after_create { |p| Factory(:rate, :project => p)  }
 end
 
 Factory.define :task, :parent => :project do |c|

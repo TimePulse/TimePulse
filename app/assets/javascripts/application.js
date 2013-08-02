@@ -9,6 +9,17 @@
 $('document').ready( function(){
   startClock();
   addCurrentClassToCurrentProject();
+
+  $('fieldset.rates tfoot').show();
+
+  if ($('.rates-users-container').size() > 0) {
+    setupRatesUsersDragDrop();
+  }
+  if ($('select#project_parent_id').val() != 1) { // Not sure the best way to not hard code the ID in this app
+    $('fieldset.rates').hide();
+  }
+
+  $('.hide-initially').removeClass('hide-initially');
 });
 
 Ninja.orders(function(Ninja){
@@ -33,8 +44,8 @@ Ninja.orders(function(Ninja){
         '#debug':        Ninja.suppressChangeEvents(),
         '#task_elapsed':  Ninja.suppressChangeEvents(),
         '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
-        '.datetime_entry': { transform: function(elem){ 
-            $(elem).datetimepicker() 
+        '.datetime_entry': { transform: function(elem){
+            $(elem).datetimepicker();
           }
         },
         '#work_unit_time_zone': { transform: function(elem) {
@@ -81,17 +92,95 @@ Ninja.orders(function(Ninja){
         '.has_tooltip': {
           transform: function(elem){
             $(elem).tooltip({
-                tip: "#tooltip_for_" + $(elem).attr('id'),
-                offset: [ -10, 2 ],
-                relative: true
-              })
+              tip: "#tooltip_for_" + $(elem).attr('id'),
+              offset: [ -10, 2 ],
+              relative: true
+            });
             return elem;
+          }
+        },
+        'select#project_parent_id': {
+          change: function(evnt, elem) {
+            if ($(elem).val() == 1) {
+              $('fieldset.rates').show();
+            } else {
+              $('fieldset.rates').hide();
+            }
+          }
+        },
+        '.rates .add-rate': {
+          click: function(evnt, elem) {
+            evnt.preventDefault();
+            var tbody = $(elem).parents('table').find('tbody');
+            var rows = tbody.find('tr');
+            var rowCount = rows.size();
+            var row = rows.first().clone();
+            var inputs = row.find('input');
+            inputs.val('');
+            inputs.each(function (i, input) {
+              input = $(input);
+              var id = input.attr('id');
+              var name = input.attr('name');
+              input.attr('id', id.replace('0', rowCount));
+              input.attr('name', name.replace('0', rowCount));
+            });
+            tbody.append(row);
           }
         }
       });
 
     Ninja.go();
   })
+
+function setupRatesUsersDragDrop() {
+  $('.rates-users-container').each(function() {
+    $form = $(this);
+    $form.find('select, input[type=submit]').hide();
+    $form.submit(function(ev) {
+      ev.preventDefault();
+      $this = $(this);
+      $.post($this.attr('action'), $this.serialize());
+    });
+  });
+
+  var availableUsers = $('.rates-users-container select').first().find('option');
+  var availableUsersContainer = $('<div class="available-users-container"></div>');
+
+  availableUsers.each(function() {
+    $option = $(this);
+
+    if (null != $option.val() && '' != $option.val()) {
+      draggableItem = $('<span class="rates-user" data-user-id="'+$option.val()+'">'+$option.html()+'</span>')
+
+      var $selectedOption = $('.rates-users-container option[value='+$option.val()+']:selected');
+      if ($selectedOption.size() > 0) {
+        $selectedOption.parents('.rates-users-container').append(draggableItem);
+      } else {
+        availableUsersContainer.append(draggableItem);
+      }
+    }
+  });
+  $('div.rates').append('<p><strong>Available Users</strong></p>').append(availableUsersContainer);
+
+  $('.rates-user').draggable();
+  $('.rates-users-container, .available-users-container').droppable({
+    drop: function(event, ui) {
+      var $item = ui.draggable;
+      var $from = $($item.parents('.ui-droppable'))
+      var $to = $(this);
+      var optionSelector = 'option[value='+$item.attr('data-user-id')+']';
+
+      $from.find(optionSelector).attr('selected', false);
+      $to.find(optionSelector).attr('selected', true);
+
+      $to.prepend($item);
+      $item.css({top: 0, left: 0});
+
+      $from.submit();
+      $to.submit();
+    }
+  });
+}
 
 function updateInputAuthenticityToken(elem) {
   token = $('meta[name="csrf-token"]').attr('content');
@@ -101,7 +190,7 @@ function updateInputAuthenticityToken(elem) {
 }
 
 function selectAllWorkUnits() {
-  $('.work_unit_checkbox').attr('checked', true);
+  $('.work_unit_checkbox').prop('checked', true);
   updateWorkUnitHoursTotal();
 }
 
@@ -114,12 +203,12 @@ var task_elapsed;
 function updateWorkUnitHoursTotal() {
   var total = 0.0;
   var count = 0;
-  $('#new_invoice tr.work_unit .hours, #new_bill tr.work_unit .hours').each(function() {
-      if ($(this).siblings('.work_unit_checkbox').attr('checked')) {
-        total += $(this).html() * 1.0;
-        count++;
-      }
-    });
+  $('#new_invoice .work_unit .hours, #new_bill .work_unit .hours').each(function() {
+    if ($(this).find('.work_unit_checkbox').is(':checked')) {
+      total += $(this).find('.hours_count').html() * 1.0;
+      count++;
+    }
+  });
   $('#work_unit_count').html(count);
   $('#hours_total').html(Math.round(total*100)/100);
 }

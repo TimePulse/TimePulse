@@ -50,5 +50,4 @@ module ProjectsHelper
       link_to(title, clock_in_path(:id => project), :method => :post, :title => title, :id => cssid)
     end.html_safe
   end
-
 end

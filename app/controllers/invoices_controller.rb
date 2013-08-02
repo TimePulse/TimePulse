@@ -36,7 +36,7 @@ class InvoicesController < ApplicationController
       flash[:notice] = 'Invoice was successfully created.'
       redirect_to(@invoice)
     else
-      str = "Could not save invoice.  errors: #{@invoice.errors}"
+      str = "Could not save invoice.  errors: #{@invoice.errors.map{ |error, message| message }.join(', ')}"
       Rails.logger.info(str)
       flash[:error] = str
       params[:client_id] = @invoice.client.id if @invoice.client

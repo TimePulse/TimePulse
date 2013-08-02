@@ -41,4 +41,5 @@ lrd_dev_tools provides a few convenient default rake tasks:
   with other credentialed files in config/initializers
 
 test
+test 2
 
