@@ -12,5 +12,11 @@ describe "/invoices/show" do
   it "should succeed" do
     render
   end
+
+  it "should render invoice items" do
+    render
+
+    rendered.should have_selector('.invoice-items tbody tr')
+  end
 end
 

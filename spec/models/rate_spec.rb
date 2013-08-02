@@ -31,4 +31,20 @@ describe Rate do
 
     rate.users.size.should == 1
   end
+
+  it "should clear user list before record is destroyed" do
+    RatesUser.all.should be_empty
+
+    user1 = Factory(:user, :name => 'User 1')
+    user2 = Factory(:user, :name => 'User 2')
+    rate = Rate.create!(@valid_attributes)
+    rate.users << user1
+    rate.users << user2
+
+    RatesUser.all.size.should == 2
+
+    rate.destroy
+
+    RatesUser.all.should be_empty
+  end
 end

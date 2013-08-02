@@ -75,6 +75,9 @@ describe Invoice do
     it "should not find an unpaid invoice" do
       Invoice.paid.should_not include(@unpaid_invoice)
     end
+    it "should report it has been paid" do
+      @paid_invoice.paid?.should be_true
+    end
   end
 
   describe "unpaid named scope" do
@@ -87,6 +90,9 @@ describe Invoice do
     end
     it "should  find an unpaid invoice" do
       Invoice.unpaid.should include(@unpaid_invoice)
+    end
+    it "should report it has not been paid" do
+      @unpaid_invoice.paid?.should be_false
     end
   end
 
@@ -110,5 +116,23 @@ describe Invoice do
     end
   end
 
+  describe "invoice items" do
+    it "should have an error if the client has no project" do
+      new_client = Factory(:client, :name => 'New Client')
+      invoice = Factory.build(:invoice, :client => new_client)
+      invoice.save
+      invoice.errors.size.should == 1
+      invoice.errors[:invoice_items].first.should == 'This client has no projects.'
+    end
+
+    it "should have an error if a worker has no rate for the client" do
+      new_user = Factory(:user, :name => 'New User')
+      wu = Factory(:work_unit, :user => new_user, :project => project)
+      invoice = Factory.build(:invoice, :client => project.client, :work_units => [ wu ])
+      invoice.save
+      invoice.errors.size.should == 1
+      invoice.errors[:invoice_items].first.should == "There is no rate assigned to #{wu.user.name} for this client."
+    end
+  end
 
 end

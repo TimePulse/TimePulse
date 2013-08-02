@@ -46,7 +46,7 @@ class Invoice < ActiveRecord::Base
   def generate_invoice_items
     client_project = Project.where(:client_id => client.id, :parent_id => Project.root.id).first
     if client_project.nil?
-      errors.add :invoice_units, "This client has no projects."
+      errors.add :invoice_items, "This client has no projects."
       return false
     end
 
@@ -58,11 +58,11 @@ class Invoice < ActiveRecord::Base
 
     self.work_units.each do |wu|
       user_rate = wu.user.rate_for(client_project)
-      if item = items[user_rate.id]
+      if !user_rate.blank? && item = items[user_rate.id]
         item[:hours] += wu.hours
         item[:total] += wu.hours * item[:amount]
       else
-        errors.add :invoice_units, "There is no rate assigned to #{wu.user.name} for this client."
+        errors.add :invoice_items, "There is no rate assigned to #{wu.user.name} for this client."
         return false
       end
     end
