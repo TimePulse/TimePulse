@@ -42,7 +42,7 @@ last_run
 *~
 vendor/**/**/doc/*
 vendor/plugins/footnotes/*
-.sass_cache
+.sass-cache
 rsa_key*
 sphinx/*
 db/sphinx/*
