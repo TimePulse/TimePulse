@@ -3,6 +3,7 @@ Factory.define :user , :class => User do |u|
   u.sequence(:login) { |n| "quentin#{n}"}
   u.password "foobar"
   u.password_confirmation "foobar"
+  u.inactive false
 
   #TODO: Fix this when LAz for R3 is ready.
   u.groups{ [Group.find_by_name("Registered Users")] }

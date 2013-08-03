@@ -1,6 +1,6 @@
 class AddInactiveStatusToUser < ActiveRecord::Migration
   def self.up
-    add_column :users, :inactive, :boolean
+    add_column :users, :inactive, :boolean, :default => false
   end
 
   def self.down

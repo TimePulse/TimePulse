@@ -99,6 +99,11 @@ describe UsersController do
       user = assigns[:user]
       user.groups.should include(Group.find_by_name("Registered Users"))
     end
-  end
 
+    it "can set the user to inactive" do
+      @other_user = Factory.create(:user)
+      put :update, :id => @other_user.id, :user => {:inactive => true}
+      @other_user.reload.should be_inactive
+    end
+  end
 end

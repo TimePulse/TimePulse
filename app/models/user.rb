@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name, :email
 
-  attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user, :pivotal_name
+  attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user, :pivotal_name, :inactive
 
   has_and_belongs_to_many :groups
 
