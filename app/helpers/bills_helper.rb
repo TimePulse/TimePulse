@@ -9,7 +9,7 @@ module BillsHelper
   end
   
   def user_selector_array
-    @user_array ||= User.find(:all).collect{ |c| [
+    @user_array ||= User.active.collect{ |c| [
        "#{c.name} - (#{c.work_units.unbilled.completed.billable.sum(:hours)}) ", 
        c.id        
     ]}
