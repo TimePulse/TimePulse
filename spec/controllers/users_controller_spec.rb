@@ -70,6 +70,17 @@ describe UsersController do
         verify_authorization_successful
       end
     end
+
+    it "cannot set itself to inactive" do
+      put :update, :id => @user.id, :user => {:inactive => true}
+      @user.reload.should_not be_inactive
+    end
+
+    it "cannot set another user to inactive" do
+      @other_user = Factory.create(:user)
+      put :update, :id => @other_user.id, :user => {:inactive => true}
+      @other_user.reload.should_not be_inactive
+    end
   end
 
 
