@@ -10,6 +10,7 @@
   = f.labeled_input :password
   = f.labeled_input :password_confirmation
   - if current_user.admin?
-    = f.label :inactive 
-    = f.check_box :inactive
+    %div{:class => "labeled_input"}
+      = f.label :inactive 
+      = f.check_box :inactive
   = f.unlabeled_submit
