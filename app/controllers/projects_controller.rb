@@ -10,7 +10,7 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
 
-    @all_users = User.find(:all)
+    @all_users = User.active.find(:all)
   end
 
   # GET /projects/new

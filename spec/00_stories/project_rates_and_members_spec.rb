@@ -19,6 +19,14 @@ shared_steps "for a project rates task" do |opt_hash|
     [Factory(:user)]
   end
 
+  let! :active_user do
+    Factory(:user, :name => "Active User")
+  end
+
+  let! :inactive_user do
+    Factory(:user, { :name => "Inactive User", :inactive => true })
+  end
+
   it "should login as an admin" do
     visit root_path
     fill_in "Login", :with => admin.login
@@ -66,6 +74,12 @@ steps "managing users in a rate group", :type => :feature do
     first(:link, 'Show').click
 
     page.should have_selector('.available-users-container .rates-user')
+  end
+
+  it "should only show active users" do
+    #page.should have_selector("data-user-id", :text => "#{active_user.id}")
+    page.should have_content("#{active_user.name}")
+    page.should_not have_content("#{inactive_user.name}")
   end
 
   it "should add a user to a rate" do
