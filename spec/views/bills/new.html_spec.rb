@@ -30,8 +30,8 @@ describe "/bills/new" do
       
       it "should only show active users" do
         render
-  	  rendered.should have_selector("option[value='#{user.id}']")
-          rendered.should_not have_selector("option[value='#{inactive_user.id}']")
+        rendered.should have_selector("option[value='#{user.id}']")
+        rendered.should_not have_selector("option[value='#{inactive_user.id}']")
       end
     end
   end

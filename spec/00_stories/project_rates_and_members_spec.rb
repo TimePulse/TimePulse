@@ -77,7 +77,6 @@ steps "managing users in a rate group", :type => :feature do
   end
 
   it "should only show active users" do
-    page.save_screenshot('shot.png')
     page.should have_selector("span[data-user-id='#{active_user.id}']")
     page.should_not have_selector("span[data-user-id='#{inactive_user.id}']")
   end
