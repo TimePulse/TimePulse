@@ -4,7 +4,7 @@ describe RatesHelper do
   describe :options_for_rates_users do
     before :each do
       @rate = Factory(:rate)
-      @all_users = [Factory(:user)]
+      @active_users = [Factory(:user)]
     end
 
     it "generates options tags" do

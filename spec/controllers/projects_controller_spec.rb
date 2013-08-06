@@ -66,11 +66,11 @@ describe ProjectsController do
 
     describe "GET show" do
       it "assigns the requested project as @project" do
-        User.should_receive(:find).with(:all).and_return([Factory(:user)])
+        User.should_receive(:active).and_return([Factory(:user)])
         get :show, :id => @project.id
         verify_authorization_successful
         assigns[:project].should ==  @project
-        assigns[:all_users].should_not be_empty
+        assigns[:active_users].should_not be_empty
       end
     end
 
