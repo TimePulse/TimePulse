@@ -14,7 +14,6 @@ GIT
       rest-client (~> 1.6.0)
 
 GEM
-  remote: http://lrdesign:quiS6Nef@gems.lrdesign.com/
   remote: http://rubygems.org/
   specs:
     actionmailer (3.2.12)

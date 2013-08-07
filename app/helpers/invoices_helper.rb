@@ -22,6 +22,7 @@ module InvoicesHelper
     end
     content_tag(:tfoot) do
       content_tag(:th, 'Total') +
+      content_tag(:th, '&nbsp;', nil, false) +
       content_tag(:th, totals[:hours]) +
       content_tag(:th, number_to_currency(totals[:total], :precision => 2))
     end
