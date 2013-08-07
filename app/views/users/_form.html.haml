@@ -9,4 +9,7 @@
   = f.labeled_input :pivotal_name, :comment => "(unneccesary if name = user's full name on pivotal)"
   = f.labeled_input :password
   = f.labeled_input :password_confirmation
+  - if current_user.admin?
+    = f.labeled_input :inactive do
+      = f.check_box :inactive
   = f.unlabeled_submit

@@ -4,7 +4,7 @@ describe "/projects/show" do
   include ProjectsHelper
   before(:each) do
     assign(:project, @project = Factory(:project))
-    assign(:all_users, [Factory(:user)])
+    assign(:active_users, [Factory(:user)])
   end
 
   it "succeeds" do
