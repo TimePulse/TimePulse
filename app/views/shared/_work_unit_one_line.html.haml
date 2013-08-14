@@ -13,4 +13,7 @@
       = link_to 'Edit', edit_work_unit_path(work_unit)
       = link_to 'Delete', work_unit_path(work_unit), :method => :delete, :confirm => "Are you sure?"
       = tooltip_for(work_unit, token)
-
+    %td
+      = form_for work_unit, :html => { :class => :work_unit_billable_form } do |f|
+        = f.check_box :billable, :class => :work_unit_billable_checkbox
+        = f.unlabeled_submit
