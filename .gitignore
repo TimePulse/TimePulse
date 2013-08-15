@@ -62,3 +62,5 @@ coverage/
 db_backups/
 *.esproj
 .sass-cache
+.ruby-version
+.ruby-gemset
