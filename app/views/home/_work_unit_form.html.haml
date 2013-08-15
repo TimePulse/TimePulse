@@ -9,12 +9,16 @@
       = f.error_messages
       = f.hidden_field  :calculate, :value => true
 
+      = f.labeled_input(:billable) do
+        = f.check_box(:billable)
+
       = labeled_datetimepicker_field f, :start_time
       = labeled_datetimepicker_field f, :stop_time
 
       = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
       = f.hidden_field :time_zone
       = f.labeled_input :notes
+ 
       = f.unlabeled_submit "Save Changes"
   - else
     %p
