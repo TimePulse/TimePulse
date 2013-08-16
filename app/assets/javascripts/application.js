@@ -15,9 +15,6 @@ $('document').ready( function(){
   if ($('.rates-users-container').size() > 0) {
     setupRatesUsersDragDrop();
   }
-  if ($('.work_unit_billable_form').size() > 0) {
-    setupWorkUnitBillableForm();
-  }
   if ($('select#project_parent_id').val() != 1) { // Not sure the best way to not hard code the ID in this app
     $('fieldset.rates').hide();
   }
@@ -69,9 +66,6 @@ Ninja.orders(function(Ninja){
             $(target).addClass("toggle-target");
             }},
         '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "andDoDefault"] },
-
-        '.work_unit_billable_form': Ninja.submitsAsAjax(),
-	'.work_unit_billable_checkbox': Ninja.submitsAsAjax(),
 
         '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
             busyElement: function(elem){ return $('#timeclock')}
@@ -137,13 +131,6 @@ Ninja.orders(function(Ninja){
 
     Ninja.go();
   })
-
-function setupWorkUnitBillableForm() {
-  $('.work_unit_billable_form').each(function() {
-    $form = $(this);
-    $form.find('select, input[type=submit]').hide();
-  });
-}
 
 function setupRatesUsersDragDrop() {
   $('.rates-users-container').each(function() {
