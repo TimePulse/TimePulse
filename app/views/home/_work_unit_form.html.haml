@@ -10,7 +10,10 @@
       = f.hidden_field  :calculate, :value => true
 
       = f.labeled_input(:billable) do
-        = f.check_box(:billable)
+        - if current_project.billable?
+          = f.check_box(:billable, :checked => true)
+        - else
+          = f.check_box(:billable, :checked => false)
 
       = labeled_datetimepicker_field f, :start_time
       = labeled_datetimepicker_field f, :stop_time

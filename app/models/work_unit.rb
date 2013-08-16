@@ -137,6 +137,6 @@ class WorkUnit < ActiveRecord::Base
   end
 
   def set_defaults
-    self.billable = project.billable if project
+    self.billable = project.billable if project && self.billable.nil?
   end
 end
