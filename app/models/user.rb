@@ -122,6 +122,10 @@ class User < ActiveRecord::Base
     (project.rates & rates).last
   end
 
+  def active_for_authentication?
+    super && !self.inactive?
+  end
+
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
