@@ -1,7 +1,7 @@
 module ProjectsHelper
   def project_parent_selector(form)
     form.select(:parent_id,
-    Project.find(:all).collect  {|p| [p.name, p.id]}, { :include_blank => "" }
+    Project.find(:all).sort{|x,y| x.lft <=> y.lft}.collect  {|p| [p.name, p.id, p.level > 1 ? {'data-iconurl' => '/assets/icons/indent_arrow.png', 'rel' => "indention_level_#{p.level}"}:{'rel' => "indention_level_#{p.level}"}]}, { :include_blank => "" }
     )
   end
 

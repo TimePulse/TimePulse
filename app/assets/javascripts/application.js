@@ -5,6 +5,7 @@
 //= require jquery.tools.min
 //= require foundation
 //= require ajax_flash
+//= require jquery.selectBoxIt
 
 $('document').ready( function(){
   startClock();
@@ -21,6 +22,9 @@ $('document').ready( function(){
 
   $('.hide-initially').removeClass('hide-initially');
 });
+
+  $("Select#project_parent_id").selectBoxIt({
+  });
 
 Ninja.orders(function(Ninja){
     //ajaxSubmitConfigs = {
