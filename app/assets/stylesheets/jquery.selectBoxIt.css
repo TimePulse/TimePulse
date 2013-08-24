@@ -14,6 +14,7 @@
   position: relative;
   display: inline-block;
   vertical-align: top;
+  height: 22px;
 }
 
 /* Styles that apply to all SelectBoxIt elements */
@@ -41,6 +42,10 @@
   overflow: hidden;
   display: block;
   position: relative;
+  border: 1px solid #999999;
+  border-color: #999999 #999999 #999999;
+  border-bottom-color: #999999;
+
 }
 
 /* Height and Vertical Alignment of Text */
@@ -99,26 +104,38 @@
   box-shadow: none;
 }
 
-li[rel=indention_level_1] {
-  text-indent: 10px;
-  font-weight: bold;
+.selectboxit-btn .selectboxit-option-icon-url {
+  background-image: none !important;
+  background-size: 0px 0px !important;
+  width: 0px !important;
 }
 
-li[rel=indention_level_2] {
+.indention_level_0 .selectboxit-option-anchor {
+  font-weight: bolder;
+}
+
+.indention_level_1 .selectboxit-option-anchor {
+  font-weight: bolder;
+}
+
+.indention_level_1 .selectboxit-option-icon-container {
   text-indent: 15px;
-  font-weight: bold;
 }
 
-li[rel=indention_level_3] {
-  text-indent: 20px;
-}
-
-li[rel=indention_level_4] {
+.indention_level_2 .selectboxit-option-icon-container{
   text-indent: 25px;
 }
 
-li[rel=indention_level_5] {
-  text-indent: 30px;
+.indention_level_3 .selectboxit-option-icon-container{
+  text-indent: 40px;
+}
+
+.indention_level_4 .selectboxit-option-icon-container{
+  text-indent: 55px;
+}
+
+.indention_level_5 .selectboxit-option-icon-container{
+  text-indent: 70px;
 }
 
 /* Individual options */
