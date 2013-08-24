@@ -32,8 +32,13 @@ class User < ActiveRecord::Base
   has_many :work_units
   has_many :bills
   has_many :activities
-  
+  has_many :rates_users
+  has_many :rates, :through => :rates_users
+
   validates_presence_of :name, :email
+
+  scope :inactive, :conditions => { :inactive => true  }
+  scope :active,   :conditions => { :inactive => false }
 
   attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user, :pivotal_name
 
@@ -85,13 +90,13 @@ class User < ActiveRecord::Base
     source ||= project
     activity_for(source).git_commits
   end
-  
+
   def pivotal_updates_for(project)
     source = project.pivotal_id_source
     source ||= project
     activity_for(source).pivotal_updates
   end
-  
+
   def current_project_hours_report
     @cphr ||= hours_report_on(current_project)
   end
@@ -112,5 +117,19 @@ class User < ActiveRecord::Base
     ProjectWorkQuery.new(work_units).find_for_project(project)
   end
 
+  def rate_for(project)
+    project = project.parent unless project.is_base_project?
+    (project.rates & rates).last
+  end
+
+  def self.find_first_by_auth_conditions(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login)
+      where(conditions).where(["lower(login) = :value OR lower(email) = :value", 
+                               { :value => login.downcase}]).first
+    else
+      where(conditions).first
+    end
+  end
 end
 

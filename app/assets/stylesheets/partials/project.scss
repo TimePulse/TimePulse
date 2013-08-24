@@ -1,0 +1,66 @@
+div.general, div.rates {
+  width: 50%;
+  float: left; }
+
+.rates {
+  table {
+    width: 100%;
+    margin-top: 1ex; }
+  caption {
+    line-height: 1.6; }
+  .actions {
+    text-align: center;
+    label {
+      display: none; } }
+  form {
+    width: 100%;
+    min-height: 2ex;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none; } }
+
+.rates-user {
+  display: inline-block;
+  margin: 0 .5em 0 0;
+  padding: .5ex .5em;
+  border: 1px solid #ccf;
+  font-weight: normal;
+  background: #fcfcff;
+  border-radius: 4px; }
+
+fieldset {
+  &.general, &.rates {
+    float: left;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    legend {
+      margin-bottom: 1ex;
+      background: none; } }
+  &.general {
+    width: 60%;
+    label {
+      width: 25%; }
+    input[type=text] {
+      width: 60%; }
+    .comment {
+      position: relative;
+      top: -1ex;
+      float: none;
+      clear: left;
+      width: auto;
+      margin-left: 27%; } }
+  &.rates {
+    width: 40%;
+    input {
+      margin: 0;
+      font-size: 1em;
+      &.rate-amount-field {
+        width: 5.5em; } }
+    tfoot {
+      display: none;
+      td {
+        text-align: right !important; } }
+    a {
+      font-weight: normal; } } }

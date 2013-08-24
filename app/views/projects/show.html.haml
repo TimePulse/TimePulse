@@ -1,34 +1,62 @@
+.general
+  %p
+    %strong Name:
+    %br
+    =h @project.name
 
-%p
-  <b>Name:</b> 
+  %p
+    %strong Account:
+    %br
+    =h @project.account
+
+  %p
+    %strong Description:
+    %br
+    =h @project.description
+
+  %p
+    %strong Github URL:
+    %br
+    =h @project.github_url
+
+  %p
+    %strong Pivotal Project ID:
+    %br
+    =h @project.pivotal_id
+
+  %p
+    = link_to 'Pull Commit History', project_github_pull_path(:project_id => @project), :method => :post
+  %p
+    = link_to 'Pull Pivotal Stories', project_pivotal_pull_path(:project_id => @project), :method => :post
+
   %br
-  =h @project.name 
-  
-%p
-  <b>Account:</b>
-  %br
-  =h @project.account 
+    = link_to 'Edit', edit_project_path(@project)  |
+    = link_to 'Back', projects_path
 
-%p
-  <b>Description:</b>
-  %br
-  =h @project.description 
-
-%p
-  <b>Github URL:</b>
-  %br
-  =h @project.github_url
-
-%p
-  <b>Pivotal Project ID:</b>
-  %br
-  =h @project.pivotal_id
-
-%p
-  = link_to 'Pull Commit History', project_github_pull_path(:project_id => @project), :method => :post
-%p
-  = link_to 'Pull Pivotal Stories', project_pivotal_pull_path(:project_id => @project), :method => :post
-
-%br
-  = link_to 'Edit', edit_project_path(@project)  |
-  = link_to 'Back', projects_path 
+.rates
+  - rates = @project.base_rates
+  - if rates.empty?
+    %p
+      %strong Rates
+      %br
+      None
+  - else
+    %table.rates
+      %caption Rates
+      %thead
+        %tr
+          %th Name
+          %th Amount
+          %th Members
+      %tbody
+        - rates.each do |rate|
+          %tr
+            %td #{h rate.name}
+            %td #{h rate.amount}
+            %td
+              - if @project.is_base_project?
+                = form_for rate, :method => :put, :html => {:class => 'rates-users-container hide-initially'} do |f|
+                  = select_tag :users, options_for_rates_users(rate), :multiple => true
+                  = f.submit 'Update'
+              - else
+                = rate.users.map { |user| user.name }.join ', '

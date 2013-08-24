@@ -21,6 +21,19 @@ describe "/bills/new" do
         end
       end
     end
+
+    describe "when inactive users are present" do
+
+      let! :inactive_user do 
+        Factory(:user, :inactive => true) 
+      end
+      
+      it "should only show active users" do
+        render
+        rendered.should have_selector("option[value='#{user.id}']")
+        rendered.should_not have_selector("option[value='#{inactive_user.id}']")
+      end
+    end
   end
 
   describe "with user specified" do

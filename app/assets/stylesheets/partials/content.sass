@@ -17,7 +17,13 @@ $bcolor: #666
     :padding 1em
     +clearfix
 
+caption
+  :padding-bottom 1ex
+  :text-align left
+  :font-weight bold
+
 table.listing
+  :max-width 100%
   :border-collapse collapse
   :margin 1em 0
   :border 1px solid black
@@ -26,6 +32,7 @@ table.listing
   td, th
     :border 1px solid black
     :padding 3px .25em
+    :overflow hidden
   th
     :font-weight bold
     :background $contrast_background_color
@@ -43,7 +50,6 @@ table.listing
     :background-color #ff9
 
   tr.one_line td
-    :white-space nowrap
     :overflow hidden
   td.date, td.tools
     :white-space nowrap

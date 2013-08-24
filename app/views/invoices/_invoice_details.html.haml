@@ -1,9 +1,11 @@
+%hr
 
-%h2 Hours Report:
+%h2 Hours Report
 %table.listing
   %tr
     %th Project
     %th Hours
+    -# TODO: move some of this logic to a helper, or better yet, to a model method.
     - sanity_sum = 0
     - @invoice.work_units.collect{ |wu| wu.project if wu.project.clockable }.compact.uniq.each do |proj|
       - hrs = ProjectWorkQuery.new(@invoice.work_units).find_for_project(proj).sum(:hours)
@@ -17,7 +19,9 @@
       %td
         %b= sanity_sum
 
-%hr Work Unit Details:
+%hr
+
+%h2 Work Unit Details
 %table.listing
   - @invoice.work_units.each do |wu|
     = content_tag_for(:tr, wu) do

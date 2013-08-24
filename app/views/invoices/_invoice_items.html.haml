@@ -1,0 +1,16 @@
+%h2 Invoice Items
+%table.listing.invoice-items
+  %thead
+    %tr
+      %th Name
+      %th Rate
+      %th Total Hours
+      %th Total Cost
+  = invoice_item_footer @invoice.invoice_items
+  %tbody
+    - @invoice.invoice_items.each do |item|
+      %tr
+        %td= item.name
+        %td= number_to_currency item.amount, :precision => 2
+        %td= item.hours
+        %td= number_to_currency item.total, :precision => 2

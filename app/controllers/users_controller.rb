@@ -31,6 +31,9 @@ class UsersController < Devise::RegistrationsController
 
   def update
     nil_unused_params
+    if current_user.admin? && params[:user][:inactive] 
+      @user.update_attribute( :inactive, params[:user][:inactive] )
+    end
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
     end
