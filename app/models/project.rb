@@ -37,11 +37,11 @@ class Project < ActiveRecord::Base
   # default_scope :joins => :client
 
   validates_presence_of :name
-  cascades :client, :account, :clockable, :github_url, :pivotal_id
+  cascades :account, :clockable, :github_url, :pivotal_id
 
   attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived, :github_url, :pivotal_id, :rates_attributes
 
-  before_save :no_rates_for_children
+  before_save :no_rates_for_children, :cascade_client
 
   def is_base_project?
     parent == root
@@ -55,6 +55,20 @@ class Project < ActiveRecord::Base
 
   def no_rates_for_children
     rates.clear if parent != root
+  end
+
+  def cascade_client
+    if self.client_id.nil?
+      @parent = Project.find_by_id(self.parent_id)
+      unless @parent.nil?
+        @parent.self_and_ancestors.reverse.each do |a|
+          unless a.client_id.nil?
+            self.client_id = a.client_id
+            break
+          end
+        end
+      end
+    end
   end
 end
 
