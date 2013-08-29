@@ -2,6 +2,7 @@ require 'hhmm_to_decimal'
 
 class WorkUnitsController < ApplicationController
   include HhmmToDecimal
+  include UsersHelper
 
   before_filter :convert_hours_from_hhmm, :only => [ :update, :create ]
 
@@ -29,19 +30,17 @@ class WorkUnitsController < ApplicationController
 
   # POST /work_units
   def create
-#    unless current_user.reload.recent_projects.includes? current_project
-#      expire_fragment(work_unit_cache_key_for_user)
-#    end
-
     parse_date_params
     @work_unit = WorkUnit.new(params[:work_unit])
     @work_unit.user = current_user
     compute_some_fields
     @work_unit.project ||= current_user.current_project
 
+
     respond_to do |format|
       if @work_unit.save
         flash[:notice] = 'WorkUnit was successfully created.'
+        #expire_fragment("work_unit_cache_#{current_user.name}_#{current_user.id}")
         format.html { redirect_to(@work_unit) }
         format.js {
           @work_unit = WorkUnit.new

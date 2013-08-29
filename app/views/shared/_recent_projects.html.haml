@@ -1,4 +1,5 @@
 = page_block("Recent Projects", :id => "recent_projects") do
   %table.recent_projects
     %tr
+    -# cache("work_unit_cache_#{current_user.name}_#{current_user.id}") do
     = render :partial => "shared/project_flat", :collection => current_user.reload.recent_projects, :as => :project

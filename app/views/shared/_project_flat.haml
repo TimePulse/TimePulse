@@ -1,4 +1,4 @@
--# cache(work_unit_cache_key_for_user) do
+-# cache("work_unit_cache_#{current_user.name}_#{current_user.id}") do
 - token = SecureRandom.hex(8)
 = content_tag(:tr, project, :id => token, :class => ['has_tooltip']) do
   %td
