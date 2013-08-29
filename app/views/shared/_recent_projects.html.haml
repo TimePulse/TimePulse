@@ -1,0 +1,4 @@
+= page_block("Recent Projects", :id => "recent_projects") do
+  %table.recent_projects
+    %tr
+    = render :partial => "shared/project_flat", :collection => current_user.reload.recent_projects, :as => :project

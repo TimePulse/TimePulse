@@ -72,7 +72,9 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "I select Project 2 from the project picker" do
-    click_link "switch_to_project_#{project_2.id}"
+    within ("#project_picker") do
+      click_link "switch_to_project_#{project_2.id}"
+    end
   end
 
   it "should show the work unit in the dashboard" do

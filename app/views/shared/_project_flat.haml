@@ -1,0 +1,9 @@
+-# cache(work_unit_cache_key_for_user) do
+- token = SecureRandom.hex(8)
+= content_tag(:tr, project, :id => token, :class => ['has_tooltip']) do
+  %td
+    .project_name
+      %span.nobr= switch_to_project_link(project, short_name_with_client(project))
+    .tools
+      - if project.clockable?
+        = clock_in_widget(project, :icon)

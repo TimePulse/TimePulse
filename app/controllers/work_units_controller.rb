@@ -29,6 +29,10 @@ class WorkUnitsController < ApplicationController
 
   # POST /work_units
   def create
+#    unless current_user.reload.recent_projects.includes? current_project
+#      expire_fragment(work_unit_cache_key_for_user)
+#    end
+
     parse_date_params
     @work_unit = WorkUnit.new(params[:work_unit])
     @work_unit.user = current_user
