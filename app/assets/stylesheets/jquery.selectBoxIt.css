@@ -119,23 +119,23 @@
 }
 
 .indention_level_1 .selectboxit-option-icon-container {
-  text-indent: 15px;
+  padding-left: 10px;
 }
 
 .indention_level_2 .selectboxit-option-icon-container{
-  text-indent: 25px;
+  padding-left: 20px;
 }
 
 .indention_level_3 .selectboxit-option-icon-container{
-  text-indent: 40px;
+  padding-left: 35px;
 }
 
 .indention_level_4 .selectboxit-option-icon-container{
-  text-indent: 55px;
+  padding-left: 50px;
 }
 
 .indention_level_5 .selectboxit-option-icon-container{
-  text-indent: 70px;
+  padding-left: 65px;
 }
 
 /* Individual options */
