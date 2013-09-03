@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 shared_steps "for a project rates task" do |opt_hash|
+  include ChosenSelect
   opt_hash ||= {}
 
   let :admin do
@@ -49,7 +50,7 @@ steps "adding rates to a project", :type => :feature do
   end
 
   it "should have empty fields for a new rate" do
-    select 'root', :from => 'project[parent_id]'
+    select_from_chosen("root", {:from =>'project_parent_id' })
 
     page.should have_field('project[rates_attributes][0][name]')
     page.should have_field('project[rates_attributes][0][amount]')
