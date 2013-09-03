@@ -4,6 +4,7 @@ steps "clock in and out on projects", :type => :feature do
 
   let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
   let! :project_1 do Factory(:project, :client => client_1) end
+  let! :project_2 do Factory(:project, :client => client_1, :billable => false ) end
   let! :user      do Factory(:user, :current_project => project_1) end
 
   let! :work_units do
@@ -138,4 +139,51 @@ steps "clock in and out on projects", :type => :feature do
     end
   end
 
+  it "user clocks in on a billable project" do
+    within "#project_picker" do
+      click_link "clock_in_on_project_#{project_1.id}"
+    end
+  end
+
+  it "should have created a billable work unit in the DB" do
+    within "#timeclock" do
+      page.should have_checked_field "work_unit_billable"
+    end
+    WorkUnit.last.billable?.should == true
+  end
+
+  it "should be able to make a work unit non-billable" do
+    within "#timeclock" do
+      uncheck "work_unit_billable"
+      click_button "Clock Out"
+    end
+    within "#timeclock" do
+      page.should have_content("You are not clocked in.")
+    end
+    WorkUnit.last.billable?.should == false
+  end
+  
+  it "user clocks in on a non-billable project" do
+    within "#project_picker" do
+      click_link "clock_in_on_project_#{project_2.id}"
+    end
+  end
+
+  it "should have created a non-billable work unit in the DB" do
+    within "#timeclock" do
+      page.should have_unchecked_field "work_unit_billable"
+    end
+    WorkUnit.last.billable?.should == false
+  end
+
+  it "should be able to make a work unit billable" do
+    within "#timeclock" do
+      check "work_unit_billable"
+      click_button "Clock Out"
+    end
+    within "#timeclock" do
+      page.should have_content("You are not clocked in.")
+    end
+    WorkUnit.last.billable?.should == true
+  end
 end

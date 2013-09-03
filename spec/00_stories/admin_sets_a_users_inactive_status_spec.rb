@@ -5,8 +5,15 @@ steps "Admin sets a user's inactive status", :type => :feature do
   let! :user_2 do Factory(:user, :name => "Foo Bar 2", :inactive => true) end
   let! :admin do Factory(:admin) end
 
-  it "should login as the admin" do
+  it "should not allow inactive user to log in" do
     visit root_path
+    fill_in "Login", :with => user_2.login
+    fill_in "Password", :with => user_2.password
+    click_button 'Login'
+    page.should_not have_content "Logout"
+  end
+
+  it "should login as the admin" do
     fill_in "Login", :with => admin.login
     fill_in "Password", :with => admin.password
     click_button 'Login'
