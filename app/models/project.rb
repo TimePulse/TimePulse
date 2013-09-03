@@ -58,15 +58,9 @@ class Project < ActiveRecord::Base
   end
 
   def cascade_client
-    if self.client_id.nil?
-      @parent = Project.find_by_id(self.parent_id)
-      unless @parent.nil?
-        @parent.self_and_ancestors.reverse.each do |a|
-          unless a.client_id.nil?
-            self.client_id = a.client_id
-            break
-          end
-        end
+    if self.client_id.nil? and parent
+      parent.self_and_ancestors.reverse.find do |a|
+        self.client_id = a.client_id unless a.client_id.nil?
       end
     end
   end
