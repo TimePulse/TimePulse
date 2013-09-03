@@ -35,8 +35,4 @@ Factory.define :admin, :parent => :user do |u|
   u.groups{  [Group.find_by_name("Administration"), Group.find_by_name("Registered Users")] }
 end
 
-Factory.define :inactive, :parent => :user do |u|
-  u.inactive true
-end
-
 
