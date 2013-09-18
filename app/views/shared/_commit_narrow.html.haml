@@ -7,4 +7,4 @@
       = truncate(commit.reference_2, :length => 6)
     %td.tools.nobr
       = truncate(commit.description, :length => 25)
-      = commit_tooltip_for(commit, token)
+      = commit_tooltip_for(commit, token).html_safe

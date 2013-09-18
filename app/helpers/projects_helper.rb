@@ -24,7 +24,7 @@ module ProjectsHelper
   def project_name_with_client(project, short=false)
     return unless project
     String.new.tap do |str|
-      str << "[#{project.client.abbreviation.try(:upcase)}]&nbsp;" unless project.client.nil?
+      str << "[#{project.client.abbreviation.try(:upcase)}] " unless project.client.nil?
       str << (short ? truncate(project.name, :length => 20, :omission => '...') : project.name)
     end.html_safe
   end
