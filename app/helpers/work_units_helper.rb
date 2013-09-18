@@ -15,10 +15,10 @@ module WorkUnitsHelper
          [
           ["Project:",    short_name_with_client(work_unit.project)],
           ["Notes:",      work_unit.notes],
-          ["Hours:",      work_unit.hours],
+          ["Hours:",      work_unit.hours.to_s],
           ["Started:",    work_unit.start_time.nil? ? "-" : work_unit.start_time.to_s(:short_datetime)],
           ["Finished:",   work_unit.stop_time.nil? ? "-" : work_unit.stop_time.to_s(:short_datetime)]
-          ].map{ |line| "<dt>#{line[0]}</dt><dd>#{line[1]}</dd>".html_safe }.join().html_safe
+          ].map{ |line| "<dt>#{CGI::escapeHTML(line[0])}</dt><dd>#{CGI::escapeHTML(line[1])}</dd>".html_safe }.join().html_safe
       end
     end
   end
@@ -32,7 +32,7 @@ module WorkUnitsHelper
           ["Commit ID:",      commit.reference_1],
           ["Branch",    commit.reference_2],
           ["Time:",   commit.time.to_s(:short_datetime)]
-          ].map{ |line| "<dt>#{line[0]}</dt><dd>#{line[1]}</dd>".html_safe }.join().html_safe
+          ].map{ |line| "<dt>#{CGI::escapeHTML(line[0])}</dt><dd>#{CGI::escapeHTML(line[1])}</dd>".html_safe }.join().html_safe
       end
     end
   end
@@ -46,7 +46,7 @@ module WorkUnitsHelper
           ["Story ID:",      pivotal.reference_1],
           ["Current State",    pivotal.reference_2],
           ["Time:",   pivotal.time.to_s(:short_datetime)]
-          ].map{ |line| "<dt>#{line[0]}</dt><dd>#{line[1]}</dd>".html_safe }.join().html_safe
+          ].map{ |line| "<dt>#{CGI::escapeHTML(line[0])}</dt><dd>#{CGI::escapeHTML(line[1])}</dd>".html_safe }.join().html_safe
       end
     end
   end
