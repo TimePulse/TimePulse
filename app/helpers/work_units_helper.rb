@@ -9,46 +9,81 @@ module WorkUnitsHelper
     current_user.current_work_unit if current_user
   end
 
-  def tooltip_for(work_unit, token)
-    content_tag( :div, :id => "tooltip_for_#{token}", :class => "lrd-tooltip") do
-      content_tag(:dl) do
-         [
-          ["Project:",    short_name_with_client(work_unit.project)],
-          ["Notes:",      work_unit.notes],
-          ["Hours:",      work_unit.hours.to_s],
-          ["Started:",    work_unit.start_time.nil? ? "-" : work_unit.start_time.to_s(:short_datetime)],
-          ["Finished:",   work_unit.stop_time.nil? ? "-" : work_unit.stop_time.to_s(:short_datetime)]
-          ].map{ |line| "<dt>#{CGI::escapeHTML(line[0] || "")}</dt><dd>#{CGI::escapeHTML(line[1] || "")}</dd>".html_safe }.join().html_safe
+  class TracksTooltipHelper
+
+    def initialize(item, token)
+      @item = item
+      @token = token
+    end
+
+    attr_reader :item, :token
+
+    def table_html
+      data_hash.keys.map do |key|
+        "<dt>#{CGI::escapeHTML(key || "")}</dt><dd>#{CGI::escapeHTML(data_hash[key] || "")}</dd>".html_safe
+      end.join().html_safe
+    end
+
+    def to_html
+      content_tag( :div, :id => "tooltip_for_#{token}", :class => "lrd-tooltip") do
+        content_tag(:dl) do
+          table_html
+        end
       end
     end
+  end
+
+  class WorkUnitToolTipHelper < TracksTooltipHelper
+    def formatted_work_unit_time(time)
+      time.nil? ? "-" : time.to_s(:short_datetime)
+    end
+
+    def data_hash
+      {
+        "Project:"  =>  short_name_with_client(item.project),
+        "Notes:"    =>  item.notes,
+        "Hours:"    =>  item.hours.to_s,
+        "Started:"  =>  formatted_work_unit_time(item.start_time),
+        "Finished:" =>  formatted_work_unit_time(item.stop_time)
+      ]
+    end
+
+  end
+
+  class ActivityTooltipHelper < TracksTooltipHelper
+    def data_hash
+      {
+        labels[0]   =>  short_name_with_client(item.project),
+        labels[1]   =>  item.description,
+        labels[2]   =>  item.reference_1],
+        labels[3]   =>  item.reference_2],
+        labels[4]   =>  item.time.to_s(:short_datetime)]
+      }
+    end
+  end
+
+  class CommitTooltipHelper < TracksTooltipHelper
+    def labels
+      ["Project:", "Message:", "Commit ID:", "Branch", "Time:"]
+    end
+  end
+
+  class PivotalTooltipHelper < TracksTooltipHelper
+    def labels
+      ["Project:", "Description:", "Story ID:", "Current State", "Time:"]
+    end
+  end
+
+  def tooltip_for(work_unit, token)
+    WorkUnitTooltipHelper.new(work_unit, token).to_html
   end
 
   def commit_tooltip_for(commit, token)
-    content_tag( :div, :id => "tooltip_for_#{token}", :class => "lrd-tooltip") do
-      content_tag(:dl) do
-         [
-          ["Project:",    short_name_with_client(commit.project)],
-          ["Message:",      commit.description],
-          ["Commit ID:",      commit.reference_1],
-          ["Branch",    commit.reference_2],
-          ["Time:",   commit.time.to_s(:short_datetime)]
-          ].map{ |line| "<dt>#{CGI::escapeHTML(line[0] || "")}</dt><dd>#{CGI::escapeHTML(line[1] || "")}</dd>".html_safe }.join().html_safe
-      end
-    end
+    CommitTooltipHelper.new(commit, token).to_html
   end
 
   def pivotal_tooltip_for(pivotal, token)
-    content_tag( :div, :id => "tooltip_for_#{token}", :class => "lrd-tooltip") do
-      content_tag(:dl) do
-         [
-          ["Project:",    short_name_with_client(pivotal.project)],
-          ["Description:",      pivotal.description],
-          ["Story ID:",      pivotal.reference_1],
-          ["Current State",    pivotal.reference_2],
-          ["Time:",   pivotal.time.to_s(:short_datetime)]
-          ].map{ |line| "<dt>#{CGI::escapeHTML(line[0] || "")}</dt><dd>#{CGI::escapeHTML(line[1] || "")}</dd>".html_safe }.join().html_safe
-      end
-    end
+    ActivityTooltipHelper.new(pivotal, token).to_html
   end
 
   def widget_links(work_unit)
