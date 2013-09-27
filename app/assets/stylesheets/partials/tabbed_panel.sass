@@ -1,29 +1,35 @@
-.tabbed_panel     
+@import constants.sass
+.tabbed_panel
   :padding 0px
   :clear both
-  :width 100%     
+  :width 100%
   :margin-top 1em
+
+@media screen, projection, mobile
+  .pane_print_header
+    :display none
+
+.panes
+  +bottom_round
 
 .pane
   :padding 0.5em 0
+  +bottom_round
 
-.pane_selected 
+.pane_selected
   :display block
-  
-.pane_unselected 
+
+.pane_unselected
   :display none
 
 .panes
   :clear both
-  :border-left solid 1px #CCC
-  :border-bottom solid 1px #CCC
-  :border-top solid 1px #999
-  :border-right solid 1px #999   
-  :background-color white
-  :padding 10px
-  :margin 0
-  
-li.tab 
+  :background-color transparent
+  :border-top 1px solid $primary_dark_1
+  :padding 1em 0
+  :margin 0 0 1em 0
+
+li.tab
   :position relative
   :top 1px
   :float left
@@ -31,31 +37,29 @@ li.tab
   :margin 0px 3px 0px 0px
   :font bold 1.2em sans-serif
   :list-style none
-  :border-left solid 1px #CCC
-  :border-bottom solid 1px #999
-  :border-top solid 1px #999
-  :border-right solid 1px #999
   :-moz-user-select none
   :-khtml-user-select none
   :cursor pointer
-  :font-size 11px        
+  :font-size 11px
+  +top_round
 
-li.tab_selected 
-  :background-color white
+li.tab_selected
+  :background-color transparent
+  :border 1px solid $primary_dark_1
   :border-bottom 1px solid white
 
-li.tab_unselected 
-  :background-color #aac
+li.tab_unselected
+  :background-color $primary_light_2
 
-li.tab_unselected:hover 
-  :background-color #A77
+li.tab_unselected:hover
+  :background-color $primary_light_2
 
-li.tab a 
+li.tab a
   :display block
   :float left
   :padding 4px 10px
   :color black
   :text-decoration none
 
-li.tab a:hover 
-  :color #009    
+li.tab a:hover
+  :color #009

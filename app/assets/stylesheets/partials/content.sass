@@ -25,24 +25,35 @@ table.listing
   :border-collapse collapse
   :border-width 0
   :margin 1em 0
+  :background transparent
 
   td, th
     :padding 3px .25em
     :overflow hidden
+    :border 1px dotted $primary_light_2
+  td:last-child, th:last-child
+    :border-right none
+  td:first-child, th:first-child
+    :border-left none
+
+  tr:last-child
+    th, td
+      :border-bottom none
+
   th
     :font-weight bold
     :border-width 0 1px 1px 1px
     :border-style dotted
-    :border-color #ccc
+    :border-color $primary_dark_2
   th:first-child
     :border-left-width 0
   th:last-child
     :border-right-width 0
 
-  tr.odd
-    :background #fff
-  tr.even
-    :background #eee
+  tr:nth-of-type(odd)
+    :background transparent
+  tr:nth-of-type(even)
+    :background transparent
   tr.info td
     :border-top-width 2px
   tr.description td
