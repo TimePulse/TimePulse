@@ -3,19 +3,18 @@
 #nav, #admin_nav
   a
     :text-decoration none
-    :font-weight bold
     :color black
     :display block
     :padding 2px 2em
+  a:before
+    :content "> "
   ul li
     :list-style none
-    :font-weight bold
     :display block
     :margin 0
     :color black
 #nav
   :width 100%
-  :background $nav_background_color
   :color black
 
   ul
@@ -27,8 +26,6 @@
   ul li:hover
     :background $nav_hover_color
 
-  ul.right
-    :float right
 
 
 .nav, #nav, #admin_nav

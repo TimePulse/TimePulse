@@ -3,22 +3,21 @@
 
 body
   :font-family helvetica, "sans-serif"
-  :background $page_background image-url('background.png') top left repeat !important
+  :background-color white
   :border 0
   :margin 0
   :padding 0
   :font-size 12px
 
-#inset
-  :background image-url('top_background.png') top left repeat-x
 
 #wrap
   @include grid-row
-  
+
+#header-wrap
+  :background $contrast_background_color
 #header
   :height 40px
   :margin-bottom 1px
-  :color white
 
 #message
   :text-align center
