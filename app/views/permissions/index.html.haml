@@ -16,5 +16,5 @@
       %td= permission.action || "*"
       %td= permission.subject_id || "*"
       %td
-        = link_to_if_admin_authorized("Edit", edit_permission_path(permission))
-        = link_to_if_admin_authorized("Delete", permission_path(permission), :method => :delete)
+        = link_to_if_admin_authorized("Edit", edit_permission_path(permission), class: 'actions edit')
+        = link_to_if_admin_authorized("Delete", permission_path(permission), :method => :delete, class: 'actions delete')

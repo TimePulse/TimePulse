@@ -1,0 +1,21 @@
+@import 'compass';
+@import 'icons/*.png';
+
+.actions {
+  display: inline-block;
+  overflow: hidden;
+  width: icons-sprite-width(show_small);
+  height: icons-sprite-height(show_small);
+  margin: 0 .5em;
+  text-indent: 101%;
+  white-space: nowrap;
+  &.show{
+    @include icons-sprite(show_small);
+  }
+  &.edit {
+    @include icons-sprite(edit_small);
+  }
+  &.delete {
+    @include icons-sprite(delete_small);
+  }
+}

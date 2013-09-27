@@ -32,6 +32,7 @@ group :assets do
   gem 'zurb-foundation', '~> 4.0.0'
   gem 'quiet_assets'
   gem 'turbo-sprockets-rails3'
+  gem 'compass-rails'
 
 end
 
