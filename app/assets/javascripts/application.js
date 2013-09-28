@@ -93,6 +93,12 @@ Ninja.orders(function(Ninja){
             $(elem).val(hours_format(task_elapsed))
           }
         },
+        '#timeclock a#override_trigger': {
+          click: function(evnt, elem) {
+            $('#timeclock #overide_trigger').hide();
+            $('#timeclock #overrides').slideDown();
+          }
+        },
         '.has_tooltip': {
           transform: function(elem){
             $(elem).tooltip({

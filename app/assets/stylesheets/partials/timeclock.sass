@@ -2,7 +2,12 @@
 $labelwidth: 10em
 $ddmargins: 0.5em
 
-#timeclock
+#timeclock.block
+  :background $secondary_light_1
+
+  h2
+    :background $secondary_light_2
+    :text-align center
   .block_content
     display: block
 
@@ -17,16 +22,41 @@ $ddmargins: 0.5em
   td, th
     :padding 2px 4px
     :overflow hidden
+  form
+    :background transparent
+    :padding 0.5em 1em
+    #overrides
+      :display none
+
+  button, .button
+    :text-align center
+    :background $secondary_med
+    :border 2px solid $secondary_dark_2
+    :color black
+    :width 100%
+    +round
+
+    &:hover
+      :background $secondary_dark_2
+      :color white
+
+
+  .text_content
+    :padding 0.5em 1em
 
   #task_elapsed
+    :margin 0.5em 0.5em 0 0.5em
     :text-align center
     :font-size 24px
     :font-family 'DigitaldreamFatRegular', serif
-    :color #0f0
-    :background #300
-    :border 2px solid green
+    :color $secondary_med
+    :background black
+    :border 2px solid $secondary_dark_2
     :padding 0 5px 7px 5px
 
+  #details
+    :text-align center
+    :margin-top 0.25em
 
   label
     :font-weight bold
@@ -47,7 +77,6 @@ $ddmargins: 0.5em
       :display inline
       :font-style italic
       :margin-left 1em
-    select
-      :width 20em
     input
       :margin-right .5em
+      :width 65%

@@ -1,12 +1,10 @@
 @import constants.sass
 
-$bcolor: #666
 
 #content
   :background white
 
   h1
-    :border-bottom 1px $bcolor solid
     :padding .25em
     :color $title_text_color
     :margin-bottom 0
@@ -50,6 +48,7 @@ table.listing
   th:last-child
     :border-right-width 0
 
+  /* needed to override foundation defaults */
   tr:nth-of-type(odd)
     :background transparent
   tr:nth-of-type(even)
