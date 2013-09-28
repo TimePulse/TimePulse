@@ -19,16 +19,21 @@ caption
   :font-weight bold
 
 table.listing
-  :max-width 100%
+  :width 100%
   :border-collapse collapse
   :border-width 0
   :margin 1em 0
   :background transparent
 
   td, th
-    :padding 3px .25em
+    :padding .5em
     :overflow hidden
-    :border 1px dotted $primary_light_2
+    :border-left 1px dotted $primary_light_2
+    :border-right 1px dotted $primary_light_2
+
+  td.numeric
+    :text-align right
+
   td:last-child, th:last-child
     :border-right none
   td:first-child, th:first-child
@@ -37,6 +42,8 @@ table.listing
   tr:last-child
     th, td
       :border-bottom none
+  tr:hover
+    :background $primary_ultralight
 
   th
     :font-weight bold

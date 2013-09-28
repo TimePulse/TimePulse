@@ -3,7 +3,7 @@
   = content_tag(:tr, work_unit, :id => token, :class => ['narrow', 'has_tooltip']) do
     %td
       %span.nobr= short_name_with_client(work_unit.project)
-    %td
+    %td.numeric
       = "%.2f" % work_unit.hours
     %td.tools.nobr
       = link_to 'Edit', edit_work_unit_path(work_unit)
