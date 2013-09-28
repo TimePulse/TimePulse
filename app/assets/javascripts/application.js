@@ -95,7 +95,7 @@ Ninja.orders(function(Ninja){
         },
         '#timeclock a#override_trigger': {
           click: function(evnt, elem) {
-            $('#timeclock #overide_trigger').hide();
+            $('#timeclock #override_trigger').hide();
             $('#timeclock #overrides').slideDown();
           }
         },

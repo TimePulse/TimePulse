@@ -9,8 +9,8 @@
   .pane_print_header
     :display none
 
-.panes
-  +bottom_round
+
+@mixin bottom_round
 
 .pane
   :padding 0.5em 0
@@ -41,7 +41,8 @@ li.tab
   :-khtml-user-select none
   :cursor pointer
   :font-size 11px
-  +top_round
+  :border-top-left-radius $rounder_radius
+  :border-top-right-radius $rounder_radius
 
 li.tab_selected
   :background-color transparent

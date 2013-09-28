@@ -6,7 +6,7 @@ $ddmargins: 0.5em
   :background $secondary_light_1
 
   h2
-    :background $secondary_light_2
+    :background $secondary_med
     :text-align center
   .block_content
     display: block
@@ -28,6 +28,9 @@ $ddmargins: 0.5em
     #overrides
       :display none
 
+    input
+      :margin .5em 0
+
   button, .button
     :text-align center
     :background $secondary_med
@@ -44,9 +47,23 @@ $ddmargins: 0.5em
   .text_content
     :padding 0.5em 1em
 
+  #description
+    :margin-bottom 0.5em
+    +clearfix
+  #project_name
+    :float left
+  #billable
+    :display block
+    :float right
+    label
+      :position relative
+      :top 3px
+      :min-width 0
+    input
+      :margin 0 .25em
   #task_elapsed
-    :margin 0.5em 0.5em 0 0.5em
     :text-align center
+    :margin-bottom 0
     :font-size 24px
     :font-family 'DigitaldreamFatRegular', serif
     :color $secondary_med

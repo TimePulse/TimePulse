@@ -1,22 +1,21 @@
 = page_block("Timeclock", :id => "timeclock") do
   - if clocked_in?
     %span#tasktime{ :style => 'display:none;' }= current_work_unit.start_time.strftime('%s')
-    #task_elapsed -:--:--
-    #details
-      Since:
-      = current_work_unit.start_time.to_s(:short_datetime)
-      %br
-      = short_name_with_client(current_work_unit.project)
-
     = form_for(current_work_unit, :url => clock_out_path, :html => {:method => :delete, :class => :edit_work_unit}) do |f|
-      = f.check_box(:billable)
-      = f.label :billable
+      #description
+        #project_name= short_name_with_client(current_work_unit.project)
+        #billable
+          = f.label :billable
+          = f.check_box(:billable)
+      #task_elapsed -:--:--
       = f.text_field :notes, :size => 30, :placeholder => "Notes"
       = link_to "(+ show override tools)", '#', :id => 'override_trigger'
       %br
       #overrides
-        = f.text_field :hours, :size => 15, :placeholder => "Hours"
+        started:
+        = current_work_unit.start_time.to_s(:short_datetime)
         = f.text_field :stop_time, :size => 15, :placeholder => "Stop Time"
+        = f.text_field :hours, :size => 15, :placeholder => "Hours"
       = f.button "Clock Out", :type => :submit
   - else
     .text_content

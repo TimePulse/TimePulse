@@ -21,7 +21,8 @@ $tertiary_dark_2:  #A6321D
 
 
 $title_text_color: black
-$round_radius: 6px
+$round_radius: 3px
+$rounder_radius: 6px
 
 $base_font_size: 14px
 $page_background: #e8e9ed
@@ -55,6 +56,7 @@ $column_spacing: 5px
 @mixin block_title
   +title_background
   +title_border
+  +round
 
 @mixin admin_title
   +admin_title_background
@@ -76,13 +78,6 @@ $column_spacing: 5px
 
 @mixin round
   :border-radius $round_radius
-@mixin top_round
-  :border-top-left-radius $round_radius
-  :border-top-right-radius $round_radius
-
-@mixin bottom_round
-  :border-bottom-left-radius $round_radius
-  :border-bottom-right-radius $round_radius
 
 =error_notice_colors
   :border-width 2px
