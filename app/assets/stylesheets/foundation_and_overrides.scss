@@ -17,6 +17,8 @@
 // We use these to control various global styles
 // $body-bg: #fff;
 // $body-font-color: #222;
+$body-font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+$body-font-weight: 300;
 // $body-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 // $body-font-weight: normal;
 // $body-font-style: normal;
@@ -65,7 +67,7 @@ $include-print-styles: false;
 // Grid Variables
 //
 
-$row-width: 1050px;
+$row-width: 100%;
 $column-gutter: 0em;
 // $total-columns: 12;
 
@@ -85,6 +87,7 @@ $column-gutter: 0em;
 //
 
 // We use these to control header font styles
+$header-font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 // $header-font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif;
 // $header-font-weight: bold;
 // $header-font-style: normal;
