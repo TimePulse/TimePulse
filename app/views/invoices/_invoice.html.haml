@@ -8,6 +8,6 @@
   %td= invoice.reference_number
 
   %td.tools
-    = link_to 'Show', invoice
-    = link_to 'Edit', edit_invoice_path(invoice)
-    = link_to 'Destroy', invoice, :confirm => 'Are you sure?', :method => :delete
+    = link_to 'Show', invoice, class: 'actions show'
+    = link_to 'Edit', edit_invoice_path(invoice), class: 'actions edit'
+    = link_to 'Destroy', invoice, :confirm => 'Are you sure?', :method => :delete, class: 'actions delete'
