@@ -1,7 +1,7 @@
 module ProjectsHelper
   def project_parent_selector(form)
     form.select(:parent_id,
-    Project.find(:all).collect  {|p| [p.name, p.id]}, { :include_blank => "" }
+    Project.find(:all).sort{|x,y| x.lft <=> y.lft}.collect  {|p| [p.name, p.id, p.level > 1 ? {'data-iconurl' => '/assets/icons/indent_arrow.png', 'class' => "indention_level_#{p.level}"} : {'class' => "indention_level_#{p.level}"}]}, { :include_blank => "" }
     )
   end
 
@@ -24,7 +24,7 @@ module ProjectsHelper
   def project_name_with_client(project, short=false)
     return unless project
     String.new.tap do |str|
-      str << "[#{project.client.abbreviation.try(:upcase)}]&nbsp;" unless project.client.nil?
+      str << "[#{project.client.abbreviation.try(:upcase)}] " unless project.client.nil?
       str << (short ? truncate(project.name, :length => 20, :omission => '...') : project.name)
     end.html_safe
   end

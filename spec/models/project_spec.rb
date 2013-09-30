@@ -44,7 +44,7 @@ describe Project do
     project.rates.size.should == 1
   end
 
-  describe "cascades" do
+  describe "before_save cascades" do
     describe "client" do
       before(:each) do
         @client = Factory(:client)
@@ -53,12 +53,11 @@ describe Project do
       it "should return a project's client" do
         @leaf = Factory(:project, :client => @client)
         @leaf.client.should == @client
-        @leaf.client_source.should == @leaf
       end
       it "should return a project's parent's client if the project has no client" do
         @parent = Factory(:project, :client => @client)
         @leaf = Factory(:project, :client_id => nil, :parent => @parent)
-        @leaf.client_source.should == @parent
+        @leaf.client.should == @parent.client
       end
       it "should return a project's grandparent's client if the project and parent have no client" do
         @grandparent = Factory(:project, :client => @client, :name => 'GP')
@@ -66,17 +65,17 @@ describe Project do
         @project = Factory(:project, :client_id => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.client.should == @client
-        @project.client_source.should == @grandparent
       end
       it "should return a project's parent's client if the project has no client and the grandparent has a different client" do
         @grandparent = Factory(:project, :client => @client)
         @parent = Factory(:project, :parent => @grandparent, :client => @client2)
         @project = Factory(:project, :client_id => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
-        @project.client.should == @client2
-        @project.client_source.should == @parent
+        @project.client.should == @parent.client
       end
     end
+  end
+  describe "cascades" do
     describe "account" do
       it "should return a project's client" do
         Factory(:project, :account => "account").account.should == "account"
