@@ -40,7 +40,6 @@ class WorkUnitsController < ApplicationController
     respond_to do |format|
       if @work_unit.save
         flash[:notice] = 'WorkUnit was successfully created.'
-        #expire_fragment("work_unit_cache_#{current_user.name}_#{current_user.id}")
         format.html { redirect_to(@work_unit) }
         format.js {
           @work_unit = WorkUnit.new

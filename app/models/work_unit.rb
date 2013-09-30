@@ -32,7 +32,7 @@ class WorkUnit < ActiveRecord::Base
   scope :unbillable, :conditions => { :billable => false }
 
   scope :user_work_units, lambda { |user| { :conditions => [ "user_id = ?", user.id]} }
-  scope :most_recent, :limit => 1, :order => "start_time DESC"
+  scope :most_recent, lambda { |number| { :limit => number, :order => "start_time DESC" }}
 
   scope :for_client, lambda { |client|
     projects = client.projects.map{ |p| p.self_and_descendants.map{|q| q.id } }.flatten.uniq

@@ -1,6 +1,4 @@
--# cache("work_unit_cache_#{current_user.name}_#{current_user.id}") do
-- token = SecureRandom.hex(8)
-= content_tag(:tr, project, :id => token, :class => ['has_tooltip']) do
+= content_tag(:tr, project) do
   %td
     .project_name
       %span.nobr= switch_to_project_link(project, short_name_with_client(project))
