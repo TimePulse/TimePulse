@@ -8,6 +8,6 @@
   %td= bill.clients.map{ |c| c.abbreviation }.join(', ')
 
   %td.tools
-    = link_to 'Show', bill
-    = link_to 'Edit', edit_bill_path(bill)
-    = link_to 'Destroy', bill, :confirm => 'Are you sure?', :method => :delete
+    = link_to 'Show', bill, class: 'actions show'
+    = link_to 'Edit', edit_bill_path(bill), class: 'actions edit'
+    = link_to 'Destroy', bill, :confirm => 'Are you sure?', :method => :delete, class: 'actions delete'
