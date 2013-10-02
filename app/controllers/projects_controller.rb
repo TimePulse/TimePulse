@@ -52,6 +52,9 @@ class ProjectsController < ApplicationController
       @project.rates.build
       render :action => "edit"
     end
+  rescue ActiveRecord::ActiveRecordError
+    flash[:error] = "Illegal self referential or circular parent assignment"
+    redirect_to(@project)
   end
 
   # DELETE /projects/1

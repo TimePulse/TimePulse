@@ -31,10 +31,14 @@ class WorkUnit < ActiveRecord::Base
 
   scope :unbillable, :conditions => { :billable => false }
 
+  scope :user_work_units, lambda { |user| { :conditions => [ "user_id = ?", user.id]} }
+  scope :most_recent, lambda { |number| { :limit => number, :order => "start_time DESC" }}
+
   scope :for_client, lambda { |client|
     projects = client.projects.map{ |p| p.self_and_descendants.map{|q| q.id } }.flatten.uniq
     { :conditions => { :project_id => projects }}
   }
+
 
   scope :today, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.to_date ] } }
   scope :this_week, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.beginning_of_week.to_date ] } }
@@ -137,6 +141,6 @@ class WorkUnit < ActiveRecord::Base
   end
 
   def set_defaults
-    self.billable = project.billable if project
+    self.billable = project.billable if project && self.billable.nil?
   end
 end
