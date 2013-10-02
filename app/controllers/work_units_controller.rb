@@ -2,6 +2,7 @@ require 'hhmm_to_decimal'
 
 class WorkUnitsController < ApplicationController
   include HhmmToDecimal
+  include UsersHelper
 
   before_filter :convert_hours_from_hhmm, :only => [ :update, :create ]
 
@@ -34,6 +35,7 @@ class WorkUnitsController < ApplicationController
     @work_unit.user = current_user
     compute_some_fields
     @work_unit.project ||= current_user.current_project
+
 
     respond_to do |format|
       if @work_unit.save

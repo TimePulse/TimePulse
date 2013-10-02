@@ -57,6 +57,12 @@ class User < ActiveRecord::Base
     !current_work_unit.nil?
   end
 
+  def recent_projects
+     @wu_list = WorkUnit.user_work_units(self).most_recent(100)
+     @pid_list = @wu_list.collect{ |w| w.project_id }.uniq[0..4]
+     Project.find(@pid_list).sort_by{ |proj| @pid_list.index(proj.id) }
+  end
+
   def recent_work_units
     work_units.completed.recent.includes(:project => :client)
   end

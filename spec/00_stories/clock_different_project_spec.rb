@@ -73,7 +73,7 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "I click the clock for project 2 in the picker" do
-    page.find("#picker #clock_in_on_project_#{project_2.id}").click
+    page.find("#project_picker #clock_in_on_project_#{project_2.id}").click
   end
 
   it "should show project 2 in the timeclock" do
