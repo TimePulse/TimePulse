@@ -64,3 +64,4 @@ db_backups/
 .sass-cache
 .ruby-version
 .ruby-gemset
+errors.err

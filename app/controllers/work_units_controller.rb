@@ -84,15 +84,13 @@ class WorkUnitsController < ApplicationController
       Time.use_zone(zone) do
         wu_p[:start_time] = parse_time(wu_p[:start_time]) if wu_p[:start_time]
         wu_p[:stop_time] = parse_time(wu_p[:stop_time]) if wu_p[:stop_time]
-        puts "\n#{__FILE__}:#{__LINE__} => #{wu_p.inspect}"
       end
     end
   end
 
   def parse_time(string)
     time_options = { :now => Time.zone.now, :context => :past }
-    puts "\n#{__FILE__}:#{__LINE__} => #{time_options.inspect}"
-    Chronic.parse(string, time_options).tap{|value| puts "#{__FILE__}:#{__LINE__} => #{[string,value, time_options].inspect}"}
+    Chronic.parse(string, time_options)
   end
 
   def find_work_unit_and_authenticate
