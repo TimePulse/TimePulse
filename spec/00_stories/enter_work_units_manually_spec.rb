@@ -35,11 +35,14 @@ steps "User manually enters work units", :type => :feature do
     fill_in "Start time", :with => (@start_time = (Time.now - 1.hour)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
     fill_in "Notes", :with => "An hour of work"
-    # this is not a click button cause at the immediate moment poltergeist interprets
+    snapshot("work_units")
+    # this is not a click button cause at the immediate moment poltergeist
+    # interprets
     # this button as obscured by the JS datepicker. the truly proper solution would
     # be to click somewhere else, then do a click_button once it's visible, but
     # honestly it doesn't seem worth it to spend a lot of time on this.
     find_button("Save Changes").trigger('click')
+    snapshot("work_units")
   end
 
   it "should have the correct values for the work unit" do
@@ -48,6 +51,7 @@ steps "User manually enters work units", :type => :feature do
     # is important because it forces the ajax request in capybara to complete so changes
     # are written to the database
 
+    snapshot("work_units")
     within("#recent_work") do
       page.should have_content("1.00")
     end
@@ -55,6 +59,7 @@ steps "User manually enters work units", :type => :feature do
     @work_unit = WorkUnit.last
     @work_unit.hours.should == 1.00
     @work_unit.notes.should == "An hour of work"
+    puts "\n#{__FILE__}:#{__LINE__} => #{[@start_time, @stop_time, @work_unit].inspect}"
     @work_unit.start_time.to_s.should == @start_time.to_s
     @work_unit.stop_time.to_s.should == @stop_time.to_s
     @work_unit.billable?.should == true
@@ -104,7 +109,7 @@ steps "User manually enters work units", :type => :feature do
     @work_unit.notes.should == "Two hours of unbillable work"
     @work_unit.billable?.should == false
   end
- 
+
 
   it "should log in to a non-billable project" do
     within "#project_picker" do
@@ -142,7 +147,7 @@ steps "User manually enters work units", :type => :feature do
     @work_unit.notes.should == "Three hours of billable work"
     @work_unit.billable?.should == true
   end
- 
+
   it "should not pre-check the billable box" do
     within "#new_work_unit" do
       page.should have_unchecked_field( 'work_unit_billable' )

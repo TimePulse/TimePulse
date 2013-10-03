@@ -4,6 +4,7 @@ describe WorkUnitsController do
 
   describe "as admin" do
     before(:each) do
+      Timecop.return
       @user = authenticate(:admin)
       @work_unit = Factory(:work_unit)
     end
@@ -46,6 +47,7 @@ describe WorkUnitsController do
     #                                      POST CREATE
     ########################################################################################
     describe "responding to POST create" do
+
       describe "for a work unit without a start time" do
         before do
           post :create, :work_unit => { :project_id => project.id }
@@ -53,6 +55,25 @@ describe WorkUnitsController do
 
         it "should assign an invalid work unit" do
           assigns[:work_unit].should_not be_valid
+        end
+      end
+
+      describe "with stop time before start time" do
+        before :each do
+          @start = Time.parse("May 6, 2010 4:00").to_s(:date_and_time)
+          @stop  = Time.parse("May 5, 2010 4:20").to_s(:date_and_time)
+          post :create, :work_unit => {
+            :start_time => @start.to_s,
+            :stop_time => @stop.to_s,
+            :project_id => project.id }
+        end
+
+        it "should assign an invalid work unit" do
+          assigns[:work_unit].should_not be_valid
+        end
+
+        it "should leave hours empty" do
+          assigns[:work_unit].hours.should be_blank
         end
       end
 
@@ -74,8 +95,24 @@ describe WorkUnitsController do
         end
       end
 
+      describe "with start time as 13:00 and empty stop time" do
+        before :each do
+          Timecop.travel(Time.parse("May 5, 2013 14:00"))
+        end
+
+        it "should create a correct work unit" do
+          @start = "13:00"
+          expect do
+            post :create, :work_unit => { :project_id => project.id,
+              :start_time => @start.to_s, :calculate => true
+            }
+          end.to change(WorkUnit, :count).by(1)
+        end
+      end
+
+
       describe "with start and stop times as strings" do
-        it "should description" do
+        it "should correctly calculate work interval" do
           @time = Time.now
           @start = Time.now - 2 * 60 * 60
           @stop = @start + 1.5 * 3600
@@ -325,5 +362,3 @@ describe WorkUnitsController do
     end
   end
 end
-
-
