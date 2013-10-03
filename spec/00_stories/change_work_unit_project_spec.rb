@@ -72,6 +72,7 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "I select Project 2 from the project picker" do
+    page.driver.debug
     click_link "switch_to_project_#{project_2.id}"
   end
 
