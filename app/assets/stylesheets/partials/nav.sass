@@ -3,9 +3,12 @@
 #nav, #admin_nav
   a
     :text-decoration none
-    :color black
+    :color white
     :display block
-    :padding 2px 2em
+    :padding 2px 1em
+    :font-weight bold
+  &:first-child
+    :padding-left 2em
   a:before
     :content "> "
   ul li
@@ -15,7 +18,7 @@
     :color black
 #nav
   :width 100%
-  :color black
+  :background $primary_dark_1
 
   ul
     :margin 0
@@ -23,10 +26,15 @@
   ul li
     :float left
 
-  ul li:hover
-    :background $nav_hover_color
+  ul li:hover a
+    :color $primary_light_1
 
 
+#admin_nav
+  :color white
+  :background $primary_dark_1
+
+  ul li:hover a
 
 .nav, #nav, #admin_nav
   +clearfix
