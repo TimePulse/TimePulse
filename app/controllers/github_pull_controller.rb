@@ -3,7 +3,6 @@ class GithubPullController < ApplicationController
 
   # POST /projects/1/github_pull
   def create
-
     @github_pull = GithubPull.new(:project_id => params[:project_id])
 
     if @github_pull.save
@@ -16,10 +15,5 @@ class GithubPullController < ApplicationController
       format.json { head :ok }
       format.html { redirect_to(project_path(@github_pull.project)) }
     end
-
   end
-
-  protected
-
-
 end

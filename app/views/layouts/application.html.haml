@@ -12,7 +12,6 @@
 
     - if current_project
       %meta{"name" => "current project", "content" => current_project.id}
-
     %title=  @title ? @title : "LRD Time Tracking System"
 
 
@@ -25,6 +24,7 @@
     -else
       = javascript_include_tag "jquery-1.9.1.js"
       = javascript_include_tag "jquery-ui-1.10.2.js"
+
 
     = csrf_meta_tag
     = yield :header
@@ -68,4 +68,5 @@
 
       %h3 Browser time at page render (sec):
       %span#browsertime
+
     = javascript_include_tag "application"

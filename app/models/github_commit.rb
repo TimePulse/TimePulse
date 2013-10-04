@@ -14,7 +14,7 @@ class GithubCommit < ActivityBuilder
   end
 
   private
-  
+
   def activity_params
     super.merge({
       :source => "github",
