@@ -1,7 +1,6 @@
 #nav
   %ul.left
     %li= link_to("Dashboard", root_path)
-  %ul.right
     - if logged_in?
       %li= link_to("Account Settings", edit_user_path(current_user))
       %li= link_to("Logout", logout_path)

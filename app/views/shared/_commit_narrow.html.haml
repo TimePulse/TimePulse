@@ -3,7 +3,7 @@
   = content_tag(:tr, commit, :id => token, :class => ['narrow', 'has_tooltip']) do
     %td
       %span.nobr= short_name_with_client(commit.project)
-    %td{ :style => "text-align: center;"}
+    %td
       = truncate(commit.reference_2, :length => 6)
     %td.tools.nobr
       = truncate(commit.description, :length => 25)

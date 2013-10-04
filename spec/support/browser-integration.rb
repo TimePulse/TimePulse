@@ -3,6 +3,9 @@ require 'selenium-webdriver'
 require 'rspec-steps'
 require 'capybara/poltergeist'
 
+Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app, :inspector => true, :phantomjs_options => %w{--load-images=false})
+end
 Capybara.default_driver = :poltergeist
 
 module SaveAndOpenOnFail

@@ -5,9 +5,8 @@
   .block_inner
     :margin .5em
 
-  #recent_work, #recent_commits, #recent_pivotal_updates
-    .block_inner, table.listing
-      :margin 0
+  .block_inner, table.listing
+    :margin 0
   table.listing
     :width 100%
 
@@ -19,15 +18,12 @@
   .block
     :border none
     :background white
-    :margin-bottom 1em
+    :margin-bottom 3em
     +round
 
     h2
-      :border-bottom 1px $bcolor solid
-      :padding .25em
-      :background $title_bg_color
+      :padding .25em .3em
       :margin 0
       :color $title_text_color
+      +block_title
 
-.block_content > table.listing
-  :margin 0
