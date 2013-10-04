@@ -27,12 +27,30 @@ describe GithubPullController, :vcr => {} do
       authenticate(:admin)
     end
 
+    let :author do
+      double(:author, :date => Time.now, :email => "some@where.com", :login => "somewhere")
+    end
+
+    let :commits do
+      (1..3).map do
+        double(:commit).as_null_object.tap do |commit|
+          commit.stub(:author => author)
+        end
+      end
+    end
+
+    before :each do
+      Github::Client.any_instance.stub_chain(:repos, :commits, :all => commits)
+    end
+
     describe "POST create" do
       let :github_project do
         Factory(:project, :github_url => "http://github.com/hannahhoward/tracks_tester")
       end
 
-      let :number_of_commits_in_repository do 5 end
+      let :number_of_commits_in_repository do
+        commits.length
+      end
 
       it "should get git commits" do
         post :create, :project_id => github_project

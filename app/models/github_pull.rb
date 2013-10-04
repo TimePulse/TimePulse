@@ -32,7 +32,7 @@ class GithubPull < GithubCommitSaver
     user = url_parts.pop
     Github.new(:oauth_token => ::API_KEYS[:github],
       :auto_pagination => true,
-      :user => user, 
+      :user => user,
       :repo => repo)
   end
 

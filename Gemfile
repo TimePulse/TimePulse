@@ -48,6 +48,7 @@ group :development, :test do
   gem 'rspec-steps'
   gem 'poltergeist'
   gem 'debugger'
+  gem 'cadre'
 end
 
 group :test do
@@ -56,6 +57,7 @@ group :test do
   gem 'fuubar'
   gem 'vcr'
   gem 'fakeweb'
+  gem 'timecop'
 end
 
 group :development do

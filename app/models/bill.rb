@@ -25,6 +25,8 @@ class Bill < ActiveRecord::Base
 
   attr_accessible :notes, :due_on, :user, :user_id, :paid_on, :reference_number
 
+  accepts_nested_attributes_for :work_units
+
   def hours
     work_units.sum(:hours)
   end

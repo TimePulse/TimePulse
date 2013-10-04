@@ -1,0 +1,3 @@
+:javascript
+  #{js_template_render :partial => 'shared/work_unit_one_line', :locals => {:work_unit => js_template_model(WorkUnit)}}
+  #{unescape_template_delims(render :partial => 'shared/work_unit_subform', :locals => {:bill => js_template_model(Bill)})}
