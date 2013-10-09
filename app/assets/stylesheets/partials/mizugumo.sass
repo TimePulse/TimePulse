@@ -1,3 +1,5 @@
+@import 'foundation_and_overrides'
+
 .ninja_busy
   :background-color white
   :background-image image-url("ui/spinner.gif")
@@ -24,8 +26,22 @@ form
 form.mizugumo_graceful_form
   :margin 0
   :padding 0
-  :border 0
+  :border none
   :background transparent
+  :display inline
+  &.actions
+    display: inline-block
+    margin: 0 .5em
+  button
+    border: none
+    background: none
+    line-height: 1.125em
+    font-weight: normal
+    color: $primary-color
+    display: inline
+    margin: 0px
+    padding: 0px
+
 
 table.scaffold, table.scaffold td, table.scaffold th
   :border-collapse collapse

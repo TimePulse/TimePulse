@@ -1,4 +1,5 @@
 @import constants.sass
+
 $tools_width: 24px
 $tools_padding: 2px
 
@@ -23,7 +24,7 @@ $tools_padding: 2px
       :margin 0
       :font-size 13px
       :line-height 1.3em
-    td, a, td img
+    td, a, td img, button
       :padding 0
       :margin 0
     td
@@ -40,18 +41,20 @@ $tools_padding: 2px
 
     tr:hover
       :background $primary_light_1
-      a
+      a, button
         :color black
     tr.category td
       :font-weight bold
       :font-size 14px
       :padding-top .75em
+      button
+        :font-weight bold
     tr.current
       :background $secondary_med
       +round
       td.tools img
         :display none
-      a
+      a, button
         :color black
   .block_inner
     :margin 0

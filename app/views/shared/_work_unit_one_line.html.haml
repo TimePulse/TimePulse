@@ -10,7 +10,7 @@
       %span.nobr= (work_unit.stop_time || work_unit.start_time).to_datetime.to_s(:short_date)
     %td
       = link_to 'Edit', edit_work_unit_path(work_unit), class: 'actions edit'
-      = link_to 'Delete', work_unit_path(work_unit), :method => :delete, :confirm => "Are you sure?", class: 'actions delete'
+      = link_to 'Delete', work_unit_path(work_unit, :delete_id => token), :method => :delete, :confirm => "Are you sure?", class: 'actions delete'
       = tooltip_for(work_unit, token)
 
     %td{ :class => work_unit.billable? ? "work_unit_billable" : "", :id => work_unit.billable? ? "work_unit_#{work_unit.id}" : "" }

@@ -4050,6 +4050,12 @@ define('ninja/behaviors/standard',["ninja", "utils"],
                                     log("Multiple submits.  Using: " + submit)
                                 }
                                 linkText = submit.value
+                            } else if((submits = jQuery('button[type=submit]', form)).size() > 0) {
+                                submit = submits[0]
+                                if(submits.size() > 1) {
+                                    log("Multiple submits.  Using: " + submit)
+                                }
+                                linkText = submit.innerHTML
                             }
                             else {
                                 log("Couldn't find a submit input in form");
