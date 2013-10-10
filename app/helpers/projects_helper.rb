@@ -33,11 +33,11 @@ module ProjectsHelper
     project_name_with_client(project, true)
   end
 
-  def switch_to_project_link(project, link_name = nil)
+  def switch_to_project_link(project, link_name = nil, prefix = "")
      link_to(link_name.nil? ? project.name : link_name,
        set_current_project_path(:id => project.id),
        :method => :post,
-       :id => "switch_to_" + dom_id(project)
+       :id => prefix + "switch_to_" + dom_id(project)
      )
    end
 
