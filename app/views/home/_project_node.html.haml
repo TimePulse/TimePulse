@@ -4,7 +4,7 @@
     = cache("picker_node_#{node.id}") do
       %td
         .project_name
-          = depth_indicator(path.length)
+          = depth_indicator(depth)
           = switch_to_project_link(node)
         .tools
           - if node.clockable?
