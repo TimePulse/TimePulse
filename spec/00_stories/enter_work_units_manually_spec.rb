@@ -35,7 +35,8 @@ steps "User manually enters work units", :type => :feature do
     fill_in "Start time", :with => (@start_time = (Time.now - 1.hour)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
     fill_in "Notes", :with => "An hour of work"
-    # this is not a click button cause at the immediate moment poltergeist interprets
+    # this is not a click button cause at the immediate moment poltergeist
+    # interprets
     # this button as obscured by the JS datepicker. the truly proper solution would
     # be to click somewhere else, then do a click_button once it's visible, but
     # honestly it doesn't seem worth it to spend a lot of time on this.
@@ -104,7 +105,7 @@ steps "User manually enters work units", :type => :feature do
     @work_unit.notes.should == "Two hours of unbillable work"
     @work_unit.billable?.should == false
   end
- 
+
 
   it "should log in to a non-billable project" do
     within "#project_picker" do
@@ -142,7 +143,7 @@ steps "User manually enters work units", :type => :feature do
     @work_unit.notes.should == "Three hours of billable work"
     @work_unit.billable?.should == true
   end
- 
+
   it "should not pre-check the billable box" do
     within "#new_work_unit" do
       page.should have_unchecked_field( 'work_unit_billable' )

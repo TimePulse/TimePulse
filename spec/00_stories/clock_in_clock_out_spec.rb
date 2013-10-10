@@ -141,7 +141,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clocks in on a billable project" do
     within "#project_picker" do
-      click_link "clock_in_on_project_#{project_1.id}"
+      find_link("clock_in_on_project_#{project_1.id}").trigger('click')
     end
   end
 
@@ -162,10 +162,10 @@ steps "clock in and out on projects", :type => :feature do
     end
     WorkUnit.last.billable?.should == false
   end
-  
+
   it "user clocks in on a non-billable project" do
     within "#project_picker" do
-      click_link "clock_in_on_project_#{project_2.id}"
+      find_link("clock_in_on_project_#{project_2.id}").trigger('click')
     end
   end
 

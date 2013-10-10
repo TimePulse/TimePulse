@@ -1,19 +1,70 @@
-$base_font_size: 12px
+$primary_light_1: #8ec7d9
+$primary_light_2: #73c0d9
+$primary_med:     #4298b4
+$primary_dark_1:  #477787
+$primary_dark_2:  #165d75
+$primary_ultralight: #e2f0f5
+
+// used for accents - mostly timeclock & current work
+$secondary_light_1: #ffe4A3
+$secondary_light_2: #ffDA82
+$secondary_med:     #ffc358
+$secondary_dark_1:  #bfa461
+$secondary_dark_2:  #a67d1d
+
+// used to key administrative stuff
+$tertiary_light_1: #FFB1a3
+$tertiary_light_2: #FF9582
+$tertiary_med:     #FF7258
+$tertiary_dark_1:  #BF7061
+$tertiary_dark_2:  #A6321D
+
+
+$title_text_color: black
+$round_radius: 4px
+$rounder_radius: 6px
+
+$base_font_size: 14px
 $page_background: #e8e9ed
 $error_background: #e9b2b2
 $title_bg_color: #004
-$title_text_color: white
-$admin_background_color: #3ad932
-$admin_dark_color: #1a7815
-$admin_hover_color: #1ab912
 $nav_background_color: #eee
 $nav_hover_color: #ccc
 $input_border_color: #999
-$contrast_background_color: rgb(207, 207, 226)
+$contrast_background_color: rgb(227, 227, 236)
 
 $bcolor: white
 
 $column_spacing: 5px
+
+@mixin title_background
+  :background $primary_light_2 /* Old browsers */
+
+@mixin admin_title_background
+  :background #fceabb /* Old browsers */
+  :background -moz-linear-gradient(top, #fceabb 0%, #fccd4d 50%, #f8b500 51%, #fbdf93 100%) /* FF3.6+ */
+  :background -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fceabb), color-stop(50%,#fccd4d), color-stop(51%,#f8b500), color-stop(100%,#fbdf93)) /* Chrome,Safari4+ */
+  :background -webkit-linear-gradient(top, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%) /* Chrome10+,Safari5.1+ */
+  :background -o-linear-gradient(top, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%) /* Opera 11.10+ */
+  :background -ms-linear-gradient(top, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%) /* IE10+ */
+  :background linear-gradient(to bottom, #fceabb 0%,#fccd4d 50%,#f8b500 51%,#fbdf93 100%) /* W3C */
+  :filter progid:DXImageTransform.Microsoft.gradient( startColorstr='#fceabb', endColorstr='#fbdf93',GradientType=0 ) /* IE6-9 */
+
+@mixin title_border
+  :border none
+
+@mixin block_title
+  +title_background
+  +title_border
+  +round
+
+@mixin admin_title
+  +admin_title_background
+  +title_border
+  +round
+
+@mixin shadow
+  :box-shadow 5px 5px 10px #888888
 
 @mixin clearfix
   &:after
@@ -26,7 +77,7 @@ $column_spacing: 5px
     :height 1px
 
 @mixin round
-  :border-radius 5px
+  :border-radius $round_radius
 
 =error_notice_colors
   :border-width 2px
@@ -35,5 +86,5 @@ $column_spacing: 5px
   :background $error_background
 
 =admin_header_style
-  :background $admin_background_color
+  :background $tertiary_light_2
   :color black

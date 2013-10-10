@@ -1,20 +1,16 @@
 @import constants.sass
 
-$bcolor: #666
 
 #content
-  :border 1px $bcolor solid
   :background white
 
   h1
-    :border-bottom 1px $bcolor solid
-    :padding .25em
-    :background $title_bg_color
+    :padding .25em .3em
     :color $title_text_color
     :margin-bottom 0
+    +block_title
 
   #content-body
-    :padding 1em
     +clearfix
 
 caption
@@ -23,24 +19,47 @@ caption
   :font-weight bold
 
 table.listing
-  :max-width 100%
+  :width 100%
   :border-collapse collapse
+  :border-width 0
   :margin 1em 0
-  :border 1px solid black
-  :border-bottom-width 2px
+  :background transparent
 
   td, th
-    :border 1px solid black
-    :padding 3px .25em
+    :padding .5em
     :overflow hidden
+    :border-left 1px dotted $primary_light_2
+    :border-right 1px dotted $primary_light_2
+
+  td.numeric
+    :text-align right
+
+  td:last-child, th:last-child
+    :border-right none
+  td:first-child, th:first-child
+    :border-left none
+
+  tr:last-child
+    th, td
+      :border-bottom none
+  tr:hover
+    :background $primary_ultralight
+
   th
     :font-weight bold
-    :background $contrast_background_color
+    :border-width 0 1px 1px 1px
+    :border-style dotted
+    :border-color $primary_dark_2
+  th:first-child
+    :border-left-width 0
+  th:last-child
+    :border-right-width 0
 
-  tr.odd
-    :background #fff
-  tr.even
-    :background #eee
+  /* needed to override foundation defaults */
+  tr:nth-of-type(odd)
+    :background transparent
+  tr:nth-of-type(even)
+    :background transparent
   tr.info td
     :border-top-width 2px
   tr.description td

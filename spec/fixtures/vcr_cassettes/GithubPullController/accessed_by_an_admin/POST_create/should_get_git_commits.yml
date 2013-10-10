@@ -125,4 +125,54 @@ http_interactions:
     http_version: !binary |-
       MS4x
   recorded_at: Sat, 01 Jun 2013 00:24:11 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/hannahhoward/tracks_tester/commits?access_token=xxxx
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      accept:
+      - application/vnd.github.v3+json,application/vnd.github.beta+json;q=0.5,application/json;q=0.1
+      accept-charset:
+      - utf-8
+      user-agent:
+      - Github Ruby Gem 0.10.1
+      authorization:
+      - Token token="xxxx"
+      accept-encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      server:
+      - GitHub.com
+      date:
+      - Wed, 02 Oct 2013 22:31:58 GMT
+      content-type:
+      - application/json; charset=utf-8
+      connection:
+      - close
+      status:
+      - 401 Unauthorized
+      x-github-media-type:
+      - github.v3; format=json
+      content-length:
+      - '82'
+      access-control-allow-credentials:
+      - 'true'
+      access-control-expose-headers:
+      - ETag, Link, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, X-OAuth-Scopes,
+        X-Accepted-OAuth-Scopes
+      access-control-allow-origin:
+      - ! '*'
+      x-github-request-id:
+      - 6CFC5E56:78F1:4086F:524C9EDE
+    body:
+      encoding: US-ASCII
+      string: ! '{"message":"Bad credentials","documentation_url":"http://developer.github.com/v3"}'
+    http_version: '1.1'
+  recorded_at: Wed, 02 Oct 2013 22:31:58 GMT
 recorded_with: VCR 2.5.0

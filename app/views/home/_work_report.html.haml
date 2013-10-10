@@ -6,7 +6,6 @@
       = will_paginate(@work_units, :param_name => :work_units_page)
       %table.listing
         %tr
-          %th= "Client"
           %th= "Project"
           %th= "Notes"
           %th= "Hrs"
@@ -22,7 +21,6 @@
       = will_paginate(@commits, :param_name => :commits_page)
       %table.listing
         %tr
-          %th= "Client"
           %th= "Project"
           %th= "Message"
           %th= "Branch"
@@ -36,7 +34,6 @@
       = will_paginate(@pivotal_updates, :param_name => :pivotal_updates_page)
       %table.listing
         %tr
-          %th= "Client"
           %th= "Project"
           %th= "Message"
           %th= "Time"

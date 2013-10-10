@@ -1,18 +1,9 @@
-require 'simplecov-vim/formatter'
-
-module SimpleCov::Formatter
-  class MergedFormatter
-    def initialize
-      @formatters = [HTMLFormatter, VimFormatter].map{|frmt| frmt.new}
-    end
-
-    def format(result)
-      @formatters.each{|frmt| frmt.format(result)}
-    end
-  end
-end
+require 'cadre/simplecov'
 
 SimpleCov.start 'rails' do
-  formatter SimpleCov::Formatter::MergedFormatter
+  formatter SimpleCov::Formatter::MultiFormatter[
+    SimpleCov::Formatter::HTMLFormatter,
+    Cadre::SimpleCov::VimFormatter
+  ]
   #add_filter "./spec"
 end

@@ -5,6 +5,6 @@
       %th Billable
       %th Unbillable
     %tr
-      %td="%.2f" % this_week_units.map{|wu|wu.hours}.sum
-      %td="%.2f" % this_week_units.billable.map{|wu|wu.hours}.sum
-      %td="%.2f" % this_week_units.unbillable.map{|wu|wu.hours}.sum
+      %td.numeric="%.2f" % this_week_units.map{|wu|wu.hours}.sum
+      %td.numeric="%.2f" % this_week_units.billable.map{|wu|wu.hours}.sum
+      %td.numeric="%.2f" % this_week_units.unbillable.map{|wu|wu.hours}.sum

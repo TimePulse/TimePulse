@@ -2,10 +2,9 @@
   - token = SecureRandom.hex(8)
 
   %tr.work_unit.one_line.has_tooltip{ :id => token }
-    %td= work_unit.try(:project).try(:client).try(:abbreviation)
-    %td= truncate(work_unit.try(:project).try(:name), :length => 25)
-    %td= truncate(work_unit.notes, :length => 25, :omission => '...')
-    %td{ :style => "text-align: center;"}
+    %td= short_name_with_client(work_unit.try(:project))
+    %td.numeric= truncate(work_unit.notes, :length => 25, :omission => '...')
+    %td.numeric
       = "%.2f" % work_unit.hours
     %td
       %span.nobr= (work_unit.stop_time || work_unit.start_time).to_datetime.to_s(:short_date)

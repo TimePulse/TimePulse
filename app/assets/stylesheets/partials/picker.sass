@@ -1,5 +1,5 @@
 @import constants.sass
-$tools_width: 20px
+$tools_width: 24px
 $tools_padding: 2px
 
 
@@ -11,7 +11,8 @@ $tools_padding: 2px
     :border 0
     :border-collapse collapse
     :table-layout fixed
-    :font-size 12px
+    :font-size 13px
+    :line-height 1.3em
     tr
       :margin 0
       :padding 0
@@ -20,13 +21,14 @@ $tools_padding: 2px
       :overflow hidden
       :padding 2px 0 0 0
       :margin 0
-      :font-size 12px
+      :font-size 13px
+      :line-height 1.3em
     td, a, td img
       :padding 0
       :margin 0
     td
       .tools
-        :padding 0
+        :padding-top 4px
         :width $tools_width
         :text-align center
         :float right
@@ -34,16 +36,22 @@ $tools_padding: 2px
       .project_name, .project_name div
         :overflow hidden
         :float left
+        :padding .25em
 
+    tr:hover
+      :background $primary_light_1
+      a
+        :color black
     tr.category td
       :font-weight bold
+      :font-size 14px
       :padding-top .75em
     tr.current
-      td
-        :background #ff9
-        :padding-top 3px
-        :padding-bottom 3px
+      :background $secondary_med
+      +round
       td.tools img
         :display none
+      a
+        :color black
   .block_inner
     :margin 0
