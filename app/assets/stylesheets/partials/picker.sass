@@ -21,17 +21,17 @@ $tools_padding: 2px
         &.d0
           display: block
       :clear both
-    li
+    .project-entry
       :white-space nowrap
       :overflow hidden
       :padding 2px 0 0 0
       :margin 0
       :font-size 13px
       :line-height 1.3em
-    a, li img, button
+    a, .project-entry img, button
       :padding 0
       :margin 0
-    li
+    .project-entry
       .tools
         :padding-top 4px
         :padding-right 8px
@@ -50,17 +50,17 @@ $tools_padding: 2px
         :float left
         :padding .25em
 
-    li:hover
+    .project_entry:hover
       :background $primary_light_1
       a, button
         :color black
-    li.category
+    .project-entry.category
       :font-weight bold
       :font-size 14px
       :padding-top .75em
       button
         :font-weight bold
-    li.current
+    .project-entry.current
       :background $secondary_med
       +round
       .tools img
@@ -68,7 +68,7 @@ $tools_padding: 2px
       a, button
         :color black
   .recent_projects
-    li:first-child
+    .project-entry:first-child
       :padding-top .75em
   .block_inner
     :margin 0

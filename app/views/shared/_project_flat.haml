@@ -1,4 +1,4 @@
-= content_tag(:li, project) do
+= content_tag(:li, project, :class => "project-entry") do
   .project_name
     %span.nobr= switch_to_project_link(project, short_name_with_client(project), "recent_")
   .tools
