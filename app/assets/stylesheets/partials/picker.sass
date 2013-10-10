@@ -14,8 +14,13 @@ $tools_padding: 2px
     :table-layout fixed
     :font-size 13px
     :line-height 1.3em
-    ul
+    .project-list
       :margin-bottom 0px
+      &.depth
+        display: none
+        &.d0
+          display: block
+      :clear both
     li
       :white-space nowrap
       :overflow hidden
@@ -29,10 +34,17 @@ $tools_padding: 2px
     li
       .tools
         :padding-top 4px
-        :width $tools_width
+        :padding-right 8px
         :text-align center
         :float right
-
+        .expand-widget
+          .collapse
+            display: none
+          &.expanded
+            .collapse
+              display: inline-block
+            .expand
+              display: none
       .project_name
         :overflow hidden
         :float left

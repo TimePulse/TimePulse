@@ -51,4 +51,13 @@ module ProjectsHelper
       link_to(title, clock_in_path(:id => project), options.merge(:method => :post, :title => title, :id => cssid))
     end.html_safe
   end
+
+  def expand_widget(project)
+    cssid = "expand_" + dom_id(project)
+    content_tag(:span, :class => "expand-widget", :id => cssid, :"data-target" => "##{dom_id(project)} ul") do
+      images = image_tag('icons/expand.png', :alt => "Expand", :class => "expand")
+      images = images + image_tag('icons/collapse.png', :alt => "Collapse", :class => "collapse")
+      images
+    end
+  end
 end

@@ -6,7 +6,9 @@
         = depth_indicator(depth)
         = switch_to_project_link(node)
       .tools
+        - if defined? children
+          = expand_widget(node)
         - if node.clockable?
           = clock_in_widget(node, :icon)
-  - if defined? children
-    = children
+    - if defined? children
+      = children
