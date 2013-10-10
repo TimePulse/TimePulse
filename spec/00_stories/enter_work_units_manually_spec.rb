@@ -83,7 +83,7 @@ steps "User manually enters work units", :type => :feature do
 
   it "when I fill in valid work unit information" do
     within "#new_work_unit" do
-      uncheck "work_unit_billable"
+      find("#work_unit_billable").trigger("click")
     end
     fill_in "Start time", :with => (@start_time = (Time.now - 2.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
@@ -121,7 +121,7 @@ steps "User manually enters work units", :type => :feature do
 
     it "when I fill in valid work unit information" do
     within "#new_work_unit" do
-      check "work_unit_billable"
+      find("#work_unit_billable").trigger("click")
     end
     fill_in "Start time", :with => (@start_time = (Time.now - 3.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
@@ -150,7 +150,7 @@ steps "User manually enters work units", :type => :feature do
     end
   end
 
-    it "when I fill in valid work unit information" do
+  it "when I fill in valid work unit information" do
     fill_in "Start time", :with => (@start_time = (Time.now - 4.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
     fill_in "Notes", :with => "Four hours of unbillable work"

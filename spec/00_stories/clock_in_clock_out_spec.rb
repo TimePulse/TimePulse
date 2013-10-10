@@ -74,6 +74,7 @@ steps "clock in and out on projects", :type => :feature do
   it "user clocks out with hours set unreasonably high" do
     pending "Waiting for implementation of validation checking on clock-out"
     within("#timeclock") do
+      click_link("(+ show override tools)")
       fill_in "Hours", :with => '9.0'
       fill_in "Notes", :with => "I worked all day on this"
       click_button "Clock Out"
@@ -102,6 +103,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "and I fill in nine hours and clock out" do
     within "#timeclock" do
+      click_link("(+ show override tools)")
       fill_in "Hours", :with => '9.0'
       fill_in "Notes", :with => "I worked all day on this"
       click_button "Clock Out"
