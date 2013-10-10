@@ -54,7 +54,7 @@ module ProjectsHelper
 
   def expand_widget(project)
     cssid = "expand_" + dom_id(project)
-    content_tag(:span, :class => "expand-widget", :id => cssid, :"data-target" => "##{dom_id(project)} ul") do
+    content_tag(:span, :class => "expand-widget", :id => cssid, :"data-target" => "##{dom_id(project)} > ul") do
       images = image_tag('icons/expand.png', :alt => "Expand", :class => "expand")
       images = images + image_tag('icons/collapse.png', :alt => "Collapse", :class => "collapse")
       images
