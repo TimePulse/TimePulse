@@ -5,7 +5,7 @@ $tools_padding: 2px
 
 
 #picker
-  table.project_picker, table.recent_projects
+  .project_picker, .recent_projects
     :width 100%
     :margin 0
     :padding 0
@@ -14,50 +14,49 @@ $tools_padding: 2px
     :table-layout fixed
     :font-size 13px
     :line-height 1.3em
-    tr
-      :margin 0
-      :padding 0
-    td
+    ul
+      :margin-bottom 0px
+    li
       :white-space nowrap
       :overflow hidden
       :padding 2px 0 0 0
       :margin 0
       :font-size 13px
       :line-height 1.3em
-    td, a, td img, button
+    a, li img, button
       :padding 0
       :margin 0
-    td
+    li
       .tools
         :padding-top 4px
         :width $tools_width
         :text-align center
         :float right
 
-      .project_name, .project_name div
+      .project_name
         :overflow hidden
         :float left
         :padding .25em
 
-    tr:hover
+    li:hover
       :background $primary_light_1
       a, button
         :color black
-    tr.category td
+    li.category
       :font-weight bold
       :font-size 14px
       :padding-top .75em
       button
         :font-weight bold
-    tr.current
+    li.current
       :background $secondary_med
       +round
-      td.tools img
+      .tools img
         :display none
       a, button
         :color black
-  table.recent_projects
-    tr:first-child td
+  .recent_projects
+    li:first-child
       :padding-top .75em
   .block_inner
     :margin 0
