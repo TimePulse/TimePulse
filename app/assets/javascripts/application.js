@@ -26,6 +26,8 @@ $('document').ready( function(){
   $("Select#project_parent_id").selectBoxIt({
   });
 
+$(document).foundation();
+
 Ninja.orders(function(Ninja){
     //ajaxSubmitConfigs = {
       //busyElement: function(elem){ return $('#timeclock')},

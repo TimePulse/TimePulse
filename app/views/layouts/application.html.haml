@@ -38,19 +38,7 @@
     #inset
       #wrap
         #header-wrap
-          #header
-            #logo
-              =link_to image_tag('logo.png', :alt => "logo"), root_url
-            #message
-              - if logged_in?
-                %h2.unimportant= "Hello, #{current_user.name} "
-              %h1
-                %span.unimportant LRD
-                Tracking
-                %span.unimportant System
-
           = render :partial => 'layouts/nav'
-          = render :partial => 'layouts/admin_menu'
 
         #content-wrap
           = render :partial => 'layouts/aux'

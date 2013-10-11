@@ -1,5 +1,6 @@
 // Required global settings and mixins for Foundation
 @import "foundation/foundation-global";
+@import "partials/constants";
 
 // Settings file to override Foundation variables
 
@@ -972,10 +973,10 @@ $table-even-row-bg: transparent;
 //
 
 // Background color for the top bar
-// $topbar-bg: #111;
+$topbar-bg: $primary_dark_2;
 
 // Height and margin
-// $topbar-height: 45px;
+$topbar-height: 50px;
 // $topbar-margin-bottom: emCalc(30px);
 
 // Control Input height for top bar
@@ -983,15 +984,16 @@ $table-even-row-bg: transparent;
 
 // Controlling the styles for the title in the top bar
 // $topbar-title-weight: bold;
-// $topbar-title-font-size: emCalc(17px);
+$topbar-title-font-size: emCalc(26px);
 
 // Set the link colors and styles for top-level nav
 // $topbar-link-color: #fff;
-// $topbar-link-weight: bold;
-// $topbar-link-font-size: emCalc(13px);
+$topbar-link-weight: normal;
+$topbar-link-font-size: emCalc(15px);
 
 // Style the top bar dropdown elements
-// $topbar-dropdown-bg: #333;
+$topbar-dropdown-bg: $primary_dark_2;
+
 // $topbar-dropdown-link-color: #fff;
 // $topbar-dropdown-toggle-size: 5px;
 // $topbar-dropdown-toggle-color: #fff;
