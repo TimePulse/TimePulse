@@ -16,12 +16,6 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :controller
   config.include Devise::TestHelpers, :type => :helper
 
-  #JL is putting this in here - if it causes problems contact him
-  require 'cadre/rspec'
-  config.run_all_when_everything_filtered = true
-  config.add_formatter(Cadre::RSpec::NotifyOnCompleteFormatter)
-  config.add_formatter(Cadre::RSpec::QuickfixFormatter)
-
   config.after(:each, :type => :view)  do
     sign_out :user
   end
@@ -59,6 +53,15 @@ RSpec.configure do |config|
 
   config.include(SaveAndOpenOnFail, :type => :feature)
   config.include(BrowserHelpers, :type => :feature)
+
+  #JL is putting this in here - if it causes problems contact him
+  require 'cadre/rspec'
+  config.run_all_when_everything_filtered = true
+  if config.formatters.empty?
+    config.add_formatter(:progress)
+  end
+  config.add_formatter(Cadre::RSpec::NotifyOnCompleteFormatter)
+  config.add_formatter(Cadre::RSpec::QuickfixFormatter)
 end
 
 def content_for(name)
