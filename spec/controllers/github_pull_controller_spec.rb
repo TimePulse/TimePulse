@@ -40,12 +40,16 @@ describe GithubPullController, :vcr => {} do
     end
 
     before :each do
+      unless defined?(::API_KEYS)
+        ::API_KEYS = {}
+        ::API_KEYS.stub(:[]).with(:github) { 'xxxxx' }
+      end
       Github::Client.any_instance.stub_chain(:repos, :commits, :all => commits)
     end
 
     describe "POST create" do
       let :github_project do
-        Factory(:project, :github_url => "http://github.com/hannahhoward/tracks_tester")
+        Factory(:project, :github_url => "http://github.com/a_project/with_commits")
       end
 
       let :number_of_commits_in_repository do
