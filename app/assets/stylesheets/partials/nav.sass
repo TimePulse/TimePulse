@@ -1,40 +1,19 @@
 @import constants.sass
 
-#nav, #admin_nav
+nav.top-bar
+  :margin-bottom 0
+  :margin-top 0
+  .name h1
+    :border-bottom 0
   a
     :text-decoration none
     :color white
     :display block
     :padding 2px 1em
-    :font-weight bold
-  &:first-child
-    :padding-left 2em
-  a:before
-    :content "> "
   ul li
     :list-style none
     :display block
     :margin 0
-    :color black
-#nav
-  :width 100%
-  :background $primary_dark_1
-
-  ul
-    :margin 0
-
-  ul li
-    :float left
-
   ul li:hover a
-    :color $primary_light_1
-
-
-#admin_nav
-  :color white
-  :background $primary_dark_1
-
-  ul li:hover a
-
-.nav, #nav, #admin_nav
-  +clearfix
+    :color $primary_light_2
+    :background $primary_dark_2 !important

@@ -1,7 +1,6 @@
-= content_tag(:tr, project) do
-  %td
-    .project_name
-      %span.nobr= switch_to_project_link(project, short_name_with_client(project), "recent_")
-    .tools
-      - if project.clockable?
-        = clock_in_widget(project, :icon)
+= content_tag(:li, project, :class => "project-entry") do
+  .project_name
+    %span.nobr= switch_to_project_link(project, short_name_with_client(project), "recent_")
+  .tools
+    - if project.clockable?
+      = clock_in_widget(project, :icon)

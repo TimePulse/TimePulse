@@ -26,6 +26,8 @@ $('document').ready( function(){
   $("Select#project_parent_id").selectBoxIt({
   });
 
+$(document).foundation();
+
 Ninja.orders(function(Ninja){
     //ajaxSubmitConfigs = {
       //busyElement: function(elem){ return $('#timeclock')},
@@ -59,6 +61,12 @@ Ninja.orders(function(Ninja){
           }
         },
         '#work_unit_select_all': { click: selectAllWorkUnits },
+        '.expand-widget': { click: function(evnt, elem) {
+            var target = $(elem).data('target');
+            $(target).slideToggle("fast");
+            $(elem).toggleClass("expanded")
+          }
+        },
         '.toggler': { click: function(evnt, elem) {
             if (window.matchMedia("(max-width: 767px)").matches) {
               var target = "#" + $(elem).data('target');

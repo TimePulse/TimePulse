@@ -1,8 +1,21 @@
-#nav
-  %ul.left
-    %li= link_to("Dashboard", root_path)
-    - if logged_in?
-      %li= link_to("Account Settings", edit_user_path(current_user))
-      %li= link_to("Logout", logout_path)
-    -else
-      %li= link_to("Login", login_path)
+%nav#nav.top-bar.contain-to-grid
+  %ul.title-area
+    %li.name
+      %h1= link_to "LOGICAL TIME TRACKER", root_path, :class => 'logo'
+    %li.toggle-topbar.menu-icon
+      %a{:href => '#'}
+        %span Menu
+
+  %section.top-bar-section
+    %ul.right
+      %li.toggle-topbar
+      %li= link_to("Dashboard", root_path)
+      - if current_user and current_user.admin?
+        - items = ["Users", users_path], ["Clients", clients_path], ["Projects", projects_path], ["Bills", bills_path ], ["Invoices", invoices_path]
+        -items.each do |name, path|
+          %li.admin= link_to(name, path)
+      - if logged_in?
+        %li= link_to(current_user.name, edit_user_path(current_user))
+        %li= link_to("Logout", logout_path)
+      -else
+        %li= link_to("Login", login_path)

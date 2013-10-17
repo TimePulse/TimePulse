@@ -18,6 +18,12 @@ steps "Admin archives a project", :type => :feature do
     click_button 'Login'
   end
 
+  it "and I expand all projects" do
+    all(".expand-widget").each do |expand_button|
+      expand_button.trigger("click")
+    end
+  end
+
   it "should show all the projects in the picker" do
     within '#project_picker' do
       page.should have_content('Project 2 base')
@@ -48,6 +54,12 @@ steps "Admin archives a project", :type => :feature do
 
   it "then when I revisit the dashboard" do
     visit root_path
+  end
+
+  it "and I expand all projects" do
+    all(".expand-widget").each do |expand_button|
+      expand_button.trigger("click")
+    end
   end
 
   it "should show the other projects in the picker" do

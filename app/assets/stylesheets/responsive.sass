@@ -2,6 +2,10 @@
 @import 'foundation_and_overrides'
 
 @media only screen and (min-width: #{$small-screen})
+  nav.top-bar
+    ul.title-area
+      :margin-left 1em
+      
   #admin_nav
     span.toggler
       display: none
@@ -47,6 +51,10 @@
 
   .toggle-target
     display: block !important
+
+  h2.toggler:after
+    display: none !important
+    content: "" !important
 
   #header h2.unimportant
     display: block
