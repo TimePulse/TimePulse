@@ -7,7 +7,11 @@ class GithubPull < GithubCommitSaver
   end
 
   def commits
-    @commits ||= github_api_interface.repos.commits.all
+    if github_api_interface
+      @commits ||= github_api_interface.repos.commits.all
+    else
+      []
+    end
   end
 
   protected
@@ -27,13 +31,19 @@ class GithubPull < GithubCommitSaver
   end
 
   def github_api_interface
-    url_parts = project.github_url.split("/")
-    repo = url_parts.pop
-    user = url_parts.pop
-    Github.new(:oauth_token => ::API_KEYS[:github],
-      :auto_pagination => true,
-      :user => user,
-      :repo => repo)
+    if defined?(::API_KEYS)
+      @github_api_interface ||= begin
+        url_parts = project.github_url.split("/")
+        repo = url_parts.pop
+        user = url_parts.pop
+        Github.new(:oauth_token => ::API_KEYS[:github],
+          :auto_pagination => true,
+          :user => user,
+          :repo => repo)
+      end
+    else
+      nil
+    end
   end
 
 end
