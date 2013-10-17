@@ -31,7 +31,11 @@ class PivotalPull
   end
 
   def activities
-    @activities ||= pivotal_api_interface.activities.all(:auto_page => true)
+    if pivotal_api_interface
+      @activities ||= pivotal_api_interface.activities.all(:auto_page => true)
+    else
+      []
+    end
   end
 
   protected
@@ -56,9 +60,15 @@ class PivotalPull
   protected
 
   def pivotal_api_interface
-    PivotalTracker::Client.api_version = 4
-    PivotalTracker::Client.token = ::API_KEYS[:pivotal]
-    PivotalTracker::Project.find(@project.pivotal_id)
+    if defined?(::API_KEYS)
+      @pivotal_api_interface ||= begin
+        PivotalTracker::Client.api_version = 4
+        PivotalTracker::Client.token = ::API_KEYS[:pivotal]
+        PivotalTracker::Project.find(@project.pivotal_id)
+      end
+    else
+      nil
+    end
   end
 
 end
