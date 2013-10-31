@@ -23,8 +23,6 @@ db/schema.sql
 db/schema.rb
 db/*.sqlite3*
 public/stylesheets/*.css
-!public/stylesheets/reset.css
-!public/stylesheets/jquery-ui.css
 public/javascripts/all.js
 public/system
 uuid.state
@@ -44,12 +42,7 @@ vendor/**/**/doc/*
 vendor/plugins/footnotes/*
 .sass-cache
 rsa_key*
-sphinx/*
-db/sphinx/*
-config/*.sphinx.conf
-system/datas/*
 sqldumps/*
-config/environments/test_*.rb
 capybara*.html
 .bundle/*
 .rspec
