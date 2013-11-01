@@ -27,7 +27,7 @@ TimePulse provides callback endpoints for both GitHub and PivotalTracker. If the
 
 ## Documentation
 
-Documentation and examples can be found at [timepulse.io](http://timepulse.io, "TimePulse Home Page").
+Documentation and examples can be found at [timepulse.io](http://timepulse.io, "TimePulse Home Page").  (Not yet up as of 10/31/
 
 ## Getting Started
 
@@ -51,15 +51,15 @@ TimePulse was first built as an internal time-tracking application for LRD in ea
 
 ## Contributors
 
-Austin Fonacier
-Charles Hudson
-Evan Dorn
-Hannah Howard
-Judson Lester
-Michael McCormick
-Nate Berggren
-Scott Van Essen
-Tom Jakubowski
+* [Austin Fonacier](http://github.com/austinrfnd)
+* [Charles Hudson](http://github.com/phobetron)
+* [Evan Dorn](http://github.com/idahoev)
+* [Hannah Howard](http://github.com/hannahhoward)
+* [Judson Lester](http://github.com/nyarly)
+* [Michael McCormick](http://github.com/dipolesource)
+* [Nate Berggren](http://github.com/baksmak)
+* [Scott Van Essen](http://github.com/purplebaron)
+* [Tom Jakubowski](http://github.com/tomjakubowski)
 
 ## LICENSE
 
