@@ -41,6 +41,10 @@ Assuming you have a place to deploy already set up, you'll need to:
 
 For now, you'll probably need solid knowledge of Rails to customize and deploy this app.  We're working on making it a simpler process for future users.
 
+## Contributing
+
+Fork and Pull Request! Y'all know the drill by now.  Please make sure the tests pass, and add tests for your code.
+
 ## History
 
 TimePulse was first built as an internal time-tracking application for LRD in early 2011.  Since then it's grown and expanded, and in October 2013 we decided to open-source the project.
