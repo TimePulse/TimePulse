@@ -57,7 +57,9 @@ Nate Berggren
 Scott Van Essen
 Tom Jakubowski
 
+## LICENSE
 
+TimePulse is released under a restricted license. See the accompanying LICENSE file for details.
 
 
 
