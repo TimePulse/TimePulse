@@ -1,4 +1,5 @@
-# Welcome to TimePulse, an OSS Time Tracker for Consultants and Contractors
+# Welcome to TimePulse
+## OSS Time Tracker for Consultants and Contractors
 
 This project is originally by Logical Reality Design, Inc., and was built primarily
 by Evan Dorn, Judson Lester, and Hannah Howard with contributions from many other
