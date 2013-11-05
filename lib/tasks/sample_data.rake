@@ -49,9 +49,9 @@ namespace :db do
 
     # Load users
     task :populate_users => :environment do
-      user = User.create!(:login => 'evan',
-                           :name => "Evan",
-                           :email => "evan@idahoev.com",
+      user = User.create!(:login => 'admin',
+                           :name => "Admin",
+                           :email => "admin@timepulse.io",
                            :password => 'foobar',
                            :password_confirmation => 'foobar')
       user.groups << Group.find_by_name("Registered Users")
