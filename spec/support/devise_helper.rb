@@ -17,7 +17,7 @@ module DeviseExtraTestHelper
   def login_as(user)
     user = case user
            when Symbol
-             User.find_by_login(user.to_s) || Factory.create(user)
+             User.find_by_login(user.to_s) || FactoryGirl.create(user)
            when String
              User.find_by_login(user)
            else

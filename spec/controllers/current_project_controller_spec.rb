@@ -3,8 +3,8 @@ require 'spec_helper'
 describe CurrentProjectController do
   before(:each) do
     @user = authenticate(:user)
-    @project1 = Factory(:task)
-    @project2 = Factory(:task)
+    @project1 = FactoryGirl.create(:task)
+    @project2 = FactoryGirl.create(:task)
   end
 
   it "should allow a user with no current project to set one" do

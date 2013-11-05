@@ -20,16 +20,16 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Client do
 
   it "should create a new instance given valid attributes" do
-    Factory(:client)
+    FactoryGirl.create(:client)
   end
-  
+
   it "should require a name" do
-    Factory.build(:client, :name => nil).should_not be_valid
+    FactoryGirl.build(:client, :name => nil).should_not be_valid
   end
-  
+
   it "should require a billing email" do
-    Factory.build(:client, :billing_email => nil).should_not be_valid
+    FactoryGirl.build(:client, :billing_email => nil).should_not be_valid
   end
-  
-  
+
+
 end

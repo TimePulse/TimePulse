@@ -4,7 +4,7 @@ describe "/clients/edit" do
   include ClientsHelper
 
   before(:each) do
-    assign(:client, @client = Factory(:client))
+    assign(:client, @client = FactoryGirl.create(:client))
   end
 
   it "renders the edit client form" do

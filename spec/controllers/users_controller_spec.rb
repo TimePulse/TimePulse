@@ -25,7 +25,7 @@ describe UsersController do
       end
 
       it "should forbid viewing another user" do
-        @other = Factory.create(:user)
+        @other = FactoryGirl.create(:user)
         get :show, :id => @other.id
         verify_authorization_unsuccessful
       end
@@ -44,7 +44,7 @@ describe UsersController do
       end
 
       let :task do
-        Factory.create(:task)
+        FactoryGirl.create(:task)
       end
       it "should be authorized" do
         put :update, :id => @user.id, :user => base_params.merge({ :email => @user.email })
@@ -77,7 +77,7 @@ describe UsersController do
     end
 
     it "cannot set another user to inactive" do
-      @other_user = Factory.create(:user)
+      @other_user = FactoryGirl.create(:user)
       put :update, :id => @other_user.id, :user => {:inactive => true}
       @other_user.reload.should_not be_inactive
     end
@@ -95,7 +95,7 @@ describe UsersController do
     end
 
     it "should create users" do
-      attributes =  Factory.attributes_for(:user)
+      attributes =  FactoryGirl.attributes_for(:user)
       attributes.delete :groups
       post :create, :user => attributes
 
@@ -103,7 +103,7 @@ describe UsersController do
     end
 
     it "should assign users to the Registered Users group on creation" do
-      attributes =  Factory.attributes_for(:user)
+      attributes =  FactoryGirl.attributes_for(:user)
       attributes.delete :groups
       post :create, :user => attributes
       verify_authorization_successful
@@ -112,7 +112,7 @@ describe UsersController do
     end
 
     it "can set the user to inactive" do
-      @other_user = Factory.create(:user)
+      @other_user = FactoryGirl.create(:user)
       put :update, :id => @other_user.id, :user => {:inactive => true}
       @other_user.reload.should be_inactive
     end

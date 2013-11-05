@@ -4,9 +4,9 @@ describe InvoicesController do
 
 
   describe "as an admin" do
-    let :project do Factory(:project) end
-    let :user do Factory(:user) end
-    let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
+    let :project do FactoryGirl.create(:project) end
+    let :user do FactoryGirl.create(:user) end
+    let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user) end
 
     before(:each) do
       authenticate(:admin)
@@ -16,17 +16,17 @@ describe InvoicesController do
     ########################################################################################
     describe "GET index" do
       before(:each) do
-        @invoice = Factory(:invoice, :client => project.client)
+        @invoice = FactoryGirl.create(:invoice, :client => project.client)
         @client = @invoice.client
 
         @unpaid_invoices = [
             @invoice,
-            Factory(:invoice, :client => project.client, :paid_on => nil),
-            Factory(:invoice, :client => project.client, :paid_on => nil)
+            FactoryGirl.create(:invoice, :client => project.client, :paid_on => nil),
+            FactoryGirl.create(:invoice, :client => project.client, :paid_on => nil)
         ]
         @paid_invoices = [
-          Factory(:invoice, :client => project.client, :paid_on => Date.today - 1.day),
-          Factory(:invoice, :client => project.client, :paid_on => Date.today - 1.day)
+          FactoryGirl.create(:invoice, :client => project.client, :paid_on => Date.today - 1.day),
+          FactoryGirl.create(:invoice, :client => project.client, :paid_on => Date.today - 1.day)
         ]
       end
       it "should paginate all unpaid invoices as @unpaid_invoices" do
@@ -48,7 +48,7 @@ describe InvoicesController do
     ########################################################################################
     describe "responding to GET show" do
       before :each  do
-        @invoice = Factory(:invoice, :client => project.client)
+        @invoice = FactoryGirl.create(:invoice, :client => project.client)
         @client = @invoice.client
       end
       it "should expose the requested invoice as @invoice" do
@@ -77,9 +77,9 @@ describe InvoicesController do
       describe "client selection" do
         before :each  do
           @clients = [
-            Factory(:client, :abbreviation => 'ABC'),
-            Factory(:client, :abbreviation => 'DEF' ),
-            Factory(:client, :abbreviation => 'XYZ' )
+            FactoryGirl.create(:client, :abbreviation => 'ABC'),
+            FactoryGirl.create(:client, :abbreviation => 'DEF' ),
+            FactoryGirl.create(:client, :abbreviation => 'XYZ' )
           ]
         end
         it "should assign a list of clients" do
@@ -90,7 +90,7 @@ describe InvoicesController do
         describe "when a specific client is specified" do
           before :each  do
             @client = @clients[0]
-            @project = Factory(:project, :client => @client)
+            @project = FactoryGirl.create(:project, :client => @client)
           end
 
           it "should assign an individual client if client_id is specified" do
@@ -100,7 +100,7 @@ describe InvoicesController do
 
           describe "the list of work units" do
             before :each  do
-              @wu1 = Factory(:work_unit, :user => user, :project => @project, :billable => true)
+              @wu1 = FactoryGirl.create(:work_unit, :user => user, :project => @project, :billable => true)
             end
             it "should all belong to that client" do
               get :new, :client_id => @clients[0].id
@@ -110,14 +110,14 @@ describe InvoicesController do
             end
 
             it "should include billable uninvoiced work units" do
-              @wu2 = Factory(:work_unit, :user => user, :project => @project, :billable => true)
+              @wu2 = FactoryGirl.create(:work_unit, :user => user, :project => @project, :billable => true)
               get :new, :client_id => @clients[0].id
               assigns[:work_units].should include(@wu1)
               assigns[:work_units].should include(@wu2)
             end
 
             it "should not include unbillable work units" do
-              @wu2 = Factory(:work_unit, :user => user, :project => @project)
+              @wu2 = FactoryGirl.create(:work_unit, :user => user, :project => @project)
               @wu2.update_attribute(:billable, false)
               get :new, :client_id => @clients[0].id
               assigns[:work_units].should_not include(@wu2)
@@ -125,17 +125,17 @@ describe InvoicesController do
 
             it "should not include invoiced work units" do
               invoiced = [
-                Factory(:work_unit, :user => user, :project => @project, :billable => true),
-                Factory(:work_unit, :user => user, :project => @project, :billable => true)
+                FactoryGirl.create(:work_unit, :user => user, :project => @project, :billable => true),
+                FactoryGirl.create(:work_unit, :user => user, :project => @project, :billable => true)
               ]
-              Factory(:invoice, :client => project.client, :work_units => invoiced)
+              FactoryGirl.create(:invoice, :client => project.client, :work_units => invoiced)
               get :new, :client_id => @clients[0].id
               assigns[:work_units].should_not include(invoiced[0])
               assigns[:work_units].should_not include(invoiced[1])
             end
 
             it "should not include uncompleted work units" do
-              @wu2 = Factory(:work_unit, :user => user, :project => @project, :stop_time => nil, :hours => nil)
+              @wu2 = FactoryGirl.create(:work_unit, :user => user, :project => @project, :stop_time => nil, :hours => nil)
               get :new, :client_id => @clients[0].id
               assigns[:work_units].should_not include(@wu2)
             end
@@ -149,7 +149,7 @@ describe InvoicesController do
     ########################################################################################
     describe "responding to GET edit" do
       before :each  do
-        @invoice = Factory(:invoice, :client => project.client)
+        @invoice = FactoryGirl.create(:invoice, :client => project.client)
         @client = @invoice.client
       end
       it "should expose the requested invoice as @invoice" do
@@ -206,9 +206,9 @@ describe InvoicesController do
 
         describe "with specified work unit ids" do
           before :each  do
-            @wu1 = Factory(:work_unit, :user => user, :project => project)
-            @wu2 = Factory(:work_unit, :user => user, :project => project)
-            @wu3 = Factory(:work_unit, :user => user, :project => project)
+            @wu1 = FactoryGirl.create(:work_unit, :user => user, :project => project)
+            @wu2 = FactoryGirl.create(:work_unit, :user => user, :project => project)
+            @wu3 = FactoryGirl.create(:work_unit, :user => user, :project => project)
           end
           it "should expose a saved invoice as @invoice" do
             post :create, :invoice => @valid_create_params
@@ -282,7 +282,7 @@ describe InvoicesController do
     ########################################################################################
     describe "responding to PUT update" do
       before :each  do
-        @invoice = Factory(:invoice, :client => project.client)
+        @invoice = FactoryGirl.create(:invoice, :client => project.client)
         @client = @invoice.client
       end
       describe "with valid params" do
@@ -344,7 +344,7 @@ describe InvoicesController do
     ########################################################################################
     describe "DELETE destroy" do
       before :each  do
-        @invoice = Factory(:invoice, :client => project.client)
+        @invoice = FactoryGirl.create(:invoice, :client => project.client)
         @client = @invoice.client
       end
       it "should be authorized" do

@@ -5,15 +5,15 @@ describe PermissionsController do
 
   before(:each) do
     @person = authenticate(:admin)
-    request.env["HTTP_ACCEPT"] = "application/javascript" 
-    @group = Factory.create(:group)
+    request.env["HTTP_ACCEPT"] = "application/javascript"
+    @group = FactoryGirl.create(:group)
   end
 
   describe "POST Created" do
     it "should respond with javascript" do
       post  :create, {
-        "permission"=> "true", 
-        "group"=> @group.id, 
+        "permission"=> "true",
+        "group"=> @group.id,
         "p_action"=>"show",
         "p_controller" => "blah",
         "object"=> 123

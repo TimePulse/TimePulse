@@ -14,18 +14,22 @@
 #  updated_at  :datetime
 #
 
-Factory.define :project  do |c|
-  c.sequence(:name) { |n|  "Foo Project #{n}" }
-  c.association :client
-  c.clockable true
-  c.github_url ""
-  c.pivotal_id 123
-  c.parent_id { Project.root.id }
-  c.after_create { |p| Factory(:rate, :project => p)  }
+FactoryGirl.define  do
+  factory :project  do |c|
+    sequence(:name) { |n|  "Foo Project #{n}" }
+    association :client
+    clockable true
+    github_url ""
+    pivotal_id 123
+    parent_id { Project.root.id }
+    after(:create) { |p| FactoryGirl.create(:rate, :project => p)  }
+  end
 end
 
-Factory.define :task, :parent => :project do |c|
-  c.name "Clientactics Task"
-  c.clockable true
-  c.parent { |parent| parent.association(:project) }
+FactoryGirl.define  do
+  factory :task, :parent => :project do |c|
+    name "Clientactics Task"
+    clockable true
+    parent { |parent| parent.association(:project) }
+  end
 end

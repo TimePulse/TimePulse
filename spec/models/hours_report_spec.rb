@@ -3,33 +3,33 @@ require 'hours_report'
 
 describe HoursReport do
   before(:each) do
-    @user       = Factory(:user)
-    @user2      = Factory(:user)
-    @proj       = Factory(:project, :name => "proj")
-    @other_proj = Factory(:project, :name => "other")
+    @user       = FactoryGirl.create(:user)
+    @user2      = FactoryGirl.create(:user)
+    @proj       = FactoryGirl.create(:project, :name => "proj")
+    @other_proj = FactoryGirl.create(:project, :name => "other")
 
-    @subproj1 = Factory(:project, :parent => @proj, :name => "subproj1")
-    @subproj2 = Factory(:project, :parent => @proj, :name => "subproj2")
-    @ssubproj = Factory(:project, :parent => @subproj1, :name => "ssubproj")
+    @subproj1 = FactoryGirl.create(:project, :parent => @proj, :name => "subproj1")
+    @subproj2 = FactoryGirl.create(:project, :parent => @proj, :name => "subproj2")
+    @ssubproj = FactoryGirl.create(:project, :parent => @subproj1, :name => "ssubproj")
 
-    @wu_1     = Factory(:work_unit, :user => @user, :project => @proj,     :hours => 0.1)
-    @wu_2     = Factory(:work_unit, :user => @user, :project => @proj,     :hours => 0.2, :billable => false)
+    @wu_1     = FactoryGirl.create(:work_unit, :user => @user, :project => @proj,     :hours => 0.1)
+    @wu_2     = FactoryGirl.create(:work_unit, :user => @user, :project => @proj,     :hours => 0.2, :billable => false)
     @wu_2.update_attribute(:billable, false)
     @wu_2.should_not be_billable
 
-    @s1_wu_1  = Factory(:work_unit, :user => @user,  :project => @subproj1, :hours => 0.4)
-    @s1_wu_2  = Factory(:work_unit, :user => @user2, :project => @subproj1, :hours => 0.8)
+    @s1_wu_1  = FactoryGirl.create(:work_unit, :user => @user,  :project => @subproj1, :hours => 0.4)
+    @s1_wu_2  = FactoryGirl.create(:work_unit, :user => @user2, :project => @subproj1, :hours => 0.8)
 
-    @s2_wu_1  = Factory(:work_unit, :user => @user2, :project => @subproj2, :hours => 1.6, :bill_id => 1)
-    @s2_wu_2  = Factory(:work_unit, :user => @user,  :project => @subproj2, :hours => 3.2)
+    @s2_wu_1  = FactoryGirl.create(:work_unit, :user => @user2, :project => @subproj2, :hours => 1.6, :bill_id => 1)
+    @s2_wu_2  = FactoryGirl.create(:work_unit, :user => @user,  :project => @subproj2, :hours => 3.2)
 
-    @ss_wu_1  = Factory(:work_unit, :user => @user,  :project => @ssubproj, :hours => 6.4)
-    @ss_wu_2  = Factory(:work_unit, :user => @user,  :project => @ssubproj, :hours => 12.8)
+    @ss_wu_1  = FactoryGirl.create(:work_unit, :user => @user,  :project => @ssubproj, :hours => 6.4)
+    @ss_wu_2  = FactoryGirl.create(:work_unit, :user => @user,  :project => @ssubproj, :hours => 12.8)
 
     # these two should never get picked up in the hours reports for @proj,
     # so we should never see hundredth-hours in the  sums.
-    @op_wu_1  = Factory(:work_unit, :user => @user, :project => @other_proj,     :hours => 0.01)
-    @ou_wu_1  = Factory(:work_unit, :user => @user2, :project => @other_proj,     :hours => 0.02)
+    @op_wu_1  = FactoryGirl.create(:work_unit, :user => @user, :project => @other_proj,     :hours => 0.01)
+    @ou_wu_1  = FactoryGirl.create(:work_unit, :user => @user2, :project => @other_proj,     :hours => 0.02)
   end
 
 

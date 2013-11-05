@@ -6,7 +6,7 @@ shared_steps "log in" do
   end
 
   it "should fill in the user's information user" do
-    the_user = user or Factory(:user)
+    the_user = user or FactoryGirl.create(:user)
     fill_in "Login", :with => the_user.login
     fill_in "Password", :with => the_user.password
     click_button 'Login'

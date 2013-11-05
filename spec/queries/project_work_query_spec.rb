@@ -4,16 +4,16 @@ describe ProjectWorkQuery do
   let :root_project do Project.root end
 
   before :each do
-    @project1 = Factory(:project)
-    @subproject = Factory(:project, :parent => @project1)
+    @project1 = FactoryGirl.create(:project)
+    @subproject = FactoryGirl.create(:project, :parent => @project1)
     @project1.reload
-    @project2 = Factory(:project)
-    @user1 = Factory(:user)
-    @user2 = Factory(:user)
-    @work_unit_for_project1 = Factory(:work_unit, :project => @project1, :user => @user1)
-    @work_unit_for_project2 = Factory(:work_unit, :project => @project2, :user => @user1)
-    @work_unit_for_subproject = Factory(:work_unit, :project => @subproject, :user => @user1)
-    @work_unit_for_other_user = Factory(:work_unit, :project => @project2, :user => @user2)
+    @project2 = FactoryGirl.create(:project)
+    @user1 = FactoryGirl.create(:user)
+    @user2 = FactoryGirl.create(:user)
+    @work_unit_for_project1 = FactoryGirl.create(:work_unit, :project => @project1, :user => @user1)
+    @work_unit_for_project2 = FactoryGirl.create(:work_unit, :project => @project2, :user => @user1)
+    @work_unit_for_subproject = FactoryGirl.create(:work_unit, :project => @subproject, :user => @user1)
+    @work_unit_for_other_user = FactoryGirl.create(:work_unit, :project => @project2, :user => @user2)
   end
 
 
@@ -28,7 +28,7 @@ describe ProjectWorkQuery do
   end
 
   describe "with exclusive" do
-    
+
     it "should find all work_units for specified project" do
       @query = ProjectWorkQuery.new
       @results = @query.find_for_project(@project1, :exclusive => true)

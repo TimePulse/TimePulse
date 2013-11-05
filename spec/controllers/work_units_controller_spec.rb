@@ -6,10 +6,10 @@ describe WorkUnitsController do
     before(:each) do
       Timecop.return
       @user = authenticate(:admin)
-      @work_unit = Factory(:work_unit)
+      @work_unit = FactoryGirl.create(:work_unit)
     end
 
-    let! :project do Factory(:project) end
+    let! :project do FactoryGirl.create(:project) end
 
 
     ########################################################################################

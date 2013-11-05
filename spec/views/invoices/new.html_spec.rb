@@ -4,8 +4,8 @@ describe "/invoices/new" do
   include InvoicesHelper
 
   before(:each) do
-    assign(:invoice, Factory.build(:invoice))
-    @client_local = Factory(:client, :name => "Some Client", :abbreviation => "SCL")
+    assign(:invoice, FactoryGirl.build(:invoice))
+    @client_local = FactoryGirl.create(:client, :name => "Some Client", :abbreviation => "SCL")
     assign(:work_units, [])
   end
 
@@ -36,7 +36,7 @@ describe "/invoices/new" do
     before :each  do
       assign(:client, @client_local)
       assign(:invoice, Invoice.new(:client => @client_local))
-      assign(:work_units, [ Factory(:work_unit), Factory(:work_unit) ])
+      assign(:work_units, [ FactoryGirl.create(:work_unit), FactoryGirl.create(:work_unit) ])
     end
 
     it "should pre-select that client in the selector" do
@@ -49,8 +49,8 @@ describe "/invoices/new" do
     describe "create form" do
       before :each  do
         @work_units = assign(:work_units, [
-          Factory(:work_unit),
-          Factory(:work_unit)
+          FactoryGirl.create(:work_unit),
+          FactoryGirl.create(:work_unit)
         ])
       end
       it "should render" do

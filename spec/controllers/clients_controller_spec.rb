@@ -6,7 +6,7 @@ describe ClientsController do
   end
 
   let! :client do
-    Factory(:client)
+    FactoryGirl.create(:client)
   end
 
   describe "GET index" do

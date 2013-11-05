@@ -1,15 +1,15 @@
 require 'spec_helper'
 
 steps "Admin archives a project", :type => :feature do
-  let! :client_1 do Factory(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
-  let! :client_2 do Factory(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
-  let! :project_2 do Factory(:project, :client => client_1, :name => "Project 2 base") end
-  let! :project_2a do Factory(:project, :parent => project_2, :name => "Project 2a") end
-  let! :project_2b do Factory(:project, :parent => project_2, :name => "Project 2b") end
+  let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
+  let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
+  let! :project_2 do FactoryGirl.create(:project, :client => client_1, :name => "Project 2 base") end
+  let! :project_2a do FactoryGirl.create(:project, :parent => project_2, :name => "Project 2a") end
+  let! :project_2b do FactoryGirl.create(:project, :parent => project_2, :name => "Project 2b") end
 
-  let! :project_3 do Factory(:project, :client => client_2, :name => 'Project 3 base') end
-  let! :project_3a do Factory(:project, :parent => project_3, :name => 'Project 3a') end
-  let! :admin do Factory(:admin) end
+  let! :project_3 do FactoryGirl.create(:project, :client => client_2, :name => 'Project 3 base') end
+  let! :project_3a do FactoryGirl.create(:project, :parent => project_3, :name => 'Project 3a') end
+  let! :admin do FactoryGirl.create(:admin) end
 
   it "should login as the admin" do
     visit root_path

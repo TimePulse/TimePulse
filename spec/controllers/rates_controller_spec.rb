@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe RatesController do
   before do
-    @rate = Factory(:rate)
-    @user = Factory(:user)
+    @rate = FactoryGirl.create(:rate)
+    @user = FactoryGirl.create(:user)
   end
 
   describe "accessed by an admin" do
