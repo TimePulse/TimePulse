@@ -111,8 +111,12 @@ class User < ActiveRecord::Base
     HoursReport.new(project, self)
   end
 
-  def admin?
+  def old_admin?
     groups.include?(Group.admin_group)
+  end
+
+  def admin?
+    admin
   end
 
   def activity_for(project)
@@ -135,7 +139,7 @@ class User < ActiveRecord::Base
   def self.find_first_by_auth_conditions(warden_conditions)
     conditions = warden_conditions.dup
     if login = conditions.delete(:login)
-      where(conditions).where(["lower(login) = :value OR lower(email) = :value", 
+      where(conditions).where(["lower(login) = :value OR lower(email) = :value",
                                { :value => login.downcase}]).first
     else
       where(conditions).first

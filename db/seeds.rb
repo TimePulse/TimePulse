@@ -6,16 +6,13 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-reg_users = Group.create(:name => "Registered Users")
-admin = Group.create(:name => "Administration")
-guest = Group.create(:name => "Guest")
-
-Permission.create(:group_id  =>  guest.id,      :controller  =>  "user_sessions",    :action  =>  "new")
-Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "user_sessions",    :action  =>  "destroy")
-Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "current_project")
-Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "home")
-Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "clock_time")
-Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "work_units",       :action  =>  "show")
-Permission.create(:group_id  =>  reg_users.id,  :controller  =>  "work_units",       :action  =>  "new")
+user = User.create!(:login => 'admin',
+                     :name => "Admin",
+                     :email => "admin@timepulse.io",
+                     :password => 'foobar',
+                     :password_confirmation => 'foobar')
+user.admin = true
+user.save
+user.confirm!
 
 Project.create(:name => 'root', :client => nil)
