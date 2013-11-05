@@ -1,0 +1,8 @@
+language: ruby
+rvm:
+  - 1.9.3
+  - 2.0.0
+
+before_script:
+  - cp config/database.travis.yml config/database.yml
+  - mysql -e 'create database timepulse_test;'
