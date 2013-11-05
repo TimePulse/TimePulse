@@ -1,10 +1,10 @@
 class ActivityBuilder
-  include Virtus
+  include Virtus.model
 
   extend ActiveModel::Naming
   include ActiveModel::Conversion
   include ActiveModel::Validations
-  
+
   attr_accessor :user, :project, :activity
 
   def valid?
@@ -23,7 +23,7 @@ class ActivityBuilder
   def persisted?
     activity.persisted?
   end
-  
+
   protected
 
   def build
