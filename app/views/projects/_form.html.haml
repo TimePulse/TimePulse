@@ -3,7 +3,7 @@
 
   %fieldset.general
     = f.labeled_input(:client_id){ client_selector(f) }
-    = f.labeled_input(:parent_id){ project_parent_selector(f) }
+    = f.labeled_input(:parent_id){ project_selector(f) }
     = f.labeled_input :name
     = f.labeled_input :account
     = f.labeled_input :description
