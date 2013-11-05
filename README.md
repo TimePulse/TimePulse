@@ -12,9 +12,9 @@ current and past contractors of LRD.
 TimePulse features a few key features we find useful in a team time-tracking application.
 
 * Both punchclock and manual entry clocking
-* Integration with GitHub and Pivotal Tracker - clocked time is associated automatically with PT tickets and with
+* Integration with GitHub and Pivotal Tracker - clocked time is associated automatically with PT tickets and with Git commits.
 * Heirarchical tree of projects, with attribute inheritance
-* Unified interface for both invoicing clients and paying subcontractors
+* Unified interface for both invoicing clients and paying subcontractors/staff
 * Invoice generation
 * Multiple customizable rates for each project
 * Workers can be individually assigned to a rate on a per-project basis
@@ -29,7 +29,7 @@ TimePulse provides callback endpoints for both GitHub and PivotalTracker. If the
 
 ## Documentation
 
-Documentation and examples can be found at [timepulse.io](http://timepulse.io, "TimePulse Home Page").  (Not yet up as of 10/31/
+Documentation and examples can be found at [timepulse.io](http://timepulse.io, "TimePulse Home Page").  (Not yet up as of 11/4/2013)
 
 ## Getting Started
 
