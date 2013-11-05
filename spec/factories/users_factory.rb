@@ -6,7 +6,6 @@ Factory.define :user , :class => User do |u|
   u.inactive false
 
   #TODO: Fix this when LAz for R3 is ready.
-  u.groups{ [Group.find_by_name("Registered Users")] }
   u.sequence(:email) {|n| "quentin#{n}@example.com"}
   u.sequence(:reset_password_token) { |n| "hYggoHueyySp#{n}czmffos" }
   u.sequence(:reset_password_sent_at) { |n| n.weeks.ago }
@@ -32,7 +31,7 @@ Factory.define :admin, :parent => :user do |u|
   u.sequence(:login) { |n| "administrator#{n}" }
 
   #TODO: Fix this when LAz for R3 is ready.
-  u.groups{  [Group.find_by_name("Administration"), Group.find_by_name("Registered Users")] }
+  u.admin true
 end
 
 

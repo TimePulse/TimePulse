@@ -1,7 +1,8 @@
-class WorkUnitFixerController < ApplicationController
+class WorkUnitFixerController < WorkUnitBaseController
+  before_filter :find_work_unit_and_authenticate
+
   def create
 
-    @work_unit = WorkUnit.find(params[:id])
     if (@work_unit.stop_time.present?)
       redirect_to :back
     end

@@ -1,4 +1,6 @@
 class CurrentProjectController < ApplicationController
+  before_filter :require_user!
+
   def create
     @prior_project = current_user.current_project
     current_user.update_attribute(:current_project_id, params[:id]) if params[:id]

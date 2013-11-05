@@ -1,7 +1,7 @@
 class UsersController < Devise::RegistrationsController
 
   skip_before_filter :require_no_authentication
-  before_filter :require_user!, :only => [:index, :new, :create]
+  before_filter :require_admin!, :only => [:index, :new, :create]
   before_filter :get_user_and_authenticate, :only => [:show, :edit, :update]
 
   def new
@@ -9,8 +9,11 @@ class UsersController < Devise::RegistrationsController
   end
 
   def create
+    admin = params.delete(:admin)
     @user = User.new(params[:user])
-    @user.groups << Group.find_by_name("Registered Users")
+    if admin
+      user.admin = true
+    end
     if @user.save
       flash[:notice] = "Account registered!"
       redirect_to user_path(@user)
@@ -31,8 +34,13 @@ class UsersController < Devise::RegistrationsController
 
   def update
     nil_unused_params
-    if current_user.admin? && params[:user][:inactive] 
-      @user.update_attribute( :inactive, params[:user][:inactive] )
+    if current_user.admin?
+      if params[:user][:admin]
+        @user.update_attribute( :admin, params[:user][:admin] )
+      end
+      if params[:user][:inactive]
+        @user.update_attribute( :inactive, params[:user][:inactive] )
+      end
     end
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
