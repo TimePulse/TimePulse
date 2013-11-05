@@ -5,6 +5,8 @@ This project is originally by Logical Reality Design, Inc., and was built primar
 by Evan Dorn, Judson Lester, and Hannah Howard with contributions from many other
 current and past contractors of LRD.
 
+[![Code Climate](https://codeclimate.com/repos/52793e167e00a4591d00005c/badges/454bdc2ee23863e3bbe3/gpa.png)](https://codeclimate.com/repos/52793e167e00a4591d00005c/feed)
+
 ## Features Overview
 
 TimePulse features a few key features we find useful in a team time-tracking application.
