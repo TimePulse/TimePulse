@@ -32,7 +32,7 @@ describe UsersController do
       end
 
       it "should forbid viewing another user" do
-        @other = Factory.create(:user)
+        @other = FactoryGirl.create(:user)
         get :show, :id => @other.id
         verify_authorization_unsuccessful
       end
@@ -47,7 +47,7 @@ describe UsersController do
 
     describe "POST create" do
       it "should be forbidden" do
-        attributes =  Factory.attributes_for(:user)
+        attributes =  FactoryGirl.attributes_for(:user)
         post :create, :user => attributes
         verify_authorization_unsuccessful
       end
@@ -59,7 +59,7 @@ describe UsersController do
       end
 
       let :task do
-        Factory.create(:task)
+        FactoryGirl.create(:task)
       end
       it "should be authorized" do
         put :update, :id => @user.id, :user => base_params.merge({ :email => @user.email })
@@ -92,7 +92,7 @@ describe UsersController do
     end
 
     it "cannot set another user to inactive" do
-      @other_user = Factory.create(:user)
+      @other_user = FactoryGirl.create(:user)
       put :update, :id => @other_user.id, :user => {:inactive => true}
       @other_user.reload.should_not be_inactive
     end
@@ -103,7 +103,7 @@ describe UsersController do
     end
 
     it "cannot set another user admin" do
-      @other_user = Factory.create(:user)
+      @other_user = FactoryGirl.create(:user)
       put :update, :id => @other_user.id, :user => {:admin => true}
       @other_user.reload.should_not be_admin
     end
@@ -117,14 +117,14 @@ describe UsersController do
     end
 
     it "should create users" do
-      attributes =  Factory.attributes_for(:user)
+      attributes =  FactoryGirl.attributes_for(:user)
       post :create, :user => attributes
 
       response.should be_redirect
     end
 
     it "should assign admin to false by default" do
-      attributes =  Factory.attributes_for(:user)
+      attributes =  FactoryGirl.attributes_for(:user)
       post :create, :user => attributes
       verify_authorization_successful
       user = assigns[:user]
@@ -132,13 +132,13 @@ describe UsersController do
     end
 
     it "can set the user to inactive" do
-      @other_user = Factory.create(:user)
+      @other_user = FactoryGirl.create(:user)
       put :update, :id => @other_user.id, :user => {:inactive => true}
       @other_user.reload.should be_inactive
     end
 
     it "can set the user as admin" do
-      @other_user = Factory.create(:user)
+      @other_user = FactoryGirl.create(:user)
       put :update, :id => @other_user.id, :user => {:admin => true}
       @other_user.reload.should be_admin
     end

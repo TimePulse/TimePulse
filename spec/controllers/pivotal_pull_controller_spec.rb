@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe PivotalPullController, :vcr => {} do
   before do
-    @project = Factory(:project)
+    @project = FactoryGirl.create(:project)
   end
 
   describe "accessed by a normal user" do
@@ -29,7 +29,7 @@ describe PivotalPullController, :vcr => {} do
 
     describe "POST create" do
       let :pivotal_project do
-        Factory(:project, :pivotal_id => 12345)
+        FactoryGirl.create(:project, :pivotal_id => 12345)
       end
 
       let :activities do

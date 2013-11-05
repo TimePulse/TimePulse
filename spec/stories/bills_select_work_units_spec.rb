@@ -3,16 +3,16 @@ require 'spec_helper'
 shared_steps "for an billing task" do |opt_hash|
   opt_hash ||= {}
   let :admin do
-    Factory(:admin)
+    FactoryGirl.create(:admin)
   end
 
   let :project do
-    Factory(:project)
+    FactoryGirl.create(:project)
   end
 
   (opt_hash[:wu_count] || 3).times do |idx|
     let! "work_unit_#{idx}" do
-      Factory(:work_unit, :project => project, :user => admin)
+      FactoryGirl.create(:work_unit, :project => project, :user => admin)
     end
   end
 
@@ -85,7 +85,7 @@ steps "Selects all boxes", :type => :feature do
   end
 
   perform_steps "to verify bill is visible"
-  
+
 end
 
 steps "Select a few work units", :type => :feature do

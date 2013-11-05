@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe GithubPullController, :vcr => {} do
   before do
-    @project = Factory(:project)
+    @project = FactoryGirl.create(:project)
   end
 
   describe "accessed by a normal user" do
@@ -49,7 +49,7 @@ describe GithubPullController, :vcr => {} do
 
     describe "POST create" do
       let :github_project do
-        Factory(:project, :github_url => "http://github.com/a_project/with_commits")
+        FactoryGirl.create(:project, :github_url => "http://github.com/a_project/with_commits")
       end
 
       let :number_of_commits_in_repository do

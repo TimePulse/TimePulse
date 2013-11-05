@@ -1,37 +1,37 @@
-Factory.define :user , :class => User do |u|
-  u.name "Quentin Johnson"
-  u.sequence(:login) { |n| "quentin#{n}"}
-  u.password "foobar"
-  u.password_confirmation "foobar"
-  u.inactive false
+FactoryGirl.define  do
+  factory :user , :class => User do
+    name "Quentin Johnson"
+    sequence(:login) { |n| "quentin#{n}"}
+    password "foobar"
+    password_confirmation "foobar"
+    inactive false
 
-  #TODO: Fix this when LAz for R3 is ready.
-  u.sequence(:email) {|n| "quentin#{n}@example.com"}
-  u.sequence(:reset_password_token) { |n| "hYggoHueyySp#{n}czmffos" }
-  u.sequence(:reset_password_sent_at) { |n| n.weeks.ago }
+    sequence(:email) {|n| "quentin#{n}@example.com"}
+    sequence(:reset_password_token) { |n| "hYggoHueyySp#{n}czmffos" }
+    sequence(:reset_password_sent_at) { |n| n.weeks.ago }
 
-  u.sequence(:remember_created_at) { |n| n.weeks.ago}
+    sequence(:remember_created_at) { |n| n.weeks.ago}
 
-  u.sequence(:sign_in_count) { |n| n}
-  u.sequence(:current_sign_in_at) { |n| n.weeks.ago}
-  u.sequence(:last_sign_in_at) { |n| (n+1).weeks.ago }
-  u.sequence(:current_sign_in_ip) { |n| "192.168.0.#{n}"}
-  u.sequence(:last_sign_in_ip) { |n| "192.168.0.#{n+1}"}
+    sequence(:sign_in_count) { |n| n}
+    sequence(:current_sign_in_at) { |n| n.weeks.ago}
+    sequence(:last_sign_in_at) { |n| (n+1).weeks.ago }
+    sequence(:current_sign_in_ip) { |n| "192.168.0.#{n}"}
+    sequence(:last_sign_in_ip) { |n| "192.168.0.#{n+1}"}
 
-  u.sequence(:confirmation_token) { |n| "Q#{n}g5di9Q3GKGxHX4YzjM"}
-  u.sequence(:confirmed_at) { |n| n.weeks.ago}
-  u.sequence(:confirmation_sent_at) { |n| (n+1).weeks.ago }
+    sequence(:confirmation_token) { |n| "Q#{n}g5di9Q3GKGxHX4YzjM"}
+    sequence(:confirmed_at) { |n| n.weeks.ago}
+    sequence(:confirmation_sent_at) { |n| (n+1).weeks.ago }
 
-  u.github_user "quentinjohnson"
-  u.pivotal_name "Quentin Johnson"
-end
+    github_user "quentinjohnson"
+    pivotal_name "Quentin Johnson"
+  end
 
-Factory.define :admin, :parent => :user do |u|
-  u.name "Administrator"
-  u.sequence(:login) { |n| "administrator#{n}" }
+  factory :admin, :parent => :user do
+    name "Administrator"
+    sequence(:login) { |n| "administrator#{n}" }
 
-  #TODO: Fix this when LAz for R3 is ready.
-  u.admin true
+    admin true
+  end
 end
 
 

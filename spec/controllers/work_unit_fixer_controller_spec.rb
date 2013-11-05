@@ -3,7 +3,7 @@ require 'spec_helper'
 describe WorkUnitFixerController do
   before(:each) do
     @user = authenticate(:admin)
-    @work_unit = Factory(:in_progress_work_unit)
+    @work_unit = FactoryGirl.create(:in_progress_work_unit)
     @work_unit.hours = 9.00
     @work_unit.save(:validate => false)
   end

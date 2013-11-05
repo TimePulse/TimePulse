@@ -1,13 +1,14 @@
 require 'spec_helper'
 
 steps "edit a work unit to move it from one project to another", :type => :feature do
-  let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
-  let! :client_2 do Factory(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
-  let! :project_1 do Factory(:project, :client => client_1) end
-  let! :project_2 do Factory(:project, :client => client_2) end
-  let! :user      do Factory(:user, :current_project => project_1) end
+  include SelectBoxItHelpers
+  let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.') end
+  let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
+  let! :project_1 do FactoryGirl.create(:project, :client => client_1) end
+  let! :project_2 do FactoryGirl.create(:project, :client => client_2) end
+  let! :user      do FactoryGirl.create(:user, :current_project => project_1) end
 
-  let! :work_unit do Factory(:work_unit, :project => project_1, :user => user) end
+  let! :work_unit do FactoryGirl.create(:work_unit, :project => project_1, :user => user) end
 
   it "log in as a user" do
     visit root_path
@@ -38,18 +39,12 @@ steps "edit a work unit to move it from one project to another", :type => :featu
 
   it "should show a project <select> element" do
     within "form#edit_work_unit_#{work_unit.id}" do
-      page.should have_selector("#work_unit_project_id")
-    end
-  end
-
-  it "should show a client abbreviation in the project picker if available" do
-    within "#work_unit_project_id option[value='#{project_2.id}']" do
-      page.should have_content(project_2.client.abbreviation)
+      page.should have_select_box_selector("#work_unit_project_id")
     end
   end
 
   it "I change the project for the work unit" do
-    select project_2.name, :from => "work_unit_project_id"
+    select_box_it_select project_2.name, :from => "work_unit_project_id"
     click_button 'Submit'
   end
 

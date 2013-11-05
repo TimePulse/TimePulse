@@ -3,10 +3,10 @@ require 'spec_helper'
 describe "/invoice_reports/show" do
   include InvoicesHelper
 
-  let :project do Factory(:project) end
+  let :project do FactoryGirl.create(:project) end
 
   before(:each) do
-    assign(:invoice, @invoice = Factory(:invoice, :client => project.client))
+    assign(:invoice, @invoice = FactoryGirl.create(:invoice, :client => project.client))
     assign(:invoice_report, InvoiceReport.new(@invoice))
   end
 

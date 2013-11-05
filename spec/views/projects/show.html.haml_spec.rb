@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "/projects/show" do
   include ProjectsHelper
   before(:each) do
-    assign(:project, @project = Factory(:project))
-    assign(:active_users, [Factory(:user)])
+    assign(:project, @project = FactoryGirl.create(:project))
+    assign(:active_users, [FactoryGirl.create(:user)])
   end
 
   it "succeeds" do
@@ -13,7 +13,7 @@ describe "/projects/show" do
 
   describe "rates" do
     before :each do
-      @project.rates << Factory(:rate, :project => @project)
+      @project.rates << FactoryGirl.create(:rate, :project => @project)
     end
 
     it "shows a rates table" do

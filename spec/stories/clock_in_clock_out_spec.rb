@@ -2,15 +2,15 @@ require 'spec_helper'
 
 steps "clock in and out on projects", :type => :feature do
 
-  let! :client_1 do Factory(:client, :name => 'Foo, Inc.') end
-  let! :project_1 do Factory(:project, :client => client_1) end
-  let! :project_2 do Factory(:project, :client => client_1, :billable => false ) end
-  let! :user      do Factory(:user, :current_project => project_1) end
+  let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.') end
+  let! :project_1 do FactoryGirl.create(:project, :client => client_1) end
+  let! :project_2 do FactoryGirl.create(:project, :client => client_1, :billable => false ) end
+  let! :user      do FactoryGirl.create(:user, :current_project => project_1) end
 
   let! :work_units do
-    [ Factory(:work_unit, :project => project_1, :user => user),
-      Factory(:work_unit, :project => project_1, :user => user),
-      Factory(:work_unit, :project => project_1, :user => user),
+    [ FactoryGirl.create(:work_unit, :project => project_1, :user => user),
+      FactoryGirl.create(:work_unit, :project => project_1, :user => user),
+      FactoryGirl.create(:work_unit, :project => project_1, :user => user),
     ]
   end
 
