@@ -9,6 +9,11 @@ before_script:
   - cp config/database.travis.yml config/database.yml
   - mysql -e 'create database timepulse_test;'
 
+script:
+  - RAILS_ENV=test bundle exec rake db:migrate --trace
+  - bundle exec rake db:test:prepare
+  - bundle exec rake
+
 notifications:
   recipients
     - evan@lrdesign.com
