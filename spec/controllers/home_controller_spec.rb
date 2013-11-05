@@ -20,7 +20,7 @@ describe HomeController do
 
     describe "with a current project selected" do
       before :each do
-        @user.current_project = Factory(:project, :billable => true, :clockable => true)
+        @user.current_project = FactoryGirl.create(:project, :billable => true, :clockable => true)
         @user.save!
       end
       it "should find the current project" do
@@ -29,24 +29,24 @@ describe HomeController do
       end
 
       it "should find the completed work units" do
-        @wu1 = Factory(:work_unit, :project => @user.current_project, :user => @user)
-        @wu2 = Factory(:work_unit, :project => @user.current_project, :user => @user)
+        @wu1 = FactoryGirl.create(:work_unit, :project => @user.current_project, :user => @user)
+        @wu2 = FactoryGirl.create(:work_unit, :project => @user.current_project, :user => @user)
         get 'index'
         assigns[:work_units].should include(@wu1)
         assigns[:work_units].should include(@wu2)
       end
 
       it "should find the git commits" do
-        @co1 = Factory(:activity, :source => "github", :project => @user.current_project, :user => @user)
-        @co2 = Factory(:activity, :source => "github", :project => @user.current_project, :user => @user)
+        @co1 = FactoryGirl.create(:activity, :source => "github", :project => @user.current_project, :user => @user)
+        @co2 = FactoryGirl.create(:activity, :source => "github", :project => @user.current_project, :user => @user)
         get 'index'
         assigns[:commits].should include(@co1)
         assigns[:commits].should include(@co2)
       end
 
       it "should find the pivotal_updates" do
-        @pu1 = Factory(:activity, :source => "pivotal", :project => @user.current_project, :user => @user)
-        @pu2 = Factory(:activity, :source => "pivotal", :project => @user.current_project, :user => @user)
+        @pu1 = FactoryGirl.create(:activity, :source => "pivotal", :project => @user.current_project, :user => @user)
+        @pu2 = FactoryGirl.create(:activity, :source => "pivotal", :project => @user.current_project, :user => @user)
         get 'index'
         assigns[:pivotal_updates].should include(@pu1)
         assigns[:pivotal_updates].should include(@pu2)

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe GithubCommit do
 
-  let! :project do Factory.create(:project) end
-  let! :user do Factory.create(:user, :email => "george@jungle.com", :github_user => "georgeofjungle") end
+  let! :project do FactoryGirl.create(:project) end
+  let! :user do FactoryGirl.create(:user, :email => "george@jungle.com", :github_user => "georgeofjungle") end
 
   let! :timestamp do DateTime.parse(2.days.ago.to_s).xmlschema end
   let! :close_time do DateTime.parse((1.day.ago.advance(:minutes => 5)).to_s).xmlschema end
@@ -81,7 +81,7 @@ describe GithubCommit do
         last_activity.reference_1.should == "1234"
         last_activity.reference_2.should == "1234_fix_stuff"
       end
-    
+
       it "should associate a user by email" do
         github_commit = GithubCommit.new(no_user_params)
         github_commit.save

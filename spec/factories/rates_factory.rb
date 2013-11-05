@@ -1,10 +1,14 @@
-Factory.define :rate do |rate|
-  rate.name "amount for name"
-  rate.amount 100
-  rate.association :project
+FactoryGirl.define  do
+  factory :rate do
+    name "amount for name"
+    amount 100
+    association :project
+  end
 end
 
-Factory.define :rates_user do |r_u|
-  r_u.association :rate
-  r_u.association :user
+FactoryGirl.define  do
+  factory :rates_user do
+    association :rate
+    association :user
+  end
 end

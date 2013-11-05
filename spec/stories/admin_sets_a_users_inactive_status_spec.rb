@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 steps "Admin sets a user's inactive status", :type => :feature do
-  let! :user_1 do Factory(:user, :name => "Foo Bar 1", :inactive => false) end
-  let! :user_2 do Factory(:user, :name => "Foo Bar 2", :inactive => true) end
-  let! :admin do Factory(:admin) end
+  let! :user_1 do FactoryGirl.create(:user, :name => "Foo Bar 1", :inactive => false) end
+  let! :user_2 do FactoryGirl.create(:user, :name => "Foo Bar 2", :inactive => true) end
+  let! :admin do FactoryGirl.create(:admin) end
 
   it "should not allow inactive user to log in" do
     visit root_path
@@ -27,7 +27,7 @@ steps "Admin sets a user's inactive status", :type => :feature do
     page.should have_content "Account updated!"
     page.should have_checked_field "user_inactive"
   end
-  
+
   it "should properly set a user as active" do
     visit edit_user_path(user_2.id)
     page.should have_checked_field "user_inactive"

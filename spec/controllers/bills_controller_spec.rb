@@ -3,7 +3,7 @@ require 'spec_helper'
 describe BillsController do
 
   before(:each) do
-    @bill = Factory(:bill, :due_on => Date.today + 1.week)   
+    @bill = FactoryGirl.create(:bill, :due_on => Date.today + 1.week)
     @user = @bill.user
   end
 
@@ -13,7 +13,7 @@ describe BillsController do
     end
     it "should not be authenticated" do
       get :index
-      verify_authorization_unsuccessful      
+      verify_authorization_unsuccessful
     end
   end
 
@@ -29,25 +29,25 @@ describe BillsController do
       before(:each) do
         @unpaid_bills = [
             @bill,
-            Factory(:bill, :paid_on => nil, :due_on => Date.today + 1.month),
-            Factory(:bill, :paid_on => nil, :due_on => Date.today + 3.weeks)
+            FactoryGirl.create(:bill, :paid_on => nil, :due_on => Date.today + 1.month),
+            FactoryGirl.create(:bill, :paid_on => nil, :due_on => Date.today + 3.weeks)
         ].sort_by{|b| b.due_on}.reverse
         @paid_bills = [
-          Factory(:bill, :paid_on => Date.today - 1.day),
-          Factory(:bill, :paid_on => Date.today - 2.day)
-        ].sort_by{|b| b.paid_on}.reverse       
+          FactoryGirl.create(:bill, :paid_on => Date.today - 1.day),
+          FactoryGirl.create(:bill, :paid_on => Date.today - 2.day)
+        ].sort_by{|b| b.paid_on}.reverse
       end
       it "should paginate all unpaid bills as @unpaid_bills" do
         get :index
         assigns[:unpaid_bills].should == @unpaid_bills.paginate
-      end  
+      end
       it "should paginate all paid bills as @paid_bills" do
         get :index
         assigns[:paid_bills].should == @paid_bills.paginate
-      end        
+      end
       it "should be authorized" do
         get :index
-        verify_authorization_successful       
+        verify_authorization_successful
       end
     end
 
@@ -58,44 +58,44 @@ describe BillsController do
       it "should expose the requested bill as @bill" do
         get :show, :id => @bill.id
         assigns[:bill].should == @bill
-      end    
+      end
       it "should be authorized" do
         get :show, :id => @bill.id
-        verify_authorization_successful       
+        verify_authorization_successful
       end
     end
 
     ########################################################################################
     #                                      GET NEW
     ########################################################################################
-    describe "responding to GET new" do  
+    describe "responding to GET new" do
       it "should expose a new bill as @bill" do
         get :new
         assigns[:bill].should be_a(Bill)
         assigns[:bill].should be_new_record
-      end    
+      end
       it "should be authorized" do
         get :new
-        verify_authorization_successful       
+        verify_authorization_successful
       end
       describe "user selection" do
         before :each  do
-          @users = [ 
-            Factory(:user, :name => 'John ABC'), 
-            Factory(:user, :name => 'John DEF'), 
-            Factory(:user, :name => 'John GHI') 
+          @users = [
+            FactoryGirl.create(:user, :name => 'John ABC'),
+            FactoryGirl.create(:user, :name => 'John DEF'),
+            FactoryGirl.create(:user, :name => 'John GHI')
           ]
-        end        
+        end
         it "should assign a list of users" do
           get :new
           assigns[:users].should == User.find(:all, :order => "name ASC")
-        end        
-        
+        end
+
         describe "when a specific user is specified" do
           before :each  do
-            @user = @users[0] 
-            client = Factory(:client)
-            @project = Factory(:project, :client => client)
+            @user = @users[0]
+            client = FactoryGirl.create(:client)
+            @project = FactoryGirl.create(:project, :client => client)
           end
 
           it "should assign an individual user if user_id is specified" do
@@ -105,7 +105,7 @@ describe BillsController do
 
           describe "the list of work units" do
             before :each  do
-              @wu1 = Factory(:work_unit, :project => @project, :billable => true, :user => @user)              
+              @wu1 = FactoryGirl.create(:work_unit, :project => @project, :billable => true, :user => @user)
             end
             it "should all belong to that user" do
               get :new, :user_id => @users[0].id
@@ -113,61 +113,61 @@ describe BillsController do
                 wu.user.should == @users[0]
               end
             end
-            
+
             it "should include billable unbilled work units" do
-              @wu2 = Factory(:work_unit, :project => @project, :billable => true, :user => @user)              
+              @wu2 = FactoryGirl.create(:work_unit, :project => @project, :billable => true, :user => @user)
               get :new, :user_id => @users[0].id
               assigns[:work_units].should include(@wu1)
-              assigns[:work_units].should include(@wu2)              
-            end  
-              
+              assigns[:work_units].should include(@wu2)
+            end
+
             it "should not include unbillable work units" do
-              @wu2 = Factory(:work_unit, :project => @project)
+              @wu2 = FactoryGirl.create(:work_unit, :project => @project)
               @wu2.update_attribute(:billable, false)
               get :new, :user_id => @users[0].id
               assigns[:work_units].should_not include(@wu2)
-            end          
-            
+            end
+
             it "should not include billed work units" do
-              billed = [ 
-                Factory(:work_unit, :project => @project, :billable => true, :user => @user),
-                Factory(:work_unit, :project => @project, :billable => true, :user => @user)                              
+              billed = [
+                FactoryGirl.create(:work_unit, :project => @project, :billable => true, :user => @user),
+                FactoryGirl.create(:work_unit, :project => @project, :billable => true, :user => @user)
               ]
-              Factory(:bill, :work_units => billed)                                                       
+              FactoryGirl.create(:bill, :work_units => billed)
               get :new, :user_id => @users[0].id
               assigns[:work_units].should_not include(billed[0])
-              assigns[:work_units].should_not include(billed[1])                          
+              assigns[:work_units].should_not include(billed[1])
             end
-            
+
             it "should not include uncompleted work units" do
-              @wu2 = Factory(:work_unit, :project => @project, :stop_time => nil, :hours => nil)
+              @wu2 = FactoryGirl.create(:work_unit, :project => @project, :stop_time => nil, :hours => nil)
               get :new, :user_id => @users[0].id
-              assigns[:work_units].should_not include(@wu2)              
-            end 
-            
-            it "should not include work units for another user" do
-              @wu2 = Factory(:work_unit, :project => @project, :billable => true, :user => @users[1])              
-              get :new, :user_id => @users[0].id              
-              assigns[:work_units].should     include(@wu1)
-              assigns[:work_units].should_not include(@wu2)                          
+              assigns[:work_units].should_not include(@wu2)
             end
-          end  
+
+            it "should not include work units for another user" do
+              @wu2 = FactoryGirl.create(:work_unit, :project => @project, :billable => true, :user => @users[1])
+              get :new, :user_id => @users[0].id
+              assigns[:work_units].should     include(@wu1)
+              assigns[:work_units].should_not include(@wu2)
+            end
+          end
         end
-      end      
+      end
     end
 
     ########################################################################################
     #                                      GET EDIT
     ########################################################################################
-    describe "responding to GET edit" do  
+    describe "responding to GET edit" do
       it "should expose the requested bill as @bill" do
         get :edit, :id => @bill.id
         assigns[:bill].should == @bill
-      end   
+      end
       it "should be authorized" do
-        get :edit, :id => @bill.id   
-        verify_authorization_successful       
-      end      
+        get :edit, :id => @bill.id
+        verify_authorization_successful
+      end
     end
 
     ########################################################################################
@@ -175,10 +175,10 @@ describe BillsController do
     ########################################################################################
     describe "responding to POST create" do
 
-      describe "with valid params" do       
+      describe "with valid params" do
         before do
-          @user = Factory(:user)
-          @valid_create_params = {    
+          @user = FactoryGirl.create(:user)
+          @valid_create_params = {
             :due_on => Date.today,
             :user_id => @user.id,
             :notes => "value for notes"
@@ -190,7 +190,7 @@ describe BillsController do
           verify_authorization_successful
         end
         it "should create a new bill in the database" do
-          lambda do 
+          lambda do
             post :create, :bill => @valid_create_params
           end.should change(Bill, :count).by(1)
         end
@@ -209,14 +209,14 @@ describe BillsController do
           post :create, :bill => @valid_create_params
           new_bill = assigns[:bill]
           response.should redirect_to(bill_url(new_bill))
-        end    
+        end
 
         describe "with specified work unit ids" do
           before :each  do
-            @proj = Factory(:project, :client => @client)
-            @wu1 = Factory(:work_unit, :project => @proj)
-            @wu2 = Factory(:work_unit, :project => @proj)
-            @wu3 = Factory(:work_unit, :project => @proj)
+            @proj = FactoryGirl.create(:project, :client => @client)
+            @wu1 = FactoryGirl.create(:work_unit, :project => @proj)
+            @wu2 = FactoryGirl.create(:work_unit, :project => @proj)
+            @wu3 = FactoryGirl.create(:work_unit, :project => @proj)
           end
           it "should include specified work units in the bill" do
             post :create, :bill => @valid_create_params.merge!({ :work_unit_ids => {
@@ -234,23 +234,23 @@ describe BillsController do
             assigns[:bill].work_units.should include(@wu1)
             assigns[:bill].work_units.should_not include(@wu2)
           end
-        end  
-      end   
+        end
+      end
 
       describe "with invalid params" do
         before do
-          @invalid_create_params = {  
+          @invalid_create_params = {
             :due_on => Date.today,
             :user_id => nil,
             :notes => "value for notes"
-          } 
+          }
         end
 
         it "should not create a new bill in the database" do
-          lambda do 
+          lambda do
             post :create, :bill => @invalid_create_params
           end.should_not change(Bill, :count)
-        end      
+        end
 
         it "should expose a newly created bill as @bill" do
           post :create, :bill => @invalid_create_params
@@ -265,8 +265,8 @@ describe BillsController do
         it "should re-render the 'new' template" do
           post :create, :bill => @invalid_create_params
           response.should render_template('new')
-        end      
-      end    
+        end
+      end
     end
 
     ########################################################################################
@@ -278,15 +278,15 @@ describe BillsController do
         before do
           @valid_update_params = {
             :notes => "different notes."
-          } 
+          }
         end
-            
+
         it "should be authorized" do
-          put :update, :id => @bill.id, :bill => @valid_update_params   
+          put :update, :id => @bill.id, :bill => @valid_update_params
           verify_authorization_successful
         end
-        
-        it "should update the requested bill in the database" do          
+
+        it "should update the requested bill in the database" do
           lambda do
             put :update, :id => @bill.id, :bill => @valid_update_params
           end.should change{ @bill.reload.notes }.to("different notes.")
@@ -307,11 +307,11 @@ describe BillsController do
         before do
           @invalid_update_params = {
             :user_id => nil
-          } 
+          }
         end
 
         it "should not change the bill in the database" do
-          lambda do 
+          lambda do
             put :update, :id => @bill.id, :bill => @invalid_update_params
           end.should_not change{ @bill.reload }
         end
@@ -335,18 +335,18 @@ describe BillsController do
     describe "DELETE destroy" do
       it "should be authorized" do
         delete :destroy, :id => @bill.id
-        verify_authorization_successful        
+        verify_authorization_successful
       end
-      
+
       it "should reduce bill count by one" do
         lambda do
           delete :destroy, :id => @bill.id
         end.should change(Bill, :count).by(-1)
       end
 
-      it "should make the bills unfindable in the database" do    
+      it "should make the bills unfindable in the database" do
         delete :destroy, :id => @bill.id
-        lambda{ Bill.find(@bill.id)}.should raise_error(ActiveRecord::RecordNotFound)      
+        lambda{ Bill.find(@bill.id)}.should raise_error(ActiveRecord::RecordNotFound)
       end
 
       it "should redirect to the bills list" do

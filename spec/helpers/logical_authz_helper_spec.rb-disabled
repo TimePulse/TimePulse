@@ -2,17 +2,17 @@ require 'spec/spec_helper'
 
 describe LogicalAuthz::Helper do
   before do
-    @group = Factory(:group)
-    Factory(:permission, :group => @group, :controller => "projects")
-    Factory(:permission, :group => @group, :controller => "work_units", :action => "edit", :subject_id => 1)
+    @group = FactoryGirl.create(:group)
+    FactoryGirl.create(:permission, :group => @group, :controller => "projects")
+    FactoryGirl.create(:permission, :group => @group, :controller => "work_units", :action => "edit", :subject_id => 1)
   end
 
   describe "URL helpers:" do
     before do
-      user = Factory(:user, :groups => [@group])
+      user = FactoryGirl.create(:user, :groups => [@group])
       authenticate(user)
-      @project = Factory(:project)
-      @client = Factory(:client)
+      @project = FactoryGirl.create(:project)
+      @client = FactoryGirl.create(:client)
     end
 
     describe "authorized_url?" do
@@ -24,11 +24,11 @@ describe LogicalAuthz::Helper do
         helper.authorized_url?({:controller => 'clients', :action => 'destroy', :id => @client.id}).should be_false
       end
 
-      it "should permit edit_project_path(@project.id)" do 
+      it "should permit edit_project_path(@project.id)" do
         helper.authorized_url?(edit_project_path(@project.id)).should be_true
       end
 
-      it "should permit project_path(@project.id), :method => :put" do 
+      it "should permit project_path(@project.id), :method => :put" do
         helper.authorized_url?(project_path(@project.id), :method => :put).should be_true
       end
 
@@ -36,7 +36,7 @@ describe LogicalAuthz::Helper do
         helper.authorized_url?(edit_client_path(@client.id)).should be_false
       end
 
-      it "should permit edit_project_url(@project.id)" do 
+      it "should permit edit_project_url(@project.id)" do
         helper.authorized_url?(edit_project_path(@project.id)).should be_true
       end
 
@@ -44,7 +44,7 @@ describe LogicalAuthz::Helper do
         helper.authorized_url?(edit_client_path(@client.id)).should be_false
       end
 
-      it "should permit @project" do 
+      it "should permit @project" do
         helper.authorized_url?(@project).should be_true
       end
 
@@ -52,7 +52,7 @@ describe LogicalAuthz::Helper do
         helper.authorized_url?(@client).should be_false
       end
 
-      it "should permit http://elsewhere.com/something_boring?with_fries=1" do 
+      it "should permit http://elsewhere.com/something_boring?with_fries=1" do
         helper.authorized_url?("http://elsewhere.com/something_boring?with_fries=1").should be_true
       end
     end
@@ -64,7 +64,7 @@ describe LogicalAuthz::Helper do
         project_link.should == helper.link_to("Project", @project, :method => :delete)
       end
 
-      it "should emit just the name if forbidden" do 
+      it "should emit just the name if forbidden" do
         helper.link_to_if_authorized("Client", @client).should == "Client"
       end
     end
@@ -99,9 +99,9 @@ describe LogicalAuthz::Helper do
 
     describe "should recognize authorized users" do
       before do
-        user = Factory(:user, :groups => [@group])
+        user = FactoryGirl.create(:user, :groups => [@group])
         authenticate(user)
-        Factory(:permission, :group => @group, :controller => "clients", :action => "show")
+        FactoryGirl.create(:permission, :group => @group, :controller => "clients", :action => "show")
       end
 
       it "on a controller level" do

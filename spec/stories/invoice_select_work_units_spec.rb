@@ -4,19 +4,19 @@ shared_steps "for an invoicing task" do |opt_hash|
   opt_hash ||= {}
 
   let :admin do
-    Factory(:admin)
+    FactoryGirl.create(:admin)
   end
 
   let :project do
-    Factory(:project)
+    FactoryGirl.create(:project)
   end
 
-  let :user do Factory(:user) end
-  let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
+  let :user do FactoryGirl.create(:user) end
+  let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user) end
 
   (opt_hash[:wu_count] || 3).times do |idx|
     let! "work_unit_#{idx}" do
-      Factory(:work_unit, :user => user, :project => project)
+      FactoryGirl.create(:work_unit, :user => user, :project => project)
     end
   end
 

@@ -4,7 +4,7 @@ describe "/clients/new" do
   include ClientsHelper
 
   before(:each) do
-    assign(:client, Factory.build(:client))
+    assign(:client, FactoryGirl.build(:client))
   end
 
   it "should succeed" do

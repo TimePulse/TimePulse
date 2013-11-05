@@ -16,7 +16,7 @@ describe Rate do
     @valid_attributes = {
       :name => 'Rate 0',
       :amount => 100,
-      :project => Factory(:project)
+      :project => FactoryGirl.create(:project)
     }
   end
 
@@ -27,7 +27,7 @@ describe Rate do
   it "should allow users to be aassociated" do
     rate = Rate.new
 
-    rate.users << Factory(:user)
+    rate.users << FactoryGirl.create(:user)
 
     rate.users.size.should == 1
   end
@@ -35,8 +35,8 @@ describe Rate do
   it "should clear user list before record is destroyed" do
     RatesUser.all.should be_empty
 
-    user1 = Factory(:user, :name => 'User 1')
-    user2 = Factory(:user, :name => 'User 2')
+    user1 = FactoryGirl.create(:user, :name => 'User 1')
+    user2 = FactoryGirl.create(:user, :name => 'User 2')
     rate = Rate.create!(@valid_attributes)
     rate.users << user1
     rate.users << user2

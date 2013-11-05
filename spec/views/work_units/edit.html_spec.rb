@@ -4,7 +4,7 @@ describe "/work_units/edit" do
   include WorkUnitsHelper
 
   before(:each) do
-    assign(:work_unit, @work_unit = Factory(:work_unit))
+    assign(:work_unit, @work_unit = FactoryGirl.create(:work_unit))
   end
 
   it "should succeed" do

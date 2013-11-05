@@ -6,8 +6,8 @@ describe "/clients/index" do
   before(:each) do
     authenticate(:user)
     assign(:clients, [
-      Factory(:client),
-      Factory(:client)
+      FactoryGirl.create(:client),
+      FactoryGirl.create(:client)
     ])
   end
 

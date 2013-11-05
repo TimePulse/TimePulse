@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ClockTimeController do
   before(:each) do
     @user = authenticate(:user)
-    @project = Factory(:task)
+    @project = FactoryGirl.create(:task)
   end
 
   describe "POST 'create'" do
@@ -68,7 +68,7 @@ describe ClockTimeController do
 
       describe "on an unbillable project" do
         it "should succesfully clock in" do
-          @unbillable = Factory(:project, :billable => false)
+          @unbillable = FactoryGirl.create(:project, :billable => false)
           lambda do
             post :create, :id => @unbillable.id
           end.should change(WorkUnit, :count).by(1)
@@ -76,7 +76,7 @@ describe ClockTimeController do
         end
 
         it "should create a work unit that's in progress but not billable" do
-          @unbillable = Factory(:project, :billable => false)
+          @unbillable = FactoryGirl.create(:project, :billable => false)
           post :create, :id => @unbillable.id
           assigns[:work_unit].should be_in_progress
           assigns[:work_unit].should_not be_billable
@@ -93,7 +93,7 @@ describe ClockTimeController do
       # these specs are here for that.
       before(:each) do
         @start_time = Time.zone.now - 6.hours
-        @wu = Factory(:in_progress_work_unit, :user => @user, :project => @project, :start_time => @start_time)
+        @wu = FactoryGirl.create(:in_progress_work_unit, :user => @user, :project => @project, :start_time => @start_time)
         @wu.reload   # to clear the microseconds from @wu.start_time
       end
       it "should not mark the unit completed" do
@@ -111,7 +111,7 @@ describe ClockTimeController do
     describe "under valid conditions" do
       before(:each) do
         @start_time = Time.zone.now - 6.hours
-        @wu = Factory(:in_progress_work_unit, :user => @user, :project => @project, :start_time => @start_time)
+        @wu = FactoryGirl.create(:in_progress_work_unit, :user => @user, :project => @project, :start_time => @start_time)
         @wu.reload   # to clear the microseconds from @wu.start_time
       end
 

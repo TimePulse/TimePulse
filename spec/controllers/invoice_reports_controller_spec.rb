@@ -11,10 +11,10 @@ describe InvoiceReportsController do
     #                                      GET SHOW
     ########################################################################################
     describe "responding to GET show" do
-      let :project do Factory(:project) end
+      let :project do FactoryGirl.create(:project) end
 
       before :each  do
-        @invoice = Factory(:invoice, :client => project.client)
+        @invoice = FactoryGirl.create(:invoice, :client => project.client)
         @client = @invoice.client
       end
 

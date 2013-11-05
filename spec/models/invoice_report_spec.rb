@@ -2,29 +2,29 @@ require 'spec_helper'
 
 describe InvoiceReport do
 
-  let :project do Factory.create(:project) end
-  let :user_1 do Factory(:user) end
-  let :user_2 do Factory(:user) end
-  let :user_3 do Factory(:user) end
-  let! :rates_user_1 do Factory(:rates_user, :rate => project.rates.last, :user => user_1) end
-  let! :rates_user_2 do Factory(:rates_user, :rate => project.rates.last, :user => user_2) end
-  let! :rates_user_3 do Factory(:rates_user, :rate => project.rates.last, :user => user_3) end
+  let :project do FactoryGirl.create(:project) end
+  let :user_1 do FactoryGirl.create(:user) end
+  let :user_2 do FactoryGirl.create(:user) end
+  let :user_3 do FactoryGirl.create(:user) end
+  let! :rates_user_1 do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user_1) end
+  let! :rates_user_2 do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user_2) end
+  let! :rates_user_3 do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user_3) end
 
   subject { InvoiceReport.new(invoice) }
 
   describe "users" do
     let :work_unit_1 do
-      Factory(:work_unit, :hours => 1.0, :user => user_1)
+      FactoryGirl.create(:work_unit, :hours => 1.0, :user => user_1)
     end
     let :work_unit_2 do
-      Factory(:work_unit, :hours => 2.0, :user => user_2)
+      FactoryGirl.create(:work_unit, :hours => 2.0, :user => user_2)
     end
     let :work_unit_3 do
-      Factory(:work_unit, :hours => 3.0, :user => user_3)
+      FactoryGirl.create(:work_unit, :hours => 3.0, :user => user_3)
     end
 
     let :invoice do
-      Factory.create(:invoice, :client => project.client, :work_units => [work_unit_1, work_unit_2])
+      FactoryGirl.create(:invoice, :client => project.client, :work_units => [work_unit_1, work_unit_2])
     end
 
     its(:users) { should include(user_1, user_2) }
@@ -32,15 +32,15 @@ describe InvoiceReport do
   end
 
   describe "days" do
-    let :user do Factory(:user) end
+    let :user do FactoryGirl.create(:user) end
 
-    let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
+    let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user) end
 
     let :work_units do
       [].tap do |arr|
         5.times do |n|
           start = n.days.ago.beginning_of_day
-          arr << Factory(:work_unit, :hours => 1.0, :user => user,
+          arr << FactoryGirl.create(:work_unit, :hours => 1.0, :user => user,
                          :start_time => start,
                          :stop_time  => start + 1.hour)
         end
@@ -48,7 +48,7 @@ describe InvoiceReport do
     end
 
     let :invoice do
-      Factory.create(:invoice, :client => project.client, :work_units => work_units)
+      FactoryGirl.create(:invoice, :client => project.client, :work_units => work_units)
     end
 
     its(:days) { should have(5).days }
@@ -65,8 +65,8 @@ describe InvoiceReport do
   describe InvoiceReport::DateReport do
     context "with one contributing user" do
       let :work_units do
-        [ Factory(:work_unit, :user => user_1),
-          Factory(:work_unit, :user => user_1)
+        [ FactoryGirl.create(:work_unit, :user => user_1),
+          FactoryGirl.create(:work_unit, :user => user_1)
         ]
       end
 
@@ -75,20 +75,20 @@ describe InvoiceReport do
     end
     context "with two contributing users" do
       let :work_units do
-        [ Factory(:work_unit, :user => user_1),
-          Factory(:work_unit, :user => user_2)
+        [ FactoryGirl.create(:work_unit, :user => user_1),
+          FactoryGirl.create(:work_unit, :user => user_2)
         ]
       end
       subject { InvoiceReport::DateReport.new(work_units) }
       its(:report) { should have(2).rows }
     end
     context "with matched commits" do
-      let! :user do Factory.create(:user, :email => "george@jungle.com", :github_user => "georgeofjungle") end
-      let! :rates_user do Factory(:rates_user, :rate => project.rates.last, :user => user) end
-      let! :work_unit do Factory.create(
-        :work_unit, :user => user, 
-        :project => project, 
-        :start_time => 3.days.ago, 
+      let! :user do FactoryGirl.create(:user, :email => "george@jungle.com", :github_user => "georgeofjungle") end
+      let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user) end
+      let! :work_unit do FactoryGirl.create(
+        :work_unit, :user => user,
+        :project => project,
+        :start_time => 3.days.ago,
         :stop_time => 1.day.ago)
       end
       let! :timestamp do DateTime.parse(2.days.ago.to_s).xmlschema end
