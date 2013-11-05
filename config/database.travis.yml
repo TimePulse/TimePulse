@@ -4,3 +4,9 @@ test:
   password:
   database: timepulse_test
 
+development:
+  adapter: mysql2
+  username: travis
+  password:
+  database: timepulse_test
+
