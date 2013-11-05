@@ -15,9 +15,6 @@ module WorkUnitsHelper
   end
 
   def project_selector(form)
-    form.select(:project_id,
-    Project.where(:clockable => true).collect {|p| [project_name_with_client(p), p.id]}
-    )
+    form.select(:project_id, project_options, {}, { :class => "project_selector"})
   end
-
 end

@@ -23,7 +23,7 @@ $('document').ready( function(){
   $('.hide-initially').removeClass('hide-initially');
 });
 
-  $("Select#project_parent_id").selectBoxIt({
+  $("Select.project_selector").selectBoxIt({
   });
 
 $(document).foundation();
