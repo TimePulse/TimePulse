@@ -44,7 +44,6 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'rspec-steps'
   gem 'poltergeist'
-  gem 'debugger'
   gem 'cadre'
   gem "populator"
   gem "faker"
@@ -65,4 +64,5 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
+  gem 'debugger'
 end
