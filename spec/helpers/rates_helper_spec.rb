@@ -3,8 +3,8 @@ require 'spec_helper'
 describe RatesHelper do
   describe :options_for_rates_users do
     before :each do
-      @rate = Factory(:rate)
-      @active_users = [Factory(:user)]
+      @rate = FactoryGirl.create(:rate)
+      @active_users = [FactoryGirl.create(:user)]
     end
 
     it "generates options tags" do

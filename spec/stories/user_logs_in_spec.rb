@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 steps "user login", :type => :feature do
-  let! :user do Factory(:user) end
-  
+  let! :user do FactoryGirl.create(:user) end
+
   it "should accept username" do
     visit root_path
     fill_in "Login", :with => user.login

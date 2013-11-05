@@ -5,7 +5,7 @@ describe "/projects/index" do
 
   before(:each) do
     authenticate(:user)
-    Factory(:project)
+    FactoryGirl.create(:project)
     assign(:root_project, Project.root)
   end
 

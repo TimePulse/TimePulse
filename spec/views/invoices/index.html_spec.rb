@@ -3,11 +3,11 @@ require 'spec_helper'
 describe "/invoices/index" do
   include InvoicesHelper
 
-  let :project do Factory(:project) end
+  let :project do FactoryGirl.create(:project) end
 
   before(:each) do
-    assign(:unpaid_invoices, [ Factory(:invoice, :client => project.client), Factory(:invoice, :client => project.client) ].paginate)
-    assign(:paid_invoices, [ Factory(:invoice, :client => project.client), Factory(:invoice, :client => project.client) ].paginate)
+    assign(:unpaid_invoices, [ FactoryGirl.create(:invoice, :client => project.client), FactoryGirl.create(:invoice, :client => project.client) ].paginate)
+    assign(:paid_invoices, [ FactoryGirl.create(:invoice, :client => project.client), FactoryGirl.create(:invoice, :client => project.client) ].paginate)
   end
 
   it "should succeed" do

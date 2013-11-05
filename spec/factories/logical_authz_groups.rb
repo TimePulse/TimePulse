@@ -1,7 +1,9 @@
-Factory.define :group do |g| 
-  g.sequence(:name) {|n| "group_#{n}"}
+FactoryGirl.define  do
+  factory :group do
+    sequence(:name) {|n| "group_#{n}"}
+  end
+  factory :admin_group, :parent => :group do
+    name "Administration"
+  end
 end
 
-Factory.define :admin_group, :parent => :group do |g|
-  g.name "Administration"
-end

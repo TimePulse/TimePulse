@@ -41,37 +41,37 @@ describe User do
   end
 
   it "should succeed creating a new :user from the Factory" do
-    Factory.create(:user)
+    FactoryGirl.create(:user)
   end
 
   describe "current_work_unit" do
     before(:each) do
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
     end
     it "should return a work_unit that is in_progress" do
-      @wu1 = Factory(:in_progress_work_unit, :user => @user)
+      @wu1 = FactoryGirl.create(:in_progress_work_unit, :user => @user)
       @user.reload.current_work_unit.should == @wu1
     end
     it "should not return a completed work_unit" do
-      @wu1 = Factory(:work_unit, :user => @user)
+      @wu1 = FactoryGirl.create(:work_unit, :user => @user)
       @user.reload.current_work_unit.should be_nil
     end
   end
 
   describe "clocked_in?" do
     before(:each) do
-      @user = Factory(:user)
+      @user = FactoryGirl.create(:user)
     end
     it "should return false if the user has no work units" do
       @user.should_not be_clocked_in
     end
     it "should return true if the user has a work_unit that is in_progress" do
-      @wu1 = Factory(:in_progress_work_unit, :user => @user)
+      @wu1 = FactoryGirl.create(:in_progress_work_unit, :user => @user)
       @user.should be_clocked_in
     end
     it "should return false if the user only has completed work units" do
-      @wu1 = Factory(:work_unit, :user => @user)
-      @wu2 = Factory(:work_unit, :user => @user)
+      @wu1 = FactoryGirl.create(:work_unit, :user => @user)
+      @wu2 = FactoryGirl.create(:work_unit, :user => @user)
       @user.should_not be_clocked_in
     end
 
@@ -79,11 +79,11 @@ describe User do
 
   describe "work_units association" do
     before(:each) do
-      @user = Factory(:user)
-      @user2 = Factory(:user)
-      @wu1 = Factory(:work_unit, :user => @user)
-      @wu2 = Factory(:work_unit, :user => @user)
-      @wu3 = Factory(:work_unit, :user => @user2)
+      @user = FactoryGirl.create(:user)
+      @user2 = FactoryGirl.create(:user)
+      @wu1 = FactoryGirl.create(:work_unit, :user => @user)
+      @wu2 = FactoryGirl.create(:work_unit, :user => @user)
+      @wu3 = FactoryGirl.create(:work_unit, :user => @user2)
     end
 
     it "should return work units assigned to the user" do
@@ -98,12 +98,12 @@ describe User do
 
   describe "activities association" do
     before(:each) do
-      @user = Factory(:user)
-      @user2 = Factory(:user)
-      @proj = Factory(:project)
-      @ac1 = Factory(:activity, :user => @user, :project => @proj)
-      @ac2 = Factory(:activity, :user => @user, :project => @proj)
-      @ac3 = Factory(:activity, :user => @user2, :project => @proj)
+      @user = FactoryGirl.create(:user)
+      @user2 = FactoryGirl.create(:user)
+      @proj = FactoryGirl.create(:project)
+      @ac1 = FactoryGirl.create(:activity, :user => @user, :project => @proj)
+      @ac2 = FactoryGirl.create(:activity, :user => @user, :project => @proj)
+      @ac3 = FactoryGirl.create(:activity, :user => @user2, :project => @proj)
     end
 
     it "should return work units assigned to the user" do
@@ -118,31 +118,31 @@ describe User do
 
   describe "work_units_for" do
     before(:each) do
-      @user = Factory(:user)
-      @proj = Factory(:project)
-      @wu1 = Factory(:work_unit, :user => @user, :project => @proj, :hours => 3.0)
+      @user = FactoryGirl.create(:user)
+      @proj = FactoryGirl.create(:project)
+      @wu1 = FactoryGirl.create(:work_unit, :user => @user, :project => @proj, :hours => 3.0)
     end
     it "should return a work unit associated with the specified project" do
       @user.completed_work_units_for(@proj).should include(@wu1)
     end
     it "should return a work unit associated with a subproject" do
-      @proj2 = Factory(:project, :parent => @proj)
+      @proj2 = FactoryGirl.create(:project, :parent => @proj)
       @proj.reload.self_and_descendants.should include(@proj2)
-      @wu2 = Factory(:work_unit, :user => @user, :project => @proj2, :hours => 3.0)
+      @wu2 = FactoryGirl.create(:work_unit, :user => @user, :project => @proj2, :hours => 3.0)
       @user.completed_work_units_for(@proj).should include(@wu2)
     end
     it "should not return a work unit for another user" do
-      @other = Factory(:user)
-      @wu3 = Factory(:work_unit, :user => @other, :project => @proj, :hours => 3.0)
+      @other = FactoryGirl.create(:user)
+      @wu3 = FactoryGirl.create(:work_unit, :user => @other, :project => @proj, :hours => 3.0)
       @user.completed_work_units_for(@proj).should_not include(@wu3)
     end
     it "should not return a work unit for a project outside the heirarchy" do
-      @proj3 = Factory(:project)
-      @wu3 = Factory(:work_unit, :user => @user, :project => @proj3, :hours => 3.0)
+      @proj3 = FactoryGirl.create(:project)
+      @wu3 = FactoryGirl.create(:work_unit, :user => @user, :project => @proj3, :hours => 3.0)
       @user.completed_work_units_for(@proj).should_not include(@wu3)
     end
     it "should not include a work unit for a parent project" do
-      @proj2 = Factory(:project, :parent => @proj)
+      @proj2 = FactoryGirl.create(:project, :parent => @proj)
       @proj.reload.self_and_descendants.should include(@proj2)
       @user.completed_work_units_for(@proj2).should_not include(@wu1)
     end
@@ -150,9 +150,9 @@ describe User do
 
   describe "activties_for" do
     before(:each) do
-      @user = Factory(:user)
-      @proj = Factory(:project)
-      @ac1 = Factory(:activity, :user => @user, :project => @proj, :source => "github")
+      @user = FactoryGirl.create(:user)
+      @proj = FactoryGirl.create(:project)
+      @ac1 = FactoryGirl.create(:activity, :user => @user, :project => @proj, :source => "github")
     end
 
     it "should return an activity associated with the specified project" do
@@ -160,31 +160,31 @@ describe User do
     end
 
     it "should return an activity associated with a subproject" do
-      @proj2 = Factory(:project, :parent => @proj)
+      @proj2 = FactoryGirl.create(:project, :parent => @proj)
       @proj.reload.self_and_descendants.should include(@proj2)
-      @ac2 = Factory(:activity, :user => @user, :project => @proj2, :source => "github")
+      @ac2 = FactoryGirl.create(:activity, :user => @user, :project => @proj2, :source => "github")
       @user.git_commits_for(@proj).should include(@ac2)
     end
 
     it "should not return a work unit for another user" do
-      @other = Factory(:user)
-      @ac3 = Factory(:activity, :user => @other, :project => @proj, :source => "github")
+      @other = FactoryGirl.create(:user)
+      @ac3 = FactoryGirl.create(:activity, :user => @other, :project => @proj, :source => "github")
       @user.git_commits_for(@proj).should_not include(@ac3)
     end
     it "should not return a work unit for a project outside the heirarchy" do
-      @proj3 = Factory(:project)
-      @ac3 = Factory(:activity, :user => @user, :project => @proj3, :source => "github")
+      @proj3 = FactoryGirl.create(:project)
+      @ac3 = FactoryGirl.create(:activity, :user => @user, :project => @proj3, :source => "github")
       @user.git_commits_for(@proj).should_not include(@ac3)
     end
     it "should not include a work unit for a parent project" do
-      @proj2 = Factory(:project, :parent => @proj)
+      @proj2 = FactoryGirl.create(:project, :parent => @proj)
       @proj.reload.self_and_descendants.should include(@proj2)
       @user.git_commits_for(@proj2).should_not include(@ac1)
     end
     it "should include an activity if only the parent has a github/pivotal url" do
       @proj.github_url = "https://github.com/Awesome"
       @proj.save
-      @proj2 = Factory(:project, :parent => @proj)
+      @proj2 = FactoryGirl.create(:project, :parent => @proj)
       @proj.reload.self_and_descendants.should include(@proj2)
       @user.git_commits_for(@proj2).should include(@ac1)
     end
@@ -199,9 +199,9 @@ describe User do
 
   describe "rate_for" do
     before :each do
-      @user = Factory(:user)
-      @rate = Factory(:rate)
-      @project = Factory(:project)
+      @user = FactoryGirl.create(:user)
+      @rate = FactoryGirl.create(:rate)
+      @project = FactoryGirl.create(:project)
     end
 
     it "should return a user's rate for a given project" do

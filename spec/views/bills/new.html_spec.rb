@@ -4,7 +4,7 @@ describe "/bills/new" do
   include BillsHelper
 
   let! :user do
-    Factory(:user)
+    FactoryGirl.create(:user)
   end
 
   describe "without a user specified" do
@@ -24,10 +24,10 @@ describe "/bills/new" do
 
     describe "when inactive users are present" do
 
-      let! :inactive_user do 
-        Factory(:user, :inactive => true) 
+      let! :inactive_user do
+        FactoryGirl.create(:user, :inactive => true)
       end
-      
+
       it "should only show active users" do
         render
         rendered.should have_selector("option[value='#{user.id}']")
@@ -40,8 +40,8 @@ describe "/bills/new" do
     before :each  do
       assign(:bill, Bill.new(:user => user))
       assign(:work_units, @work_units = [
-        Factory(:work_unit, :user => user),
-        Factory(:work_unit, :user => user) ]
+        FactoryGirl.create(:work_unit, :user => user),
+        FactoryGirl.create(:work_unit, :user => user) ]
       )
       assign(:user, user)
     end

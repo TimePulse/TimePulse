@@ -1,5 +1,7 @@
-Factory.define :invoice_item do |invoice_item|
-  invoice_item.name "value for name"
-  invoice_item.hours 1
-  invoice_item.amount 1
+FactoryGirl.define  do
+  factory :invoice_item do
+    name "value for name"
+    hours 1
+    amount 1
+  end
 end

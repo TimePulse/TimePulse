@@ -4,7 +4,7 @@ describe "/bills/edit" do
   include BillsHelper
 
   before(:each) do
-    assign(:bill, @bill = Factory(:bill))
+    assign(:bill, @bill = FactoryGirl.create(:bill))
   end
 
   it "should succeed" do

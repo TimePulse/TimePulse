@@ -5,13 +5,13 @@ describe UserSessionsController do
     get :new
     response.should be_success
   end
-  
+
   describe "POST create" do
     before(:each) do
-      @user = Factory.create(:user)
+      @user = FactoryGirl.create(:user)
       logout
     end
-             
+
     describe "with correct parameters" do
       before :each do
         post :create, :user_session => {:login => @user.login, :password => 'foobar'}
@@ -22,11 +22,11 @@ describe UserSessionsController do
       end
 
       it "should succeed" do
-        assigns(:user_session).user.should == @user      
+        assigns(:user_session).user.should == @user
       end
 
       it "should redirect to the user dashboard" do
-        response.should redirect_to root_url       
+        response.should redirect_to root_url
       end
     end
 

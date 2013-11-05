@@ -13,9 +13,9 @@ describe PivotalController do
     Hash.from_xml(payload_string)
   end
 
-  let! :project do Factory.create(:project, :pivotal_id => 833075) end
+  let! :project do FactoryGirl.create(:project, :pivotal_id => 833075) end
   let! :user do
-    Factory.create(:user, :pivotal_name => "Hannah Howard")
+    FactoryGirl.create(:user, :pivotal_name => "Hannah Howard")
   end
 
   let :start_time do DateTime.parse("Mon, 27 May 2013 06:25:17 +0000").advance(:minutes => -15) end

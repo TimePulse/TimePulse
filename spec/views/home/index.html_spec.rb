@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "/home/index" do
   before(:each) do
     @current_user = authenticate(:user)
-    Factory(:work_unit, :user => @current_user)
-    Factory(:work_unit, :user => @current_user)
+    FactoryGirl.create(:work_unit, :user => @current_user)
+    FactoryGirl.create(:work_unit, :user => @current_user)
   end
 
   it "should succeed" do
@@ -13,11 +13,11 @@ describe "/home/index" do
 
   describe "with a current, clockable project selected" do
     before do
-      @current_user.current_project = Factory(:project, :name => "Foo Project", :clockable => true)
+      @current_user.current_project = FactoryGirl.create(:project, :name => "Foo Project", :clockable => true)
       @current_user.save!
       assign(:user, @current_user)
       assign(:current_project, @current_user.current_project)
-      assign(:work_units, [ Factory(:work_unit), Factory(:work_unit) ].paginate )
+      assign(:work_units, [ FactoryGirl.create(:work_unit), FactoryGirl.create(:work_unit) ].paginate )
     end
     it "should succeed" do
       render
@@ -38,7 +38,7 @@ describe "/home/index" do
 
   describe "with an unclockable project current" do
     before :each do
-      @current_user.current_project = Factory(:project, :name => "Foo Project", :clockable => false)
+      @current_user.current_project = FactoryGirl.create(:project, :name => "Foo Project", :clockable => false)
       @current_user.save!
     end
     it "should succeed" do
@@ -52,9 +52,9 @@ describe "/home/index" do
 
   describe "with billable and unbillable work units" do
     before :each do
-      @billable_wu = Factory(:work_unit, :user => @current_user, :billable => true)
-      @unbillable_wu = Factory(:work_unit, :user => @current_user, :billable => false)
-      @current_user.current_project = Factory(:project, :name => "Foo Project", :clockable => true)
+      @billable_wu = FactoryGirl.create(:work_unit, :user => @current_user, :billable => true)
+      @unbillable_wu = FactoryGirl.create(:work_unit, :user => @current_user, :billable => false)
+      @current_user.current_project = FactoryGirl.create(:project, :name => "Foo Project", :clockable => true)
       @current_user.save!
       assign(:user, @current_user)
       assign(:current_project, @current_user.current_project)
@@ -77,30 +77,30 @@ describe "/home/index" do
 
   describe "recent projects box" do
     let! :current_user do authenticate(:user) end
-    let! :other_user do Factory(:user) end
-    let! :project_1 do Factory(:project) end
-    let! :project_2 do Factory(:project) end
-    let! :project_3 do Factory(:project) end
-    let! :project_4 do Factory(:project) end
-    let! :project_5 do Factory(:project) end
-    let! :project_6 do Factory(:project) end
-    let! :project_7 do Factory(:project) end
+    let! :other_user do FactoryGirl.create(:user) end
+    let! :project_1 do FactoryGirl.create(:project) end
+    let! :project_2 do FactoryGirl.create(:project) end
+    let! :project_3 do FactoryGirl.create(:project) end
+    let! :project_4 do FactoryGirl.create(:project) end
+    let! :project_5 do FactoryGirl.create(:project) end
+    let! :project_6 do FactoryGirl.create(:project) end
+    let! :project_7 do FactoryGirl.create(:project) end
     #This set of work units tests the following cases:
     #  Base Ordering
-    #  Ignoring work units performed by another user, whether or not current_user performed work on that project 
+    #  Ignoring work units performed by another user, whether or not current_user performed work on that project
     #  Correctly ordering projects that were already on the list when another work unit was performed
     #  Maintaining uniqueness of projects on the list, even when multiple work units are performed on a single project.
-    let! :wu_1 do Factory(:work_unit,  {:user => current_user, :project => project_1, :start_time => Time.now - 10.days}) end
-    let! :wu_2 do Factory(:work_unit,  {:user => current_user, :project => project_2, :start_time => Time.now -  9.days}) end
-    let! :wu_3 do Factory(:work_unit,  {:user => current_user, :project => project_3, :start_time => Time.now -  8.days}) end
-    let! :wu_4 do Factory(:work_unit,  {:user => other_user,   :project => project_4, :start_time => Time.now -  7.days}) end
-    let! :wu_5 do Factory(:work_unit,  {:user => current_user, :project => project_5, :start_time => Time.now -  6.days}) end
-    let! :wu_6 do Factory(:work_unit,  {:user => current_user, :project => project_6, :start_time => Time.now -  5.days}) end
-    let! :wu_7 do Factory(:work_unit,  {:user => current_user, :project => project_7, :start_time => Time.now -  4.days}) end 
-    let! :wu_8 do Factory(:work_unit,  {:user => other_user,   :project => project_6, :start_time => Time.now -  3.days}) end 
-    let! :wu_9 do Factory(:work_unit,  {:user => current_user, :project => project_5, :start_time => Time.now -  2.days}) end 
-    let! :wu_10 do Factory(:work_unit, {:user => current_user, :project => project_5, :start_time => Time.now -  1.days}) end 
-    
+    let! :wu_1 do FactoryGirl.create(:work_unit,  {:user => current_user, :project => project_1, :start_time => Time.now - 10.days}) end
+    let! :wu_2 do FactoryGirl.create(:work_unit,  {:user => current_user, :project => project_2, :start_time => Time.now -  9.days}) end
+    let! :wu_3 do FactoryGirl.create(:work_unit,  {:user => current_user, :project => project_3, :start_time => Time.now -  8.days}) end
+    let! :wu_4 do FactoryGirl.create(:work_unit,  {:user => other_user,   :project => project_4, :start_time => Time.now -  7.days}) end
+    let! :wu_5 do FactoryGirl.create(:work_unit,  {:user => current_user, :project => project_5, :start_time => Time.now -  6.days}) end
+    let! :wu_6 do FactoryGirl.create(:work_unit,  {:user => current_user, :project => project_6, :start_time => Time.now -  5.days}) end
+    let! :wu_7 do FactoryGirl.create(:work_unit,  {:user => current_user, :project => project_7, :start_time => Time.now -  4.days}) end
+    let! :wu_8 do FactoryGirl.create(:work_unit,  {:user => other_user,   :project => project_6, :start_time => Time.now -  3.days}) end
+    let! :wu_9 do FactoryGirl.create(:work_unit,  {:user => current_user, :project => project_5, :start_time => Time.now -  2.days}) end
+    let! :wu_10 do FactoryGirl.create(:work_unit, {:user => current_user, :project => project_5, :start_time => Time.now -  1.days}) end
+
     it "should render a recent projects block with the five most recent projects from the current user in the correct order" do
       render
       @picker = view.content_for(:picker)

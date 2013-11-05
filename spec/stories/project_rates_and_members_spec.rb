@@ -5,27 +5,27 @@ shared_steps "for a project rates task" do |opt_hash|
   opt_hash ||= {}
 
   let :admin do
-    Factory(:admin)
+    FactoryGirl.create(:admin)
   end
 
   let! :rate do
-    Factory(:rate)
+    FactoryGirl.create(:rate)
   end
 
   let! :project do
-    project = Factory(:project)
+    project = FactoryGirl.create(:project)
   end
 
   let! :active_users do
-    [Factory(:user)]
+    [FactoryGirl.create(:user)]
   end
 
   let! :active_user do
-    Factory(:user)
+    FactoryGirl.create(:user)
   end
 
   let! :inactive_user do
-    Factory(:user, :inactive => true)
+    FactoryGirl.create(:user, :inactive => true)
   end
 
   it "should login as an admin" do

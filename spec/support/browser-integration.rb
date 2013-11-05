@@ -1,5 +1,5 @@
 require 'capybara/rspec'
-require 'selenium-webdriver'
+#require 'selenium-webdriver'
 require 'rspec-steps'
 require 'capybara/poltergeist'
 
@@ -9,7 +9,7 @@ end
 Capybara.default_driver = :poltergeist
 
 # uncomment to enable in-browser testing
-# Capybara.default_driver = :selenium_webdriver
+# Capybara.default_driver = :selenium-webdriver
 
 module SaveAndOpenOnFail
   def instance_eval(&block)

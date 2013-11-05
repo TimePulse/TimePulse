@@ -4,7 +4,7 @@ describe "/projects/new" do
   include ProjectsHelper
 
   before(:each) do
-    assign(:project, @project = Factory.build(:project))
+    assign(:project, @project = FactoryGirl.build(:project))
     @project.rates.build
   end
 

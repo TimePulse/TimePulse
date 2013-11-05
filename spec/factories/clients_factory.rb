@@ -14,7 +14,9 @@
 #  updated_at    :datetime
 #
 
-Factory.define :client  do |c|
-  c.name "Clientactics, Inc."
-  c.billing_email "contact@clientactics.com"
+FactoryGirl.define  do
+  factory :client  do
+    name "Clientactics, Inc."
+    billing_email "contact@clientactics.com"
+  end
 end

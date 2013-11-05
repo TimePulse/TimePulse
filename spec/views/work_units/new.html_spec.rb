@@ -4,7 +4,7 @@ describe "/work_units/new" do
   include WorkUnitsHelper
 
   before(:each) do
-    assign(:work_unit, Factory.build(:work_unit))
+    assign(:work_unit, FactoryGirl.build(:work_unit))
   end
 
   it "should succeed" do

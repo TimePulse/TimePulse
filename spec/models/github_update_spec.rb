@@ -14,11 +14,11 @@ describe GithubUpdate do
   end
 
   let! :project do
-    Factory.create(:project, :github_url => "http://github.com/hannahhoward/activerecord-postgis-array")
+    FactoryGirl.create(:project, :github_url => "http://github.com/hannahhoward/activerecord-postgis-array")
   end
 
   let! :user do
-    Factory.create(:user, :github_user => "hannahhoward")
+    FactoryGirl.create(:user, :github_user => "hannahhoward")
   end
 
   let :start_time do DateTime.parse("2013-05-23T16:48:39-07:00").advance(:minutes => -15) end

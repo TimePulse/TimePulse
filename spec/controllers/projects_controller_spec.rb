@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ProjectsController do
   before do
-    @project = Factory(:project)
+    @project = FactoryGirl.create(:project)
   end
 
   describe "accessed by a normal user" do
@@ -66,7 +66,7 @@ describe ProjectsController do
 
     describe "GET show" do
       it "assigns the requested project as @project" do
-        User.should_receive(:active).and_return([Factory(:user)])
+        User.should_receive(:active).and_return([FactoryGirl.create(:user)])
         get :show, :id => @project.id
         verify_authorization_successful
         assigns[:project].should ==  @project
