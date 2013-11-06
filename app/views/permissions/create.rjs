@@ -1,1 +1,0 @@
-page.replace_html :permissions, :partial => 'permissions/controls', :locals => { :page => page } 
