@@ -49,14 +49,19 @@ namespace :db do
 
     # Load users
     task :populate_users => :environment do
-      user = User.create!(:login => 'admin',
-                           :name => "Admin",
-                           :email => "admin@timepulse.io",
-                           :password => 'foobar',
-                           :password_confirmation => 'foobar')
-      user.groups << Group.find_by_name("Registered Users")
-      user.groups << Group.find_by_name("Administration")
-      user.confirm!
+      user = User.where(:login => 'admin',
+                        :name => "Admin",
+                        :email => "admin@timepulse.io")
+      unless user
+        user = User.find_or_create_by(:login => 'admin',
+                             :name => "Admin",
+                             :email => "admin@timepulse.io",
+                             :password => 'foobar',
+                             :password_confirmation => 'foobar')
+        user.admin = true
+        user.save
+        user.confirm!
+      end
 
       5.times do |i|
         generic_user = User.create!(:login => "user#{i}",
@@ -64,7 +69,6 @@ namespace :db do
                             :email => "user#{i}@example.com",
                             :password => 'password',
                             :password_confirmation => 'password')
-        generic_user.groups << Group.find_by_name('Registered Users')
         generic_user.confirm!
       end
     end

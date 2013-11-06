@@ -18,6 +18,13 @@ describe UsersController do
       @user = authenticate(:user)
     end
 
+    describe "get index" do
+      it "should forbid index" do
+        get :index
+        verify_authorization_unsuccessful
+      end
+    end
+
     describe "get show" do
       it "should allow viewing own user" do
         get :show, :id => @user.id
@@ -35,6 +42,14 @@ describe UsersController do
       it "should allow editing own user" do
         get :edit, :id => @user.id
         verify_authorization_successful
+      end
+    end
+
+    describe "POST create" do
+      it "should be forbidden" do
+        attributes =  FactoryGirl.attributes_for(:user)
+        post :create, :user => attributes
+        verify_authorization_unsuccessful
       end
     end
 
@@ -81,6 +96,17 @@ describe UsersController do
       put :update, :id => @other_user.id, :user => {:inactive => true}
       @other_user.reload.should_not be_inactive
     end
+
+    it "cannot set itself as admin" do
+      put :update, :id => @user.id, :user => {:admin => true}
+      @user.reload.should_not be_admin
+    end
+
+    it "cannot set another user admin" do
+      @other_user = FactoryGirl.create(:user)
+      put :update, :id => @other_user.id, :user => {:admin => true}
+      @other_user.reload.should_not be_admin
+    end
   end
 
 
@@ -90,31 +116,31 @@ describe UsersController do
       @user = authenticate(:admin)
     end
 
-    after(:each) do
-      assigns[:user].destroy
-    end
-
     it "should create users" do
       attributes =  FactoryGirl.attributes_for(:user)
-      attributes.delete :groups
       post :create, :user => attributes
 
       response.should be_redirect
     end
 
-    it "should assign users to the Registered Users group on creation" do
+    it "should assign admin to false by default" do
       attributes =  FactoryGirl.attributes_for(:user)
-      attributes.delete :groups
       post :create, :user => attributes
       verify_authorization_successful
       user = assigns[:user]
-      user.groups.should include(Group.find_by_name("Registered Users"))
+      user.admin.should == false
     end
 
     it "can set the user to inactive" do
       @other_user = FactoryGirl.create(:user)
       put :update, :id => @other_user.id, :user => {:inactive => true}
       @other_user.reload.should be_inactive
+    end
+
+    it "can set the user as admin" do
+      @other_user = FactoryGirl.create(:user)
+      put :update, :id => @other_user.id, :user => {:admin => true}
+      @other_user.reload.should be_admin
     end
   end
 end
