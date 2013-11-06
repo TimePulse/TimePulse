@@ -1,6 +1,6 @@
 require 'hhmm_to_decimal'
 
-class WorkUnitsController < ApplicationController
+class WorkUnitsController < WorkUnitBaseController
   include HhmmToDecimal
   include UsersHelper
 
@@ -95,12 +95,6 @@ class WorkUnitsController < ApplicationController
   def parse_time(string)
     time_options = { :now => Time.zone.now, :context => :past }
     Chronic.parse(string, time_options)
-  end
-
-  def find_work_unit_and_authenticate
-    @work_unit = WorkUnit.find(params[:id])
-    raise ArgumentError, 'Invalid work_unit id provided' unless @work_unit
-    require_owner!(@work_unit.user)
   end
 
   # compute a few fields based on sensible defaults, if "calculate" param was passed
