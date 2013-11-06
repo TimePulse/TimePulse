@@ -7,6 +7,10 @@ bundler_args: --without development
 
 before_script:
   - cp config/database.travis.yml config/database.yml
+  - cp config/initializers/devise.rb.example config/initializers/devise.rb
+  - cp config/initializers/smtp.rb.example config/initializers/smtp.rb
+  - cp config/initializers/secret_token.rb.example config/initializers/secret_token.rb
+  - cp config/initializers/api_keys.rb.example config/initializers/api_keys.rb
   - mysql -e 'create database timepulse_test;'
 
 script:
