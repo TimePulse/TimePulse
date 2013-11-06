@@ -51,9 +51,9 @@ namespace :db do
     task :populate_users => :environment do
       user = User.where(:login => 'admin',
                         :name => "Admin",
-                        :email => "admin@timepulse.io")
+                        :email => "admin@timepulse.io").first
       unless user
-        user = User.find_or_create_by(:login => 'admin',
+        user = User.create(:login => 'admin',
                              :name => "Admin",
                              :email => "admin@timepulse.io",
                              :password => 'foobar',
