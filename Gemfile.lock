@@ -56,7 +56,7 @@ GEM
     backports (3.3.5)
     bcrypt-ruby (3.1.2)
     builder (3.0.4)
-    cadre (0.1.0)
+    cadre (0.2.0)
       thor (~> 0.18.1)
       tilt (~> 1.0)
       valise (~> 1.0)
