@@ -6,6 +6,7 @@ by Evan Dorn, Judson Lester, and Hannah Howard with contributions from many othe
 current and past contractors of LRD.
 
 [![Code Climate](https://codeclimate.com/repos/52793e167e00a4591d00005c/badges/454bdc2ee23863e3bbe3/gpa.png)](https://codeclimate.com/repos/52793e167e00a4591d00005c/feed)
+[![Build Status](https://travis-ci.org/TimePulse/TimePulse.png?branch=59935668_fix_mobile_layout)](https://travis-ci.org/TimePulse/TimePulse)
 
 ## Features Overview
 
