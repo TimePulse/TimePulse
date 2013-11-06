@@ -244,7 +244,7 @@ GEM
       rspec-core (~> 2.13.0)
       rspec-expectations (~> 2.13.0)
       rspec-mocks (~> 2.13.0)
-    rspec-steps (0.1.0)
+    rspec-steps (0.1.1)
       rspec (>= 2.6, < 2.14.0)
     ruby-progressbar (1.2.0)
     safe_yaml (0.9.7)
