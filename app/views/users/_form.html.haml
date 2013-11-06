@@ -12,5 +12,7 @@
   - if current_user.admin?
     = f.labeled_input :inactive do
       = f.check_box :inactive
+    = f.labeled_input :admin do
+      = f.check_box :admin
   = f.unlabeled_submit "Submit"
 

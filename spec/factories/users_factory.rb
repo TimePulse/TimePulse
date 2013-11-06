@@ -6,8 +6,6 @@ FactoryGirl.define  do
     password_confirmation "foobar"
     inactive false
 
-    #TODO: Fix this when LAz for R3 is ready.
-    groups{ [Group.find_by_name("Registered Users")] }
     sequence(:email) {|n| "quentin#{n}@example.com"}
     sequence(:reset_password_token) { |n| "hYggoHueyySp#{n}czmffos" }
     sequence(:reset_password_sent_at) { |n| n.weeks.ago }
@@ -32,8 +30,7 @@ FactoryGirl.define  do
     name "Administrator"
     sequence(:login) { |n| "administrator#{n}" }
 
-    #TODO: Fix this when LAz for R3 is ready.
-    groups{  [Group.find_by_name("Administration"), Group.find_by_name("Registered Users")] }
+    admin true
   end
 end
 
