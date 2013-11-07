@@ -31,9 +31,14 @@ class WorkUnitsController < WorkUnitBaseController
   # POST /work_units
   def create
     parse_date_params
+
+    project_id = params[:work_unit].delete(:project_id)
     @work_unit = WorkUnit.new(params[:work_unit])
+
+    @work_unit.project_id = project_id
     @work_unit.user = current_user
     compute_some_fields
+
     @work_unit.project ||= current_user.current_project
 
 
@@ -55,8 +60,12 @@ class WorkUnitsController < WorkUnitBaseController
   # PUT /work_units/1
   def update
     parse_date_params
-    Rails.logger.debug{params.inspect}
+
+    project_id = params[:work_unit].delete(:project_id)
+    @work_unit.project_id = project_id
+
     @work_unit.attributes = params[:work_unit]
+
     compute_some_fields
     if @work_unit.save
       flash[:notice] = 'WorkUnit was successfully updated.'
