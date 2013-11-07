@@ -4,8 +4,8 @@ class BillsController < ApplicationController
 
   # GET /bills
   def index
-    @unpaid_bills = Bill.unpaid.paginate(:per_page => 10, :page => params[:page], :order => "due_on DESC, created_at DESC")
-    @paid_bills = Bill.paid.paginate(:per_page => 10, :page => params[:page], :order => "paid_on DESC, created_at DESC")
+    @unpaid_bills = UnpaidBillQuery.new.find_for_page(params[:page])
+    @paid_bills = PaidBillQuery.new.find_for_page(params[:page])
   end
 
   # GET /bills/1

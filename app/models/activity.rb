@@ -1,8 +1,7 @@
 class Activity < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
-  attr_accessible :description, :action, :reference_1, :reference_2, :reference_3, :source, :time, :user_id, :project_id, :work_unit_id
-
+  attr_accessible :description, :action, :reference_1, :reference_2, :reference_3, :source, :time
   validates_presence_of :project, :source
 
   scope :recent, :limit => 8, :order => "time DESC"

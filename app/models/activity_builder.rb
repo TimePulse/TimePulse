@@ -31,6 +31,8 @@ class ActivityBuilder
       find_project
       find_user
       @activity = Activity.new(activity_params)
+      @activity.user_id = user ? user.id : nil
+      @activity.project_id = project ? project.id : nil
     end
     if activity.valid?
       true
@@ -41,8 +43,6 @@ class ActivityBuilder
 
   def activity_params
     {
-      :user_id => (user ? user.id : nil),
-      :project_id => (project ? project.id : nil),
     }
   end
 
