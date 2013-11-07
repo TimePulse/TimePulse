@@ -12,7 +12,7 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
-module Tracks
+module TimePulse
   class Application < Rails::Application
     config.generators do |g|
     g.template_engine     'mizugumo:haml'
