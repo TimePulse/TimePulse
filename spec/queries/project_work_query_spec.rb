@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ProjectWorkQuery do
+describe ProjectWorkQuery, :type => :query do
   let :root_project do Project.root end
 
   before :each do

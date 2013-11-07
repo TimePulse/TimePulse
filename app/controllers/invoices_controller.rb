@@ -4,8 +4,8 @@ class InvoicesController < ApplicationController
 
   # GET /invoices
   def index
-    @unpaid_invoices = Invoice.unpaid.paginate(:per_page => 10, :page => params[:page], :order => "due_on DESC, created_at DESC")
-    @paid_invoices = Invoice.paid.paginate(:per_page => 10, :page => params[:page], :order => "paid_on DESC, created_at DESC")
+    @unpaid_invoices = UnpaidInvoiceQuery.new.find_for_page(params[:page])
+    @paid_invoices = PaidInvoiceQuery.new.find_for_page(params[:page])
   end
 
   # GET /invoices/1
