@@ -32,13 +32,12 @@ class InvoicesController < ApplicationController
     @invoice = Invoice.new
     @invoice.localized.attributes = params[:invoice]
     add_work_units
+    add_client
     if @invoice.localized.save
       flash[:notice] = 'Invoice was successfully created.'
       redirect_to(@invoice)
     else
-      str = "Could not save invoice.  errors: #{@invoice.errors.map{ |error, message| message }.join(', ')}"
-      Rails.logger.info(str)
-      flash[:error] = str
+      flash[:error] = "Could not save invoice.  errors: #{error_list}"
       params[:client_id] = @invoice.client.id if @invoice.client
       render :action => "new"
     end
@@ -46,6 +45,7 @@ class InvoicesController < ApplicationController
 
   # PUT /invoices/1
   def update
+    add_client
     if @invoice.localized.update_attributes(params[:invoice])
       flash[:notice] = 'Invoice was successfully updated.'
       redirect_to(@invoice)
@@ -75,12 +75,20 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def error_list
+    @invoice.errors.map{ |error, message| message }.join(', ')
+  end
+
+  def add_client
+    if params[:invoice][:client_id]
+      @invoice.client_id = params[:invoice][:client_id]
+    end
+  end
+
   def add_work_units
     if params[:invoice][:work_unit_ids]
-      Rails.logger.info("&&&&&&&&&&&&& Adding work units")
       @invoice.work_units = []
       params[:invoice][:work_unit_ids].each do |id, bool|
-        Rails.logger.info("&&&&&&&&&&&&& #{id} #{bool}")
         @invoice.work_units << WorkUnit.find(id) if bool == "1"
       end
     end
