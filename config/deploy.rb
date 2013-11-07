@@ -11,7 +11,7 @@ require 'bundler'
 require 'bundler/capistrano'
 set :bundle_without,  [:development, :test]
 
-set :repository,  "git@github.com:LRDesign/Tracks.git"
+set :repository,  "git@github.com:TimePulse/TimePulse.git"
 #set :deploy_via, :remote_cache
 set :scm, 'git'
 set :scm_verbose, true
@@ -35,6 +35,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/initializers/secret_token.rb #{release_path}/config/initializers"
     run "ln -nfs #{shared_path}/config/initializers/smtp.rb #{release_path}/config/initializers"
     run "ln -nfs #{shared_path}/config/initializers/api_keys.rb #{release_path}/config/initializers"
+    run "ln -nfs #{shared_path}/config/initializers/devise.rb #{release_path}/config/initializers"
   end
 
 
