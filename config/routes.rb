@@ -1,4 +1,4 @@
-Tracks::Application.routes.draw do
+TimePulse::Application.routes.draw do
 
   resources :invoices
   resources :bills
