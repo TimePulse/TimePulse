@@ -3,4 +3,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Tracks::Application.load_tasks
+TimePulse::Application.load_tasks
