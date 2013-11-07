@@ -15,7 +15,7 @@ doc/api
 doc/app
 doc/*.doc
 doc/*.zip
-config/initializers/session_secret.rb
+config/initializers/secret_token.rb
 config/initializers/smtp.rb
 config/initializers/api_keys.rb
 config/initializers/devise.rb
