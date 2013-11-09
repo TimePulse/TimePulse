@@ -26,8 +26,9 @@ describe WorkUnit do
 
   describe "default behavior" do
     it "should  override the start time with mass assignment" do
-      wu = WorkUnit.new(:start_time => Time.now - 5.days)
-      wu.start_time.should be_within(1.second).of(Time.now - 5.days)
+      time = Time.now - 5.days
+      wu = WorkUnit.new(:start_time => time)
+      wu.start_time.should be_within(1.second).of(time)
     end
   end
 
