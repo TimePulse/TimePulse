@@ -45,9 +45,8 @@ class InvoicesController < ApplicationController
 
   # PUT /invoices/1
   def update
-    @invoice.localized.attributes = params[:invoice]
     add_client
-    if @invoice.save
+    if @invoice.localized.update_attributes(params[:invoice])
       flash[:notice] = 'Invoice was successfully updated.'
       redirect_to(@invoice)
     else

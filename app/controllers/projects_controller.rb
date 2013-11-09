@@ -45,10 +45,9 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   def update
     @project = Project.find(params[:id])
-    @project.attributes = params[:project]
     add_client
     add_parent
-    if @project.save
+    if @project.update_attributes(params[:project])
       expire_fragment "picker_node_#{@project.id}"
       expire_fragment "project_picker"
       flash[:notice] = 'Project was successfully updated.'

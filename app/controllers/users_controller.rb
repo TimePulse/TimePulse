@@ -42,6 +42,7 @@ class UsersController < Devise::RegistrationsController
         @user.update_attribute( :inactive, params[:user][:inactive] )
       end
     end
+    add_current_project
     if @user.update_attributes(params[:user])
       flash[:notice] = "Account updated!"
     end
@@ -61,5 +62,11 @@ class UsersController < Devise::RegistrationsController
     Rails.logger.debug params.inspect
     @user = User.find(params[:id])
     require_owner!(@user)
+  end
+
+  def add_current_project
+    if params[:user].has_key?(:current_project_id)
+      @user.current_project_id = params[:user][:current_project_id]
+    end
   end
 end
