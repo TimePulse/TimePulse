@@ -27,8 +27,10 @@ class ProjectsController < ApplicationController
 
   # POST /projects
   def create
-    @project = Project.new(params[:project])
-
+    @project = Project.new
+    @project.attributes = params[:project]
+    add_client
+    add_parent
     if @project.save
       flash[:notice] = 'Project was successfully created.'
       expire_fragment "picker_node_#{@project.id}"
@@ -43,7 +45,10 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   def update
     @project = Project.find(params[:id])
-    if @project.update_attributes(params[:project])
+    @project.attributes = params[:project]
+    add_client
+    add_parent
+    if @project.save
       expire_fragment "picker_node_#{@project.id}"
       expire_fragment "project_picker"
       flash[:notice] = 'Project was successfully updated.'
@@ -69,4 +74,16 @@ class ProjectsController < ApplicationController
     end
   end
 
+  protected
+  def add_client
+    if params[:project].has_key?(:client_id)
+      @project.client_id = params[:project][:client_id]
+    end
+  end
+
+  def add_parent
+    if params[:project].has_key?(:parent_id)
+      @project.parent_id = params[:project][:parent_id]
+    end
+  end
 end

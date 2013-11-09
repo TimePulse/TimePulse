@@ -37,12 +37,25 @@ describe "/bills/new" do
   end
 
   describe "with user specified" do
+    let :bill do
+      b = Bill.new
+      b.user = user
+      b
+    end
+
+    let :work_units do
+      (1..2).map do
+        wu = FactoryGirl.build(:work_unit)
+        wu.user = user
+        wu.save
+        wu
+      end
+    end
+
     before :each  do
-      assign(:bill, Bill.new(:user => user))
-      assign(:work_units, @work_units = [
-        FactoryGirl.create(:work_unit, :user => user),
-        FactoryGirl.create(:work_unit, :user => user) ]
-      )
+
+      assign(:bill, bill)
+      assign(:work_units, work_units)
       assign(:user, user)
     end
 
@@ -69,7 +82,7 @@ describe "/bills/new" do
       end
       it "should include checkboxes for each work unit" do
         render
-        @work_units.each do |wu|
+        work_units.each do |wu|
           rendered.should have_selector("form[action='#{bills_path}'][method='post']") do |scope|
             scope.should have_selector("input[type='checkbox'][name='bill[work_unit_ids][#{wu.id}]']")
           end
