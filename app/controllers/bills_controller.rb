@@ -30,10 +30,9 @@ class BillsController < ApplicationController
   # POST /invoices
   def create
     @bill = Bill.new
-    @bill.localized.attributes = params[:bill]
     add_user
     add_work_units
-    if @bill.save
+    if @bill.localized.update_attributes(params[:bill])
       flash[:notice] = 'Bill was successfully created.'
       redirect_to(@bill)
     else
