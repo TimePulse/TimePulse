@@ -45,8 +45,9 @@ class InvoicesController < ApplicationController
 
   # PUT /invoices/1
   def update
+    @invoice.localized.attributes = params[:invoice]
     add_client
-    if @invoice.localized.update_attributes(params[:invoice])
+    if @invoice.save
       flash[:notice] = 'Invoice was successfully updated.'
       redirect_to(@invoice)
     else
@@ -80,7 +81,7 @@ class InvoicesController < ApplicationController
   end
 
   def add_client
-    if params[:invoice][:client_id]
+    if params[:invoice].has_key?(:client_id)
       @invoice.client_id = params[:invoice][:client_id]
     end
   end

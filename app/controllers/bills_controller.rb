@@ -31,6 +31,7 @@ class BillsController < ApplicationController
   def create
     @bill = Bill.new
     @bill.localized.attributes = params[:bill]
+    add_user
     add_work_units
     if @bill.save
       flash[:notice] = 'Bill was successfully created.'
@@ -43,7 +44,9 @@ class BillsController < ApplicationController
 
   # PUT /bills/1
   def update
-    if @bill.localized.update_attributes(params[:bill])
+    @bill.localized.attributes = params[:bill]
+    add_user
+    if @bill.save
       flash[:notice] = 'Bill was successfully updated.'
       redirect_to(@bill)
     else
@@ -69,6 +72,12 @@ class BillsController < ApplicationController
     unless @user
       flash[:error] = "Could not find the specified user"
       redirect_to :back
+    end
+  end
+
+  def add_user
+    if params[:bill].has_key?(:user_id)
+      @bill.user_id = params[:bill][:user_id]
     end
   end
 

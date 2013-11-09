@@ -32,10 +32,9 @@ class WorkUnitsController < WorkUnitBaseController
   def create
     parse_date_params
 
-    project_id = params[:work_unit].delete(:project_id)
     @work_unit = WorkUnit.new(params[:work_unit])
+    add_project
 
-    @work_unit.project_id = project_id
     @work_unit.user = current_user
     compute_some_fields
 
@@ -61,10 +60,8 @@ class WorkUnitsController < WorkUnitBaseController
   def update
     parse_date_params
 
-    project_id = params[:work_unit].delete(:project_id)
-    @work_unit.project_id = project_id
-
     @work_unit.attributes = params[:work_unit]
+    add_project
 
     compute_some_fields
     if @work_unit.save
@@ -88,6 +85,13 @@ class WorkUnitsController < WorkUnitBaseController
   end
 
   private
+
+  def add_project
+    if params[:work_unit].has_key?(:project_id)
+      @work_unit.project_id = params[:work_unit][:project_id]
+    end
+  end
+
   def parse_date_params
     if wu_p = params[:work_unit]
       zone = Time.zone
