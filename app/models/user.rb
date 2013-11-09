@@ -40,7 +40,7 @@ class User < ActiveRecord::Base
   scope :inactive, :conditions => { :inactive => true  }
   scope :active,   :conditions => { :inactive => false }
 
-  attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user, :pivotal_name
+  attr_accessible :login, :name, :email, :password, :password_confirmation, :github_user, :pivotal_name
 
   def reset_current_work_unit
     @cwu = nil

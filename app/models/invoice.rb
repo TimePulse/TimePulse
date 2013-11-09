@@ -24,7 +24,7 @@ class Invoice < ActiveRecord::Base
   scope :unpaid,  :conditions => { :paid_on => nil }
   scope :paid, :conditions => "paid_on IS NOT NULL"
 
-  attr_accessible :notes, :due_on, :client, :paid_on, :reference_number
+  attr_accessible :notes, :due_on, :paid_on, :reference_number
   accepts_nested_attributes_for :work_units, :reject_if => :all_blank, :allow_destroy => :false
 
   before_save :generate_invoice_items, :if => :new_record?
