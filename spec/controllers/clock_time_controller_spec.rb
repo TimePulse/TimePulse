@@ -27,7 +27,7 @@ describe ClockTimeController do
       end
       it "should assign a work unit starting at the current time" do
         post :create, :id => @project.id
-        assigns[:work_unit].start_time.should be_within(1.second).of(Time.now)
+        assigns[:work_unit].start_time.should be_within(10.seconds).of(Time.now)
       end
 
       it "should set my current project to the project id" do
@@ -144,7 +144,7 @@ describe ClockTimeController do
       describe "without any parameters supplied" do
         it "should set the end time of the work unit to now" do
           delete :destroy
-          assigns[:work_unit].reload.stop_time.should be_within(1.second).of(Time.now)
+          assigns[:work_unit].reload.stop_time.should be_within(10.seconds).of(Time.now)
         end
       end
       describe "with hours supplied" do
@@ -160,7 +160,7 @@ describe ClockTimeController do
           end
           it "should set the stop time to now if the param is 'now'" do
             delete :destroy, :work_unit => { :hours => 3.75, :stop_time => 'now'  }
-            assigns[:work_unit].reload.stop_time.should be_within(1.second).of(Time.zone.now)
+            assigns[:work_unit].reload.stop_time.should be_within(10.seconds).of(Time.zone.now)
           end
           it "should truncate hours that don't fit between start_time and stop_time" do
             delete :destroy, :work_unit => { :hours => 3.5, :stop_time => (@wu.start_time + 2.hours) }
@@ -179,7 +179,7 @@ describe ClockTimeController do
           end
           it "should set the stop time to now if the param is 'now'" do
             delete :destroy, :work_unit => { :hours => "3:45", :stop_time => 'now'  }
-            assigns[:work_unit].reload.stop_time.should be_within(1.second).of(Time.zone.now)
+            assigns[:work_unit].reload.stop_time.should be_within(10.seconds).of(Time.zone.now)
           end
           it "should truncate hours that don't fit between start_time and stop_time" do
             delete :destroy, :work_unit => { :hours => "3:30", :stop_time => (@wu.start_time + 2.hours) }

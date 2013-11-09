@@ -1,6 +1,6 @@
 module TooltipHelper
 
-  class TracksTooltipHelper
+  class TimePulseTooltipHelper
     include ProjectsHelper
     include ActionView::Helpers
     include ActionView::Context
@@ -27,7 +27,7 @@ module TooltipHelper
     end
   end
 
-  class WorkUnitTooltipHelper < TracksTooltipHelper
+  class WorkUnitTooltipHelper < TimePulseTooltipHelper
     def formatted_work_unit_time(time)
       time.nil? ? "-" : time.to_s(:short_datetime)
     end
@@ -44,7 +44,7 @@ module TooltipHelper
 
   end
 
-  class ActivityTooltipHelper < TracksTooltipHelper
+  class ActivityTooltipHelper < TimePulseTooltipHelper
 
     def data_hash
       {

@@ -121,7 +121,7 @@ steps "clock in and out on projects", :type => :feature do
   it "should have created an completed work unit in the DB" do
     WorkUnit.count.should == @work_unit_count + 2
     new_work_unit = WorkUnit.last
-    new_work_unit.stop_time.should be_within(2.seconds).of(Time.now)
+    new_work_unit.stop_time.should be_within(10.seconds).of(Time.now)
     new_work_unit.project.should == project_1
     new_work_unit.notes.should == "I worked all day on this"
     #new_work_unit.hours.should == 9.0

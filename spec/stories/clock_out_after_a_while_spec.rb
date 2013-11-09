@@ -50,7 +50,7 @@ steps "clock out after a while", :type => :feature do
 
   it "the work unit should be clocked out with an end time" do
     @work_unit.reload.hours.should be_within(0.01).of(1.00)
-    @work_unit.stop_time.should be_within(2.seconds).of(Time.now)
+    @work_unit.stop_time.should be_within(10.seconds).of(Time.now)
   end
 
 
