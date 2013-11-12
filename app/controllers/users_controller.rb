@@ -66,7 +66,7 @@ class UsersController < Devise::RegistrationsController
 
   def add_current_project
     if params[:user].has_key?(:current_project_id)
-      @user.current_project_id = params[:user][:current_project_id]
+      @user.current_project_id = params[:user].delete(:current_project_id)
     end
   end
 end

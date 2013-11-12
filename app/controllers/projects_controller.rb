@@ -76,13 +76,13 @@ class ProjectsController < ApplicationController
   protected
   def add_client
     if params[:project].has_key?(:client_id)
-      @project.client_id = params[:project][:client_id]
+      @project.client_id = params[:project].delete(:client_id)
     end
   end
 
   def add_parent
     if params[:project].has_key?(:parent_id)
-      @project.parent_id = params[:project][:parent_id]
+      @project.parent_id = params[:project].delete(:parent_id)
     end
   end
 end
