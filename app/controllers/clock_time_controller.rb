@@ -11,7 +11,10 @@ class ClockTimeController < ApplicationController
     clock_out_current_work_unit
 
     @project = Project.find(params[:id])
-    @work_unit = current_user.work_units.create( :project => @project, :start_time => Time.zone.now )
+    @work_unit = WorkUnit.new(:start_time => Time.zone.now )
+    @work_unit.project = @project
+    @work_unit.user = current_user
+    @work_unit.save
     @prior_project = current_user.current_project
 
     # Reload the associations to grab the current_work_unit

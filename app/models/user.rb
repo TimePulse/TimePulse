@@ -40,9 +40,7 @@ class User < ActiveRecord::Base
   scope :inactive, :conditions => { :inactive => true  }
   scope :active,   :conditions => { :inactive => false }
 
-  attr_accessible :login, :name, :email, :current_project_id, :password, :password_confirmation, :github_user, :pivotal_name
-
-  has_and_belongs_to_many :groups
+  attr_accessible :login, :name, :email, :password, :password_confirmation, :github_user, :pivotal_name
 
   def reset_current_work_unit
     @cwu = nil
@@ -112,7 +110,7 @@ class User < ActiveRecord::Base
   end
 
   def old_admin?
-    groups.include?(Group.admin_group)
+    #groups.include?(Group.admin_group)
   end
 
   def admin?

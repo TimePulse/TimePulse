@@ -98,14 +98,15 @@ describe ProjectsController do
 
       describe "with valid params" do
         it "assigns a newly created project as @project" do
-          post :create, :project => { :name => 'Cool Project' }
+          post :create, :project => { :name => 'Cool Project', :parent_id => @project.id }
           verify_authorization_successful
           assigns[:project].should be_a(Project)
           assigns[:project].should_not be_new_record
+          assigns[:project].parent.should == @project
         end
 
         it "redirects to the created project" do
-          post :create, :project => { :name => 'Cool Project' }
+          post :create, :project => { :name => 'Cool Project', :parent_id => @project.id }
           verify_authorization_successful
           response.should redirect_to(project_url(assigns[:project]))
         end
