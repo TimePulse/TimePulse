@@ -4,19 +4,32 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   include SelectBoxItHelpers
   let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.') end
   let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
-  let! :project_1 do FactoryGirl.create(:project, :client => client_1) end
-  let! :project_2 do FactoryGirl.create(:project, :client => client_2) end
-  let! :user      do FactoryGirl.create(:user, :current_project => project_1) end
-
-  let :start_time do
-    Time.parse("10 Nov 2013 01:00")
+  let! :project_1 do
+    project = FactoryGirl.build(:project)
+    project.client = client_1
+    project.save
+    project
+  end
+  let! :project_2 do
+    project = FactoryGirl.build(:project)
+    project.client = client_2
+    project.save
+    project
+  end
+  let! :user      do
+    u = FactoryGirl.build(:user)
+    u.current_project = project_1
+    u.save
+    u
   end
 
-  let :stop_time do
-    Time.parse("10 Nov 2013 22:00")
+  let! :work_unit do
+    wu = FactoryGirl.build(:work_unit)
+    wu.project = project_1
+    wu.user = user
+    wu.save
+    wu
   end
-
-  let! :work_unit do FactoryGirl.create(:work_unit, :project => project_1, :hours => 19, :user => user) end
 
   it "log in as a user" do
     visit root_path
@@ -57,7 +70,7 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "should change the work unit's project in the DB" do
-    work_unit.reload.project.should == project_2
+    page.should have_content("Project: #{project_2.id}")
   end
 
   it "I visit the home page" do
