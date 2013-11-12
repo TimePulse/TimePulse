@@ -118,7 +118,7 @@ class WorkUnit < ActiveRecord::Base
   private
 
   def no_double_clocking
-    if in_progress? && (@other = user.current_work_unit) && @other != self
+    if in_progress? && user.clocked_in? && user.current_work_unit != self
       errors.add :base, "You may not clock in twice at the same time."
     end
   end
