@@ -8,7 +8,15 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   let! :project_2 do FactoryGirl.create(:project, :client => client_2) end
   let! :user      do FactoryGirl.create(:user, :current_project => project_1) end
 
-  let! :work_unit do FactoryGirl.create(:work_unit, :project => project_1, :user => user) end
+  let :start_time do
+    Time.parse("10 Nov 2013 01:00")
+  end
+
+  let :stop_time do
+    Time.parse("10 Nov 2013 22:00")
+  end
+
+  let! :work_unit do FactoryGirl.create(:work_unit, :project => project_1, :hours => 19, :user => user) end
 
   it "log in as a user" do
     visit root_path
