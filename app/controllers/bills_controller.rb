@@ -76,7 +76,7 @@ class BillsController < ApplicationController
 
   def add_user
     if params[:bill].has_key?(:user_id)
-      @bill.user_id = params[:bill][:user_id]
+      @bill.user_id = params[:bill].delete(:user_id)
     end
   end
 

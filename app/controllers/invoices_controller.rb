@@ -81,7 +81,7 @@ class InvoicesController < ApplicationController
 
   def add_client
     if params[:invoice].has_key?(:client_id)
-      @invoice.client_id = params[:invoice][:client_id]
+      @invoice.client_id = params[:invoice].delete(:client_id)
     end
   end
 

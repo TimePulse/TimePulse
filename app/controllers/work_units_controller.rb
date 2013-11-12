@@ -81,7 +81,7 @@ class WorkUnitsController < WorkUnitBaseController
 
   def add_project
     if params[:work_unit].has_key?(:project_id)
-      @work_unit.project_id = params[:work_unit][:project_id]
+      @work_unit.project_id = params[:work_unit].delete(:project_id)
     end
   end
 
