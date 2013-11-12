@@ -24,13 +24,14 @@ describe Invoice do
       :due_on => Date.today,
       :paid_on => Date.today,
       :notes => "value for notes",
-      :reference_number => "value for reference_number",
-      :client => project.client
+      :reference_number => "value for reference_number"
     }
   end
 
   it "should create a new instance given valid attributes" do
-    Invoice.create!(@valid_attributes)
+    invoice = Invoice.new(@valid_attributes)
+    invoice.client = project.client
+    invoice.save
   end
 
 
