@@ -21,13 +21,6 @@ class WorkUnitsController < WorkUnitBaseController
   def edit
   end
 
-  def switch
-    if current_user && current_user.current_work_unit
-      current_user.current_work_unit.clock_out!
-    end
-    create
-  end
-
   # POST /work_units
   def create
     parse_date_params
