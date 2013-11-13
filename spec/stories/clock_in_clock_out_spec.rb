@@ -71,32 +71,6 @@ steps "clock in and out on projects", :type => :feature do
     @new_work_unit = WorkUnit.last
   end
 
-  it "user clocks out with hours set unreasonably high" do
-    pending "Waiting for implementation of validation checking on clock-out"
-    within("#timeclock") do
-      click_link("(+ show override tools)")
-      fill_in "Hours", :with => '9.0'
-      fill_in "Notes", :with => "I worked all day on this"
-      click_button "Clock Out"
-    end
-  end
-
-  it "should show a flash error" do
-    pending "Waiting for implementation of validation checking on clock-out"
-    page.should have_selector(".flash.error")
-  end
-
-  it "should still show the timeclock" do
-    pending "Waiting for implementation of validation checking on clock-out"
-    page.should have_selector("form[action='/clock_out']")
-    page.should have_selector("#timeclock #task_elapsed")
-  end
-
-  it "should not mark the work unit completed" do
-    pending "Waiting for implementation of validation checking on clock-out"
-    @new_work_unit.reload.should_not be_completed
-  end
-
   it "when the work unit was started ten hours ago ago" do
     @new_work_unit.update_attribute(:start_time, Time.now - 10.hours)
   end

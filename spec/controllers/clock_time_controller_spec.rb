@@ -86,28 +86,6 @@ describe ClockTimeController do
   end
 
   describe "DELETE 'destroy'" do
-    describe "with invalid conditions - manual hours too high", :pending => "Not implemented yet." do
-      # TODO:  Right now, the app handles invalid hours submissions by just truncating hours when
-      # the WU is clocked out.   So if you clock in for 6 minutes and manually enter 10 hours, you will
-      # silently end up with a work unit for 0.10 hours.  Probably ought to be changed in the future, and
-      # these specs are here for that.
-      before(:each) do
-        @start_time = Time.zone.now - 6.hours
-        @wu = FactoryGirl.create(:in_progress_work_unit, :user => @user, :project => @project, :start_time => @start_time)
-        @wu.reload   # to clear the microseconds from @wu.start_time
-      end
-      it "should not mark the unit completed" do
-        lambda do
-          delete :destroy, :id => @wu.id, :work_unit => { :hours => '7.0' }
-        end.should_not change{ @wu.reload.completed? }.from(false)
-      end
-      it "should not set the hours" do
-        delete :destroy, :id => @wu.id, :work_unit => { :hours => '7.0' }
-        @wu.reload.hours.should be_blank
-      end
-    end
-
-
     describe "under valid conditions" do
       before(:each) do
         @start_time = Time.zone.now - 6.hours

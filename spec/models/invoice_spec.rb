@@ -96,16 +96,6 @@ describe Invoice do
     end
   end
 
-  describe "work_unit_ids mass assignment" do
-    it "should assign two work_units" do
-      pending
-      @proj = FactoryGirl.create(:project)
-      @wu1 = FactoryGirl.create(:work_unit, :project => @proj)
-      @wu2 = FactoryGirl.create(:work_unit, :project => @proj)
-      @invoice = FactoryGirl.build(:invoice, :work_unit_ids => { @wu1.id => "1", @wu2.id => "1" } )
-    end
-  end
-
   describe "deleted invoice" do
     it "should mark associated work units as uninvoiced" do
       @wu = FactoryGirl.create(:work_unit, :user => user, :project => project)
