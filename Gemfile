@@ -59,7 +59,7 @@ group :test do
 end
 
 group :development do
-  gem 'capistrano'
+  gem 'capistrano', '< 3.0'
   gem 'capistrano-ext'
   gem 'annotate'
   gem 'unicorn-rails'
