@@ -24,6 +24,7 @@ class Array
   end
 end
 
+require 'unsafe_mass_assignment'
 
 namespace :db do
   namespace :sample_data do
@@ -53,7 +54,7 @@ namespace :db do
                         :name => "Admin",
                         :email => "admin@timepulse.io").first
       unless user
-        user = User.create(:login => 'admin',
+        user = User.unsafe_create!(:login => 'admin',
                              :name => "Admin",
                              :email => "admin@timepulse.io",
                              :password => 'foobar',
@@ -64,7 +65,7 @@ namespace :db do
       end
 
       5.times do |i|
-        generic_user = User.create!(:login => "user#{i}",
+        generic_user = User.unsafe_create!(:login => "user#{i}",
                             :name => "User #{i}",
                             :email => "user#{i}@example.com",
                             :password => 'password',
@@ -76,21 +77,21 @@ namespace :db do
     task :populate_clients_and_projects => :environment do
 
       4.times do |nn|
-        client = Client.create!(
+        client = Client.unsafe_create!(
           :name => "Client #{nn}",
           :abbreviation => "CL#{nn}",
           :billing_email => "client_#{nn}@example.com"
         )
-        proj = Project.create!(
+        proj = Project.unsafe_create!(
           :client => client,
           :name => client.name,
           :clockable => false,
           :billable => true,
           :parent => Project.root
         )
-        Project.create!(:client => client, :name => 'Planning',    :clockable => true, :billable => true, :parent => proj)
-        Project.create!(:client => client, :name => 'Development', :clockable => true, :billable => true, :parent => proj)
-        Project.create!(:client => client, :name => 'Deployment',  :clockable => true, :billable => true, :parent => proj)
+        Project.unsafe_create!(:client => client, :name => 'Planning',    :clockable => true, :billable => true, :parent => proj)
+        Project.unsafe_create!(:client => client, :name => 'Development', :clockable => true, :billable => true, :parent => proj)
+        Project.unsafe_create!(:client => client, :name => 'Deployment',  :clockable => true, :billable => true, :parent => proj)
       end
     end
 
@@ -98,13 +99,13 @@ namespace :db do
       projects = Project.where(:clockable => true).to_a
       User.all.each do |user|
         (10..20).each do |nn|
-          wu = WorkUnit.new(
+          wu = WorkUnit.unsafe_build(
+            :user => user,
             :project => projects.pick,
             :start_time => Time.now - nn.days - nn.hours,
             :stop_time => Time.now - nn.days - nn.hours + 45.minutes,
             :notes => Populator.words(2..6)
           )
-          wu.user = user
           wu.clock_out!
         end
       end
@@ -112,7 +113,7 @@ namespace :db do
 
     task :populate_rates do
       project = Project.where(:parent_id => Project.root.id).first
-      project.rates << Rate.create!(:name => 'Rate 1', :amount => 100, :users => [User.first])
+      project.rates << Rate.unsafe_create!(:name => 'Rate 1', :amount => 100, :users => [User.first])
     end
 
     # An example to be deleted or replaced
@@ -121,7 +122,7 @@ namespace :db do
       SomeTable.delete_all
 
       10.times do
-        SomeTable.create(
+        SomeTable.unsafe_create!(
           :field => Populator.words(4..8),
           :date => Date.today - rand(365).days,
           :url => "http://" + Faker::Internet.domain_name

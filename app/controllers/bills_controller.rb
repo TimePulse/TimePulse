@@ -4,8 +4,8 @@ class BillsController < ApplicationController
 
   # GET /bills
   def index
-    @unpaid_bills = Bill.unpaid.paginate(:per_page => 10, :page => params[:page], :order => "due_on DESC, created_at DESC")
-    @paid_bills = Bill.paid.paginate(:per_page => 10, :page => params[:page], :order => "paid_on DESC, created_at DESC")
+    @unpaid_bills = UnpaidBillQuery.new.find_for_page(params[:page])
+    @paid_bills = PaidBillQuery.new.find_for_page(params[:page])
   end
 
   # GET /bills/1
@@ -30,9 +30,9 @@ class BillsController < ApplicationController
   # POST /invoices
   def create
     @bill = Bill.new
-    @bill.localized.attributes = params[:bill]
+    add_user
     add_work_units
-    if @bill.save
+    if @bill.localized.update_attributes(params[:bill])
       flash[:notice] = 'Bill was successfully created.'
       redirect_to(@bill)
     else
@@ -43,7 +43,9 @@ class BillsController < ApplicationController
 
   # PUT /bills/1
   def update
-    if @bill.localized.update_attributes(params[:bill])
+    @bill.localized.attributes = params[:bill]
+    add_user
+    if @bill.save
       flash[:notice] = 'Bill was successfully updated.'
       redirect_to(@bill)
     else
@@ -69,6 +71,12 @@ class BillsController < ApplicationController
     unless @user
       flash[:error] = "Could not find the specified user"
       redirect_to :back
+    end
+  end
+
+  def add_user
+    if params[:bill].has_key?(:user_id)
+      @bill.user_id = params[:bill].delete(:user_id)
     end
   end
 

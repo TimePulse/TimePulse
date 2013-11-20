@@ -21,19 +21,16 @@ class WorkUnitsController < WorkUnitBaseController
   def edit
   end
 
-  def switch
-    if current_user && current_user.current_work_unit
-      current_user.current_work_unit.clock_out!
-    end
-    create
-  end
-
   # POST /work_units
   def create
     parse_date_params
+
     @work_unit = WorkUnit.new(params[:work_unit])
+    add_project
+
     @work_unit.user = current_user
     compute_some_fields
+
     @work_unit.project ||= current_user.current_project
 
 
@@ -55,8 +52,10 @@ class WorkUnitsController < WorkUnitBaseController
   # PUT /work_units/1
   def update
     parse_date_params
-    Rails.logger.debug{params.inspect}
+
     @work_unit.attributes = params[:work_unit]
+    add_project
+
     compute_some_fields
     if @work_unit.save
       flash[:notice] = 'WorkUnit was successfully updated.'
@@ -79,6 +78,13 @@ class WorkUnitsController < WorkUnitBaseController
   end
 
   private
+
+  def add_project
+    if params[:work_unit].has_key?(:project_id)
+      @work_unit.project_id = params[:work_unit].delete(:project_id)
+    end
+  end
+
   def parse_date_params
     if wu_p = params[:work_unit]
       zone = Time.zone
