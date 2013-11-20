@@ -22,8 +22,9 @@ steps "clock out after a while", :type => :feature do
   end
 
   it "if I'm clocked in as of an hour ago and reload the page" do
-    @work_unit = WorkUnit.new(:project => project_1, :start_time => 1.hour.ago, :stop_time => nil)
+    @work_unit = WorkUnit.new(:start_time => 1.hour.ago, :stop_time => nil)
     @work_unit.user = user
+    @work_unit.project = project_1
     @work_unit.save
     visit root_path
   end

@@ -33,7 +33,6 @@ TimePulse::Application.routes.draw do
     get "/users/:id/edit" => "users#edit", :as => :edit_user
     put "/users/:id" => "users#update", :as => :user
   end
-  match '/work_units/switch' => 'work_units#switch', :as => :switch_work_unit, :via => :post
   match '/fix_work_unit/:id' => 'work_unit_fixer#create', :as => :fix_work_unit
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
