@@ -39,7 +39,7 @@ class Project < ActiveRecord::Base
   validates_presence_of :name
   cascades :account, :clockable, :github_url, :pivotal_id
 
-  attr_accessible :name, :account, :description, :parent_id, :parent, :client_id, :client, :clockable, :billable, :flat_rate, :archived, :github_url, :pivotal_id, :rates_attributes
+  attr_accessible :name, :account, :description, :clockable, :billable, :flat_rate, :archived, :github_url, :pivotal_id, :rates_attributes
 
   before_save :no_rates_for_children, :cascade_client
 

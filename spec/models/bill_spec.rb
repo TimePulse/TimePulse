@@ -20,13 +20,14 @@ describe Bill do
     @valid_attributes = {
       :due_on => Date.today,
       :paid_on => Date.today,
-      :user => @user,
       :notes => "value for notes"
     }
   end
 
   it "should not a new instance via massa-assignable attributes" do
-    Bill.create!(@valid_attributes)
+    bill = Bill.new(@valid_attributes)
+    bill.user = @user
+    bill.save
   end
 
   describe "hours" do

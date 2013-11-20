@@ -59,3 +59,4 @@ db_backups/
 .ruby-version
 .ruby-gemset
 errors.err
+.rspec-local

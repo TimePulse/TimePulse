@@ -33,9 +33,15 @@ describe "/invoices/new" do
   end
 
   describe "with client specified" do
+    let :invoice do
+      inv = Invoice.new
+      inv.client = @client_local
+      inv
+    end
+
     before :each  do
       assign(:client, @client_local)
-      assign(:invoice, Invoice.new(:client => @client_local))
+      assign(:invoice, invoice)
       assign(:work_units, [ FactoryGirl.create(:work_unit), FactoryGirl.create(:work_unit) ])
     end
 
