@@ -20,6 +20,7 @@ class WorkUnitBaseController < ApplicationController
 
   def parse_time(string)
     time_options = { :now => Time.zone.now, :context => :past }
+    Chronic.time_class = Time.zone
     Chronic.parse(string, time_options)
   end
 
