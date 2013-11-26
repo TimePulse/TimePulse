@@ -56,6 +56,7 @@ group :test do
   gem 'vcr'
   gem 'fakeweb'
   gem 'timecop'
+  gem "codeclimate-test-reporter", :require => nil
 end
 
 group :development do
