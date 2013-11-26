@@ -98,7 +98,9 @@ Ninja.orders(function(Ninja){
         },
         '#timeclock input#work_unit_hours': {
           click: function(evnt, elem) {
-            $(elem).val(hours_format(task_elapsed))
+            if ($(elem).val() == "") {
+              $(elem).val(hours_format(task_elapsed))
+            }
           }
         },
         '#timeclock a#override_trigger': {
