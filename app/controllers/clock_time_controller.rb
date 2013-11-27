@@ -1,6 +1,6 @@
 require 'hhmm_to_decimal'
 
-class ClockTimeController < ApplicationController
+class ClockTimeController < WorkUnitBaseController
   before_filter :require_user!
 
   include HhmmToDecimal
@@ -30,7 +30,13 @@ class ClockTimeController < ApplicationController
   end
 
   def destroy
+
     if params[:work_unit]
+
+      if (params[:work_unit][:stop_time])
+        parse_date_params
+      end
+
       current_user.current_work_unit.update_attributes(params[:work_unit])
     end
     clock_out_current_work_unit
