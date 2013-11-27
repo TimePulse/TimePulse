@@ -190,13 +190,6 @@ describe User do
     end
   end
 
-  describe "hours_report_for" do
-    it "should return a hash" do
-      pending
-      @user.hours_report_for(@proj).should be_a(Hash)
-    end
-  end
-
   describe "rate_for" do
     before :each do
       @user = FactoryGirl.create(:user)
