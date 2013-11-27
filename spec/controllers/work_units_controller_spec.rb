@@ -7,6 +7,7 @@ describe WorkUnitsController do
       Timecop.return
       @user = authenticate(:admin)
       @work_unit = FactoryGirl.create(:work_unit)
+      @local_tz = ActiveSupport::TimeZone["Fiji"]
     end
 
     let! :project do FactoryGirl.create(:project) end
@@ -60,11 +61,12 @@ describe WorkUnitsController do
 
       describe "with stop time before start time" do
         before :each do
-          @start = Time.parse("May 6, 2010 4:00").to_s(:date_and_time)
-          @stop  = Time.parse("May 5, 2010 4:20").to_s(:date_and_time)
+          @start = @local_tz.parse("May 6, 2010 4:00").to_s(:date_and_time)
+          @stop  = @local_tz.parse("May 5, 2010 4:20").to_s(:date_and_time)
           post :create, :work_unit => {
             :start_time => @start.to_s,
             :stop_time => @stop.to_s,
+            :time_zone => (@local_tz.utc_offset / 3600),
             :project_id => project.id }
         end
 
@@ -79,10 +81,10 @@ describe WorkUnitsController do
 
       describe "for a work unit with a start time but blank stop time" do
         before do
-          @start = Time.now - 2 * 60 * 60
-          @time = Time.now
+          @start = @local_tz.now - 2 * 60 * 60
+          @time = @local_tz.now
           post :create, :work_unit => { :project_id => project.id,
-            :start_time => @start.to_s, :calculate => true, :hours => '2'
+            :start_time => @start.to_s(:short_datetime), :time_zone => (@local_tz.utc_offset / 3600), :calculate => true, :hours => '2'
           }
         end
 
@@ -91,20 +93,20 @@ describe WorkUnitsController do
         end
 
         it "should create a work unit with a real stop time" do
-          assigns[:work_unit].stop_time.should be_within(1.second).of(@time)
+          assigns[:work_unit].stop_time.utc.should be_within(1.second).of(@time.utc)
         end
       end
 
       describe "with start time as 13:00 and empty stop time" do
         before :each do
-          Timecop.travel(Time.parse("May 5, 2013 14:00"))
+          Timecop.travel(@local_tz.parse("May 5, 2013 14:00"))
         end
 
         it "should create a correct work unit" do
           @start = "13:00"
           expect do
             post :create, :work_unit => { :project_id => project.id,
-              :start_time => @start.to_s, :calculate => true
+              :start_time => @start.to_s, :time_zone => (@local_tz.utc_offset / 3600), :calculate => true
             }
           end.to change(WorkUnit, :count).by(1)
         end
@@ -113,11 +115,11 @@ describe WorkUnitsController do
 
       describe "with start and stop times as strings" do
         it "should correctly calculate work interval" do
-          @time = Time.now
-          @start = Time.now - 2 * 60 * 60
+          @time = @local_tz.now
+          @start = @local_tz.now - 2 * 60 * 60
           @stop = @start + 1.5 * 3600
           post :create, :work_unit => { :project_id => project.id,
-            :start_time => @start.to_s(:long), :stop_time => @stop.to_s(:long), :calculate => true
+            :start_time => @start.to_s(:long), :stop_time => @stop.to_s(:long), :time_zone => (@local_tz.utc_offset / 3600), :calculate => true
           }
           assigns[:work_unit].hours.should == 1.5
         end
@@ -125,13 +127,13 @@ describe WorkUnitsController do
 
       describe "with a 20-minute work unit" do
         before :each do
-          @start = Time.parse("May 5, 2010 4:00").to_s(:date_and_time)
-          @stop  = Time.parse("May 5, 2010 4:20").to_s(:date_and_time)
+          @start = @local_tz.parse("May 5, 2010 4:00").to_s(:date_and_time)
+          @stop  = @local_tz.parse("May 5, 2010 4:20").to_s(:date_and_time)
         end
         it "should create a work unit" do
           lambda do
             post :create, :work_unit => { :project_id => project.id,
-              :start_time => @start, :stop_time => @stop, :calculate => true
+              :start_time => @start, :stop_time => @stop, :time_zone => (@local_tz.utc_offset / 3600), :calculate => true
             }
           end.should change(WorkUnit, :count).by(1)
           assigns[:work_unit].hours.should be_within(0.003).of(0.33)
@@ -140,10 +142,10 @@ describe WorkUnitsController do
 
       describe "for a work unit with a 'calc' hours" do
         before do
-          @start = Time.now - 2 * 60 * 60
+          @start = @local_tz.now - 2 * 60 * 60
           @stop = @start + 1.5 * 3600
           post :create, :work_unit => { :project_id => project.id,
-            :start_time => @start.to_s, :stop_time => @stop.to_s, :calculate => true
+            :start_time => @start.to_s, :stop_time => @stop.to_s, :time_zone => (@local_tz.utc_offset / 3600), :calculate => true
           }
         end
 
@@ -156,7 +158,8 @@ describe WorkUnitsController do
         before do
           @valid_create_params = {
             :project_id => project.id,
-            :start_time => Time.now.to_s
+            :start_time => @local_tz.now.to_s,
+            :time_zone => (@local_tz.utc_offset / 3600)
           }
         end
 
@@ -211,7 +214,8 @@ describe WorkUnitsController do
           #invalid because work units require a project
           @valid_create_params = {
             :project_id => nil,
-            :start_time => Time.now.to_s
+            :start_time => @local_tz.now.to_s,
+            :time_zone => (@local_tz.utc_offset / 3600)
           }
         end
 
@@ -244,33 +248,34 @@ describe WorkUnitsController do
     describe "responding to PUT update" do
       describe "for a work unit with a start time and calculate = true" do
         before do
-          @start = Time.zone.now - 2.5.hours
+          @start = @local_tz.now - 2.5.hours
         end
 
         it "should redirect " do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
-            :start_time => @start.to_s, :stop_time => "", :calculate => "true", :hours => '2'
+            :start_time => @start.to_s, :stop_time => "", :time_zone => (@local_tz.utc_offset / 3600), :calculate => "true", :hours => '2'
           }
           response.should be_redirect
         end
 
         it "should create a work unit with a real stop time" do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
-            :start_time => @start.to_s, :stop_time => "", :calculate => "true", :hours => '2'
+            :start_time => @start.to_s, :stop_time => "", :time_zone => (@local_tz.utc_offset / 3600), :calculate => "true", :hours => '2'
           }
-          assigns[:work_unit].stop_time.should be_within(90.seconds).of(Time.zone.now.utc)
+          assigns[:work_unit].stop_time.should be_within(90.seconds).of(@local_tz.now.utc)
         end
       end
 
       describe "for a work unit with no hours but calculate = true" do
         before do
-          @time = Time.zone.now
+          @time = @local_tz.now
           start = @time - 2.hours
           stop = start + 1.5.hours
           put :update, :id => @work_unit.id, :work_unit => {
             :project_id => project.id,
             :start_time => start.to_s,
             :stop_time => stop.to_s,
+            :time_zone => (@local_tz.utc_offset / 3600),
             :hours => nil, :calculate => "true"
           }
         end
