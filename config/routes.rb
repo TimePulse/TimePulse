@@ -33,10 +33,14 @@ TimePulse::Application.routes.draw do
     get "/users/:id/edit" => "users#edit", :as => :edit_user
     put "/users/:id" => "users#update", :as => :user
   end
+
+  mount Devise::Oauth2Providable::Engine => '/oauth2'
+
   match '/fix_work_unit/:id' => 'work_unit_fixer#create', :as => :fix_work_unit
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
   match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete
+
 
   root :to => 'home#index'
 
