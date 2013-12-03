@@ -1,5 +1,11 @@
 TimePulse::Application.routes.draw do
 
+  namespace :api do
+    namespace :v1 do
+      resources :projects, :only => [:index, :show, :create, :update, :destroy]
+    end
+  end
+
   resources :invoices
   resources :bills
   resources :groups
