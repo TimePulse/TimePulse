@@ -109,7 +109,7 @@ describe Api::V1::ProjectsController do
           end.to change{Project.count}.by(1)
         end
 
-        it 'returns http 200' do
+        it 'returns http 201' do
           post :create, project_params
           response.response_code.should == 201
         end
@@ -130,6 +130,103 @@ describe Api::V1::ProjectsController do
           post :create, project_params
           response.response_code.should == 422
         end
+      end
+
+    end
+  end
+
+  describe 'PUT update' do
+    let :project_params do
+      {
+        :name => "New Name"
+      }
+    end
+
+    context 'unauthorized' do
+      before { put :update, :id => project.id, :project => project_params }
+
+      it 'returns http 401' do
+        response.response_code.should == 401
+      end
+    end
+
+    context 'with request token for non-admin user' do
+      before do
+        add_token_for(user).to(@request)
+        put :update, :id => project.id, :project => project_params
+      end
+
+      it 'returns http 401' do
+        response.response_code.should == 401
+      end
+    end
+
+    context 'with valid request token for admin' do
+      before do
+        add_token_for(admin).to(@request)
+        put :update, :id => project.id, :project => project_params
+      end
+
+      context 'with valid_data' do
+        it "should update the project" do
+          project.reload.name.should == "New Name"
+        end
+
+        it 'returns http 200' do
+          response.response_code.should == 200
+        end
+      end
+
+      context 'with invalid data' do
+        let :project_params do
+          {
+            :name => nil
+          }
+        end
+
+        it 'returns unprocessable_entity' do
+          response.response_code.should == 422
+        end
+      end
+
+    end
+  end
+
+  describe 'DELETE destroy' do
+
+
+    context 'unauthorized' do
+      before { delete :destroy, :id => project.id }
+
+      it 'returns http 401' do
+        response.response_code.should == 401
+      end
+    end
+
+    context 'with request token for non-admin user' do
+      before do
+        add_token_for(user).to(@request)
+        delete :destroy, :id => project.id
+      end
+
+      it 'returns http 401' do
+        response.response_code.should == 401
+      end
+    end
+
+    context 'with valid request token for admin' do
+      before do
+        add_token_for(admin).to(@request)
+      end
+
+      it "should update the project" do
+        expect do
+          delete :destroy, :id => project.id
+        end.to change{Project.count}.by(-1)
+      end
+
+      it 'returns http 200' do
+        delete :destroy, :id => project.id
       end
 
     end
