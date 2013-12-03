@@ -13,6 +13,8 @@ gem "lrd_view_tools"
 gem "logical_tabs"
 gem "awesome_nested_set"
 gem 'devise'
+gem 'devise_oauth2_providable'
+gem 'active_model_serializers'
 gem "chronic"
 gem "logical-insight"
 gem 'dynamic_form'

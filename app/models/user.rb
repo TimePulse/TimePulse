@@ -26,7 +26,9 @@
 class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
-       :recoverable, :rememberable, :trackable, :validatable, :confirmable
+       :recoverable, :rememberable, :trackable, :validatable, :confirmable, :oauth2_providable,
+    :oauth2_password_grantable,
+    :oauth2_refresh_token_grantable
 
   belongs_to :current_project, :class_name => "Project"
   has_many :work_units
