@@ -4,11 +4,11 @@
   - @invoice_report.report.each do |date_row|
     %tr.day_row
       %td{:colspan => "3" }
-        %h3= date_row.first.to_s
+        %h2= date_row.first.to_s
     - date_row.last.report.each do |user_row|
       %tr.user_row
         %th
-          %h4= "#{user_row.first}: #{user_row[1]}"
+          %h4= "#{user_row.first}: #{user_row[1]} hours"
           Notes:
         %th
           Commits:

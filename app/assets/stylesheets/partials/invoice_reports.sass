@@ -17,10 +17,10 @@ body.invoice_reports
       &:nth-of-type(even)
         background: none
       &.user_row
-        td
-          padding-bottom: 0px
+        td, th
+          padding: 0px
       &.user_work
-        td
+        td, th
           padding-top: 0px
         td:first
           padding-left: 2em
@@ -29,6 +29,17 @@ body.invoice_reports
           width: 33%
           &:first-child
             padding-left: 20px
+      &.day_row
+        th, td
+          padding-top: 2em
+          padding-left: 0
+        h2
+          background: #ccc
+          margin: 0
+          padding: 0 0.5em
+      &.day_row:first-child
+        th, td
+          padding-top: 1em
 
   @media print
     body
