@@ -1,0 +1,22 @@
+{
+  projects: [{
+    :id => @project.id,
+    :name => @project.name,
+    :account => @project.account,
+    :description => @project.description,
+    :clockable => @project.clockable,
+    :billable => @project.billable,
+    :flat_rate => @project.flat_rate,
+    :archived => @project.archived,
+    :github_url => @project.github_url,
+    :pivotal_id => @project.pivotal_id,
+    :created_at => @project.created_at,
+    :updated_at => @project.updated_at,
+    :links => {
+      :lft => @project.lft
+      :rgt => @project.rgt
+      :parent => @project.parent_id,
+      :client => @project.client_id
+    }
+  }]
+}
