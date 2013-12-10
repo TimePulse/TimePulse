@@ -1,4 +1,17 @@
 GIT
+  remote: https://github.com/hannahhoward/github
+  revision: bde0836e6b3e5e17800faa46c0b2a2306d40182f
+  specs:
+    github_api (0.11.0)
+      addressable (~> 2.3)
+      descendants_tracker (~> 0.0.1)
+      faraday (~> 0.8, < 0.10)
+      hashie (>= 1.2)
+      multi_json (>= 1.7.5, < 2.0)
+      nokogiri (~> 1.6.0)
+      oauth2
+
+GIT
   remote: https://github.com/hannahhoward/pivotal-tracker
   revision: 3c738617558e4734f261bc881688d2d4f83136ca
   specs:
@@ -128,13 +141,6 @@ GEM
       rspec-instafail (~> 0.2.0)
       ruby-progressbar (~> 1.0)
     git-utils (0.5.8)
-    github_api (0.10.2)
-      addressable
-      faraday (~> 0.8.7)
-      hashie (>= 1.2)
-      multi_json (~> 1.4)
-      nokogiri (~> 1.6.0)
-      oauth2
     haml (4.0.4)
       tilt
     haml-rails (0.4)
@@ -340,7 +346,7 @@ DEPENDENCIES
   faker
   fakeweb
   fuubar
-  github_api (~> 0.10.1)
+  github_api (~> 0.11.0)!
   haml-rails
   i18n_alchemy
   launchy

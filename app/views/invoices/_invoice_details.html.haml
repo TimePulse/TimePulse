@@ -23,6 +23,12 @@
 
 %h2 Work Unit Details
 %table.listing
+  %tr
+    %th Hours
+    %th User
+    %th Notes
+    %th Start Time
+    %th
   - @invoice.work_units.each do |wu|
     = content_tag_for(:tr, wu) do
       %td.hours
@@ -30,5 +36,6 @@
       %td= wu.user.login
       %td= wu.notes
       %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
+      %td.tools.nobr= link_to 'Edit', edit_work_unit_path(wu), class: 'actions edit'
 
 
