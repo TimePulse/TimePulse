@@ -11,24 +11,30 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_current_time
 
-  def require_user!
-    if (!current_user)
+  def handle_unauthorized
+    if request.format == "application/json"
+      render json: {}, status: 401
+    else
       store_location
       redirect_to(login_path)
+    end
+  end
+
+  def require_user!
+    if (!current_user)
+      handle_unauthorized
     end
   end
 
   def require_admin!
     if !current_user or !(current_user.admin?)
-      store_location
-      redirect_to(login_path)
+      handle_unauthorized
     end
   end
 
   def require_owner!(user)
     if (!current_user.admin? and current_user != user)
-      store_location
-      redirect_to(login_path)
+      handle_unauthorized
     end
   end
 

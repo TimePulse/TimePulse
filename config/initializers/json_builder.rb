@@ -1,5 +1,5 @@
 ActionView::Template.register_template_handler("ic",
-  Proc.new do |template|
+  Proc.new do |template|                                                  
     <<-RUBY
     begin
       _old_formats = lookup_context.formats
