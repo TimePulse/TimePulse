@@ -22,6 +22,7 @@ gem 'i18n_alchemy'
 gem 'virtus'
 gem 'github_api', "~> 0.10.1"
 gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
+gem 'json-api', :git => 'https://github.com/hannahhoward/parser-ruby'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

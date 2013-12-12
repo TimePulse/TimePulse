@@ -1,4 +1,10 @@
 GIT
+  remote: https://github.com/hannahhoward/parser-ruby
+  revision: b4e6f640df74b85af9756a4d8fb70dc307028ff0
+  specs:
+    json-api (0.1.0)
+
+GIT
   remote: https://github.com/hannahhoward/pivotal-tracker
   revision: 3c738617558e4734f261bc881688d2d4f83136ca
   specs:
@@ -360,6 +366,7 @@ DEPENDENCIES
   github_api (~> 0.10.1)
   haml-rails
   i18n_alchemy
+  json-api!
   launchy
   logical-insight
   logical_tabs
