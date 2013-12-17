@@ -18,7 +18,7 @@ gem "logical-insight"
 gem 'dynamic_form'
 gem 'i18n_alchemy'
 gem 'virtus'
-gem 'github_api', "~> 0.10.1"
+gem 'github_api', "~> 0.11.1"
 gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
 
 group :assets do
