@@ -30,7 +30,7 @@ TimePulse provides callback endpoints for both GitHub and PivotalTracker. If the
 
 ## Documentation
 
-Documentation and examples can be found at [timepulse.io](http://timepulse.io, "TimePulse Home Page").  (Not yet up as of 11/4/2013)
+Documentation and examples can be found at [timepulse.io](http://timepulse.io "TimePulse Home Page").
 
 ## Getting Started
 
