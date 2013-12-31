@@ -1,0 +1,5 @@
+{
+  projects: @projects.map do |project|
+    project_json_api(project)
+  end
+}
