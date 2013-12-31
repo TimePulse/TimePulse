@@ -6,6 +6,8 @@ describe Api::V1::ProjectsController do
   let!(:project) { FactoryGirl.create(:project)}
   # initialize it
 
+  render_views
+
   describe 'GET index' do
     context 'unauthorized' do
       before { get :index }
@@ -20,9 +22,14 @@ describe Api::V1::ProjectsController do
         add_token_for(user).to(@request)
         get :index
       end
-      subject { JSON.parse response.body }
 
-      it 'wraps around projects' do should include 'projects' end
+      it 'should be valid JSON API' do
+        response.body.should be_valid_json_api
+      end
+
+      it 'wraps around projects' do
+        JSON::Api.parse(response.body).should include 'projects'
+      end
 
       it 'returns http 200' do
         response.response_code.should == 200
@@ -44,16 +51,19 @@ describe Api::V1::ProjectsController do
         add_token_for(user).to(@request)
         get :show, id: project.id
       end
-      subject { JSON.parse response.body }
 
-      it 'wraps around project' do should include 'project' end
+      it 'should be valid JSON API' do
+        response.body.should be_valid_json_api
+      end
+
+      it 'wraps around projects' do
+        JSON::Api.parse(response.body).should include 'projects'
+      end
+
       context 'inside project' do
-        subject { JSON.parse(response.body)['project'] }
+
+        subject { JSON::Api.parse(response.body)['projects'][0] }
         it { should include 'id' }
-        it { should include "parent_id" }
-        it { should include "lft" }
-        it { should include "rgt" }
-        it { should include "client_id" }
         it { should include "name" }
         it { should include "account" }
         it { should include "description" }
@@ -67,6 +77,18 @@ describe Api::V1::ProjectsController do
         it { should include "updated_at" }
       end
 
+      context 'inside project links' do
+        subject do
+          JSON::Api.parse(response.body)['projects'][0]['links']
+        end
+
+        it { should include "parent" }
+        it { should include "lft" }
+        it { should include "rgt" }
+        it { should include "client" }
+
+      end
+
       it 'returns http 200' do
         response.response_code.should == 200
       end
@@ -75,7 +97,11 @@ describe Api::V1::ProjectsController do
 
   describe 'POST create' do
     let :project_params do
-      FactoryGirl.build(:project).as_json
+      {
+        :projects => [{
+          :name => "Awesome"
+        }]
+      }.as_json
     end
 
     context 'unauthorized' do
@@ -112,6 +138,21 @@ describe Api::V1::ProjectsController do
         it 'returns http 201' do
           post :create, project_params
           response.response_code.should == 201
+        end
+
+        it 'sets location to resource url' do
+          post :create, project_params
+          response.headers['Location'].should == api_v1_project_path(Project.last)
+        end
+
+        it 'should return valid JSON API' do
+          post :create, project_params
+          response.body.should be_valid_json_api
+        end
+
+        it 'should include projects' do
+          post :create, project_params
+          JSON::Api.parse(response.body).should include 'projects'
         end
       end
 
@@ -153,7 +194,7 @@ describe Api::V1::ProjectsController do
     context 'with request token for non-admin user' do
       before do
         add_token_for(user).to(@request)
-        put :update, :id => project.id, :project => project_params
+        put :update, :id => project.id, :projects => project_params
       end
 
       it 'returns http 401' do
@@ -175,6 +216,19 @@ describe Api::V1::ProjectsController do
         it 'returns http 200' do
           response.response_code.should == 200
         end
+
+        it 'sets location to resource url' do
+          response.headers['Location'].should == api_v1_project_path(project)
+        end
+
+        it 'should return valid JSON API' do
+          response.body.should be_valid_json_api
+        end
+
+        it 'should include projects' do
+          JSON::Api.parse(response.body).should include 'projects'
+        end
+
       end
 
       context 'with invalid data' do

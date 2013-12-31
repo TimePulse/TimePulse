@@ -19,10 +19,11 @@ module Api
       end
 
       def create
-        @project = Project.new(params[:project])
+        p params
+        @project = Project.new(params["projects"][0])
 
         if @project.save
-          render json: @project, status: :created
+          render :show, status: :created, location: api_v1_project_path(@project)
         else
           render json: @project.errors, status: :unprocessable_entity
         end
@@ -42,7 +43,7 @@ module Api
         @project = Project.find(params[:id])
         @project.destroy
 
-        render json: :no_contents
+        render json: :no_content
       end
 
     end
