@@ -1,12 +1,10 @@
-class HomeController < ApplicationController
+class HomeController < HomePageController
   before_filter :require_user!
   def index
 
     @user = current_user
     if (@current_project = current_user.current_project )
-      @work_units = related_items_for(:completed_work_units, :stop_time, params[:work_units_page])
-      @commits = related_items_for(:git_commits, :time, params[:commits_page])
-      @pivotal_updates = related_items_for(:pivotal_updates, :time, params[:pivotal_updates_page])
+      load_related_items
     end
 
   end

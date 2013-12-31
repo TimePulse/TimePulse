@@ -3,7 +3,7 @@
     -if @work_units.blank?
       %p No work units to show.
     -else
-      = will_paginate(@work_units, :param_name => :work_units_page)
+      = will_paginate(@work_units, :params => {:controller => 'home', :action => 'index' }, :param_name => :work_units_page)
       %table.listing
         %tr
           %th= "Project"
@@ -18,7 +18,7 @@
     -if @commits.blank?
       %p No commits to show.
     -else
-      = will_paginate(@commits, :param_name => :commits_page)
+      = will_paginate(@commits, :params => {:controller => 'home', :action => 'index' }, :param_name => :commits_page)
       %table.listing
         %tr
           %th= "Project"
@@ -31,7 +31,7 @@
     -if @pivotal_updates.blank?
       %p No pivotal updates to show.
     -else
-      = will_paginate(@pivotal_updates, :param_name => :pivotal_updates_page)
+      = will_paginate(@pivotal_updates, :params => {:controller => 'home', :action => 'index' }, :param_name => :pivotal_updates_page)
       %table.listing
         %tr
           %th= "Project"
