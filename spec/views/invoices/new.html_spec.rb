@@ -39,10 +39,14 @@ describe "/invoices/new" do
       inv
     end
 
+    let :work_unit_1 do  FactoryGirl.create(:work_unit) end
+    let :work_unit_2 do  FactoryGirl.create(:work_unit) end
+    let :work_units do [ work_unit_1, work_unit_2 ] end
+
     before :each  do
       assign(:client, @client_local)
       assign(:invoice, invoice)
-      assign(:work_units, [ FactoryGirl.create(:work_unit), FactoryGirl.create(:work_unit) ])
+      assign(:work_units, work_units )
     end
 
     it "should pre-select that client in the selector" do
@@ -52,32 +56,28 @@ describe "/invoices/new" do
       end
     end
 
+
     describe "create form" do
-      before :each  do
-        @work_units = assign(:work_units, [
-          FactoryGirl.create(:work_unit),
-          FactoryGirl.create(:work_unit)
-        ])
-      end
-      it "should render" do
+      it "should render a form" do
         render
-        rendered.should have_selector("form[action='#{invoices_path}'][method='post']") do |scope|
-          scope.should have_selector("textarea#invoice_notes[name='invoice[notes]']")
-          scope.should have_selector("input#invoice_reference_number[name='invoice[reference_number]']")
-        end
+        rendered.should have_selector("form[action='#{invoices_path}'][method='post']")
+        rendered.should have_selector("textarea#invoice_notes[name='invoice[notes]']")
+        rendered.should have_selector("input#invoice_reference_number[name='invoice[reference_number]']")
       end
       it "should include a hidden tag for the client" do
         render
-        rendered.should have_selector("form[action='#{invoices_path}'][method='post']") do |scope|
-          scope.should have_selector("input#invoice_client_id[type='hidden'][value='#{@client_local.id}']")
-        end
+        rendered.should have_selector("input#invoice_client_id[type='hidden'][value='#{@client_local.id}']")
       end
       it "should include checkboxes for each work unit" do
         render
-        @work_units.each do |wu|
-          rendered.should have_selector("form[action='#{invoices_path}'][method='post']") do |scope|
-            scope.should have_selector("input[type='checkbox'][name='invoice[work_unit_ids][#{wu.id}]']")
-          end
+        work_units.each do |wu|
+          rendered.should have_selector("form input[type='checkbox'][name='invoice[work_unit_ids][#{wu.id}]']")
+        end
+      end
+      it "should include an edit link for each work unit" do
+        render
+        work_units.each do |wu|
+          rendered.should have_selector("form a[href='#{edit_work_unit_path(wu)}']")
         end
       end
 
