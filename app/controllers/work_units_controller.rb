@@ -61,7 +61,7 @@ class WorkUnitsController < WorkUnitBaseController
       flash[:notice] = 'WorkUnit was successfully updated.'
       expire_fragment("work_unit_narrow_#{@work_unit.id}")
       expire_fragment("work_unit_one_line_#{@work_unit.id}")
-      redirect_to(@work_unit)
+      redirect_to :back
     else
       render :action => "edit"
     end

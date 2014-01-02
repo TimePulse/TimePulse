@@ -69,6 +69,10 @@ steps "edit a work unit to move it from one project to another", :type => :featu
     click_button 'Submit'
   end
 
+  it "if I visit the work_unit's page" do
+    visit "/work_units/#{work_unit.id}"
+  end
+
   it "should change the work unit's project in the DB" do
     page.should have_content("Project: #{project_2.id}")
   end
