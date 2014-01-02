@@ -255,7 +255,7 @@ describe WorkUnitsController do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
             :start_time => @start.to_s, :stop_time => "", :time_zone => (@local_tz.utc_offset / 3600), :calculate => "true", :hours => '2'
           }
-          response.should be_redirect
+          response.should redirect_back
         end
 
         it "should create a work unit with a real stop time" do
@@ -307,7 +307,7 @@ describe WorkUnitsController do
 
         it "should redirect to the work_unit" do
           put :update, :id => @work_unit.id, :work_unit => valid_update_params
-          response.should redirect_to(work_unit_url(@work_unit))
+          response.should redirect_back
         end
         describe "hours in HH:MM" do
           it "should update hours correctly" do

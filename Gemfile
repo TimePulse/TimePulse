@@ -65,5 +65,5 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
-  gem 'debugger'
+  gem 'byebug'
 end
