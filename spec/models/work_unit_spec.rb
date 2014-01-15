@@ -25,7 +25,7 @@ describe WorkUnit do
 
 
   describe "default behavior" do
-    it "should  override the start time with mass assignment" do
+    it "should override the start time with mass assignment" do
       time = Time.now - 5.days
       wu = WorkUnit.new(:start_time => time)
       wu.start_time.should be_within(1.second).of(time)
@@ -218,6 +218,55 @@ describe WorkUnit do
     it "should not find a different client's work unit" do
       proj2 = FactoryGirl.create(:project, :billable => true, :client => FactoryGirl.create(:client))
       wu1 = FactoryGirl.create(:work_unit, :project => @project)
+      wu2 = FactoryGirl.create(:work_unit, :project => proj2)
+      WorkUnit.for_client(@client).should include(wu1)
+      WorkUnit.for_client(@client).should_not include(wu2)
+    end
+  end
+  
+  describe "for_project" do
+    before :each  do
+      @client = FactoryGirl.create(:client)
+      @project1 = FactoryGirl.create(:project,:name => "Project 1", :billable => true, 
+                                    :client => @client)
+      @project1a = FactoryGirl.create(:project,:name => "Project 1a", :billable => true, 
+                                    :client => @client, :parent_id => @project1.id )
+      @project1b = FactoryGirl.create(:project,:name => "Project 1b", :billable => true, 
+                                    :client => @client, :parent_id => @project1.id )
+      @project2 = FactoryGirl.create(:project,:name => "Project 2", :billable => true, 
+                                    :client => @client)
+      @project2a = FactoryGirl.create(:project,:name => "Project 2a", :billable => true, 
+                                    :client => @client, :parent_id => @project2.id )
+      @wu1 = FactoryGirl.create(:work_unit, :project => @project1)
+      @wu1aa = FactoryGirl.create(:work_unit, :project => @project1a)
+      @wu1ab = FactoryGirl.create(:work_unit, :project => @project1a)
+      @wu1b = FactoryGirl.create(:work_unit, :project => @project1b)
+      @wu2 = FactoryGirl.create(:work_unit, :project => @project2)
+      @wu2a = FactoryGirl.create(:work_unit, :project => @project2a)
+    end
+    it "should find the work units for a specific project" do
+      WorkUnit.for_project(@project1a).should include(@wu1aa)
+      WorkUnit.for_project(@project1a).should include(@wu1ab)
+      WorkUnit.for_project(@project1a).should == 2
+    end
+    it "should find work units for sub-projects of a parent" do
+      WorkUnit.for_project(@project1).should include(@wu1)
+      WorkUnit.for_project(@project1).should include(@wu1aa)
+      WorkUnit.for_project(@project1).should include(@wu1b)
+      WorkUnit.for_client(@client).should include(wu1)
+      WorkUnit.for_client(@client).should include(wu2)
+    end
+    it "should find work_units in a subproject only once" do
+      proj2 = FactoryGirl.create(:project, :billable => true, :client => @client, :parent => @project2)
+      wu1 = FactoryGirl.create(:work_unit, :project => @project2)
+      wu2 = FactoryGirl.create(:work_unit, :project => proj2)
+      WorkUnit.for_client(@client).should include(wu1)
+      WorkUnit.for_client(@client).should include(wu2)
+      WorkUnit.for_client(@client).count.should == 2
+    end
+    it "should not find a different client's work unit" do
+      proj2 = FactoryGirl.create(:project, :billable => true, :client => FactoryGirl.create(:client))
+      wu1 = FactoryGirl.create(:work_unit, :project => @project2a)
       wu2 = FactoryGirl.create(:work_unit, :project => proj2)
       WorkUnit.for_client(@client).should include(wu1)
       WorkUnit.for_client(@client).should_not include(wu2)
