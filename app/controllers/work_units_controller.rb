@@ -69,8 +69,9 @@ class WorkUnitsController < WorkUnitBaseController
 
   # DELETE /work_units/1
   def destroy
+    @id = @work_unit.id
     @work_unit.destroy
-
+    
     respond_to do |format|
       format.html { redirect_to :back }
       format.js

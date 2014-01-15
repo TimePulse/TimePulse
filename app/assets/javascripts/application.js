@@ -47,6 +47,7 @@ Ninja.orders(function(Ninja){
         '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
         '.fix_work_unit_button': Ninja.submitsAsAjax(),
         '*[data-remote=true]': Ninja.submitsAsAjax(),
+		'*[data-confirm]': Ninja.confirms(),
         '#debug':        Ninja.suppressChangeEvents(),
         '#task_elapsed':  Ninja.suppressChangeEvents(),
         '.date_entry': { transform: function(elem){ $(elem).datepicker() }},

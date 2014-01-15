@@ -77,7 +77,14 @@ describe "/invoices/new" do
       it "should include an edit link for each work unit" do
         render
         work_units.each do |wu|
-          rendered.should have_selector("form a[href='#{edit_work_unit_path(wu)}']")
+          rendered.should have_selector("#work_unit_#{wu.id} .actions.edit")
+        end
+      end
+      
+      it "should include a delete link for each work unit" do
+        render
+        work_units.each do |wu|
+          rendered.should have_selector("#work_unit_#{wu.id} .actions.delete")
         end
       end
 
