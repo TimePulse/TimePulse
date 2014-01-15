@@ -42,7 +42,13 @@ describe WorkUnitsController do
         get :edit, :id => @work_unit.id
         assigns[:work_unit].should == @work_unit
       end
+      
+      it "should store the url in session" do
+        get :edit, :id => @work_unit.id
+        session[:return_to].should eq "/previous/page"
+      end
     end
+    
 
     ########################################################################################
     #                                      POST CREATE
@@ -246,6 +252,10 @@ describe WorkUnitsController do
     #                                      PUT UPDATE
     ########################################################################################
     describe "responding to PUT update" do
+      before do
+        session[:return_to] = root_path
+      end
+      
       describe "for a work unit with a start time and calculate = true" do
         before do
           @start = @local_tz.now - 2.5.hours
@@ -255,7 +265,7 @@ describe WorkUnitsController do
           put :update, :id => @work_unit.id, :work_unit => {:project_id => project.id,
             :start_time => @start.to_s, :stop_time => "", :time_zone => (@local_tz.utc_offset / 3600), :calculate => "true", :hours => '2'
           }
-          response.should redirect_back
+          response.should redirect_to(root_path)
         end
 
         it "should create a work unit with a real stop time" do
@@ -305,10 +315,6 @@ describe WorkUnitsController do
           assigns(:work_unit).should == @work_unit
         end
 
-        it "should redirect to the work_unit" do
-          put :update, :id => @work_unit.id, :work_unit => valid_update_params
-          response.should redirect_back
-        end
         describe "hours in HH:MM" do
           it "should update hours correctly" do
             lambda do
