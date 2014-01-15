@@ -241,7 +241,6 @@ describe WorkUnit do
       @wu1aa = FactoryGirl.create(:work_unit, :project => @project1a)
       @wu1ab = FactoryGirl.create(:work_unit, :project => @project1a)
       @wu1b = FactoryGirl.create(:work_unit, :project => @project1b)
-      @wu2 = FactoryGirl.create(:work_unit, :project => @project2)
       @wu2a = FactoryGirl.create(:work_unit, :project => @project2a)
     end
     it "should find the work units for a specific project" do
@@ -249,27 +248,15 @@ describe WorkUnit do
       WorkUnit.for_project(@project1a).should include(@wu1ab)
       WorkUnit.for_project(@project1a).should == 2
     end
-    it "should find work units for sub-projects of a parent" do
+    it "should find work units for sub-projects of a parent (and no others)" do
       WorkUnit.for_project(@project1).should include(@wu1)
       WorkUnit.for_project(@project1).should include(@wu1aa)
       WorkUnit.for_project(@project1).should include(@wu1b)
-      WorkUnit.for_client(@client).should include(wu1)
-      WorkUnit.for_client(@client).should include(wu2)
+      WorkUnit.for_project(@project1).should == 4
     end
-    it "should find work_units in a subproject only once" do
-      proj2 = FactoryGirl.create(:project, :billable => true, :client => @client, :parent => @project2)
-      wu1 = FactoryGirl.create(:work_unit, :project => @project2)
-      wu2 = FactoryGirl.create(:work_unit, :project => proj2)
-      WorkUnit.for_client(@client).should include(wu1)
-      WorkUnit.for_client(@client).should include(wu2)
-      WorkUnit.for_client(@client).count.should == 2
-    end
-    it "should not find a different client's work unit" do
-      proj2 = FactoryGirl.create(:project, :billable => true, :client => FactoryGirl.create(:client))
-      wu1 = FactoryGirl.create(:work_unit, :project => @project2a)
-      wu2 = FactoryGirl.create(:work_unit, :project => proj2)
-      WorkUnit.for_client(@client).should include(wu1)
-      WorkUnit.for_client(@client).should_not include(wu2)
+    it "should find work units for sub-projects of a parent with no uniqe work-units" do
+      WorkUnit.for_project(@project2).should include(@wu2a)
+      WorkUnit.for_project(@project1).should == 1
     end
   end
 
