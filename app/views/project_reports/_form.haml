@@ -1,0 +1,36 @@
+= form_for(@project_report) do |f|
+  = f.error_messages
+
+  / = f.hidden_field :client_id, @invoice.client.id
+  %input#invoice_client_id{ :name => "invoice[client_id]", :type => "hidden", :value => @invoice.client.id }
+  = labeled_datepicker_field f, :due_on
+  = labeled_datepicker_field f, :paid_on
+  = f.labeled_input(:notes) do
+    = f.text_area(:notes, :size => '60x4')
+  = f.labeled_input(:reference_number) do
+    = f.text_field(:reference_number)
+
+  - if @work_units
+    %input#work_unit_select_all{ :type => 'button', :value => 'select all' }
+    %table#totals.listing
+      %tr
+        %th Work Units
+        %th Hours
+      %tr
+        %td#work_unit_count 0
+        %td#hours_total 0
+
+    %table.listing
+      = f.fields_for :work_unit_ids do |wu_form|
+        - @work_units.each do |wu|
+          = content_tag_for(:tr, wu) do
+            %td.hours
+              = wu_form.check_box(wu.id, :class => 'work_unit_checkbox')
+              = wu_form.label(wu.id, wu.hours, :class => 'hours_count')
+            %td= wu.user.login
+            %td= wu.notes
+            %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
+            %td.nobr= work_unit_stop_time(wu)
+            %td.tools.nobr= link_to 'Edit', edit_work_unit_path(wu), class: 'actions edit'
+
+  = f.unlabeled_submit
