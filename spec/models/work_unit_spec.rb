@@ -225,38 +225,49 @@ describe WorkUnit do
   end
   
   describe "for_project" do
+  
+    let :project1 do
+       FactoryGirl.create(:project,:name => "Project 1", :billable => true)
+    end
+    let :project1a do
+       FactoryGirl.create(:project,:name => "Project 1a", :billable => true, 
+             :parent => project1)
+    end
+    let :project1b do
+       FactoryGirl.create(:project,:name => "Project 1b", :billable => true,
+             :parent => project1)
+    end
+    let :project2 do
+       FactoryGirl.create(:project,:name => "Project 2", :billable => true)
+    end
+    let :project2a do
+       FactoryGirl.create(:project,:name => "Project 2a", :billable => true,
+             :parent => project2)
+    end
+      
     before :each  do
-      @client = FactoryGirl.create(:client)
-      @project1 = FactoryGirl.create(:project,:name => "Project 1", :billable => true, 
-                                    :client => @client)
-      @project1a = FactoryGirl.create(:project,:name => "Project 1a", :billable => true, 
-                                    :client => @client, :parent_id => @project1.id )
-      @project1b = FactoryGirl.create(:project,:name => "Project 1b", :billable => true, 
-                                    :client => @client, :parent_id => @project1.id )
-      @project2 = FactoryGirl.create(:project,:name => "Project 2", :billable => true, 
-                                    :client => @client)
-      @project2a = FactoryGirl.create(:project,:name => "Project 2a", :billable => true, 
-                                    :client => @client, :parent_id => @project2.id )
-      @wu1 = FactoryGirl.create(:work_unit, :project => @project1)
-      @wu1aa = FactoryGirl.create(:work_unit, :project => @project1a)
-      @wu1ab = FactoryGirl.create(:work_unit, :project => @project1a)
-      @wu1b = FactoryGirl.create(:work_unit, :project => @project1b)
-      @wu2a = FactoryGirl.create(:work_unit, :project => @project2a)
+      @wu1 = FactoryGirl.create(:work_unit, :project => project1)
+      @wu1aa = FactoryGirl.create(:work_unit, :project => project1a)
+      @wu1ab = FactoryGirl.create(:work_unit, :project => project1a)
+      @wu1b = FactoryGirl.create(:work_unit, :project => project1b)
+      @wu2a = FactoryGirl.create(:work_unit, :project => project2a)
+      project1.reload
+      project2.reload
     end
     it "should find the work units for a specific project" do
-      WorkUnit.for_project(@project1a).should include(@wu1aa)
-      WorkUnit.for_project(@project1a).should include(@wu1ab)
-      WorkUnit.for_project(@project1a).should == 2
+      WorkUnit.for_project(project1a).should include(@wu1aa)
+      WorkUnit.for_project(project1a).should include(@wu1ab)
+      WorkUnit.for_project(project1a).count.should == 2
     end
     it "should find work units for sub-projects of a parent (and no others)" do
-      WorkUnit.for_project(@project1).should include(@wu1)
-      WorkUnit.for_project(@project1).should include(@wu1aa)
-      WorkUnit.for_project(@project1).should include(@wu1b)
-      WorkUnit.for_project(@project1).should == 4
+      WorkUnit.for_project(project1).should include(@wu1)
+      WorkUnit.for_project(project1).should include(@wu1aa)
+      WorkUnit.for_project(project1).should include(@wu1b)
+      WorkUnit.for_project(project1).count.should == 4
     end
-    it "should find work units for sub-projects of a parent with no uniqe work-units" do
-      WorkUnit.for_project(@project2).should include(@wu2a)
-      WorkUnit.for_project(@project1).should == 1
+    it "should find work units for sub-projects of a parent with no unique work-units" do
+      WorkUnit.for_project(project2).should include(@wu2a)
+      WorkUnit.for_project(project2).count.should == 1
     end
   end
 
