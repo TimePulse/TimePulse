@@ -1,13 +1,26 @@
 - set_headline  "Listing Projects"
+/ **** tabbed table here
 
-%table.listing
-  %tr
-    %th Project
-    %th Client
-    %th Description
-    %th
+= tabbed_panel do |tp|
+  = tp.add_tab("Active") do
+    %table.listing
+      %tr
+        %th Project
+        %th Client
+        %th Description
+        %th
 
-  = list_tree('project', 'home/project_list', @root_project.descendants)
+      = list_tree('active_project', 'home/project_list', @root_project.descendants)
+
+  = tp.add_tab("Archived") do
+    %table.listing
+      %tr
+        %th Project
+        %th Client
+        %th Description
+        %th
+
+      = list_tree('archived_project', 'home/project_list', @root_project.descendants)
 
 
 = link_to 'New Project', new_project_path

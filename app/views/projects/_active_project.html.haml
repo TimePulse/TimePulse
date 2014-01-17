@@ -1,0 +1,14 @@
+-if !node.archived
+  = content_tag_for(:tr, node) do
+    %td
+      = depth_indicator(depth)
+      = "#{node.name}"
+
+    %td= node.client.nil? ? "" : node.client.name
+    %td= node.description
+    %td
+      = link_to_if_admin_authorized 'Show', node, class: 'actions show'
+      = link_to_if_admin_authorized 'Edit', edit_project_path(node), class: 'actions edit'
+      = link_to_if_admin_authorized 'Destroy', node, :confirm => 'Are you sure?', :method => :delete, class: 'actions delete'
+  - if defined? children
+    = children
