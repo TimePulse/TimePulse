@@ -6,13 +6,13 @@ TimePulse::Application.routes.draw do
   resources :permissions
   resources :work_units, :except => :index
   resources :clients
-  resources :project_reports
   resources :projects do
     resource :github_pull, :controller => 'github_pull', :only => [:create]
     resource :pivotal_pull, :controller => 'pivotal_pull', :only => [:create]
   end
   resources :rates, :only => :update
 
+  resources :project_reports
   resources :invoice_reports, :only => :show
 
   resource :github, :only => [:create], :controller => 'github'

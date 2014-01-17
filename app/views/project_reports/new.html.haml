@@ -1,0 +1,13 @@
+- set_headline "Project Report"
+
+= page_block report_title do
+  = form_tag new_project_report_path, :method => 'get' do
+    = project_report_selector
+    = submit_tag "Select Project"
+
+- if @project
+  = render :partial => 'work_units_info_aux'
+
+  = page_block "Work Units:" do
+    = render :partial => "form"
+
