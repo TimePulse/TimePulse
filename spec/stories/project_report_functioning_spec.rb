@@ -48,6 +48,7 @@ steps "the project reports page", :type => :feature do
   end
   
   it "should have the proper titles" do
+    js.screenshot("./testScreen")
     page.should have_content("User")
     page.should have_content("Hours")
     page.should have_content("FOO PROJECT 1")

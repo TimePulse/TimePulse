@@ -1,32 +1,28 @@
-= form_for(@project) do |f|
-  = f.error_messages
-
-  - if @work_units
-    %table.listing
+- if @work_units
+  %table.listing
+    %tr
+      %th= "User"
+      %th= "Hours"
+    - user_project_hours.each do |uh|
       %tr
-        %th= "User"
-        %th= "Hours"
-      - user_project_hours.each do |uh|
-        %tr
-          %td= uh[0]
-          %td= uh[1]
+        %td= uh[0]
+        %td= uh[1]
 
-    %table.listing
-      %tr
-        %th= "Hours"
-        %th= "User"
-        %th= "Comments"
-        %th= "Start Date and Time"
-        %th= "End Time"
-        %th= "Edit"
-      = f.fields_for :work_unit_ids do |wu_form|
-        - @work_units.each do |wu|
-          = content_tag_for(:tr, wu) do
-            %td.hours
-              = wu_form.label(wu.id, wu.hours, :class => 'hours_count')
-            %td= wu.user.login
-            %td= wu.notes
-            %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
-            %td.nobr= work_unit_stop_time(wu)
-            %td.tools.nobr= link_to 'Edit', edit_work_unit_path(wu), class: 'actions edit'
+  %table.listing
+    %tr
+      %th= "Hours"
+      %th= "User"
+      %th= "Comments"
+      %th= "Start Date and Time"
+      %th= "End Time"
+      %th= "Edit"
+    - @work_units.each do |wu|
+      = content_tag_for(:tr, wu) do
+        %td.hours
+          = label(wu.id, wu.hours, :class => 'hours_count')
+        %td= wu.user.login
+        %td= wu.notes
+        %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
+        %td.nobr= work_unit_stop_time(wu)
+        %td.tools.nobr= link_to 'Edit', edit_work_unit_path(wu), class: 'actions edit'
 
