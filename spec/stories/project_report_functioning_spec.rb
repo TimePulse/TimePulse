@@ -43,12 +43,15 @@ steps "the project reports page", :type => :feature do
   end
   
   it "should be able to select a project" do
+    page.save_screenshot("./testScreen1pass.png")
+    #byebug
     select_from_chosen("Foo Project 1",:from => 'project_id')
+    page.save_screenshot("./testScreen2pass.png")
     click_button "Select Project"
   end
   
   it "should have the proper titles" do
-    js.screenshot("./testScreen")
+    page.save_screenshot("./testScreen3.png")
     page.should have_content("User")
     page.should have_content("Hours")
     page.should have_content("FOO PROJECT 1")
