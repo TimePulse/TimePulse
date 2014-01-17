@@ -1,17 +1,42 @@
 module ProjectReportsHelper
-  def project_report_selector()
-    if @client
-      select_tag( :client_id, options_for_select(project_selector_array_with_hours, @client.id), { :include_blank => "", :class => "project-report-selector" })
+  
+  def project_report_selector
+    select_tag(:project_id, options_for_select(project_options), { :include_blank => "", :class => "project_selector"})
+  end
+
+  def user_project_hours
+    total = 0
+    @user_hours = []
+    @work_units.each do |wu|
+      in_list = false
+      user = User.find_by_id(wu.user_id)
+      
+      @user_hours.each do |uh|
+        if user.name == uh[0]
+          in_list = true
+          uh[1] += wu.hours
+          break
+        end
+      end
+      
+      if in_list == false
+        @user_hours.push([user.name, wu.hours])
+      end
+      
+      total += wu.hours
+      
+    end
+    
+    @user_hours.push(["Total", total])
+    
+    return @user_hours
+  end
+  
+  def report_title
+    if @project
+      @project.name
     else
-      select_tag( :client_id, options_for_select(project_selector_array_with_hours), { :include_blank => "", :class => "project-report-selector"  })
+      "Report Parameters"
     end
   end
-
-  def project_selector_array_with_hours
-    @project_array ||= Project.find(:all).collect{ |p| [
-       "#{p.name} - (#{WorkUnit.for_project(p).uninvoiced.completed.billable.sum(:hours)}) ",
-       p.id
-    ]}
-  end
-
 end
