@@ -4,22 +4,12 @@
 = tabbed_panel do |tp|
   = tp.add_tab("Active") do
     %table.listing
-      %tr
-        %th Project
-        %th Client
-        %th Description
-        %th
-
+      = render :partial => "project_header"
       = list_tree('active_project', 'home/project_list', @root_project.descendants)
 
   = tp.add_tab("Archived") do
     %table.listing
-      %tr
-        %th Project
-        %th Client
-        %th Description
-        %th
-
+      = render :partial => "project_header"
       = list_tree('archived_project', 'home/project_list', @root_project.descendants)
 
 
