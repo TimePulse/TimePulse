@@ -5,7 +5,7 @@ steps "Admin archives a project", :type => :feature do
   let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
   let! :project_active do FactoryGirl.create(:project, :client => client_1, :name => "Active Project") end
 
-  let! :project_archive do FactoryGirl.create(:project, :client => client_2, :name => 'Archived Project', :archived => true) end
+  let! :project_archive do FactoryGirl.create(:project, :client => client_2, :name => 'Inactive Project', :archived => true) end
 
   let! :admin do FactoryGirl.create(:admin) end
 
@@ -23,8 +23,8 @@ steps "Admin archives a project", :type => :feature do
 
 
   it "and have an active tab" do
-    within "#project_tag_container" do
-      page.should have_selector("#active_tab")
+    within ".tab_selected" do
+      page.should have_content("Active")
     end
   end
 
@@ -33,7 +33,7 @@ steps "Admin archives a project", :type => :feature do
   end
 
   it "and we should not see the archived project" do
-    page.should_not have_content "Archived Project"
+    page.should_not have_content "Inactive Project"
   end
 
 
@@ -46,7 +46,7 @@ steps "Admin archives a project", :type => :feature do
   end
 
   it "and we should see the archived project" do
-    page.should have_content "Archived Project"
+    page.should have_content "Inactive Project"
   end
 
 
@@ -59,7 +59,7 @@ steps "Admin archives a project", :type => :feature do
   end
 
   it "and we should not see the archived project" do
-    page.should_not have_content "Archived Project"
+    page.should_not have_content "Inactive Project"
   end
 
 end
