@@ -12,6 +12,7 @@ TimePulse::Application.routes.draw do
   end
   resources :rates, :only => :update
 
+  resources :project_reports
   resources :invoice_reports, :only => :show
 
   resource :github, :only => [:create], :controller => 'github'
