@@ -3,10 +3,10 @@
     %tr
       %th= "User"
       %th= "Hours"
-    - user_project_hours.each do |uh|
+    - user_project_hours(@work_units).each do |key, value|
       %tr
-        %td= uh[0]
-        %td= uh[1]
+        %td= key
+        %td= value
 
   %table.listing
     %tr
