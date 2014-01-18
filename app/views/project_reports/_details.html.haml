@@ -5,8 +5,8 @@
       %th= "Hours"
     - user_project_hours(@work_units).each do |key, value|
       %tr
-        %td= key
-        %td= value
+        %td= key.is_a?(String) ? key : key.name
+        %td= number_with_precision(value, :precision => 2)
 
   %table.listing
     %tr
