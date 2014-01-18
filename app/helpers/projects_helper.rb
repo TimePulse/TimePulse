@@ -1,18 +1,5 @@
 module ProjectsHelper
 
-  def project_options
-    sorted_projects = Project.find(:all).sort{|x,y| x.lft <=> y.lft}
-
-    sorted_projects.collect do |p|
-      attributes = {}
-      attributes['class'] = "indention_level_#{p.level}"
-      if p.level > 1
-        attributes['data-iconurl'] = '/assets/icons/indent_arrow.png'
-      end
-      [p.name, p.id, attributes]
-    end
-  end
-
   def parent_project_selector(form)
     form.select(:parent_id, project_options, { :include_blank => "" }, { :class => "project_selector"})
   end

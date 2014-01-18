@@ -39,6 +39,11 @@ class WorkUnit < ActiveRecord::Base
     { :conditions => { :project_id => projects }}
   }
 
+  scope :for_project, lambda { |project|
+    projects = project.self_and_descendants.map{ |q| q.id }.flatten.uniq
+    { :conditions => { :project_id => projects }}
+  }
+
   scope :today, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.to_date ] } }
   scope :this_week, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.beginning_of_week.to_date ] } }
   scope :in_last, lambda { |num_days| { :conditions => [ "stop_time > ? ", (Time.zone.now - num_days.days).to_date ] } }
