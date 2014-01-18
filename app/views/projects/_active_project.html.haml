@@ -1,2 +1,2 @@
 -if !node.archived
-  = render :partial => "project", :locals => { :node => node, :depth => depth } 
+  = render :partial => "project", :locals => { :node => node, :depth => depth, :children => (children if defined? children) }
