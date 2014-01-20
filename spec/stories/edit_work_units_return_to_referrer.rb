@@ -18,7 +18,12 @@ steps "Admin edits a work unit", :type => :feature do
 
   it "should be on projects page" do
     click_link 'Projects'
-    page.should have_content("Listing Projects")
+  end
+
+  it "should be on projects page" do
+    within ("#content") do
+      page.should have_content("Listing Projects")
+    end
   end
 
   it "should have a project edit button" do
@@ -37,8 +42,10 @@ steps "Admin edits a work unit", :type => :feature do
     click_button('Submit')
   end
 
-  it "should go to the bac to the calling page" do
-    page.should have_content("Listing Projects")
+  it "should go to the back to the calling page" do
+    within ("#content") do
+      page.should have_content("Listing Projects")
+    end
   end
 
 end
