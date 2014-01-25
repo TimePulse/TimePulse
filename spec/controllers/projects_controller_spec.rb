@@ -149,7 +149,7 @@ describe ProjectsController do
         it "redirects to the project" do
           put :update, :id => @project.id, :project => {:name => 'new name'}
           verify_authorization_successful
-          response.should redirect_to(project_url(assigns[:project]))
+          response.should redirect_to(projects_url)
         end
 
         it "can set the project to archived" do
