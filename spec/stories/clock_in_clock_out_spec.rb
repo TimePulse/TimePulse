@@ -16,6 +16,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "should login as a user" do
     visit root_path
+    snapshot("clockinclockout")
     fill_in "Login", :with => user.login
     fill_in "Password", :with => user.password
     click_button 'Login'
@@ -24,6 +25,9 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "should have an unclocked timeclock" do
+    page.should have_title /clocked out/i
+    page.should have_xpath("/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false)
+    page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
     within "#timeclock" do
       page.should have_content("You are not clocked in")
       page.should_not have_selector("#timeclock #task_elapsed")
@@ -39,6 +43,9 @@ steps "clock in and out on projects", :type => :feature do
   it "should show a clock-in form and a clock" do
     page.should have_selector("form[action='/clock_out']")
     page.should have_selector("#timeclock #task_elapsed")
+    page.should have_title /clocked in/i
+    page.should have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
+    page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false
   end
 
   it "should have created an unfinished work unit in the DB" do
@@ -57,6 +64,9 @@ steps "clock in and out on projects", :type => :feature do
 
 
   it "should have an unclocked timeclock" do
+    page.should have_title /clocked out/i
+    page.should have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false
+    page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
     within "#timeclock" do
       page.should have_content("You are not clocked in")
       page.should_not have_selector("#timeclock #task_elapsed")
@@ -78,9 +88,13 @@ steps "clock in and out on projects", :type => :feature do
   it "and I fill in nine hours and clock out" do
     within "#timeclock" do
       Timecop.travel(Time.now + 10.hours)
+      snapshot("cico")
       click_link("(+ show override tools)")
+      snapshot("cico")
       fill_in "Hours", :with => '9.0'
+      snapshot("cico")
       fill_in "Notes", :with => "I worked all day on this"
+      snapshot("cico")
       click_button "Clock Out"
     end
   end

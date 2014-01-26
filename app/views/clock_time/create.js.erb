@@ -4,3 +4,4 @@ $('#project_picker #project_<%= @project.id %>').addClass('current');
 <% if @prior_project%>
   $('#project_picker #project_<%= @prior_project.id %>').removeClass('current');
 <% end %>
+favicon.change('<%= image_path("clocked-in.png") %>', "clocked IN LRD Time Tracking System", "image/png")
