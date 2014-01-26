@@ -6,6 +6,7 @@
 //= require foundation
 //= require ajax_flash
 //= require jquery.selectBoxIt
+//= require favicon
 
 $('document').ready( function(){
   startClock();
@@ -26,131 +27,137 @@ $('document').ready( function(){
   $("Select.project_selector").selectBoxIt({
   });
 
-$(document).foundation();
+//$(document).foundation();
 
-Ninja.orders(function(Ninja){
-    //ajaxSubmitConfigs = {
-      //busyElement: function(elem){ return $('#timeclock')},
-      //actions: {
-        //timeclock: function(data) { $("#timeclock").replaceWith(data) },
-        //project_picker: function(data) { $("#project_picker").replaceWith(data) }, //probably should select the project
-        //current_project: function(data) { $("current_project").replaceWith(data) },
-        //recent_work: function(data) { $("recent_work").replaceWith(data) }
-      //}
-    //}
+//ajaxSubmitConfigs = {
+  //busyElement: function(elem){ return $('#timeclock')},
+  //actions: {
+    //timeclock: function(data) { $("#timeclock").replaceWith(data) },
+    //project_picker: function(data) { $("#project_picker").replaceWith(data) }, //probably should select the project
+    //current_project: function(data) { $("current_project").replaceWith(data) },
+    //recent_work: function(data) { $("recent_work").replaceWith(data) }
+  //}
+//}
 
-    Ninja.behavior({
-        'input[name="authenticity_token"]': {
-          transform: updateInputAuthenticityToken,
-          priority: -1
-        },
-        '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
-        '.fix_work_unit_button': Ninja.submitsAsAjax(),
-        '*[data-remote=true]': Ninja.submitsAsAjax(),
-        '#debug':        Ninja.suppressChangeEvents(),
-        '#task_elapsed':  Ninja.suppressChangeEvents(),
-        '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
-        '.datetime_entry': { transform: function(elem){
-            $(elem).datetimepicker();
-          }
-        },
-        '#work_unit_time_zone': { transform: function(elem) {
-            var currentTime = new Date();
-            var zone = -(currentTime.getTimezoneOffset() / 60); //GMT
-            $(elem).val(zone);
-          }
-        },
-        '#work_unit_select_all': { click: selectAllWorkUnits },
-        '.expand-widget': { click: function(evnt, elem) {
-            var target = $(elem).data('target');
-            $(target).slideToggle("fast");
-            $(elem).toggleClass("expanded")
-          }
-        },
-        '.toggler': { click: function(evnt, elem) {
-            if (window.matchMedia("(max-width: 767px)").matches) {
-              var target = "#" + $(elem).data('target');
-              $(target).slideToggle("fast");
-            }
-        },
-            transform: function(elem) {
-            var target = "#" + $(elem).data('target');
-            $(target).addClass("toggle-target");
-            }},
-        '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "andDoDefault"] },
+//ninjascript.Logger.deactivate();
 
-        '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
-            busyElement: function(elem){ return $('#timeclock')}
-          }),
-        '#timeclock form.clock_in':          Ninja.submitsAsAjax({
-            busyElement: function(elem){ return $('#timeclock')}
-          }),
-        '#messages .flash': {
-          transform: function(elem) {
-            $(elem).delay(10000).slideUp(600, function(){$(elem).remove()})
-          }
-        },
-        '.print-report-button': {
-          click: function(evnt, elem) {
-            print_target = "#" + $(elem).data('print-target');
-            $(print_target)[0].contentWindow.print();
-          }
-        },
-        '#timeclock input#work_unit_hours': {
-          click: function(evnt, elem) {
-            if ($(elem).val() == "") {
-              $(elem).val(hours_format(task_elapsed))
-            }
-          }
-        },
-        '#timeclock a#override_trigger': {
-          click: function(evnt, elem) {
-            $('#timeclock #override_trigger').hide();
-            $('#timeclock #overrides').slideDown();
-          }
-        },
-        '.has_tooltip': {
-          transform: function(elem){
-            $(elem).tooltip({
-              tip: "#tooltip_for_" + $(elem).attr('id'),
-              offset: [ -10, 2 ],
-              relative: true
-            });
-            return elem;
-          }
-        },
-        'select#project_parent_id': {
-          change: function(evnt, elem) {
-            if ($(elem).val() == 1) {
-              $('fieldset.rates').show();
-            } else {
-              $('fieldset.rates').hide();
-            }
-          }
-        },
-        '.rates .add-rate': {
-          click: function(evnt, elem) {
-            evnt.preventDefault();
-            var tbody = $(elem).parents('table').find('tbody');
-            var rows = tbody.find('tr');
-            var rowCount = rows.size();
-            var row = rows.first().clone();
-            var inputs = row.find('input');
-            inputs.val('');
-            inputs.each(function (i, input) {
-              input = $(input);
-              var id = input.attr('id');
-              var name = input.attr('name');
-              input.attr('id', id.replace('0', rowCount));
-              input.attr('name', name.replace('0', rowCount));
-            });
-            tbody.append(row);
-          }
+//Ninja.config.logger["behavior-list"].level = 5;
+
+Ninja.behavior({
+    'input[name="authenticity_token"]': {
+      transform: updateInputAuthenticityToken,
+      priority: -1
+    },
+    '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
+    '.fix_work_unit_button': Ninja.submitsAsAjax(),
+    '*[data-remote=true]': Ninja.submitsAsAjax(),
+    '#debug':        Ninja.suppressChangeEvents(),
+    '#task_elapsed':  Ninja.suppressChangeEvents(),
+    '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
+    '.datetime_entry': {
+      transform: function(elem){
+        $(elem).datetimepicker();
+      }
+    },
+    '#work_unit_time_zone': {
+      transform: function(elem) {
+        var currentTime = new Date();
+        var zone = -(currentTime.getTimezoneOffset() / 60); //GMT
+        $(elem).val(zone);
+      }
+    },
+    '#work_unit_select_all': { click: selectAllWorkUnits },
+    '.expand-widget': {
+      click: function(evnt, elem) {
+        var target = $(elem).data('target');
+        $(target).slideToggle("fast");
+        $(elem).toggleClass("expanded")
+      }
+    },
+    '.toggler': {
+      click: function(evnt, elem) {
+        if (window.matchMedia("(max-width: 767px)").matches) {
+          var target = "#" + $(elem).data('target');
+          $(target).slideToggle("fast");
         }
-      });
+      },
+      transform: function(elem) {
+        var target = "#" + $(elem).data('target');
+        $(target).addClass("toggle-target");
+      }},
+    '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "andDoDefault"] },
 
-    Ninja.go();
-  })
+    '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
+        busyElement: function(elem){ return $('#timeclock')}
+      }),
+    '#timeclock form.clock_in':          Ninja.submitsAsAjax({
+        busyElement: function(elem){ return $('#timeclock')}
+      }),
+    '#messages .flash': {
+      transform: function(elem) {
+        $(elem).delay(10000).slideUp(600, function(){$(elem).remove()})
+      }
+    },
+    '.print-report-button': {
+      click: function(evnt, elem) {
+        print_target = "#" + $(elem).data('print-target');
+        $(print_target)[0].contentWindow.print();
+      }
+    },
+    '#timeclock input#work_unit_hours': {
+      click: function(evnt, elem) {
+        if ($(elem).val() == "") {
+          $(elem).val(hours_format(task_elapsed))
+        }
+      }
+    },
+    '#timeclock a#override_trigger': {
+      click: function(evnt, elem) {
+        $('#timeclock #override_trigger').hide();
+        $('#timeclock #overrides').slideDown();
+      }
+    },
+    '.has_tooltip': {
+      transform: function(elem){
+        $(elem).tooltip({
+          tip: "#tooltip_for_" + $(elem).attr('id'),
+          offset: [ -10, 2 ],
+          relative: true
+        });
+        return elem;
+      }
+    },
+    'select#project_parent_id': {
+      change: function(evnt, elem) {
+        if ($(elem).val() == 1) {
+          $('fieldset.rates').show();
+        } else {
+          $('fieldset.rates').hide();
+        }
+      }
+    },
+    '.rates .add-rate': {
+      click: function(evnt, elem) {
+        evnt.preventDefault();
+        var tbody = $(elem).parents('table').find('tbody');
+        var rows = tbody.find('tr');
+        var rowCount = rows.size();
+        var row = rows.first().clone();
+        var inputs = row.find('input');
+        inputs.val('');
+        inputs.each(function (i, input) {
+          input = $(input);
+          var id = input.attr('id');
+          var name = input.attr('name');
+          input.attr('id', id.replace('0', rowCount));
+          input.attr('name', name.replace('0', rowCount));
+        });
+        tbody.append(row);
+      }
+    }
+  });
+
+Ninja.go();
 
 function setupRatesUsersDragDrop() {
   $('.rates-users-container').each(function() {
@@ -295,7 +302,10 @@ function addCurrentClassToCurrentProject() {
   var current_project_selector= "#project_" + $('meta[name="current project"]').attr("content");
   $(current_project_selector).addClass("current");
 }
+
+$(function() {
+    favicon.preloadIcons(["<%= image_path("clocked-in.png") %>", "<%= image_path("clocked-out.png") %>"])
+  });
+
 $(function(){ $(document).foundation(); });
-
 $(document).foundation();
-
