@@ -19,6 +19,7 @@ class WorkUnitsController < WorkUnitBaseController
 
   # GET /work_units/1/edit
   def edit
+    store_location
   end
 
   # POST /work_units
@@ -61,7 +62,7 @@ class WorkUnitsController < WorkUnitBaseController
       flash[:notice] = 'WorkUnit was successfully updated.'
       expire_fragment("work_unit_narrow_#{@work_unit.id}")
       expire_fragment("work_unit_one_line_#{@work_unit.id}")
-      redirect_to :back
+      redirect_back
     else
       render :action => "edit"
     end
@@ -95,5 +96,13 @@ class WorkUnitsController < WorkUnitBaseController
     end
   end
 
+  def redirect_back
+    redirect_to(session[:return_to])
+    session.delete(:return_to)
+  end
+
+  def store_location
+    session[:return_to] = request.env["HTTP_REFERER"]
+  end
 
 end
