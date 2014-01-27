@@ -1,9 +1,9 @@
 /*
- * NinjaScript - 0.11.1
+ * NinjaScript - 0.12.0
  * written by and copyright 2010-2014 Judson Lester and Logical Reality Design
  * Licensed under the MIT license
  *
- * 01-25-2014
+ * 01-26-2014
  */
 var ninjascript = {behaviors:{}};
 ninjascript.behaviors.Abstract = function() {
@@ -293,7 +293,7 @@ ninjascript.sizzle = function() {
     if(!h || "string" !== typeof h) {
       return c
     }
-    for(var g = [], p, n, q, m, r = !0, s = t(a), z = h;null !== (b.exec(""), p = b.exec(z));) {
+    for(var g = [], p, n, q, m, r = !0, s = u(a), z = h;null !== (b.exec(""), p = b.exec(z));) {
       if(z = p[3], g.push(p[1]), p[2]) {
         m = p[3];
         break
@@ -301,10 +301,10 @@ ninjascript.sizzle = function() {
     }
     if(1 < g.length && y.exec(h)) {
       if(2 === g.length && k.relative[g[0]]) {
-        n = u(g[0] + g[1], a)
+        n = t(g[0] + g[1], a)
       }else {
         for(n = k.relative[g[0]] ? [a] : l(g.shift(), a);g.length;) {
-          h = g.shift(), k.relative[h] && (h += g.shift()), n = u(h, n)
+          h = g.shift(), k.relative[h] && (h += g.shift()), n = t(h, n)
         }
       }
     }else {
@@ -373,7 +373,7 @@ ninjascript.sizzle = function() {
     return{set:c, expr:h}
   };
   l.filter = function(h, a, b, c) {
-    for(var d = h, e = [], f = a, g, n, y = a && a[0] && t(a[0]);h && a.length;) {
+    for(var d = h, e = [], f = a, g, n, y = a && a[0] && u(a[0]);h && a.length;) {
       for(var m in k.filter) {
         if(null != (g = k.leftMatch[m].exec(h)) && g[2]) {
           var v = k.filter[m], s, r;
@@ -395,8 +395,8 @@ ninjascript.sizzle = function() {
               for(var w = 0;null != (r = f[w]);w++) {
                 if(r) {
                   s = v(r, g, w, f);
-                  var u = c ^ !!s;
-                  b && null != s ? u ? n = !0 : f[w] = !1 : u && (e.push(r), n = !0)
+                  var t = c ^ !!s;
+                  b && null != s ? t ? n = !0 : f[w] = !1 : t && (e.push(r), n = !0)
                 }
               }
             }
@@ -745,7 +745,7 @@ ninjascript.sizzle = function() {
     if(!b.querySelectorAll || 0 !== b.querySelectorAll(".TEST").length) {
       l = function(b, c, d, e) {
         c = c || document;
-        if(!e && 9 === c.nodeType && !t(c)) {
+        if(!e && 9 === c.nodeType && !u(c)) {
           try {
             return v(c.querySelectorAll(b), d)
           }catch(f) {
@@ -772,9 +772,9 @@ ninjascript.sizzle = function() {
     return!!(a.compareDocumentPosition(b) & 16)
   } : function(a, b) {
     return a !== b && (a.contains ? a.contains(b) : !0)
-  }, t = function(a) {
+  }, u = function(a) {
     return(a = (a ? a.ownerDocument || a : 0).documentElement) ? "HTML" !== a.nodeName : !1
-  }, u = function(a, b) {
+  }, t = function(a, b) {
     for(var c = [], d = "", e, f = b.nodeType ? [b] : b;e = k.match.PSEUDO.exec(a);) {
       d += e[0], a = a.replace(k.match.PSEUDO, "")
     }
@@ -1082,25 +1082,26 @@ ninjascript.BehaviorCollection = function(a) {
     g.debug("Complete ruleset:", this.rules)
   };
   a.applyAll = function(a) {
-    var b, c, d, f, l, m, t, u = !1, h = [];
+    var b, c, d, f, l, m, u, t = !1, h = [];
     l = this.rules.length;
     g.info("Applying all behavior rules");
     for(b = 0;b < l;b++) {
       for(m = this.rules[b].match(document), m = e(m, function(b) {
         return jQuery.contains(a, b)
-      }), f = m.length, 0 >= f && g.debug("Behavior matched no elements:", this.rules[b]), t = h.length, c = 0;c < f;c++) {
-        for(d = 0;d < t;d++) {
+      }), f = m.length, 0 >= f && g.debug("Behavior matched no elements:", this.rules[b]), u = h.length, c = 0;c < f;c++) {
+        t = !1;
+        for(d = 0;d < u;d++) {
           if(m[c] == h[d].element) {
             h[d].behaviors.push(this.rules[b].behavior);
-            u = !0;
+            t = !0;
             break
           }
         }
-        u || (h.push({element:m[c], behaviors:[this.rules[b].behavior]}), t = h.length)
+        t || (h.push({element:m[c], behaviors:[this.rules[b].behavior]}), u = h.length)
       }
     }
     g.debug("Elements with behaviors:", h);
-    for(b = 0;b < t;b++) {
+    for(b = 0;b < u;b++) {
       jQuery(h[b].element).data("ninja-visited") || (g.debug("Applying:", h[b]), this.apply(h[b].element, h[b].behaviors))
     }
   };

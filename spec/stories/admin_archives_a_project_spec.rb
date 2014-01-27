@@ -25,15 +25,6 @@ steps "Admin archives a project", :type => :feature do
   end
 
   it "should show all the projects in the picker" do
-    snapshot "picker"
-    sleep 1
-    snapshot "picker"
-
-    visit root_path
-    snapshot "picker"
-    sleep 1
-    snapshot "picker"
-
     within '#project_picker' do
       page.should have_content('Project 2 base')
       page.should have_content('Project 2a')
