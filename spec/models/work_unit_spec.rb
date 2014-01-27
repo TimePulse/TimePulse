@@ -25,7 +25,7 @@ describe WorkUnit do
 
 
   describe "default behavior" do
-    it "should  override the start time with mass assignment" do
+    it "should override the start time with mass assignment" do
       time = Time.now - 5.days
       wu = WorkUnit.new(:start_time => time)
       wu.start_time.should be_within(1.second).of(time)
@@ -221,6 +221,53 @@ describe WorkUnit do
       wu2 = FactoryGirl.create(:work_unit, :project => proj2)
       WorkUnit.for_client(@client).should include(wu1)
       WorkUnit.for_client(@client).should_not include(wu2)
+    end
+  end
+  
+  describe "for_project" do
+  
+    let :project1 do
+       FactoryGirl.create(:project,:name => "Project 1", :billable => true)
+    end
+    let :project1a do
+       FactoryGirl.create(:project,:name => "Project 1a", :billable => true, 
+             :parent => project1)
+    end
+    let :project1b do
+       FactoryGirl.create(:project,:name => "Project 1b", :billable => true,
+             :parent => project1)
+    end
+    let :project2 do
+       FactoryGirl.create(:project,:name => "Project 2", :billable => true)
+    end
+    let :project2a do
+       FactoryGirl.create(:project,:name => "Project 2a", :billable => true,
+             :parent => project2)
+    end
+      
+    before :each  do
+      @wu1 = FactoryGirl.create(:work_unit, :project => project1)
+      @wu1aa = FactoryGirl.create(:work_unit, :project => project1a)
+      @wu1ab = FactoryGirl.create(:work_unit, :project => project1a)
+      @wu1b = FactoryGirl.create(:work_unit, :project => project1b)
+      @wu2a = FactoryGirl.create(:work_unit, :project => project2a)
+      project1.reload
+      project2.reload
+    end
+    it "should find the work units for a specific project" do
+      WorkUnit.for_project(project1a).should include(@wu1aa)
+      WorkUnit.for_project(project1a).should include(@wu1ab)
+      WorkUnit.for_project(project1a).count.should == 2
+    end
+    it "should find work units for sub-projects of a parent (and no others)" do
+      WorkUnit.for_project(project1).should include(@wu1)
+      WorkUnit.for_project(project1).should include(@wu1aa)
+      WorkUnit.for_project(project1).should include(@wu1b)
+      WorkUnit.for_project(project1).count.should == 4
+    end
+    it "should find work units for sub-projects of a parent with no unique work-units" do
+      WorkUnit.for_project(project2).should include(@wu2a)
+      WorkUnit.for_project(project2).count.should == 1
     end
   end
 
