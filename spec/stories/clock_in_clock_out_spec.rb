@@ -16,7 +16,6 @@ steps "clock in and out on projects", :type => :feature do
 
   it "should login as a user" do
     visit root_path
-    snapshot("clockinclockout")
     fill_in "Login", :with => user.login
     fill_in "Password", :with => user.password
     click_button 'Login'
@@ -88,13 +87,9 @@ steps "clock in and out on projects", :type => :feature do
   it "and I fill in nine hours and clock out" do
     within "#timeclock" do
       Timecop.travel(Time.now + 10.hours)
-      snapshot("cico")
       click_link("(+ show override tools)")
-      snapshot("cico")
       fill_in "Hours", :with => '9.0'
-      snapshot("cico")
       fill_in "Notes", :with => "I worked all day on this"
-      snapshot("cico")
       click_button "Clock Out"
     end
   end

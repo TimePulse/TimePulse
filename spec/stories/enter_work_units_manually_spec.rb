@@ -49,7 +49,6 @@ steps "User manually enters work units", :type => :feature do
     # is important because it forces the ajax request in capybara to complete so changes
     # are written to the database
 
-    snapshot "editWUs"
     within("#recent_work") do
       page.should have_content("1.00")
     end
