@@ -1,7 +1,5 @@
 !!!
 %html{"xmlns"=>"http://www.w3.org/1999/xhtml", "xml:lang"=>"en"}
-  //Testing deploy
-
   %head
     %meta{"name" => "viewport", "content" => "width=device-width, initial-scale=1.0"}
     %meta{"http-equiv" => "content-type", "content" => "text/html;charset=UTF-8" }
@@ -12,7 +10,20 @@
 
     - if current_project
       %meta{"name" => "current project", "content" => current_project.id}
-    %title=  @title ? @title : "LRD Time Tracking System"
+      - if current_user
+        - if clocked_in?
+          %link{rel: "shortcut icon", type: "image/png", href: "#{image_path('clocked-in.png')}"}
+          %title
+            clocked IN
+            =@title ? @title : "LRD Time Tracking System"
+        - else
+          %link{rel: "shortcut icon", type: "image/png", href: "#{image_path('clocked-out.png')}"}
+          %title
+            clocked OUT
+            =@title ? @title : "LRD Time Tracking System"
+      -else
+        %link{rel: "shortcut icon", type: "image/png", href: "#{image_path('clocked-out.png')}"}
+        %title= @title ? @title : "LRD Time Tracking System"
 
 
     = stylesheet_link_tag 'application', :media=>'all'
