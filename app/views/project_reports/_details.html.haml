@@ -1,0 +1,28 @@
+- if @work_units
+  %table.listing
+    %tr
+      %th= "User"
+      %th= "Hours"
+    - user_project_hours(@work_units).each do |key, value|
+      %tr
+        %td= key.is_a?(String) ? key : key.name
+        %td= number_with_precision(value, :precision => 2)
+
+  %table.listing
+    %tr
+      %th= "Hours"
+      %th= "User"
+      %th= "Comments"
+      %th= "Start Date and Time"
+      %th= "End Time"
+      %th= "Edit"
+    - @work_units.each do |wu|
+      = content_tag_for(:tr, wu) do
+        %td.hours
+          = label(wu.id, wu.hours, :class => 'hours_count')
+        %td= wu.user.login
+        %td= wu.notes
+        %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)
+        %td.nobr= work_unit_stop_time(wu)
+        %td.tools.nobr= link_to 'Edit', edit_work_unit_path(wu), class: 'actions edit'
+

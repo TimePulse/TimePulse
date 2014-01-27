@@ -95,5 +95,17 @@ module ApplicationHelper
       content_tag(:h2, title.upcase, :class => 'block_title')
     end
   end
+  
+  def project_options
+    sorted_projects = Project.find(:all).sort_by(&:lft)
 
+    sorted_projects.collect do |p|
+      attributes = {}
+      attributes['class'] = "indention_level_#{p.level}"
+      if p.level > 1
+        attributes['data-iconurl'] = '/assets/icons/indent_arrow.png'
+      end
+      [p.name, p.id, attributes]
+    end
+  end
 end
