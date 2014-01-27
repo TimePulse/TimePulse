@@ -2,9 +2,10 @@ require 'capybara/rspec'
 #require 'selenium-webdriver'
 require 'rspec-steps'
 require 'capybara/poltergeist'
+require 'stringio'
 
 Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, :inspector => true, :phantomjs_options => %w{--load-images=false})
+  Capybara::Poltergeist::Driver.new(app, :inspector => true, :phantomjs_logger => StringIO.new, :phantomjs_options => %w{--load-images=false})
 end
 Capybara.default_driver = :poltergeist
 

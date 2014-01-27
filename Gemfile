@@ -47,6 +47,7 @@ group :development, :test do
   gem 'cadre'
   gem "populator"
   gem "faker"
+  # gem "byebug"
 end
 
 group :test do
@@ -65,5 +66,4 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
-  gem 'byebug'
 end
