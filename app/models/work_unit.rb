@@ -82,6 +82,10 @@ class WorkUnit < ActiveRecord::Base
     !bill_id.nil?
   end
 
+  def unannotated?
+    self.notes.blank? && (self.hours > SHORT_WORK_THRESHOLD)
+  end
+
   # TODO: spec this method
   def clock_out!
     # debugger

@@ -285,5 +285,31 @@ describe WorkUnit do
       WorkUnit.this_week.should_not include(@last_week_unit)
     end
   end
+
+  describe "unannotated" do
+    it "should not be unannotated if the elapsed time <= 0.10 hour and the note is blank" do
+      start_time = Time.now - 1.day
+      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 6.minutes, :hours => 0.10, :notes => "")
+      work_unit.unannotated?.should be(false)
+    end
+
+    it "should be unannotated if the elapsed time > 0.10 hour and the note is blank" do
+      start_time = Time.now - 1.day
+      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.20, :notes => "")
+      work_unit.unannotated?.should be(true)
+    end
+
+    it "should not be unannotated if the elapsed time > 0.10 hour and the note is not blank" do
+      start_time = Time.now - 1.day
+      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.20, :notes => "Work unit task")
+      work_unit.unannotated?.should be(false)
+    end
+
+    it "should not be unannotated if the elapsed time <= 0.10 hour and the note is not blank" do
+      start_time = Time.now - 1.day
+      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.10, :notes => "Work unit task")
+      work_unit.unannotated?.should be(false)
+    end
+  end
 end
 
