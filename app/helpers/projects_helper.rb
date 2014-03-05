@@ -42,12 +42,13 @@ module ProjectsHelper
 
   def clock_in_widget(project, style = nil, options = {})
     title = "Clock in on #{short_name_with_client(project)}"
-    cssid = "clock_in_on_" + dom_id(project)
+    css_class = "clock_in_on_" + dom_id(project)
     if style == :icon
       link_to(image_tag('icons/clock_in.png', :alt => title), clock_in_path(:id => project),
-              options.merge(:method => :post, :title => title, :id => cssid))
+              options.merge(:method => :post, :title => title, :class => css_class))
     else
-      link_to(title, clock_in_path(:id => project), options.merge(:method => :post, :title => title, :id => cssid))
+      link_to(title, clock_in_path(:id => project),
+              options.merge(:method => :post, :title => title, :class => css_class))
     end.html_safe
   end
 
