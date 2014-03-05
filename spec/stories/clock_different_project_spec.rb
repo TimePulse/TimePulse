@@ -46,9 +46,9 @@ steps "clock in and out on projects", :type => :feature do
     page.should_not have_selector("#project_#{project_3.id}.current")
   end
 
-  it "i click the clock for project 3 in the picker" do
+  it "I click the clock for project 3 in the picker" do
     within "#picker" do
-      find_link("clock_in_on_project_#{project_3.id}").trigger('click')
+      find_link("Clock in on [BAR] project 3").trigger('click')
     end
   end
 
@@ -73,7 +73,7 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "I click the clock for project 2 in the picker" do
-    page.find("#project_picker #clock_in_on_project_#{project_2.id}").trigger('click')
+    page.find("#project_picker .clock_in_on_project_#{project_2.id}").trigger('click')
   end
 
   it "should show project 2 in the timeclock" do
@@ -105,5 +105,4 @@ steps "clock in and out on projects", :type => :feature do
       page.should have_content(project_2.name)
     end
   end
-
 end
