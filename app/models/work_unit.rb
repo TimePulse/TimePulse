@@ -82,8 +82,8 @@ class WorkUnit < ActiveRecord::Base
     !bill_id.nil?
   end
 
-  def unannotated?
-    self.notes.blank? && (self.hours > SHORT_WORK_THRESHOLD)
+  def annotated?
+    hours < SHORT_WORK_THRESHOLD or not notes.blank?
   end
 
   # TODO: spec this method

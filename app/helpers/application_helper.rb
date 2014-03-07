@@ -17,6 +17,8 @@ module ApplicationHelper
     klasses << 'with_admin' if admin?
     klasses << @body_classes if @body_classes
     klasses
+  rescue
+    ''
   end
 
   def add_body_class(klass)
@@ -95,7 +97,7 @@ module ApplicationHelper
       content_tag(:h2, title.upcase, :class => 'block_title')
     end
   end
-  
+
   def project_options
     sorted_projects = Project.find(:all).sort_by(&:lft)
 
