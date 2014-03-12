@@ -223,14 +223,14 @@ describe WorkUnit do
       WorkUnit.for_client(@client).should_not include(wu2)
     end
   end
-  
+
   describe "for_project" do
-  
+
     let :project1 do
        FactoryGirl.create(:project,:name => "Project 1", :billable => true)
     end
     let :project1a do
-       FactoryGirl.create(:project,:name => "Project 1a", :billable => true, 
+       FactoryGirl.create(:project,:name => "Project 1a", :billable => true,
              :parent => project1)
     end
     let :project1b do
@@ -244,7 +244,7 @@ describe WorkUnit do
        FactoryGirl.create(:project,:name => "Project 2a", :billable => true,
              :parent => project2)
     end
-      
+
     before :each  do
       @wu1 = FactoryGirl.create(:work_unit, :project => project1)
       @wu1aa = FactoryGirl.create(:work_unit, :project => project1a)
@@ -285,5 +285,30 @@ describe WorkUnit do
       WorkUnit.this_week.should_not include(@last_week_unit)
     end
   end
-end
 
+  describe "#annotated?" do
+    it "should be annotated if the elapsed time <= 0.10 hour and the note is blank" do
+      start_time = Time.now - 1.day
+      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 6.minutes, :hours => 0.09, :notes => "")
+      work_unit.annotated?.should be(true)
+    end
+
+    it "should be annotated if the elapsed time > 0.10 hour and the note is blank" do
+      start_time = Time.now - 1.day
+      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.20, :notes => "")
+      work_unit.annotated?.should be(false)
+    end
+
+    it "should not be annotated if the elapsed time > 0.10 hour and the note is not blank" do
+      start_time = Time.now - 1.day
+      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.20, :notes => "Work unit task")
+      work_unit.annotated?.should be(true)
+    end
+
+    it "should not be annotated if the elapsed time <= 0.10 hour and the note is not blank" do
+      start_time = Time.now - 1.day
+      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.10, :notes => "Work unit task")
+      work_unit.annotated?.should be(true)
+    end
+  end
+end

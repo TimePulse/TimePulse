@@ -54,14 +54,10 @@ steps "clock out after a while", :type => :feature do
     @work_unit.stop_time.should be_within(10.seconds).of(Time.now)
   end
 
-
   it "should list the work unit in recent work" do
     within "#recent_work" do
       #within ".work_unit_#{@work_unit.id}" do
       page.should have_css("a[href='#{edit_work_unit_path(@work_unit)}']")
     end
   end
-
-
 end
-

@@ -3,7 +3,7 @@
  * written by and copyright 2010-2014 Judson Lester and Logical Reality Design
  * Licensed under the MIT license
  *
- * 01-26-2014
+ * 02-03-2014
  */
 var ninjascript = {behaviors:{}};
 ninjascript.behaviors.Abstract = function() {
@@ -293,67 +293,67 @@ ninjascript.sizzle = function() {
     if(!h || "string" !== typeof h) {
       return c
     }
-    for(var g = [], p, n, q, m, r = !0, s = u(a), z = h;null !== (b.exec(""), p = b.exec(z));) {
-      if(z = p[3], g.push(p[1]), p[2]) {
-        m = p[3];
+    for(var g = [], n, q, p, m, r = !0, t = v(a), z = h;null !== (b.exec(""), n = b.exec(z));) {
+      if(z = n[3], g.push(n[1]), n[2]) {
+        m = n[3];
         break
       }
     }
-    if(1 < g.length && y.exec(h)) {
+    if(1 < g.length && s.exec(h)) {
       if(2 === g.length && k.relative[g[0]]) {
-        n = t(g[0] + g[1], a)
+        q = u(g[0] + g[1], a)
       }else {
-        for(n = k.relative[g[0]] ? [a] : l(g.shift(), a);g.length;) {
-          h = g.shift(), k.relative[h] && (h += g.shift()), n = t(h, n)
+        for(q = k.relative[g[0]] ? [a] : l(g.shift(), a);g.length;) {
+          h = g.shift(), k.relative[h] && (h += g.shift()), q = u(h, q)
         }
       }
     }else {
-      if(!d && 1 < g.length && 9 === a.nodeType && !s && k.match.ID.test(g[0]) && !k.match.ID.test(g[g.length - 1]) && (p = l.find(g.shift(), a, s), a = p.expr ? l.filter(p.expr, p.set)[0] : p.set[0]), a) {
-        for(p = d ? {expr:g.pop(), set:v(d)} : l.find(g.pop(), 1 !== g.length || "~" !== g[0] && "+" !== g[0] || !a.parentNode ? a : a.parentNode, s), n = p.expr ? l.filter(p.expr, p.set) : p.set, 0 < g.length ? q = v(n) : r = !1;g.length;) {
-          var x = g.pop();
-          p = x;
-          k.relative[x] ? p = g.pop() : x = "";
-          null == p && (p = a);
-          k.relative[x](q, p, s)
+      if(!d && 1 < g.length && 9 === a.nodeType && !t && k.match.ID.test(g[0]) && !k.match.ID.test(g[g.length - 1]) && (n = l.find(g.shift(), a, t), a = n.expr ? l.filter(n.expr, n.set)[0] : n.set[0]), a) {
+        for(n = d ? {expr:g.pop(), set:w(d)} : l.find(g.pop(), 1 !== g.length || "~" !== g[0] && "+" !== g[0] || !a.parentNode ? a : a.parentNode, t), q = n.expr ? l.filter(n.expr, n.set) : n.set, 0 < g.length ? p = w(q) : r = !1;g.length;) {
+          var y = g.pop();
+          n = y;
+          k.relative[y] ? n = g.pop() : y = "";
+          null == n && (n = a);
+          k.relative[y](p, n, t)
         }
       }else {
-        q = []
+        p = []
       }
     }
-    q || (q = n);
-    q || l.error(x || h);
-    if("[object Array]" === e.call(q)) {
+    p || (p = q);
+    p || l.error(y || h);
+    if("[object Array]" === e.call(p)) {
       if(r) {
         if(a && 1 === a.nodeType) {
-          for(h = 0;null != q[h];h++) {
-            q[h] && (!0 === q[h] || 1 === q[h].nodeType && w(a, q[h])) && c.push(n[h])
+          for(h = 0;null != p[h];h++) {
+            p[h] && (!0 === p[h] || 1 === p[h].nodeType && x(a, p[h])) && c.push(q[h])
           }
         }else {
-          for(h = 0;null != q[h];h++) {
-            q[h] && 1 === q[h].nodeType && c.push(n[h])
+          for(h = 0;null != p[h];h++) {
+            p[h] && 1 === p[h].nodeType && c.push(q[h])
           }
         }
       }else {
-        c.push.apply(c, q)
+        c.push.apply(c, p)
       }
     }else {
-      v(q, c)
+      w(p, c)
     }
     m && (l(m, f, c, d), l.uniqueSort(c));
     return c
   };
   l.uniqueSort = function(h) {
     if(r && (g = m, h.sort(r), g)) {
-      for(var a = 1;a < h.length;a++) {
-        h[a] === h[a - 1] && h.splice(a--, 1)
+      for(var b = 1;b < h.length;b++) {
+        h[b] === h[b - 1] && h.splice(b--, 1)
       }
     }
     return h
   };
-  l.matches = function(h, a) {
-    return l(h, null, null, a)
+  l.matches = function(h, b) {
+    return l(h, null, null, b)
   };
-  l.find = function(h, a, b) {
+  l.find = function(h, b, a) {
     var c, d;
     if(!h) {
       return[]
@@ -361,30 +361,30 @@ ninjascript.sizzle = function() {
     for(var e = 0, f = k.order.length;e < f;e++) {
       var g = k.order[e];
       if(d = k.leftMatch[g].exec(h)) {
-        var l = d[1];
+        var s = d[1];
         d.splice(1, 1);
-        if("\\" !== l.substr(l.length - 1) && (d[1] = (d[1] || "").replace(/\\/g, ""), c = k.find[g](d, a, b), null != c)) {
+        if("\\" !== s.substr(s.length - 1) && (d[1] = (d[1] || "").replace(/\\/g, ""), c = k.find[g](d, b, a), null != c)) {
           h = h.replace(k.match[g], "");
           break
         }
       }
     }
-    c || (c = a.getElementsByTagName("*"));
+    c || (c = b.getElementsByTagName("*"));
     return{set:c, expr:h}
   };
-  l.filter = function(h, a, b, c) {
-    for(var d = h, e = [], f = a, g, n, y = a && a[0] && u(a[0]);h && a.length;) {
+  l.filter = function(h, b, a, c) {
+    for(var d = h, e = [], f = b, g, s, q = b && b[0] && v(b[0]);h && b.length;) {
       for(var m in k.filter) {
         if(null != (g = k.leftMatch[m].exec(h)) && g[2]) {
-          var v = k.filter[m], s, r;
+          var w = k.filter[m], t, r;
           r = g[1];
-          n = !1;
+          s = !1;
           g.splice(1, 1);
           if("\\" !== r.substr(r.length - 1)) {
             f === e && (e = []);
             if(k.preFilter[m]) {
-              if(g = k.preFilter[m](g, f, b, e, c, y), !g) {
-                n = s = !0
+              if(g = k.preFilter[m](g, f, a, e, c, q), !g) {
+                s = t = !0
               }else {
                 if(!0 === g) {
                   continue
@@ -392,18 +392,18 @@ ninjascript.sizzle = function() {
               }
             }
             if(g) {
-              for(var w = 0;null != (r = f[w]);w++) {
+              for(var x = 0;null != (r = f[x]);x++) {
                 if(r) {
-                  s = v(r, g, w, f);
-                  var t = c ^ !!s;
-                  b && null != s ? t ? n = !0 : f[w] = !1 : t && (e.push(r), n = !0)
+                  t = w(r, g, x, f);
+                  var u = c ^ !!t;
+                  a && null != t ? u ? s = !0 : f[x] = !1 : u && (e.push(r), s = !0)
                 }
               }
             }
-            if(void 0 !== s) {
-              b || (f = e);
+            if(void 0 !== t) {
+              a || (f = e);
               h = h.replace(k.match[m], "");
-              if(!n) {
+              if(!s) {
                 return[]
               }
               break
@@ -412,7 +412,7 @@ ninjascript.sizzle = function() {
         }
       }
       if(h === d) {
-        if(null == n) {
+        if(null == s) {
           l.error(h)
         }else {
           break
@@ -422,90 +422,90 @@ ninjascript.sizzle = function() {
     }
     return f
   };
-  l.error = function(h) {
-    throw"Syntax error, unrecognized expression: " + h;
+  l.error = function(b) {
+    throw"Syntax error, unrecognized expression: " + b;
   };
   var k = l.selectors = {order:["ID", "NAME", "TAG"], match:{ID:/#((?:[\w\u00c0-\uFFFF-]|\\.)+)/, CLASS:/\.((?:[\w\u00c0-\uFFFF-]|\\.)+)/, NAME:/\[name=['"]*((?:[\w\u00c0-\uFFFF-]|\\.)+)['"]*\]/, ATTR:/\[\s*((?:[\w\u00c0-\uFFFF-]|\\.)+)\s*(?:(\S?=)\s*(['"]*)(.*?)\3|)\s*\]/, TAG:/^((?:[\w\u00c0-\uFFFF\*-]|\\.)+)/, CHILD:/:(only|nth|last|first)-child(?:\((even|odd|[\dn+-]*)\))?/, POS:/:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^-]|$)/, PSEUDO:/:((?:[\w\u00c0-\uFFFF-]|\\.)+)(?:\((['"]?)((?:\([^\)]+\)|[^\(\)]*)+)\2\))?/}, 
-  leftMatch:{}, attrMap:{"class":"className", "for":"htmlFor"}, attrHandle:{href:function(h) {
-    return h.getAttribute("href")
-  }}, relative:{"+":function(h, a) {
-    var b = "string" === typeof a, c = b && !/\W/.test(a), b = b && !c;
-    c && (a = a.toLowerCase());
-    for(var c = 0, d = h.length, e;c < d;c++) {
-      if(e = h[c]) {
-        for(;(e = e.previousSibling) && 1 !== e.nodeType;) {
+  leftMatch:{}, attrMap:{"class":"className", "for":"htmlFor"}, attrHandle:{href:function(b) {
+    return b.getAttribute("href")
+  }}, relative:{"+":function(b, a) {
+    var c = "string" === typeof a, d = c && !/\W/.test(a), c = c && !d;
+    d && (a = a.toLowerCase());
+    for(var d = 0, e = b.length, f;d < e;d++) {
+      if(f = b[d]) {
+        for(;(f = f.previousSibling) && 1 !== f.nodeType;) {
         }
-        h[c] = b || e && e.nodeName.toLowerCase() === a ? e || !1 : e === a
+        b[d] = c || f && f.nodeName.toLowerCase() === a ? f || !1 : f === a
       }
     }
-    b && l.filter(a, h, !0)
-  }, ">":function(a, b) {
-    var c = "string" === typeof b;
-    if(c && !/\W/.test(b)) {
-      b = b.toLowerCase();
-      for(var d = 0, e = a.length;d < e;d++) {
-        var f = a[d];
-        f && (c = f.parentNode, a[d] = c.nodeName.toLowerCase() === b ? c : !1)
+    c && l.filter(a, b, !0)
+  }, ">":function(b, a) {
+    var c = "string" === typeof a;
+    if(c && !/\W/.test(a)) {
+      a = a.toLowerCase();
+      for(var d = 0, e = b.length;d < e;d++) {
+        var f = b[d];
+        f && (c = f.parentNode, b[d] = c.nodeName.toLowerCase() === a ? c : !1)
       }
     }else {
       d = 0;
-      for(e = a.length;d < e;d++) {
-        (f = a[d]) && (a[d] = c ? f.parentNode : f.parentNode === b)
+      for(e = b.length;d < e;d++) {
+        (f = b[d]) && (b[d] = c ? f.parentNode : f.parentNode === a)
       }
-      c && l.filter(b, a, !0)
+      c && l.filter(a, b, !0)
     }
-  }, "":function(a, b, e) {
+  }, "":function(b, a, e) {
     var g = d++, k = c;
-    if("string" === typeof b && !/\W/.test(b)) {
-      var n = b = b.toLowerCase(), k = f
+    if("string" === typeof a && !/\W/.test(a)) {
+      var s = a = a.toLowerCase(), k = f
     }
-    k("parentNode", b, g, a, n, e)
-  }, "~":function(a, b, e) {
+    k("parentNode", a, g, b, s, e)
+  }, "~":function(b, a, e) {
     var g = d++, k = c;
-    if("string" === typeof b && !/\W/.test(b)) {
-      var n = b = b.toLowerCase(), k = f
+    if("string" === typeof a && !/\W/.test(a)) {
+      var s = a = a.toLowerCase(), k = f
     }
-    k("previousSibling", b, g, a, n, e)
-  }}, find:{ID:function(a, b, c) {
-    if("undefined" !== typeof b.getElementById && !c) {
-      return(a = b.getElementById(a[1])) ? [a] : []
+    k("previousSibling", a, g, b, s, e)
+  }}, find:{ID:function(b, a, c) {
+    if("undefined" !== typeof a.getElementById && !c) {
+      return(b = a.getElementById(b[1])) ? [b] : []
     }
-  }, NAME:function(a, b) {
-    if("undefined" !== typeof b.getElementsByName) {
-      for(var c = [], d = b.getElementsByName(a[1]), e = 0, f = d.length;e < f;e++) {
-        d[e].getAttribute("name") === a[1] && c.push(d[e])
+  }, NAME:function(b, a) {
+    if("undefined" !== typeof a.getElementsByName) {
+      for(var c = [], d = a.getElementsByName(b[1]), e = 0, f = d.length;e < f;e++) {
+        d[e].getAttribute("name") === b[1] && c.push(d[e])
       }
       return 0 === c.length ? null : c
     }
-  }, TAG:function(a, b) {
-    return b.getElementsByTagName(a[1])
-  }}, preFilter:{CLASS:function(a, b, c, d, e, f) {
-    a = " " + a[1].replace(/\\/g, "") + " ";
+  }, TAG:function(b, a) {
+    return a.getElementsByTagName(b[1])
+  }}, preFilter:{CLASS:function(b, a, c, d, e, f) {
+    b = " " + b[1].replace(/\\/g, "") + " ";
     if(f) {
-      return a
+      return b
     }
     f = 0;
-    for(var g;null != (g = b[f]);f++) {
-      g && (e ^ (g.className && 0 <= (" " + g.className + " ").replace(/[\t\n]/g, " ").indexOf(a)) ? c || d.push(g) : c && (b[f] = !1))
+    for(var g;null != (g = a[f]);f++) {
+      g && (e ^ (g.className && 0 <= (" " + g.className + " ").replace(/[\t\n]/g, " ").indexOf(b)) ? c || d.push(g) : c && (a[f] = !1))
     }
     return!1
-  }, ID:function(a) {
-    return a[1].replace(/\\/g, "")
-  }, TAG:function(a, b) {
-    return a[1].toLowerCase()
-  }, CHILD:function(a) {
-    if("nth" === a[1]) {
-      var b = /(-?)(\d*)n((?:\+|-)?\d*)/.exec("even" === a[2] && "2n" || "odd" === a[2] && "2n+1" || !/\D/.test(a[2]) && "0n+" + a[2] || a[2]);
-      a[2] = b[1] + (b[2] || 1) - 0;
-      a[3] = b[3] - 0
+  }, ID:function(b) {
+    return b[1].replace(/\\/g, "")
+  }, TAG:function(b, a) {
+    return b[1].toLowerCase()
+  }, CHILD:function(b) {
+    if("nth" === b[1]) {
+      var a = /(-?)(\d*)n((?:\+|-)?\d*)/.exec("even" === b[2] && "2n" || "odd" === b[2] && "2n+1" || !/\D/.test(b[2]) && "0n+" + b[2] || b[2]);
+      b[2] = a[1] + (a[2] || 1) - 0;
+      b[3] = a[3] - 0
     }
-    a[0] = d++;
-    return a
-  }, ATTR:function(a, b, c, d, e, f) {
-    b = a[1].replace(/\\/g, "");
-    !f && k.attrMap[b] && (a[1] = k.attrMap[b]);
-    "~=" === a[2] && (a[4] = " " + a[4] + " ");
-    return a
+    b[0] = d++;
+    return b
+  }, ATTR:function(b, a, c, d, e, f) {
+    a = b[1].replace(/\\/g, "");
+    !f && k.attrMap[a] && (b[1] = k.attrMap[a]);
+    "~=" === b[2] && (b[4] = " " + b[4] + " ");
+    return b
   }, PSEUDO:function(a, c, d, e, f) {
     if("not" === a[1]) {
       if(1 < (b.exec(a[3]) || "").length || /^\w/.test(a[3])) {
@@ -519,62 +519,62 @@ ninjascript.sizzle = function() {
       }
     }
     return a
-  }, POS:function(a) {
-    a.unshift(!0);
-    return a
-  }}, filters:{enabled:function(a) {
-    return!1 === a.disabled && "hidden" !== a.type
-  }, disabled:function(a) {
-    return!0 === a.disabled
-  }, checked:function(a) {
-    return!0 === a.checked
-  }, selected:function(a) {
-    a.parentNode.selectedIndex;
-    return!0 === a.selected
-  }, parent:function(a) {
-    return!!a.firstChild
-  }, empty:function(a) {
-    return!a.firstChild
-  }, has:function(a, b, c) {
-    return!!l(c[3], a).length
-  }, header:function(a) {
-    return/h\d/i.test(a.nodeName)
-  }, text:function(a) {
-    return"text" === a.type
-  }, radio:function(a) {
-    return"radio" === a.type
-  }, checkbox:function(a) {
-    return"checkbox" === a.type
-  }, file:function(a) {
-    return"file" === a.type
-  }, password:function(a) {
-    return"password" === a.type
-  }, submit:function(a) {
-    return"submit" === a.type
-  }, image:function(a) {
-    return"image" === a.type
-  }, reset:function(a) {
-    return"reset" === a.type
-  }, button:function(a) {
-    return"button" === a.type || "button" === a.nodeName.toLowerCase()
-  }, input:function(a) {
-    return/input|select|textarea|button/i.test(a.nodeName)
-  }}, setFilters:{first:function(a, b) {
-    return 0 === b
-  }, last:function(a, b, c, d) {
-    return b === d.length - 1
-  }, even:function(a, b) {
-    return 0 === b % 2
-  }, odd:function(a, b) {
-    return 1 === b % 2
-  }, lt:function(a, b, c) {
-    return b < c[3] - 0
-  }, gt:function(a, b, c) {
-    return b > c[3] - 0
-  }, nth:function(a, b, c) {
-    return c[3] - 0 === b
-  }, eq:function(a, b, c) {
-    return c[3] - 0 === b
+  }, POS:function(b) {
+    b.unshift(!0);
+    return b
+  }}, filters:{enabled:function(b) {
+    return!1 === b.disabled && "hidden" !== b.type
+  }, disabled:function(b) {
+    return!0 === b.disabled
+  }, checked:function(b) {
+    return!0 === b.checked
+  }, selected:function(b) {
+    b.parentNode.selectedIndex;
+    return!0 === b.selected
+  }, parent:function(b) {
+    return!!b.firstChild
+  }, empty:function(b) {
+    return!b.firstChild
+  }, has:function(b, a, c) {
+    return!!l(c[3], b).length
+  }, header:function(b) {
+    return/h\d/i.test(b.nodeName)
+  }, text:function(b) {
+    return"text" === b.type
+  }, radio:function(b) {
+    return"radio" === b.type
+  }, checkbox:function(b) {
+    return"checkbox" === b.type
+  }, file:function(b) {
+    return"file" === b.type
+  }, password:function(b) {
+    return"password" === b.type
+  }, submit:function(b) {
+    return"submit" === b.type
+  }, image:function(b) {
+    return"image" === b.type
+  }, reset:function(b) {
+    return"reset" === b.type
+  }, button:function(b) {
+    return"button" === b.type || "button" === b.nodeName.toLowerCase()
+  }, input:function(b) {
+    return/input|select|textarea|button/i.test(b.nodeName)
+  }}, setFilters:{first:function(b, a) {
+    return 0 === a
+  }, last:function(b, a, c, d) {
+    return a === d.length - 1
+  }, even:function(b, a) {
+    return 0 === a % 2
+  }, odd:function(b, a) {
+    return 1 === a % 2
+  }, lt:function(b, a, c) {
+    return a < c[3] - 0
+  }, gt:function(b, a, c) {
+    return a > c[3] - 0
+  }, nth:function(b, a, c) {
+    return c[3] - 0 === a
+  }, eq:function(b, a, c) {
+    return c[3] - 0 === a
   }}, filter:{PSEUDO:function(b, c, d, e) {
     var f = c[1], g = k.filters[f];
     if(g) {
@@ -594,8 +594,8 @@ ninjascript.sizzle = function() {
       return!0
     }
     l.error("Syntax error, unrecognized expression: " + f)
-  }, CHILD:function(a, b) {
-    var c = b[1], d = a;
+  }, CHILD:function(b, a) {
+    var c = a[1], d = b;
     switch(c) {
       case "only":
       ;
@@ -608,7 +608,7 @@ ninjascript.sizzle = function() {
         if("first" === c) {
           return!0
         }
-        d = a;
+        d = b;
       case "last":
         for(;d = d.nextSibling;) {
           if(1 === d.nodeType) {
@@ -617,59 +617,59 @@ ninjascript.sizzle = function() {
         }
         return!0;
       case "nth":
-        var c = b[2], e = b[3];
+        var c = a[2], e = a[3];
         if(1 === c && 0 === e) {
           return!0
         }
-        var f = b[0], g = a.parentNode;
-        if(g && (g.sizcache !== f || !a.nodeIndex)) {
+        var f = a[0], g = b.parentNode;
+        if(g && (g.sizcache !== f || !b.nodeIndex)) {
           for(var k = 0, d = g.firstChild;d;d = d.nextSibling) {
             1 === d.nodeType && (d.nodeIndex = ++k)
           }
           g.sizcache = f
         }
-        d = a.nodeIndex - e;
+        d = b.nodeIndex - e;
         return 0 === c ? 0 === d : 0 === d % c && 0 <= d / c
     }
-  }, ID:function(a, b) {
-    return 1 === a.nodeType && a.getAttribute("id") === b
-  }, TAG:function(a, b) {
-    return"*" === b && 1 === a.nodeType || a.nodeName.toLowerCase() === b
-  }, CLASS:function(a, b) {
-    return-1 < (" " + (a.className || a.getAttribute("class")) + " ").indexOf(b)
-  }, ATTR:function(a, b) {
-    var c = b[1], c = k.attrHandle[c] ? k.attrHandle[c](a) : null != a[c] ? a[c] : a.getAttribute(c), d = c + "", e = b[2], f = b[4];
+  }, ID:function(b, a) {
+    return 1 === b.nodeType && b.getAttribute("id") === a
+  }, TAG:function(b, a) {
+    return"*" === a && 1 === b.nodeType || b.nodeName.toLowerCase() === a
+  }, CLASS:function(b, a) {
+    return-1 < (" " + (b.className || b.getAttribute("class")) + " ").indexOf(a)
+  }, ATTR:function(b, a) {
+    var c = a[1], c = k.attrHandle[c] ? k.attrHandle[c](b) : null != b[c] ? b[c] : b.getAttribute(c), d = c + "", e = a[2], f = a[4];
     return null == c ? "!=" === e : "=" === e ? d === f : "*=" === e ? 0 <= d.indexOf(f) : "~=" === e ? 0 <= (" " + d + " ").indexOf(f) : f ? "!=" === e ? d !== f : "^=" === e ? 0 === d.indexOf(f) : "$=" === e ? d.substr(d.length - f.length) === f : "|=" === e ? d === f || d.substr(0, f.length + 1) === f + "-" : !1 : d && !1 !== c
-  }, POS:function(a, b, c, d) {
-    var e = k.setFilters[b[2]];
+  }, POS:function(b, a, c, d) {
+    var e = k.setFilters[a[2]];
     if(e) {
-      return e(a, c, b, d)
+      return e(b, c, a, d)
     }
-  }}}, y = k.match.POS, n;
-  for(n in k.match) {
-    k.match[n] = RegExp(k.match[n].source + /(?![^\[]*\])(?![^\(]*\))/.source), k.leftMatch[n] = RegExp(/(^(?:.|\r|\n)*?)/.source + k.match[n].source.replace(/\\(\d+)/g, function(a, b) {
-      return"\\" + (b - 0 + 1)
+  }}}, s = k.match.POS, q;
+  for(q in k.match) {
+    k.match[q] = RegExp(k.match[q].source + /(?![^\[]*\])(?![^\(]*\))/.source), k.leftMatch[q] = RegExp(/(^(?:.|\r|\n)*?)/.source + k.match[q].source.replace(/\\(\d+)/g, function(b, a) {
+      return"\\" + (a - 0 + 1)
     }))
   }
-  var v = function(a, b) {
-    a = Array.prototype.slice.call(a, 0);
-    return b ? (b.push.apply(b, a), b) : a
+  var w = function(b, a) {
+    b = Array.prototype.slice.call(b, 0);
+    return a ? (a.push.apply(a, b), a) : b
   };
   try {
     Array.prototype.slice.call(document.documentElement.childNodes, 0)[0].nodeType
-  }catch(s) {
-    v = function(a, b) {
-      var c = b || [];
-      if("[object Array]" === e.call(a)) {
-        Array.prototype.push.apply(c, a)
+  }catch(t) {
+    w = function(b, a) {
+      var c = a || [];
+      if("[object Array]" === e.call(b)) {
+        Array.prototype.push.apply(c, b)
       }else {
-        if("number" === typeof a.length) {
-          for(var d = 0, f = a.length;d < f;d++) {
-            c.push(a[d])
+        if("number" === typeof b.length) {
+          for(var d = 0, f = b.length;d < f;d++) {
+            c.push(b[d])
           }
         }else {
-          for(d = 0;a[d];d++) {
-            c.push(a[d])
+          for(d = 0;b[d];d++) {
+            c.push(b[d])
           }
         }
       }
@@ -677,55 +677,55 @@ ninjascript.sizzle = function() {
     }
   }
   var r;
-  document.documentElement.compareDocumentPosition ? r = function(a, b) {
-    if(!a.compareDocumentPosition || !b.compareDocumentPosition) {
-      return a == b && (g = !0), a.compareDocumentPosition ? -1 : 1
+  document.documentElement.compareDocumentPosition ? r = function(b, a) {
+    if(!b.compareDocumentPosition || !a.compareDocumentPosition) {
+      return b == a && (g = !0), b.compareDocumentPosition ? -1 : 1
     }
-    var c = a.compareDocumentPosition(b) & 4 ? -1 : a === b ? 0 : 1;
+    var c = b.compareDocumentPosition(a) & 4 ? -1 : b === a ? 0 : 1;
     0 === c && (g = !0);
     return c
-  } : "sourceIndex" in document.documentElement ? r = function(a, b) {
-    if(!a.sourceIndex || !b.sourceIndex) {
-      return a == b && (g = !0), a.sourceIndex ? -1 : 1
+  } : "sourceIndex" in document.documentElement ? r = function(b, a) {
+    if(!b.sourceIndex || !a.sourceIndex) {
+      return b == a && (g = !0), b.sourceIndex ? -1 : 1
     }
-    var c = a.sourceIndex - b.sourceIndex;
+    var c = b.sourceIndex - a.sourceIndex;
     0 === c && (g = !0);
     return c
-  } : document.createRange && (r = function(a, b) {
-    if(!a.ownerDocument || !b.ownerDocument) {
-      return a == b && (g = !0), a.ownerDocument ? -1 : 1
+  } : document.createRange && (r = function(b, a) {
+    if(!b.ownerDocument || !a.ownerDocument) {
+      return b == a && (g = !0), b.ownerDocument ? -1 : 1
     }
-    var c = a.ownerDocument.createRange(), d = b.ownerDocument.createRange();
-    c.setStart(a, 0);
-    c.setEnd(a, 0);
-    d.setStart(b, 0);
-    d.setEnd(b, 0);
+    var c = b.ownerDocument.createRange(), d = a.ownerDocument.createRange();
+    c.setStart(b, 0);
+    c.setEnd(b, 0);
+    d.setStart(a, 0);
+    d.setEnd(a, 0);
     c = c.compareBoundaryPoints(Range.START_TO_END, d);
     0 === c && (g = !0);
     return c
   });
   (function() {
-    var a = document.createElement("div"), b = "script" + (new Date).getTime();
-    a.innerHTML = "<a name='" + b + "'/>";
+    var b = document.createElement("div"), a = "script" + (new Date).getTime();
+    b.innerHTML = "<a name='" + a + "'/>";
     var c = document.documentElement;
-    c.insertBefore(a, c.firstChild);
-    document.getElementById(b) && (k.find.ID = function(a, b, c) {
-      if("undefined" !== typeof b.getElementById && !c) {
-        return(b = b.getElementById(a[1])) ? b.id === a[1] || "undefined" !== typeof b.getAttributeNode && b.getAttributeNode("id").nodeValue === a[1] ? [b] : void 0 : []
+    c.insertBefore(b, c.firstChild);
+    document.getElementById(a) && (k.find.ID = function(b, a, c) {
+      if("undefined" !== typeof a.getElementById && !c) {
+        return(a = a.getElementById(b[1])) ? a.id === b[1] || "undefined" !== typeof a.getAttributeNode && a.getAttributeNode("id").nodeValue === b[1] ? [a] : void 0 : []
       }
-    }, k.filter.ID = function(a, b) {
-      var c = "undefined" !== typeof a.getAttributeNode && a.getAttributeNode("id");
-      return 1 === a.nodeType && c && c.nodeValue === b
+    }, k.filter.ID = function(b, a) {
+      var c = "undefined" !== typeof b.getAttributeNode && b.getAttributeNode("id");
+      return 1 === b.nodeType && c && c.nodeValue === a
     });
-    c.removeChild(a);
-    c = a = null
+    c.removeChild(b);
+    c = b = null
   })();
   (function() {
-    var a = document.createElement("div");
-    a.appendChild(document.createComment(""));
-    0 < a.getElementsByTagName("*").length && (k.find.TAG = function(a, b) {
-      var c = b.getElementsByTagName(a[1]);
-      if("*" === a[1]) {
+    var b = document.createElement("div");
+    b.appendChild(document.createComment(""));
+    0 < b.getElementsByTagName("*").length && (k.find.TAG = function(b, a) {
+      var c = a.getElementsByTagName(b[1]);
+      if("*" === b[1]) {
         for(var d = [], e = 0;c[e];e++) {
           1 === c[e].nodeType && d.push(c[e])
         }
@@ -733,55 +733,55 @@ ninjascript.sizzle = function() {
       }
       return c
     });
-    a.innerHTML = "<a href='#'></a>";
-    a.firstChild && "undefined" !== typeof a.firstChild.getAttribute && "#" !== a.firstChild.getAttribute("href") && (k.attrHandle.href = function(a) {
-      return a.getAttribute("href", 2)
+    b.innerHTML = "<a href='#'></a>";
+    b.firstChild && "undefined" !== typeof b.firstChild.getAttribute && "#" !== b.firstChild.getAttribute("href") && (k.attrHandle.href = function(b) {
+      return b.getAttribute("href", 2)
     });
-    a = null
+    b = null
   })();
   document.querySelectorAll && function() {
-    var a = l, b = document.createElement("div");
-    b.innerHTML = "<p class='TEST'></p>";
-    if(!b.querySelectorAll || 0 !== b.querySelectorAll(".TEST").length) {
-      l = function(b, c, d, e) {
+    var b = l, a = document.createElement("div");
+    a.innerHTML = "<p class='TEST'></p>";
+    if(!a.querySelectorAll || 0 !== a.querySelectorAll(".TEST").length) {
+      l = function(a, c, d, e) {
         c = c || document;
-        if(!e && 9 === c.nodeType && !u(c)) {
+        if(!e && 9 === c.nodeType && !v(c)) {
           try {
-            return v(c.querySelectorAll(b), d)
+            return w(c.querySelectorAll(a), d)
           }catch(f) {
           }
         }
-        return a(b, c, d, e)
+        return b(a, c, d, e)
       };
-      for(var c in a) {
-        l[c] = a[c]
+      for(var c in b) {
+        l[c] = b[c]
       }
-      b = null
+      a = null
     }
   }();
   (function() {
-    var a = document.createElement("div");
-    a.innerHTML = "<div class='test e'></div><div class='test'></div>";
-    a.getElementsByClassName && 0 !== a.getElementsByClassName("e").length && (a.lastChild.className = "e", 1 !== a.getElementsByClassName("e").length && (k.order.splice(1, 0, "CLASS"), k.find.CLASS = function(a, b, c) {
-      if("undefined" !== typeof b.getElementsByClassName && !c) {
-        return b.getElementsByClassName(a[1])
+    var b = document.createElement("div");
+    b.innerHTML = "<div class='test e'></div><div class='test'></div>";
+    b.getElementsByClassName && 0 !== b.getElementsByClassName("e").length && (b.lastChild.className = "e", 1 !== b.getElementsByClassName("e").length && (k.order.splice(1, 0, "CLASS"), k.find.CLASS = function(b, a, c) {
+      if("undefined" !== typeof a.getElementsByClassName && !c) {
+        return a.getElementsByClassName(b[1])
       }
-    }, a = null))
+    }, b = null))
   })();
-  var w = document.compareDocumentPosition ? function(a, b) {
-    return!!(a.compareDocumentPosition(b) & 16)
-  } : function(a, b) {
-    return a !== b && (a.contains ? a.contains(b) : !0)
-  }, u = function(a) {
-    return(a = (a ? a.ownerDocument || a : 0).documentElement) ? "HTML" !== a.nodeName : !1
-  }, t = function(a, b) {
-    for(var c = [], d = "", e, f = b.nodeType ? [b] : b;e = k.match.PSEUDO.exec(a);) {
-      d += e[0], a = a.replace(k.match.PSEUDO, "")
+  var x = document.compareDocumentPosition ? function(b, a) {
+    return!!(b.compareDocumentPosition(a) & 16)
+  } : function(b, a) {
+    return b !== a && (b.contains ? b.contains(a) : !0)
+  }, v = function(b) {
+    return(b = (b ? b.ownerDocument || b : 0).documentElement) ? "HTML" !== b.nodeName : !1
+  }, u = function(b, a) {
+    for(var c = [], d = "", e, f = a.nodeType ? [a] : a;e = k.match.PSEUDO.exec(b);) {
+      d += e[0], b = b.replace(k.match.PSEUDO, "")
     }
-    a = k.relative[a] ? a + "*" : a;
+    b = k.relative[b] ? b + "*" : b;
     e = 0;
     for(var g = f.length;e < g;e++) {
-      l(a, f[e], c)
+      l(b, f[e], c)
     }
     return l.filter(d, c)
   };
@@ -862,6 +862,7 @@ ninjascript.utils = {};
 ninjascript.BehaviorBinding = function(a) {
   var f = function() {
     this.stashedElements = [];
+    this.hiddenElements = [];
     this.eventHandlerSet = {}
   };
   f.prototype = a;
@@ -888,12 +889,12 @@ ninjascript.BehaviorBinding = function(a) {
   a.acquireEventHandlers = function(a) {
     for(var b = a.length, d = 0, e, d = 0;d < b;d++) {
       e = a[d].name;
-      var g = this, f = a[d].buildHandlerFunction(this.parent[e]);
+      var f = this, m = a[d].buildHandlerFunction(this.parent[e]);
       this[e] = function() {
-        var a = Array.prototype.shift.call(arguments);
+        var b = Array.prototype.shift.call(arguments);
         Array.prototype.unshift.call(arguments, this);
-        Array.prototype.unshift.call(arguments, a);
-        return f.apply(g, arguments)
+        Array.prototype.unshift.call(arguments, b);
+        return m.apply(f, arguments)
       }
     }
   };
@@ -921,8 +922,12 @@ ninjascript.BehaviorBinding = function(a) {
     this.stashedElements = []
   };
   a.cascadeEvent = function(a) {
-    for(;0 < this.stashedElements.length;) {
-      this.unstash().trigger(a)
+    for(var b, d;0 < this.stashedElements.length;) {
+      this.hiddenElements.unshift(this.unstash())
+    }
+    d = this.hiddenElements.length;
+    for(b = 0;b < d;b++) {
+      this.hiddenElements[b].trigger(a)
     }
   };
   a.bindHandlers = function() {
@@ -1082,26 +1087,26 @@ ninjascript.BehaviorCollection = function(a) {
     g.debug("Complete ruleset:", this.rules)
   };
   a.applyAll = function(a) {
-    var b, c, d, f, l, m, u, t = !1, h = [];
+    var b, c, d, f, l, m, v, u = !1, h = [];
     l = this.rules.length;
     g.info("Applying all behavior rules");
     for(b = 0;b < l;b++) {
       for(m = this.rules[b].match(document), m = e(m, function(b) {
         return jQuery.contains(a, b)
-      }), f = m.length, 0 >= f && g.debug("Behavior matched no elements:", this.rules[b]), u = h.length, c = 0;c < f;c++) {
-        t = !1;
-        for(d = 0;d < u;d++) {
+      }), f = m.length, 0 >= f ? g.debug("Behavior matched no elements:", "function" == typeof this.rules[b].finder ? this.rules[b].originalFinder : this.rules[b].finder, this.rules[b]) : g.debug(f + " elements matched by:", "function" == typeof this.rules[b].finder ? this.rules[b].originalFinder : this.rules[b].finder, this.rules[b]), v = h.length, c = 0;c < f;c++) {
+        u = !1;
+        for(d = 0;d < v;d++) {
           if(m[c] == h[d].element) {
             h[d].behaviors.push(this.rules[b].behavior);
-            t = !0;
+            u = !0;
             break
           }
         }
-        t || (h.push({element:m[c], behaviors:[this.rules[b].behavior]}), u = h.length)
+        u || (h.push({element:m[c], behaviors:[this.rules[b].behavior]}), v = h.length)
       }
     }
     g.debug("Elements with behaviors:", h);
-    for(b = 0;b < u;b++) {
+    for(b = 0;b < v;b++) {
       jQuery(h[b].element).data("ninja-visited") || (g.debug("Applying:", h[b]), this.apply(h[b].element, h[b].behaviors))
     }
   };

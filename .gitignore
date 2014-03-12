@@ -60,3 +60,4 @@ db_backups/
 .ruby-gemset
 errors.err
 .rspec-local
+.ctrlp-root
