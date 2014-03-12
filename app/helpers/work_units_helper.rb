@@ -17,4 +17,13 @@ module WorkUnitsHelper
   def project_selector(form)
     form.select(:project_id, project_options, {}, { :class => "project_selector"})
   end
+
+  def work_unit_row_tag(work_unit, token = nil, cssclass = nil, &block)
+    content_tag(:tr,
+                 :id => token,
+                 :class => ['work_unit', 'has_tooltip', work_unit.annotated? ? nil : "needs-note" ] + [ cssclass ]
+                ) do
+      yield
+    end
+  end
 end

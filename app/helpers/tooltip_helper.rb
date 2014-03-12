@@ -35,7 +35,7 @@ module TooltipHelper
     def data_hash
       {
         "Project:"  =>  short_name_with_client(item.project),
-        "Notes:"    =>  item.notes,
+        "Notes:"    =>  item.annotated? ? item.notes : "Needs Annotation!",
         "Hours:"    =>  item.hours.to_s,
         "Started:"  =>  formatted_work_unit_time(item.start_time),
         "Finished:" =>  formatted_work_unit_time(item.stop_time)
