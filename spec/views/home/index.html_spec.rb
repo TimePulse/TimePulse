@@ -117,5 +117,45 @@ describe "/home/index" do
       @picker.should_not have_text(short_name_with_client(project_4))
     end
   end
-end
 
+  describe "recent work box" do
+    let! :current_user do authenticate(:user) end
+    let! :other_user do FactoryGirl.create(:user) end
+    let! :project_1 do FactoryGirl.create(:project) end
+
+    describe "with only an un-noted work unit" do
+      let! :wu_1 do
+        start_time = Time.now - 2.hours
+        FactoryGirl.create(:work_unit,
+                           :user => current_user,
+                           :project => project_1,
+                           :start_time => Time.now - 2.hours,
+                           :hours => 1.9,
+                           :notes => nil
+                          )
+      end
+
+      it "should render work units noting unannotated" do
+        render :partial => "shared/recent_work"
+        rendered.should have_selector "#recent_work .needs-note"
+      end
+    end
+
+    describe "without an unannotated work unit" do
+      let! :wu_1 do
+        start_time = Time.now - 2.hours
+        FactoryGirl.create(:work_unit,
+                           :user => current_user,
+                           :project => project_1,
+                           :start_time => Time.now - 2.hours,
+                           :hours => 1.9,
+                           :notes => "I have dutifully annotated this Work Unit")
+      end
+
+      it "should render work units noting unannotated" do
+        render :partial => "shared/recent_work"
+        rendered.should_not have_selector ".needs-note"
+      end
+    end
+  end
+end
