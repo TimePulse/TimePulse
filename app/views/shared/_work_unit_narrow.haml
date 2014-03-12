@@ -7,5 +7,5 @@
       = "%.2f" % work_unit.hours
     %td.tools.nobr
       = link_to 'Edit', edit_work_unit_path(work_unit), class: 'actions edit'
-      = link_to 'Delete', work_unit_path(work_unit, :delete_id => token), :method => :delete, :confirm => "Are you sure?", class: 'actions delete'
+      = link_to 'Delete', work_unit_path(work_unit, :delete_id => token), :method => :delete, :data => { :confirm => "Are you sure?"}, class: 'actions delete'
       = tooltip_for(work_unit, token).html_safe
