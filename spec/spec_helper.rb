@@ -41,6 +41,7 @@ RSpec.configure do |config|
   end
 
   config.after :all, :type => :feature do
+    Timecop.return
     DatabaseCleaner.clean_with :truncation
     load 'db/seeds.rb'
   end
