@@ -3,8 +3,8 @@ require 'spec_helper'
 steps "clock in and out on projects", :type => :feature do
 
   let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.') end
-  let! :project_1 do FactoryGirl.create(:project, :client => client_1) end
-  let! :project_2 do FactoryGirl.create(:project, :client => client_1, :billable => false ) end
+  let! :project_1 do FactoryGirl.create(:project, :client => client_1, :name => "Foo Project 1") end
+  let! :project_2 do FactoryGirl.create(:project, :client => client_1, :name => "Foo Project 2", :billable => false ) end
   let! :user      do FactoryGirl.create(:user, :current_project => project_1) end
 
   let! :work_units do
@@ -35,14 +35,14 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clicks on the clock in link in the timeclock" do
     within "#timeclock" do
-      click_link "clock_in_on_project_#{project_1.id}"
+      click_link "Clock in on [] Foo Project 1"
     end
   end
 
   it "should show a clock-in form and a clock" do
     page.should have_selector("form[action='/clock_out']")
     page.should have_selector("#timeclock #task_elapsed")
-    page.should have_title /clocked in/i
+      page.should have_title /clocked in/i
     page.should have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
     page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false
   end
@@ -75,7 +75,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clicks on the clock in link in the timeclock" do
     within "#timeclock" do
-      click_link "clock_in_on_project_#{project_1.id}"
+      click_link "Clock in on [] Foo Project 1"
     end
   end
 
@@ -128,7 +128,7 @@ steps "clock in and out on projects", :type => :feature do
   it "user clicks on the clock in link in the timeclock" do
     Timecop.return
     within "#timeclock" do
-      click_link "clock_in_on_project_#{project_1.id}"
+      click_link "Clock in on [] Foo Project 1"
     end
   end
 
@@ -166,7 +166,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clocks in on a billable project" do
     within "#project_picker" do
-      find_link("clock_in_on_project_#{project_1.id}").trigger('click')
+      find_link("Clock in on [] Foo Project 1").trigger('click')
     end
   end
 
@@ -190,7 +190,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clocks in on a non-billable project" do
     within "#project_picker" do
-      find_link("clock_in_on_project_#{project_2.id}").trigger('click')
+      find_link("Clock in on [] Foo Project 2").trigger('click')
     end
   end
 
