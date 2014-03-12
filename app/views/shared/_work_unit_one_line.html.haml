@@ -1,7 +1,7 @@
 - cache("work_unit_one_line_#{work_unit.id}") do
   - token = SecureRandom.hex(8)
 
-  %tr.work_unit.one_line.has_tooltip{ :id => token }
+  = work_unit_row_tag(work_unit, token, :one_line) do
     %td= short_name_with_client(work_unit.try(:project))
     %td.numeric= truncate(work_unit.notes, :length => 25, :omission => '...')
     %td.numeric
