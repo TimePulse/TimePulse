@@ -6,6 +6,9 @@ if ENV["CODECLIMATE_REPO_TOKEN"]
   CodeClimate::TestReporter.start
 end
 
+require 'simplecov'
+SimpleCov.start 'rails'
+
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 
