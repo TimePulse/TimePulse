@@ -1,8 +1,6 @@
-require 'authenticated_system'
 require 'ajax_flash'
 
 class ApplicationController < ActionController::Base
-  include AuthenticatedSystem
   include AJAXFlash
 
   protect_from_forgery
