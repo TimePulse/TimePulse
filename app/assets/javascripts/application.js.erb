@@ -52,6 +52,7 @@ Ninja.behavior({
     '.fix_work_unit_button': Ninja.submitsAsAjax(),
     '*[data-remote=true]': Ninja.submitsAsAjax(),
     '#debug':        Ninja.suppressChangeEvents(),
+    '.selectboxit':  Ninja.suppressChangeEvents(),
     '#task_elapsed':  Ninja.suppressChangeEvents(),
     '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
     '.datetime_entry': {
