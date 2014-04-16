@@ -1,7 +1,7 @@
-- set_headline "Listing invoices"
+- set_headline "Listing Invoices"
 
-= link_to 'New invoice', new_invoice_path
-%br
+.button-wrap
+  = link_to 'New Invoice', new_invoice_path, class: 'button radius'
 
 = tabbed_panel do |tp|
   = tp.add_tab("Unpaid") do

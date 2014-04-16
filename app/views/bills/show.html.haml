@@ -1,7 +1,11 @@
 - set_headline "Bill for #{@bill.user.name}"
-          
+
+.button-wrap
+  = link_to 'Edit', edit_bill_path(@bill), class: 'button radius'
+  = link_to 'Back to List', bills_path, class: 'button radius'
+
 %h2 Overview
-%table.listing  
+%table.listing
   %tr
     %th Created:
     %td= @bill.created_at.to_s(:date)
@@ -20,15 +24,15 @@
   %tr
     %th Notes
     %td= @bill.notes
-      
+
 %h2 Hours Report:
-%table.listing 
-  %tr 
+%table.listing
+  %tr
     %th Project
-    %th Hours       
+    %th Hours
     - sanity_sum = 0
     - @bill.work_units.collect{ |wu| wu.project if wu.project.clockable }.uniq.each do |proj|
-      - hrs = ProjectWorkQuery.new(@bill.work_units).find_for_project(proj).sum(:hours) 
+      - hrs = ProjectWorkQuery.new(@bill.work_units).find_for_project(proj).sum(:hours)
       - sanity_sum += hrs
       %tr
         %td
@@ -38,19 +42,15 @@
       %td
         %b Total
       %td
-        %b= sanity_sum       
-        
+        %b= sanity_sum
+
 %h2 Work Unit Details:
 %table.listing
   - @bill.work_units.each do |wu|
-    = content_tag_for(:tr, wu) do        
+    = content_tag_for(:tr, wu) do
       %td.nobr
-        %b= wu.hours    
+        %b= wu.hours
       %td
         = project_name_with_client(wu.project)
       %td= wu.notes
-      %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)                                                          
-
-= link_to 'Edit', edit_bill_path(@bill)
-|
-= link_to 'Back', bills_path
+      %td.nobr= wu.start_time.try(:to_s, :short_date_and_time)

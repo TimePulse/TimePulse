@@ -1,4 +1,4 @@
-%nav#nav.top-bar.contain-to-grid
+%nav#nav.top-bar.contain-to-grid(data-topbar)
   %ul.title-area
     %li.name
       %h1= link_to "LOGICAL TIME TRACKER", root_path, :class => 'logo'
@@ -8,7 +8,6 @@
 
   %section.top-bar-section
     %ul.right
-      %li.toggle-topbar
       %li= link_to("Dashboard", root_path)
       - if current_user and current_user.admin?
         - items = ["Users", users_path], ["Clients", clients_path], ["Invoices", invoices_path], ["Bills", bills_path ], ["Projects", projects_path], ["Project Reports", new_project_report_path]

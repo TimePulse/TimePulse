@@ -1,8 +1,7 @@
-- set_headline "New invoice"
+- set_headline "New Invoice"
 
-= link_to 'Show', @invoice
-|
-= link_to 'Back to List', invoices_path
+.button-wrap
+  = link_to 'Back to List', invoices_path, class: 'button radius'
 
 = page_block "Invoice Parameters" do
   = form_tag new_invoice_path, :method => 'get' do
