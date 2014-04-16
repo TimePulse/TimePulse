@@ -30,11 +30,11 @@ shared_steps "for an invoicing task" do |opt_hash|
 
   it "should go to invoices" do
     click_link "Invoices"
-    page.should have_link("New invoice")
+    page.should have_link("New Invoice")
   end
 
   it "should create a new invoice for client" do
-    click_link "New invoice"
+    click_link "New Invoice"
     page.select project.client.name
     click_button "Set Parameters"
   end

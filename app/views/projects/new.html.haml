@@ -1,5 +1,6 @@
 - set_headline "New Project"
 
-= render :partial => 'form'
+.button-wrap
+  = link_to 'Back to List', projects_path, class: 'button radius'
 
-= link_to 'Back', projects_path 
+= render :partial => 'form'

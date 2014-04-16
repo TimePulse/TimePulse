@@ -1,8 +1,7 @@
-- set_headline "New bill"
+- set_headline "New Bill"
 
-= link_to 'Show', @bill
-|
-= link_to 'Back to List', bills_path
+.button-wrap
+  = link_to 'Back to List', bills_path, class: 'button radius'
 
 = page_block "Bill Parameters" do
   = form_tag new_bill_path, :method => 'get' do

@@ -6,7 +6,7 @@ shared_steps "for an editing task" do |opt_hash|
   let :admin do
     FactoryGirl.create(:admin)
   end
-  
+
   let :project do
     FactoryGirl.create(:project)
   end
@@ -18,7 +18,7 @@ shared_steps "for an editing task" do |opt_hash|
     let! "work_unit_#{idx}" do
       FactoryGirl.create(:work_unit, :user => admin, :project => project)
     end
-    
+
   end
 
   it "should login as an admin" do
@@ -38,7 +38,7 @@ steps "Edit a work unit from the home page", :type => :feature do
     page.find(:css, "#recent_work a[href='/work_units/#{work_unit_0.id}/edit']").click
     click_button 'Submit'
   end
-  
+
   it "should forward back to the home page" do
     current_path.should eq(root_path)
   end
@@ -49,15 +49,15 @@ steps "Edit a work unit from the new invoice page", :type => :feature do
 
   it "click to edit and save a work unit" do
     click_link "Invoices"
-    click_link "New invoice"
+    click_link "New Invoice"
     page.select project.client.name
     click_button "Set Parameters"
     page.find(:css, "a[href='/work_units/#{work_unit_0.id}/edit']").click
     click_button 'Submit'
   end
-  
+
   it "should forward back to the new invoice page" do
-    page.should have_content("New invoice")
+    page.should have_content("New Invoice")
     page.should_not have_content("Listing invoices")
   end
 end
