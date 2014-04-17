@@ -1,2 +1,6 @@
 - set_headline "New User"
-= render :partial => 'form' 
+
+.button-wrap
+  = link_to 'Back to List', users_path, class: 'button radius'
+
+= render :partial => 'form'
