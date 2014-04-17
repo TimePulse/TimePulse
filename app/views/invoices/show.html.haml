@@ -1,5 +1,11 @@
 - set_headline "Invoice for #{@invoice.client.name}"
 
+.button-wrap
+  = link_to 'Edit', edit_invoice_path(@invoice), class: 'button radius'
+  = link_to 'Back to List', invoices_path, class: 'button radius'
+  = link_to 'View Report', invoice_report_path(@invoice), class: 'button radius'
+  = link_to 'Print Report', "#", :class => "print-report-button", :"data-print-target" => "print_iframe", class: 'button radius'
+
 %h2 Overview
 %table.listing
   %tr
@@ -28,15 +34,5 @@
 %hr
 
 = render :partial => 'invoice_details'
-
-%p
-  = link_to 'View Report', invoice_report_path(@invoice)
-  |
-  = link_to 'Print Report', "#", :class => "print-report-button", :"data-print-target" => "print_iframe"
-
-
-= link_to 'Edit', edit_invoice_path(@invoice)
-|
-= link_to 'Back', invoices_path
 
 %iframe#print_iframe{:name => "print_iframe", :src => invoice_report_path(@invoice.id)}
