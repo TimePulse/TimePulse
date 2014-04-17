@@ -1,8 +1,8 @@
-- set_headline "Editing invoice"
+- set_headline "Editing Invoice"
 
-= link_to 'Show', @invoice
-|
-= link_to 'Back to List', invoices_path
+.button-wrap
+  = link_to 'Show', @invoice, class: 'button radius'
+  = link_to 'Back to List', invoices_path, class: 'button radius'
 
 = render :partial => "form"
 
