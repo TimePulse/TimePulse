@@ -1,6 +1,6 @@
 - set_headline "Editing Project #{@project.name}"
 
-= render :partial => 'form'
+.button-wrap
+  = link_to 'Back', projects_path, class: 'button radius'
 
-= link_to 'Show', @project |
-= link_to 'Back', projects_path 
+= render :partial => 'form'
