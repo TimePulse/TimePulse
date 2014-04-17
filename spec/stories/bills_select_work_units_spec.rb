@@ -26,11 +26,11 @@ shared_steps "for an billing task" do |opt_hash|
 
   it "should go to bills" do
     click_link "Bills"
-    page.should have_link("New bill")
+    page.should have_link("New Bill")
   end
 
   it "should create a new bills for client" do
-    click_link "New bill"
+    click_link "New Bill"
     page.select "#{admin.name} - (#{admin.work_units.unbilled.completed.billable.sum(:hours)})"
     click_button "Set Parameters"
   end
@@ -39,7 +39,7 @@ end
 shared_steps "to verify bill is visible" do
 
   it "when I got back to the index" do
-    click_link("Back")
+    click_link("Back to List")
   end
 
   it "should be visible from bills index" do

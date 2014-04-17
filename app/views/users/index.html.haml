@@ -1,3 +1,8 @@
+- set_headline  "Listing Users"
+
+.button-wrap
+  = link_to_if_admin_authorized("New User", new_user_path, class: 'button radius')
+
 %table.listing
   %tr
     %th Name
@@ -9,5 +14,3 @@
       %td= user.email
       %td= user.current_project.try(:name) || "(none)"
       %td= link_to_if_owner_authorized(user, "Edit", edit_user_path(user), class: 'actions edit') {}
-
-= link_to_if_admin_authorized("New User", new_user_path)

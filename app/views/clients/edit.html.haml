@@ -1,6 +1,7 @@
 - set_headline "Edit Client: #{@client.name}"
 
+.button-wrap
+  = link_to 'Back to List', clients_path, class: 'button radius'
+
 = render :partial => "form"
 
-= link_to 'Show', @client
-= link_to 'Back', clients_path

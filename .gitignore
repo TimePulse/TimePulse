@@ -61,3 +61,4 @@ db_backups/
 errors.err
 .rspec-local
 .ctrlp-root
+apache-passenger.conf
