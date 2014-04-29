@@ -17,6 +17,7 @@ TimePulse::Application.routes.draw do
 
   resource :github, :only => [:create], :controller => 'github'
   resource :pivotal, :only => [:create], :controller => 'pivotal'
+  resource :user_preferences, :only => [ :edit, :update ]
 
   # TODO: Reenable these once LAz is working
   # match '/forbid' => 'permissions#destroy', :as => :forbid, :via => delete
