@@ -48,7 +48,7 @@ group :development, :test do
   gem 'cadre'
   gem "populator"
   gem "faker"
-  # gem "byebug"
+  gem "byebug"
 end
 
 group :test do

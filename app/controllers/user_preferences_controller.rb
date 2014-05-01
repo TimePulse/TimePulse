@@ -1,21 +1,11 @@
-class UsersPreferencesController < Devise::RegistrationsController
+class UserPreferencesController < ApplicationController
 
   def edit
-
+    @user_preferences = UserPreferences
   end
 
   def update
-    if current_user.admin?
-      if params[:user][:admin]
-        @user.update_attribute( :admin, params[:user][:admin] )
-      end
-      if params[:user][:inactive]
-        @user.update_attribute( :inactive, params[:user][:inactive] )
-      end
-    end
-    @user.update_attributes(params[:user])
+    @user.update_attribute( :recent_projects_count, params[:user][:user_preferences] )
+    render :action => :edit
   end
-  render :action => :edit
-end
-
 end
