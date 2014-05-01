@@ -7,5 +7,7 @@ class CreateUserPreferences < ActiveRecord::Migration
 
       t.timestamps
     end
+    #TODO  make a UserPreferences object for each User and save it.
+    # also .... each one shold start with the default value fo recent_projects_count
   end
 end
