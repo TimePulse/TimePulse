@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 3.2.17'
+gem 'rails', '~> 4.0.3'
 gem 'rack'
 
 gem 'rake'
@@ -23,12 +23,11 @@ gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivo
 gem 'active_model_serializers'
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails',   '~> 4.0'
   gem 'uglifier', '>= 1.0.3'
 
   gem 'zurb-foundation', '~> 4.0.0'
   gem 'quiet_assets'
-  gem 'turbo-sprockets-rails3'
   gem 'compass-rails'
 end
 
