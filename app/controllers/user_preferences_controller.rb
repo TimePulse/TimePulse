@@ -1,11 +1,16 @@
 class UserPreferencesController < ApplicationController
 
   def edit
-    @user_preferences = UserPreferences
+    @user = current_user
+    @user_preferences = @user.user_preferences
   end
 
   def update
-    @user.update_attribute( :recent_projects_count, params[:user][:user_preferences] )
+    @user = current_user
+    @user_preferences = @user.user_preferences
+    @user_preferences.update_attribute( :recent_projects_count, params[:user_preferences][:recent_projects_count] )
+    flash[:notice] = "Preferences updated!"
     render :action => :edit
   end
+
 end
