@@ -20,6 +20,7 @@ gem 'i18n_alchemy'
 gem 'virtus'
 gem 'github_api', "~> 0.11.1"
 gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
+gem 'active_model_serializers'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -58,6 +59,7 @@ group :test do
   gem 'fakeweb'
   gem 'timecop'
   gem "codeclimate-test-reporter", :require => nil
+  gem 'json_spec'
 end
 
 group :development do

@@ -29,6 +29,8 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
+    active_model_serializers (0.8.1)
+      activemodel (>= 3.0)
     activemodel (3.2.17)
       activesupport (= 3.2.17)
       builder (~> 3.0.0)
@@ -149,6 +151,9 @@ GEM
     ice_nine (0.10.0)
     journey (1.0.4)
     json (1.8.1)
+    json_spec (1.1.1)
+      multi_json (~> 1.0)
+      rspec (~> 2.0)
     jwt (0.1.8)
       multi_json (>= 1.5)
     kgio (2.8.1)
@@ -316,6 +321,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_model_serializers
   activerecord
   annotate
   awesome_nested_set
@@ -336,6 +342,7 @@ DEPENDENCIES
   github_api (~> 0.11.1)
   haml-rails
   i18n_alchemy
+  json_spec
   launchy
   logical-insight
   logical_tabs
