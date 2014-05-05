@@ -42,13 +42,13 @@ describe WorkUnitsController do
         get :edit, :id => @work_unit.id
         assigns[:work_unit].should == @work_unit
       end
-      
+
       it "should store the url in session" do
         get :edit, :id => @work_unit.id
         session[:return_to].should eq "/previous/page"
       end
     end
-    
+
 
     ########################################################################################
     #                                      POST CREATE
@@ -169,49 +169,85 @@ describe WorkUnitsController do
           }
         end
 
-        it "should create a new work_unit in the database" do
-          lambda do
+        context "with html or js request content type" do
+
+          it "should create a new work_unit in the database" do
+            lambda do
+              post :create, :work_unit => @valid_create_params
+            end.should change(WorkUnit, :count).by(1)
+          end
+
+          it "should expose a saved work_unit as @work_unit" do
             post :create, :work_unit => @valid_create_params
-          end.should change(WorkUnit, :count).by(1)
-        end
+            assigns[:work_unit].should be_a(WorkUnit)
+          end
 
-        it "should expose a saved work_unit as @work_unit" do
-          post :create, :work_unit => @valid_create_params
-          assigns[:work_unit].should be_a(WorkUnit)
-        end
+          it "should save the newly created work_unit as @work_unit" do
+            post :create, :work_unit => @valid_create_params
+            assigns[:work_unit].should_not be_new_record
+          end
 
-        it "should save the newly created work_unit as @work_unit" do
-          post :create, :work_unit => @valid_create_params
-          assigns[:work_unit].should_not be_new_record
-        end
+          it "should redirect to the created work_unit" do
+            post :create, :work_unit => @valid_create_params
+            new_work_unit = assigns[:work_unit]
+            response.should redirect_to(work_unit_url(new_work_unit))
+          end
 
-        it "should redirect to the created work_unit" do
-          post :create, :work_unit => @valid_create_params
-          new_work_unit = assigns[:work_unit]
-          response.should redirect_to(work_unit_url(new_work_unit))
-        end
+          it "should set the work_unit's user to the current user" do
+            post :create, :work_unit => @valid_create_params
+            assigns[:work_unit].user.should == @user
+          end
+          describe "and hours in HH:MM format" do
+            it "should set the hours correctli" do
+              post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")
+              assigns[:work_unit].hours.should == 4.25
+            end
+          end
 
-        it "should set the work_unit's user to the current user" do
-          post :create, :work_unit => @valid_create_params
-          assigns[:work_unit].user.should == @user
-        end
-        describe "and hours in HH:MM format" do
-          it "should set the hours correctli" do
-            post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")
-            assigns[:work_unit].hours.should == 4.25
+          describe "and JS accept type" do
+            before do
+              request.env['HTTP_ACCEPT'] = 'application/javascript'
+              @user.current_project = project
+              @user.save
+            end
+            it "should set the work units list" do
+              post :create, :work_unit => @valid_create_params
+              assigns(:work_units).should ==  @user.completed_work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1)
+            end
           end
         end
 
-        describe "and JS accept type" do
+        context "with json request content type" do
+          # let :study_values do { :some => 'values' } end
+          let :json_body    do @valid_create_params.to_json end
+          let :work_unit    do FactoryGirl.build_stubbed(:work_unit) end
+
           before do
-            request.env['HTTP_ACCEPT'] = 'application/javascript'
-            @user.current_project = project
-            @user.save
+            request.headers['HTTP_ACCEPT'] = 'application/json'
+            request.headers['Content-Type'] = 'application/json'
+            WorkUnitMapper.stub(:new).and_return(mapper)
+            mapper.stub(:save).and_return(work_unit)
           end
-          it "should set the work units list" do
-            post :create, :work_unit => @valid_create_params
-            assigns(:work_units).should ==  @user.completed_work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1)
+
+          context "successful create" do
+            let :mapper do
+              double(WorkUnitMapper, :save => true)
+            end
+
+            it "instantiates and saves a mapper" do
+              WorkUnitMapper.should_receive(:new).with(json_body)
+              mapper.should_receive(:save)
+              post :create, json_body, "CONTENT_TYPE" => 'application/json'
+            end
           end
+
+          # describe "and JSON format type" do
+          #   it "should respond with json" do
+          #     post :create, :work_unit => @valid_create_params, :format => :json
+          #     response.body.should have_json_path("work_unit/billable")
+          #     be_json_eql
+          #   end
+          # end
         end
       end
 
@@ -255,7 +291,7 @@ describe WorkUnitsController do
       before do
         session[:return_to] = root_path
       end
-      
+
       describe "for a work unit with a start time and calculate = true" do
         before do
           @start = @local_tz.now - 2.5.hours

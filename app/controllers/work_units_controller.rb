@@ -10,6 +10,11 @@ class WorkUnitsController < WorkUnitBaseController
 
   # GET /work_units/1
   def show
+    @work_unit = WorkUnit.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render :json => @work_unit }
+    end
   end
 
   # GET /work_units/new
@@ -26,7 +31,13 @@ class WorkUnitsController < WorkUnitBaseController
   def create
     parse_date_params
 
-    @work_unit = WorkUnit.new(params[:work_unit])
+    if request.format.to_s == 'text/html' || request.format.to_s == 'text/javascript'
+      @work_unit = WorkUnit.new(params[:work_unit])
+    elsif request.format.to_s == 'application/json'
+      pp request
+      mapper = WorkUnitMapper.new(request.body.read)
+      @work_unit = mapper.save
+    end
     add_project
 
     @work_unit.user = current_user
@@ -43,6 +54,7 @@ class WorkUnitsController < WorkUnitBaseController
           @work_unit = WorkUnit.new
           @work_units = current_user.completed_work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil)
         }
+        format.json { render json: @work_unit }
       else
         format.html { render :action => "new" }
         format.js
