@@ -1,0 +1,5 @@
+- set_headline "Edit Preferences"
+<br>
+= form_for @user_preferences, url: user_preferences_path do |f|
+  = f.labeled_input :recent_projects_count
+  = f.unlabeled_submit "Submit"

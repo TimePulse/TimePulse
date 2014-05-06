@@ -11,6 +11,7 @@ class UsersController < Devise::RegistrationsController
   def create
     admin = params.delete(:admin)
     @user = User.new(params[:user])
+    @user.build_user_preferences
     if admin
       user.admin = true
     end

@@ -56,6 +56,9 @@ GEM
     backports (3.3.5)
     bcrypt-ruby (3.1.2)
     builder (3.0.4)
+    byebug (2.5.0)
+      columnize (~> 0.3.6)
+      debugger-linecache (~> 1.2.0)
     cadre (0.2.0)
       thor (~> 0.18.1)
       tilt (~> 1.0)
@@ -82,6 +85,7 @@ GEM
     coercible (0.2.0)
       backports (~> 3.0, >= 3.1.0)
       descendants_tracker (~> 0.0.1)
+    columnize (0.3.6)
     compass (0.12.2)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -92,6 +96,7 @@ GEM
       safe_yaml (~> 0.9.0)
     daemons (1.1.9)
     database_cleaner (1.2.0)
+    debugger-linecache (1.2.0)
     descendants_tracker (0.0.3)
     devise (3.1.1)
       bcrypt-ruby (~> 3.0)
@@ -179,6 +184,7 @@ GEM
     net-ssh (2.7.0)
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
+    newrelic_rpm (3.8.0.218)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
     nokogiri-happymapper (0.5.8)
@@ -319,6 +325,7 @@ DEPENDENCIES
   activerecord
   annotate
   awesome_nested_set
+  byebug
   cadre
   capistrano (< 3.0)
   capistrano-ext
@@ -342,6 +349,7 @@ DEPENDENCIES
   lrd_view_tools
   mizugumo
   mysql2 (~> 0.3.10)
+  newrelic_rpm
   pivotal-github
   pivotal-tracker (= 0.5.14)!
   poltergeist

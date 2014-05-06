@@ -20,6 +20,7 @@ gem 'i18n_alchemy'
 gem 'virtus'
 gem 'github_api', "~> 0.11.1"
 gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
+gem 'newrelic_rpm'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -47,7 +48,7 @@ group :development, :test do
   gem 'cadre'
   gem "populator"
   gem "faker"
-  # gem "byebug"
+  gem "byebug"
 end
 
 group :test do
