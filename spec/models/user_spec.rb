@@ -240,8 +240,6 @@ describe User do
       WorkUnit.stub_chain(:user_work_units, :most_recent).and_return(work_units)
       # user.stub_chain(:user_preferences, :recent_projects_count).and_return(8)
       Project.stub(:find).and_return(projects)
-      debugger
-      " "
     end
 
     it "returns items with unique projects" do
