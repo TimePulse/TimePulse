@@ -3,7 +3,6 @@ require "spec_helper"
 describe UserPreferencesController do
   before do
     @user = authenticate(:user)
-    # @user.create_user_preferences
   end
 
   describe "PUT update" do

@@ -57,8 +57,8 @@ class User < ActiveRecord::Base
   end
 
   def recent_projects
-     @wu_list = WorkUnit.user_work_units(self).most_recent(100)
-     @pid_list = @wu_list.collect{ |w| w.project_id }.uniq[0..4]
+     @wu_list = (WorkUnit.user_work_units(self).most_recent(100))
+     @pid_list = @wu_list.collect{ |w| w.project_id }.uniq[0..(self.user_preferences.recent_projects_count-1)]
      Project.find(@pid_list).sort_by{ |proj| @pid_list.index(proj.id) }
   end
 
