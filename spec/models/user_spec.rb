@@ -238,16 +238,15 @@ describe User do
 
     before do
       WorkUnit.stub_chain(:user_work_units, :most_recent).and_return(work_units)
-      # user.stub_chain(:user_preferences, :recent_projects_count).and_return(8)
       Project.stub(:find).and_return(projects)
     end
 
     it "returns items with unique projects" do
-      user.recent_projects.uniq.count == user.user_preferences.recent_projects_count
+      user.recent_projects.uniq.count.should == user.recent_projects.count.should
     end
 
     it "gives back the number specified by the user preferences" do
-      user.recent_projects == user.user_preferences.recent_projects_count
+      user.recent_projects.count.should == user.user_preferences.recent_projects_count
     end
   end
 end
