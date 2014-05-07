@@ -10,11 +10,11 @@ class InvoiceReport
   end
 
   def users(scope = self.work_units)
-    scope.all.map{|wu| wu.user}.uniq
+    scope.to_a.map{|wu| wu.user}.uniq
   end
 
   def days
-    work_units.all.map{ |wu| wu.start_time.to_date }.uniq.sort
+    work_units.to_a.map{ |wu| wu.start_time.to_date }.uniq.sort
   end
 
   def build_report
@@ -53,7 +53,7 @@ class InvoiceReport
       start_time = work_unit.start_time.advance(:minutes => -15)
       stop_time = work_unit.stop_time.advance(:minutes => 15)
       commits = work_unit.user.git_commits_for(work_unit.project).where("time >= ? and time <= ?", start_time, stop_time)
-      commits.all.map do |commit|
+      commits.to_a.map do |commit|
         truncate(commit.reference_1, :length => 10) + " \"#{commit.description}\""
       end
     end
@@ -62,7 +62,7 @@ class InvoiceReport
       start_time = work_unit.start_time.advance(:minutes => -15)
       stop_time = work_unit.stop_time.advance(:minutes => 15)
       pivotal_updates = work_unit.user.pivotal_updates_for(work_unit.project).story_changes.where("time >= ? and time <= ?", start_time, stop_time)
-      pivotal_updates.all.map do |pivotal|
+      pivotal_updates.to_a.map do |pivotal|
         truncate(pivotal.reference_1, :length => 10) + " #{pivotal.description}"
       end
     end

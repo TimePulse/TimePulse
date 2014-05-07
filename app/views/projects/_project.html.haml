@@ -8,6 +8,6 @@
   %td
     = link_to_if_admin_authorized 'Show', node, class: 'actions show'
     = link_to_if_admin_authorized 'Edit', edit_project_path(node), class: 'actions edit'
-    = link_to_if_admin_authorized 'Destroy', node, :confirm => 'Are you sure?', :method => :delete, class: 'actions delete'
+    = link_to_if_admin_authorized 'Destroy', node, data: { confirm: 'Are you sure?' }, :method => :delete, class: 'actions delete'
 - if defined? children
   = children

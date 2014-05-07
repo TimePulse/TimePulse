@@ -8,7 +8,7 @@ module InvoicesHelper
   end
 
   def client_selector_array_with_hours
-    @client_array ||= Client.find(:all).collect{ |c| [
+    @client_array ||= Client.all.to_a.collect{ |c| [
        "#{c.name} - (#{WorkUnit.for_client(c).uninvoiced.completed.billable.sum(:hours)}) ",
        c.id
     ]}
