@@ -197,6 +197,7 @@ describe WorkUnitsController do
             post :create, :work_unit => @valid_create_params
             assigns[:work_unit].user.should == @user
           end
+
           describe "and hours in HH:MM format" do
             it "should set the hours correctli" do
               post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")
@@ -250,6 +251,7 @@ describe WorkUnitsController do
           #   end
           # end
         end
+      end
 
       describe "with invalid params" do
         def invalid_create_params
