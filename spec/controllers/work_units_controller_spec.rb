@@ -42,13 +42,13 @@ describe WorkUnitsController do
         get :edit, :id => @work_unit.id
         assigns[:work_unit].should == @work_unit
       end
-      
+
       it "should store the url in session" do
         get :edit, :id => @work_unit.id
         session[:return_to].should eq "/previous/page"
       end
     end
-    
+
 
     ########################################################################################
     #                                      POST CREATE
@@ -195,25 +195,24 @@ describe WorkUnitsController do
           post :create, :work_unit => @valid_create_params
           assigns[:work_unit].user.should == @user
         end
+
         describe "and hours in HH:MM format" do
           it "should set the hours correctli" do
             post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")
             assigns[:work_unit].hours.should == 4.25
-          end
-        end
 
-        describe "and JS accept type" do
-          before do
-            request.env['HTTP_ACCEPT'] = 'application/javascript'
-            @user.current_project = project
-            @user.save
-          end
-          it "should set the work units list" do
-            post :create, :work_unit => @valid_create_params
-            assigns(:work_units).should ==  @user.completed_work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1)
+          describe "and JS accept type" do
+            before do
+              request.env['HTTP_ACCEPT'] = 'application/javascript'
+              @user.current_project = project
+              @user.save
+            end
+            it "should set the work units list" do
+              post :create, :work_unit => @valid_create_params
+              assigns(:work_units).should ==  @user.completed_work_units_for(@user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => 1)
+            end
           end
         end
-      end
 
       describe "with invalid params" do
         def invalid_create_params
@@ -255,7 +254,7 @@ describe WorkUnitsController do
       before do
         session[:return_to] = root_path
       end
-      
+
       describe "for a work unit with a start time and calculate = true" do
         before do
           @start = @local_tz.now - 2.5.hours
