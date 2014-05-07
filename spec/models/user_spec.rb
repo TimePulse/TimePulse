@@ -205,4 +205,51 @@ describe User do
       @user.rate_for(@project).should == @rate
     end
   end
+
+  describe "user_preferences" do
+    before :each do
+      @user = FactoryGirl.create(:user)
+    end
+
+    it "should change a user's recent_projects preference" do
+      @user.user_preferences.recent_projects_count.should == 5
+    end
+  end
+
+  describe "recent_projects" do
+
+    let :user do FactoryGirl.create(:user) end
+
+    let! :projects do
+      array_of_projects = []
+      5.times do
+        array_of_projects << FactoryGirl.build_stubbed(:project)
+      end
+      array_of_projects
+    end
+
+    let :work_units do
+      array = []
+      20.times do |nn|
+        array << FactoryGirl.build_stubbed(:work_unit, :user => user, :project => projects[nn % 5])
+      end
+      array
+    end
+
+    before do
+      WorkUnit.stub_chain(:user_work_units, :most_recent).and_return(work_units)
+      # user.stub_chain(:user_preferences, :recent_projects_count).and_return(8)
+      Project.stub(:find).and_return(projects)
+      debugger
+      " "
+    end
+
+    it "returns items with unique projects" do
+      user.recent_projects.uniq.count == user.user_preferences.recent_projects_count
+    end
+
+    it "gives back the number specified by the user preferences" do
+      user.recent_projects == user.user_preferences.recent_projects_count
+    end
+  end
 end
