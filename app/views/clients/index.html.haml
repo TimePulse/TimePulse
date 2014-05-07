@@ -16,4 +16,4 @@
       %td
         = link_to_if_admin_authorized('Show', client, class: 'actions show') {}
         = link_to_if_admin_authorized('Edit', edit_client_path(client), class: 'actions edit') {}
-        = link_to_if_admin_authorized('Destroy', client, :confirm => 'Are you sure?', :method => :delete, class: 'actions delete') {}
+        = link_to_if_admin_authorized('Destroy', client, data: { confirm: 'Are you sure?' }, :method => :delete, class: 'actions delete') {}

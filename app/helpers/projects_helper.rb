@@ -17,7 +17,7 @@ module ProjectsHelper
   end
 
   def client_selector_array
-    @client_array ||= Client.find(:all).collect{ |c| [c.name, c.id] }
+    @client_array ||= Client.all.to_a.collect{ |c| [c.name, c.id] }
   end
 
   def project_name_with_client(project, short=false)
