@@ -25,8 +25,13 @@ class WorkUnitsController < WorkUnitBaseController
   # POST /work_units
   def create
     parse_date_params
-
-    @work_unit = WorkUnit.new(params[:work_unit])
+    if request.format.to_s == 'text/html' || request.format.to_s == 'text/javascript'
+      @work_unit = WorkUnit.new(params[:work_unit])
+    elsif request.format.to_s == 'application/json'
+      pp request
+      mapper = WorkUnitMapper.new(request.body.read)
+      @work_unit = mapper.save
+    end
     add_project
 
     @work_unit.user = current_user
