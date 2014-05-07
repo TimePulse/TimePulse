@@ -17,9 +17,10 @@ class Bill < ActiveRecord::Base
   belongs_to :user
   has_many :work_units
 
-  scope :overdue, lambda { { :conditions => [ "paid_on IS NULL AND due_on < ? ", Date.today ] } }
-  scope :unpaid,  :conditions => { :paid_on => nil }
-  scope :paid, :conditions => "paid_on IS NOT NULL"
+  scope :overdue, lambda { where("paid_on IS NULL AND due_on < ? ", Date.today) }
+  scope :unpaid,  lambda { where(:paid_on => nil) }
+
+  scope :paid, lambda { where("paid_on IS NOT NULL") }
 
   validates_presence_of :user_id
 
