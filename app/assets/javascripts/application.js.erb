@@ -112,6 +112,24 @@ Ninja.behavior({
         }
       }
     },
+    '#work_unit_notes': {
+      keyup: function(evnt, elem) {
+        content = $(elem).val();
+
+        content = content.replace(/\n/g, '<br>');
+        hiddenDiv.html('<br>' + content + '<br>');
+
+        $(elem).css('height', hiddenDiv.height());
+      },
+      transform: function(elem) {
+        hiddenDiv = $(document.createElement('div')),
+        content = null;
+
+        hiddenDiv.addClass('hiddendiv');
+
+        $('#timeclock').append(hiddenDiv);
+      }
+    },
     '#timeclock a#override_trigger': {
       click: function(evnt, elem) {
         $('#timeclock #override_trigger').hide();

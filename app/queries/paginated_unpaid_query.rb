@@ -1,7 +1,7 @@
 class PaginatedUnpaidQuery
 
   def find_for_page(page)
-    @relation.unpaid.paginate(:per_page => 10, :page => page, :order => "due_on DESC, created_at DESC")
+    @relation.unpaid.order(due_on: :desc, created_at: :desc).paginate(:per_page => 10, :page => page)
   end
 
 end

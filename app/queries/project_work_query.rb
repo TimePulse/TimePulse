@@ -1,6 +1,6 @@
 class ProjectWorkQuery < ProjectQuery
 
-  def initialize(relation = WorkUnit.scoped)
+  def initialize(relation = WorkUnit.all)
     @relation = relation
   end
 
