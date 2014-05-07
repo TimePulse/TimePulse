@@ -32,6 +32,7 @@ class WorkUnit < ActiveRecord::Base
   scope :unbillable, :conditions => { :billable => false }
 
   scope :user_work_units, lambda { |user| { :conditions => [ "user_id = ?", user.id]} }
+
   scope :most_recent, lambda { |number| { :limit => number, :order => "start_time DESC" }}
 
   scope :for_client, lambda { |client|
