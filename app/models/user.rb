@@ -34,6 +34,7 @@ class User < ActiveRecord::Base
   has_many :activities
   has_many :rates_users
   has_many :rates, :through => :rates_users
+  has_one  :user_preferences
 
   validates_presence_of :name, :email
 
