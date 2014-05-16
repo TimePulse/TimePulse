@@ -11,7 +11,7 @@ gem "mysql2", "~> 0.3.10"
 gem "activerecord"
 gem "lrd_view_tools"
 gem "logical_tabs"
-gem "awesome_nested_set"
+gem "awesome_nested_set", :github => "collectiveidea/awesome_nested_set"
 gem 'devise'
 gem "chronic"
 gem "logical-insight"
