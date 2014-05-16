@@ -37,8 +37,9 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name, :email
 
-  scope :inactive, :conditions => { :inactive => true  }
-  scope :active,   :conditions => { :inactive => false }
+  scope :inactive, lambda { where(inactive: true )  }
+
+  scope :active,   lambda { where(inactive: false)  }
 
   attr_accessible :login, :name, :email, :password, :password_confirmation, :github_user, :pivotal_name
 
@@ -56,9 +57,9 @@ class User < ActiveRecord::Base
   end
 
   def recent_projects
-     @wu_list = WorkUnit.user_work_units(self).most_recent(100)
-     @pid_list = @wu_list.collect{ |w| w.project_id }.uniq[0..4]
-     Project.find(@pid_list).sort_by{ |proj| @pid_list.index(proj.id) }
+    @wu_list = WorkUnit.user_work_units(self).most_recent(100)
+    @pid_list = @wu_list.collect{ |w| w.project_id }.uniq[0..4]
+    Project.find(@pid_list).sort_by{ |proj| @pid_list.index(proj.id) }
   end
 
   def recent_work_units

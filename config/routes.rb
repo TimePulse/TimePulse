@@ -28,14 +28,14 @@ TimePulse::Application.routes.draw do
   devise_for :users, :controllers => {:registrations => 'users' }
   devise_scope :user do
     get "/login" => "devise/sessions#new", :as => :login
-    match "/logout" => "devise/sessions#destroy", :as => :logout
+    get "/logout" => "devise/sessions#destroy", :as => :logout
     get "/users/new" => "users#new", :as => :new_user
     get "/users" => "users#index", :as => :users
     get "/users/:id" => "users#show", :as => :user
     get "/users/:id/edit" => "users#edit", :as => :edit_user
-    put "/users/:id" => "users#update", :as => :user
+    patch "/users/:id" => "users#update", :as => :update_user
   end
-  match '/fix_work_unit/:id' => 'work_unit_fixer#create', :as => :fix_work_unit
+  match '/fix_work_unit/:id' => 'work_unit_fixer#create', :as => :fix_work_unit, :via => :post
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
   match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete

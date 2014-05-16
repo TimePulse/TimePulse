@@ -15,7 +15,7 @@ class InvoicesController < ApplicationController
   # GET /invoices/new
   def new
     @invoice = Invoice.new(:due_on => Date.today + 21.days)
-    @clients = Client.find(:all, :order => 'abbreviation ASC')
+    @clients = Client.all.order('abbreviation asc')
     if params[:client_id]
       find_client
       @invoice.client = @client

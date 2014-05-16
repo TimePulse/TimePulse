@@ -2,7 +2,7 @@ class ProjectReportsController < ApplicationController
   before_filter :require_admin!
 
   def new
-    @projects = Project.find(:all)
+    @projects = Project.all
     if params[:project_id]
       find_project
       @work_units = WorkUnit.for_project(@project).completed.billable.uninvoiced.flatten.uniq

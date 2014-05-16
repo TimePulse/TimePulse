@@ -1,5 +1,5 @@
 class UnpaidInvoiceQuery < PaginatedUnpaidQuery
-  def initialize(relation = Invoice.scoped)
+  def initialize(relation = Invoice.all)
     @relation = relation
   end
 end
