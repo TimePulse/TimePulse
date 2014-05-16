@@ -32,8 +32,8 @@ class Project < ActiveRecord::Base
   has_many :rates
   accepts_nested_attributes_for :rates, :allow_destroy => true, :reject_if => lambda { |attr| attr['name'].blank? || attr['amount'].to_i < 1  }
 
-  scope :archived, :conditions => { :archived => true }
-  scope :unarchived, :conditions => { :archived => false }
+  scope :archived, lambda { where( :archived => true) }
+  scope :unarchived, lambda { where( :archived => false) }
   # default_scope :joins => :client
 
   validates_presence_of :name

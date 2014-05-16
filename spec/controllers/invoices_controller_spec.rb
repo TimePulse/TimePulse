@@ -84,7 +84,7 @@ describe InvoicesController do
         end
         it "should assign a list of clients" do
           get :new
-          assigns[:clients].should == Client.find(:all, :order => "abbreviation ASC")
+          assigns[:clients].should == Client.all.order("abbreviation asc")
         end
 
         describe "when a specific client is specified" do
