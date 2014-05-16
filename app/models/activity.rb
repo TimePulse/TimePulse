@@ -9,4 +9,3 @@ class Activity < ActiveRecord::Base
   scope :pivotal_updates, where(:source => "pivotal")
   scope :story_changes, where("reference_2 IS NOT NULL")
 end
-

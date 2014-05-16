@@ -17,4 +17,3 @@ shared_steps "log in" do
   end
 
 end
-
