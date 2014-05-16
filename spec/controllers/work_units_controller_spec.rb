@@ -42,13 +42,13 @@ describe WorkUnitsController do
         get :edit, :id => @work_unit.id
         assigns[:work_unit].should == @work_unit
       end
-      
+
       it "should store the url in session" do
         get :edit, :id => @work_unit.id
         session[:return_to].should eq "/previous/page"
       end
     end
-    
+
 
     ########################################################################################
     #                                      POST CREATE
@@ -255,7 +255,7 @@ describe WorkUnitsController do
       before do
         session[:return_to] = root_path
       end
-      
+
       describe "for a work unit with a start time and calculate = true" do
         before do
           @start = @local_tz.now - 2.5.hours

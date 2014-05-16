@@ -8,9 +8,9 @@ class ProjectReportsController < ApplicationController
       @work_units = WorkUnit.for_project(@project).completed.billable.uninvoiced.flatten.uniq
     end
   end
-  
+
   private
-  
+
   def find_project
     @project = Project.find_by_id(params[:project_id])
     unless @project
@@ -18,5 +18,5 @@ class ProjectReportsController < ApplicationController
       redirect_to :back
     end
   end
-  
+
 end
