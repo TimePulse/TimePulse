@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/collectiveidea/awesome_nested_set.git
+  revision: 515b7ac983e6a8dd49e5f759b98bd0ca30046d07
+  specs:
+    awesome_nested_set (3.0.0.rc.5)
+      activerecord (>= 4.0.0, < 5)
+
+GIT
   remote: https://github.com/hannahhoward/pivotal-tracker
   revision: 3c738617558e4734f261bc881688d2d4f83136ca
   specs:
@@ -51,8 +58,6 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     arel (4.0.2)
-    awesome_nested_set (2.1.6)
-      activerecord (>= 3.0.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
@@ -326,7 +331,7 @@ DEPENDENCIES
   active_model_serializers
   activerecord
   annotate
-  awesome_nested_set
+  awesome_nested_set!
   cadre
   capistrano (< 3.0)
   capistrano-ext
