@@ -9,11 +9,8 @@ class UsersController < Devise::RegistrationsController
   end
 
   def create
-    admin = params.delete(:admin)
-    @user = User.new(params[:user])
-    if admin
-      user.admin = true
-    end
+    @user = User.new(user_params)
+
     if @user.save
       flash[:notice] = "Account registered!"
       redirect_to user_path(@user)
@@ -35,15 +32,12 @@ class UsersController < Devise::RegistrationsController
   def update
     nil_unused_params
     if current_user.admin?
-      if params[:user][:admin]
-        @user.update_attribute( :admin, params[:user][:admin] )
-      end
-      if params[:user][:inactive]
-        @user.update_attribute( :inactive, params[:user][:inactive] )
-      end
+      @user.update(admin_user_params)
+    else
+      @user.update(user_params)
     end
-    add_current_project
-    if @user.update_attributes(params[:user])
+
+    if @user.save
       flash[:notice] = "Account updated!"
     end
     render :action => :edit
@@ -64,9 +58,32 @@ class UsersController < Devise::RegistrationsController
     require_owner!(@user)
   end
 
-  def add_current_project
-    if params[:user].has_key?(:current_project_id)
-      @user.current_project_id = params[:user].delete(:current_project_id)
-    end
+  def user_params
+    params.
+    require(:user).
+    permit(:login,
+      :name,
+      :email,
+      :password,
+      :password_confirmation,
+      :github_user,
+      :pivotal_name,
+      :current_project_id)
   end
+
+  def admin_user_params
+    params.
+    require(:user).
+    permit(:login,
+      :name,
+      :email,
+      :password,
+      :password_confirmation,
+      :github_user,
+      :pivotal_name,
+      :admin,
+      :inactive,
+      :current_project_id)
+  end
+
 end

@@ -24,7 +24,7 @@ gem 'newrelic_rpm'
 gem 'active_model_serializers'
 
 #for Rails 4 transition
-gem 'protected_attributes'
+# gem 'protected_attributes'
 gem 'rails-observers'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'

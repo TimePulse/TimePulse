@@ -1,7 +1,8 @@
 class Activity < ActiveRecord::Base
   belongs_to :user
   belongs_to :project
-  attr_accessible :description, :action, :reference_1, :reference_2, :reference_3, :source, :time
+  #TODO Need to replace this with strong params, but anticipating this model to be rewritten with the new archtitecture
+  # attr_accessible :description, :action, :reference_1, :reference_2, :reference_3, :source, :time
   validates_presence_of :project, :source
 
   scope :recent, lambda { order(:time => :desc).limit(8) }
