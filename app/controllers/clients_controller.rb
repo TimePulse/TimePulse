@@ -23,7 +23,7 @@ class ClientsController < ApplicationController
 
   # POST /clients
   def create
-    @client = Client.new(params[:client])
+    @client = Client.new(client_params)
 
     if @client.save
       flash[:notice] = 'Client was successfully created.'
@@ -38,7 +38,7 @@ class ClientsController < ApplicationController
   def update
     @client = Client.find(params[:id])
 
-    if @client.update_attributes(params[:client])
+    if @client.update(client_params)
       flash[:notice] = 'Client was successfully updated.'
       redirect_to(@client)
     else
@@ -53,4 +53,20 @@ class ClientsController < ApplicationController
 
     redirect_to(clients_url)
   end
+
+  private
+
+  def client_params
+    params.
+    require(:client).
+    permit(:name,
+      :billing_email,
+      :address_1,
+      :address_2,
+      :city,
+      :state,
+      :postal,
+      :abbreviation)
+  end
+
 end

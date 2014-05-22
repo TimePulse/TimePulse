@@ -56,7 +56,7 @@ class WorkUnit < ActiveRecord::Base
   scope :in_last, ->(num_days) {
     where("stop_time > ? ", (Time.zone.now - num_days.days).to_date)
   }
-  attr_accessible :notes, :start_time, :stop_time, :hours, :billable
+
   attr_accessor :time_zone
   belongs_to :user
   belongs_to :project

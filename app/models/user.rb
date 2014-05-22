@@ -41,8 +41,6 @@ class User < ActiveRecord::Base
 
   scope :active,   lambda { where(inactive: false)  }
 
-  attr_accessible :login, :name, :email, :password, :password_confirmation, :github_user, :pivotal_name
-
   def reset_current_work_unit
     @cwu = nil
   end
