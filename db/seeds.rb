@@ -14,5 +14,6 @@ user = User.create!(:login => 'admin',
 user.admin = true
 user.save
 user.confirm!
-
+up = UserPreferences.create!
+up.user = user
 Project.create(:name => 'root', :client => nil)

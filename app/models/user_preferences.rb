@@ -1,4 +1,10 @@
 class UserPreferences < ActiveRecord::Base
-   #TODO Need to replace this with strong params, but anticipating this model to be rewritten with the new archtitecture
-  # attr_accessible :recent_projects_count
+
+  belongs_to :user
+
+  before_save :default_values
+
+  def default_values
+    self.recent_projects_count ||= 5
+  end
 end

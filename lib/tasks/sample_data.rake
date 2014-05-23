@@ -50,20 +50,6 @@ namespace :db do
 
     # Load users
     task :populate_users => :environment do
-      user = User.where(:login => 'admin',
-                        :name => "Admin",
-                        :email => "admin@timepulse.io").first
-      unless user
-        user = User.unsafe_create!(:login => 'admin',
-                             :name => "Admin",
-                             :email => "admin@timepulse.io",
-                             :password => 'foobar',
-                             :password_confirmation => 'foobar')
-        user.admin = true
-        user.save
-        user.confirm!
-      end
-
       5.times do |i|
         generic_user = User.unsafe_create!(:login => "user#{i}",
                             :name => "User #{i}",
@@ -137,4 +123,3 @@ end
 def sometimes(p, &block)
   yield(block) if rand <= p
 end
-

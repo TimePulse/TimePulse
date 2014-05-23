@@ -1,28 +1,23 @@
-class UsersPreferencesController < Devise::RegistrationsController
+class UserPreferencesController < ApplicationController
 
   def edit
-
+    @user = current_user
+    @user_preferences = @user.user_preferences
   end
 
   def update
-    if current_user.admin?
+    @user_preferences = current_user.user_preferences
+    @user_preferences.update(user_preferences_params)
+    flash[:notice] = "Preferences updated!"
+    render :action => :edit
+  end
 
-      if params[:user][:admin]
-        @user.update_attribute( :admin, params[:user][:admin] )
-      end
+  private
 
-      if params[:user][:inactive]
-        @user.update_attribute( :inactive, params[:user][:inactive] )
-      end
-
-    else
-      @user.update_attributes(params[:user])
-    end
-
-    if @user.save
-      redirect_to root
-    else
-      render :action => :edit
-    end
+  def user_preferences_params
+    params.
+    require(:user_preferences).
+    permit(:recent_projects_count)
+  end
 
 end
