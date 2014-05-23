@@ -154,26 +154,40 @@ describe UsersController do
 
         response.should render_template('new')
       end
+
+      it "should be authorized" do
+        attributes =  FactoryGirl.attributes_for(:user)
+        post :create, :user => attributes
+        verify_authorization_successful
+      end
+
+      it "should assign admin to false by default" do
+        attributes =  FactoryGirl.attributes_for(:user)
+        post :create, :user => attributes
+        user = assigns[:user]
+        user.admin.should == false
+      end
+
+      it "should attach a UserPreferences to the created user" do
+        attributes =  FactoryGirl.attributes_for(:user)
+        post :create, :user => attributes
+        user = assigns[:user]
+        user.user_preferences.should_not be_nil
+      end
     end
 
-    it "should assign admin to false by default" do
-      attributes =  FactoryGirl.attributes_for(:user)
-      post :create, :user => attributes
-      verify_authorization_successful
-      user = assigns[:user]
-      user.admin.should == false
-    end
+    describe "update" do
+      it "can set the user to inactive" do
+        @other_user = FactoryGirl.create(:user)
+        put :update, :id => @other_user.id, :user => {:inactive => true}
+        @other_user.reload.should be_inactive
+      end
 
-    it "can set the user to inactive" do
-      @other_user = FactoryGirl.create(:user)
-      put :update, :id => @other_user.id, :user => {:inactive => true}
-      @other_user.reload.should be_inactive
-    end
-
-    it "can set the user as admin" do
-      @other_user = FactoryGirl.create(:user)
-      put :update, :id => @other_user.id, :user => {:admin => true}
-      @other_user.reload.should be_admin
+      it "can set the user as admin" do
+        @other_user = FactoryGirl.create(:user)
+        put :update, :id => @other_user.id, :user => {:admin => true}
+        @other_user.reload.should be_admin
+      end
     end
   end
 end

@@ -10,6 +10,7 @@ class UsersController < Devise::RegistrationsController
 
   def create
     @user = User.new(user_params)
+    @user.build_user_preferences
 
     if @user.save
       flash[:notice] = "Account registered!"

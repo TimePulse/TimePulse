@@ -20,9 +20,7 @@ class WorkUnit < ActiveRecord::Base
 
   scope :in_progress, lambda { where("hours IS NULL and start_time IS NOT NULL") }
   scope :completed, lambda { where("hours IS NOT NULL") }
-
   scope :recent, lambda { order(stop_time: :desc).limit(8) }
-
 
   scope :billable, lambda { where(:billable => true) }
 
@@ -41,12 +39,12 @@ class WorkUnit < ActiveRecord::Base
     order(start_time: :desc).limit(number)
   }
 
-  scope :for_client, ->(client) {
+  scope :for_client, lambda { |client|
     projects = client.projects.map{ |p| p.self_and_descendants.map{|q| q.id } }.flatten.uniq
     where(:project_id => projects)
   }
 
-  scope :for_project, ->(project) {
+  scope :for_project, lambda { |project|
     projects = project.self_and_descendants.map{ |q| q.id }.flatten.uniq
     where(:project_id => projects)
   }
