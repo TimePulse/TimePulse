@@ -32,10 +32,6 @@ GEM
       erubis (~> 2.7.0)
       rack (~> 1.5.2)
       rack-test (~> 0.6.2)
-    actionpack-action_caching (1.1.1)
-      actionpack (>= 4.0.0, < 5.0)
-    actionpack-page_caching (1.0.2)
-      actionpack (>= 4.0.0, < 5)
     active_model_serializers (0.8.1)
       activemodel (>= 3.0)
     activemodel (4.0.4)
@@ -231,8 +227,6 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.0.4)
       sprockets-rails (~> 2.0.0)
-    rails-observers (0.1.2)
-      activemodel (~> 4.0)
     railties (4.0.4)
       actionpack (= 4.0.4)
       activesupport (= 4.0.4)
@@ -329,8 +323,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  actionpack-action_caching
-  actionpack-page_caching
   active_model_serializers
   activerecord
   annotate
@@ -368,7 +360,6 @@ DEPENDENCIES
   quiet_assets
   rack
   rails (~> 4.0.3)
-  rails-observers
   rake
   rspec (~> 2.13.0)
   rspec-rails (~> 2.13.0)

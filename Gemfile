@@ -23,12 +23,6 @@ gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivo
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
 
-#for Rails 4 transition
-# gem 'protected_attributes'
-gem 'rails-observers'
-gem 'actionpack-page_caching'
-gem 'actionpack-action_caching'
-
 group :assets do
   gem 'sass-rails',   '~> 4.0'
   gem 'uglifier', '>= 1.0.3'
