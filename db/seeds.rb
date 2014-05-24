@@ -6,6 +6,8 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
+
+User.reset_column_information
 user = User.create!(:login => 'admin',
                      :name => "Admin",
                      :email => "admin@timepulse.io",

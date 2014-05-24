@@ -7,7 +7,8 @@ gem 'rake'
 gem "haml-rails"
 gem "mizugumo"
 gem "will_paginate"
-gem "mysql2", "~> 0.3.10"
+#gem "mysql2", "~> 0.3.10"
+gem 'pg'
 gem "activerecord"
 gem "lrd_view_tools"
 gem "logical_tabs"
