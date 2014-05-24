@@ -188,7 +188,6 @@ GEM
     multi_json (1.10.0)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
-    mysql2 (0.3.15)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-sftp (2.1.2)
@@ -208,6 +207,7 @@ GEM
       multi_xml (~> 0.5)
       rack (~> 1.2)
     orm_adapter (0.5.0)
+    pg (0.17.1)
     pivotal-github (1.2.2)
       git-utils
       nokogiri
@@ -361,8 +361,8 @@ DEPENDENCIES
   logical_tabs
   lrd_view_tools
   mizugumo
-  mysql2 (~> 0.3.10)
   newrelic_rpm
+  pg
   pivotal-github
   pivotal-tracker (= 0.5.14)!
   poltergeist
