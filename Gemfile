@@ -41,7 +41,7 @@ group :development, :test do
   gem 'thin'
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
-  # gem 'selenium-webdriver'
+  gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'rspec-steps'
   gem 'poltergeist'
