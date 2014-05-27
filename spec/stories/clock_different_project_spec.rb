@@ -48,7 +48,8 @@ steps "clock in and out on projects", :type => :feature do
 
   it "I click the clock for project 3 in the picker" do
     within "#picker" do
-      find_link("Clock in on [BAR] project 3").trigger('click')
+      page.execute_script('$("a.clock_in_on_project_3").trigger("click")')
+      # find_link("Clock in on [BAR] project 3").trigger('click')
     end
   end
 
@@ -73,11 +74,17 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "I click the clock for project 2 in the picker" do
-    page.find("#project_picker .clock_in_on_project_#{project_2.id}").trigger('click')
+    within "#project_2" do
+      # debugger
+      page.execute_script('$("a.clock_in_on_project_2").trigger("click")')
+      # debugger
+      # page.find("#project_picker .clock_in_on_project_#{project_2.id}").trigger('click')
+    end
   end
 
   it "should show project 2 in the timeclock" do
     within "#timeclock" do
+      # debugger
       page.should have_content(project_2.name)
     end
   end
@@ -90,10 +97,13 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "should have completed the previous work unit in the DB" do
+    # debugger
     @new_work_unit.reload.should be_completed
+    debugger
   end
 
   it "should have created an unfinished work unit in the DB" do
+    debugger
     WorkUnit.count.should == @work_unit_count + 2
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_nil
