@@ -10,7 +10,7 @@ end
 Capybara.default_driver = :poltergeist
 
 # uncomment to enable in-browser testing
-Capybara.default_driver = :selenium
+#Capybara.default_driver = :selenium
 module SaveAndOpenOnFail
   def instance_eval(&block)
     super(&block)
