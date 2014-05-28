@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "clock in and out on projects", :type => :feature do
+steps "clock in and out on projects", :type => :feature, :snapshots_into => "link" do
 
   let! :client_1 do
     FactoryGirl.create(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
@@ -48,9 +48,11 @@ steps "clock in and out on projects", :type => :feature do
 
   it "I click the clock for project 3 in the picker" do
     within "#picker" do
-      page.execute_script('$("a.clock_in_on_project_3").trigger("click")')
+      # page.execute_script('$("a.clock_in_on_project_3").trigger("click")')
       # find_link("Clock in on [BAR] project 3").trigger('click')
+      click_link("Clock in on [BAR] project 3")
     end
+
   end
 
   it "should show project 3 in the timeclock" do
@@ -76,7 +78,8 @@ steps "clock in and out on projects", :type => :feature do
   it "I click the clock for project 2 in the picker" do
     within "#project_2" do
       # debugger
-      page.execute_script('$("a.clock_in_on_project_2").trigger("click")')
+      # page.execute_script('$("a.clock_in_on_project_2").trigger("click")')
+      click_link("Clock in on [FOO] project 2")
       # debugger
       # page.find("#project_picker .clock_in_on_project_#{project_2.id}").trigger('click')
     end
@@ -99,11 +102,11 @@ steps "clock in and out on projects", :type => :feature do
   it "should have completed the previous work unit in the DB" do
     # debugger
     @new_work_unit.reload.should be_completed
-    debugger
+    # debugger
   end
 
   it "should have created an unfinished work unit in the DB" do
-    debugger
+    # debugger
     WorkUnit.count.should == @work_unit_count + 2
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_nil
