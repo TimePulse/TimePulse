@@ -166,7 +166,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clocks in on a billable project" do
     within "#project_picker" do
-      find_link("Clock in on [] Foo Project 1").trigger('click')
+      click_link("Clock in on [] Foo Project 1")
     end
   end
 
@@ -190,7 +190,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clocks in on a non-billable project" do
     within "#project_picker" do
-      find_link("Clock in on [] Foo Project 2").trigger('click')
+      click_link("Clock in on [] Foo Project 2")
     end
   end
 
