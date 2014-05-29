@@ -12,5 +12,6 @@
   %dd= @user.pivotal_name
 %ul
   %li=link_to_if_owner_authorized(@user, "Edit", :action => :edit)
+  %li=link_to 'Preferences', edit_user_preferences_path
   %li=link_to_if_owner_authorized(@user, "List", :action => :index)
   %li=link_to("Dashboard", root_path)

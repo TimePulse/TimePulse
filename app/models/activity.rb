@@ -4,9 +4,11 @@ class Activity < ActiveRecord::Base
   attr_accessible :description, :action, :reference_1, :reference_2, :reference_3, :source, :time
   validates_presence_of :project, :source
 
-  scope :recent, :limit => 8, :order => "time DESC"
-  scope :git_commits, where(:source => "github")
-  scope :pivotal_updates, where(:source => "pivotal")
-  scope :story_changes, where("reference_2 IS NOT NULL")
-end
+  scope :recent, lambda { order(:time => :desc).limit(8) }
 
+  scope :git_commits, lambda { where(:source => "github") }
+
+  scope :pivotal_updates, lambda { where(:source => "pivotal") }
+
+  scope :story_changes, lambda { where("reference_2 IS NOT NULL") }
+end
