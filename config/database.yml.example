@@ -1,5 +1,5 @@
 development: &development
-  adapter: mysql2
+  adapter: postgresql
   database: timepulse_dev
   host: localhost
 
