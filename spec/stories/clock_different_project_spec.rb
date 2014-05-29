@@ -48,6 +48,7 @@ steps "clock in and out on projects", :type => :feature, :snapshots_into => "lin
 
   it "I click the clock for project 3 in the picker" do
     within "#picker" do
+      find('#picker').click #this is to clear the element blocking the following link
       click_link("Clock in on [BAR] project 3")
     end
 
