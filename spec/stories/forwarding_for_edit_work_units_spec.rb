@@ -61,5 +61,3 @@ steps "Edit a work unit from the new invoice page", :type => :feature do
     page.should_not have_content("Listing invoices")
   end
 end
-
-

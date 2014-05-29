@@ -15,7 +15,7 @@ class BillsController < ApplicationController
   # GET /bills/new
   def new
     @bill = Bill.new(:due_on => Date.today + 21.days)
-    @users = User.find(:all, :order => 'name ASC')
+    @users = User.all.order('name asc')
     if params[:user_id]
       find_user
       @bill.user = @user

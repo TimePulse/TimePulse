@@ -18,35 +18,42 @@
 
 class WorkUnit < ActiveRecord::Base
 
-  scope :in_progress, :conditions => [ "hours IS NULL and start_time IS NOT NULL" ]
-  scope :completed, :conditions => [ "hours IS NOT NULL" ]
-  scope :recent, :limit => 8, :order => "stop_time DESC"
+  scope :in_progress, lambda { where("hours IS NULL and start_time IS NOT NULL") }
+  scope :completed, lambda { where("hours IS NOT NULL") }
+  scope :recent, lambda { order(stop_time: :desc).limit(8) }
 
-  scope :billable, :conditions => { :billable => true }
+  scope :billable, lambda { where(:billable => true) }
 
-  scope :unbilled, :conditions => { :bill_id => nil, :billable => true }
-  scope :uninvoiced, :conditions => { :invoice_id => nil, :billable => true }
-  scope :billed, :conditions => "bill_id IS NOT NULL"
-  scope :invoiced, :conditions => "invoice_id IS NOT NULL"
+  scope :unbilled, lambda { where( :bill_id => nil, :billable => true) }
+  scope :uninvoiced, lambda { where( :invoice_id => nil, :billable => true) }
+  scope :billed, lambda { where("bill_id IS NOT NULL") }
+  scope :invoiced, lambda { where("invoice_id IS NOT NULL") }
 
-  scope :unbillable, :conditions => { :billable => false }
+  scope :unbillable, lambda { where(:billable => false) }
 
-  scope :user_work_units, lambda { |user| { :conditions => [ "user_id = ?", user.id]} }
-  scope :most_recent, lambda { |number| { :limit => number, :order => "start_time DESC" }}
+  scope :user_work_units, ->(user) {
+    where("user_id = ?", user.id)
+  }
+
+  scope :most_recent, ->(number) {
+    order(start_time: :desc).limit(number)
+  }
 
   scope :for_client, lambda { |client|
     projects = client.projects.map{ |p| p.self_and_descendants.map{|q| q.id } }.flatten.uniq
-    { :conditions => { :project_id => projects }}
+    where(:project_id => projects)
   }
 
   scope :for_project, lambda { |project|
     projects = project.self_and_descendants.map{ |q| q.id }.flatten.uniq
-    { :conditions => { :project_id => projects }}
+    where(:project_id => projects)
   }
 
-  scope :today, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.to_date ] } }
-  scope :this_week, lambda { { :conditions => [ "stop_time > ? ", Time.zone.now.beginning_of_week.to_date ] } }
-  scope :in_last, lambda { |num_days| { :conditions => [ "stop_time > ? ", (Time.zone.now - num_days.days).to_date ] } }
+  scope :today, lambda { where("stop_time > ? ", Time.zone.now.to_date) }
+  scope :this_week, lambda { where("stop_time > ? ", Time.zone.now.beginning_of_week.to_date) }
+  scope :in_last, ->(num_days) {
+    where("stop_time > ? ", (Time.zone.now - num_days.days).to_date)
+  }
   attr_accessible :notes, :start_time, :stop_time, :hours, :billable
   attr_accessor :time_zone
   belongs_to :user

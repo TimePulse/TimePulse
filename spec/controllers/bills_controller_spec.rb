@@ -88,7 +88,7 @@ describe BillsController do
         end
         it "should assign a list of users" do
           get :new
-          assigns[:users].should == User.find(:all, :order => "name ASC")
+          assigns[:users].should == User.all.order("name asc")
         end
 
         describe "when a specific user is specified" do

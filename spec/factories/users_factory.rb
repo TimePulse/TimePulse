@@ -24,6 +24,8 @@ FactoryGirl.define  do
 
     github_user "quentinjohnson"
     pivotal_name "Quentin Johnson"
+
+    association :user_preferences
   end
 
   factory :admin, :parent => :user do
@@ -32,6 +34,9 @@ FactoryGirl.define  do
 
     admin true
   end
+
+  factory :user_preferences do
+    recent_projects_count 5
+  end
+
 end
-
-

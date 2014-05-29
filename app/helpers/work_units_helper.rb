@@ -11,7 +11,7 @@ module WorkUnitsHelper
 
   def widget_links(work_unit)
     link_to( 'Edit', edit_work_unit_path(work_unit)) + " " +
-    link_to('Delete', work_unit_path(work_unit), {:method => :delete, :confirm => "Are you sure?"})
+    link_to('Delete', work_unit_path(work_unit), {:method => :delete, data: { confirm: "Are you sure?"} })
   end
 
   def project_selector(form)

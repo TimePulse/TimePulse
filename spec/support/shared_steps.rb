@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 shared_steps "log in" do
 
   it "When I go to the login page" do
@@ -17,4 +19,3 @@ shared_steps "log in" do
   end
 
 end
-
