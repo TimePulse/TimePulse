@@ -12,7 +12,7 @@ before_script:
   - cp config/initializers/smtp.rb.example config/initializers/smtp.rb
   - cp config/initializers/secret_token.rb.example config/initializers/secret_token.rb
   - cp config/initializers/api_keys.rb.example config/initializers/api_keys.rb
-  - mysql -e 'create database timepulse_test;'
+  - psql -c 'create database timepulse_test;' -U postgres
 
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
