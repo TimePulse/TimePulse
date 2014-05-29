@@ -16,4 +16,5 @@ user.save
 user.confirm!
 up = UserPreferences.create!
 up.user = user
+up.save
 Project.create(:name => 'root', :client => nil)
