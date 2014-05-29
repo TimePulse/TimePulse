@@ -159,10 +159,6 @@ steps "clock in and out on projects", :type => :feature do
     WorkUnit.count.should == @work_unit_count + 3
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.utc.should be_within(10.seconds).of(Time.now.utc - 2.hours)
-    p new_work_unit.stop_time.utc
-    $stderr.puts new_work_unit.stop_time.utc.inspect
-    p Time.now.utc - 2.hours
-    $stderr.puts (Time.now.utc - 2.hours).inspect
     new_work_unit.project.should == project_1
     new_work_unit.notes.should == "I worked all day on this"
     new_work_unit.hours.should be_within(0.1).of(1.0)

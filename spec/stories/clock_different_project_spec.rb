@@ -47,7 +47,6 @@ steps "clock in and out on projects", :type => :feature, :snapshots_into => "lin
   end
 
   it "I click the clock for project 3 in the picker" do
-      find("#timeclock").click
     within "#picker" do
       click_link("Clock in on [BAR] project 3")
     end
