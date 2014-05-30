@@ -1,10 +1,9 @@
 - cache("pivotal_one_line_#{pivotal.id}") do
   - token = SecureRandom.hex(8)
 
-  %tr.pivotal.one_line.has_tooltip{ :id => token }
+  %tr.pivotal.one_line{ :id => token }
     %td= pivotal.try(:project).try(:client).try(:abbreviation)
     %td= truncate(pivotal.try(:project).try(:name), :length => 25)
     %td= truncate(pivotal.description, :length =>  40, :omission => '...')
     %td
       %span.nobr= pivotal.time.to_datetime.to_s(:short_date)
-      = pivotal_tooltip_for(pivotal, token)

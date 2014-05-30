@@ -1,7 +1,10 @@
 development: &development
   adapter: postgresql
+  encoding: unicode
   database: timepulse_dev
-  host: localhost
+  username: <YOUR USERNAME>
+  host: 127.0.0.1
+  pool: 5
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

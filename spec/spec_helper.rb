@@ -62,6 +62,7 @@ RSpec.configure do |config|
   end
 
   config.include(SaveAndOpenOnFail, :type => :feature)
+  config.include(BrowserTools, :type => :feature)
 
   #JL is putting this in here - if it causes problems contact him
   require 'cadre/rspec'
