@@ -1,10 +1,9 @@
 - cache("pivotal_narrow_#{pivotal.id}") do
   - token = SecureRandom.hex(8)
-  = content_tag(:tr, pivotal, :id => token, :class => ['narrow', 'has_tooltip']) do
+  = content_tag(:tr, pivotal, :id => token, :class => ['narrow']) do
     %td
       %span.nobr= short_name_with_client(pivotal.project)
     %td
       = truncate(pivotal.reference_1, :length => 10)
     %td.tools.nobr
       = truncate(pivotal.reference_2, :length => 15)
-      = pivotal_tooltip_for(pivotal, token).html_safe
