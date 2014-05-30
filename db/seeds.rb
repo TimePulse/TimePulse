@@ -8,6 +8,7 @@
 
 
 User.reset_column_information
+
 user = User.create!(:login => 'admin',
                      :name => "Admin",
                      :email => "admin@timepulse.io",
@@ -16,7 +17,9 @@ user = User.create!(:login => 'admin',
 user.admin = true
 user.save
 user.confirm!
+
 up = UserPreferences.create!
 up.user = user
 up.save
+
 Project.create(:name => 'root', :client => nil)

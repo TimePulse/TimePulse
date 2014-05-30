@@ -63,7 +63,7 @@ group :test do
   gem 'simplecov-vim', :platform => "ruby_19"
   gem 'fuubar', "~> 1.2.1"
   gem 'vcr'
-  gem 'fakeweb'
+  gem 'webmock'
   gem 'timecop'
   gem "codeclimate-test-reporter", :require => nil
   gem 'json_spec'
