@@ -136,16 +136,6 @@ Ninja.behavior({
         $('#timeclock #overrides').slideDown();
       }
     },
-    '.has_tooltip': {
-      transform: function(elem){
-        $(elem).tooltip({
-          tip: "#tooltip_for_" + $(elem).attr('id'),
-          offset: [ -10, 2 ],
-          relative: true
-        });
-        return elem;
-      }
-    },
     'select#project_parent_id': {
       change: function(evnt, elem) {
         if ($(elem).val() == 1) {
