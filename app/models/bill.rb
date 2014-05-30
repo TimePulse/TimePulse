@@ -14,12 +14,12 @@
 
 class Bill < ActiveRecord::Base
   include I18n::Alchemy
+
   belongs_to :user
   has_many :work_units
 
   scope :overdue, lambda { where("paid_on IS NULL AND due_on < ? ", Date.today) }
   scope :unpaid,  lambda { where(:paid_on => nil) }
-
   scope :paid, lambda { where("paid_on IS NOT NULL") }
 
   validates_presence_of :user_id
@@ -40,7 +40,5 @@ class Bill < ActiveRecord::Base
   def clients
     @clients ||= work_units.map{ |wu| wu.project }.uniq.map{ |p| p.client }.uniq
   end
-
-
 
 end
