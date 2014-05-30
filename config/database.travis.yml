@@ -1,5 +1,5 @@
 test:
   adapter: postgresql
-  username: postgres 
-  database: travis_ci_test
+  username: travis
+  database: timepulse_test
 
