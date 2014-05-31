@@ -1,12 +1,5 @@
 test:
   adapter: postgresql
-  username: travis
-  password:
-  database: timepulse_test
-
-development:
-  adapter: postgresql
-  username: travis
-  password:
-  database: timepulse_test
+  username: postgres 
+  database: travis_ci_test
 
