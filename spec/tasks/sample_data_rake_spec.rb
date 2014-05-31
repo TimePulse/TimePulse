@@ -11,6 +11,7 @@ describe 'db:sample_data namespace rake task', :type => :task do
     end
 
     it 'should succeed' do
+      Rake::Task["db:sample_data:load"].reenable
       Rake::Task["db:sample_data:load"].invoke
     end
 
@@ -90,10 +91,21 @@ describe 'db:sample_data namespace rake task', :type => :task do
       pending 'until activities functionality is settled'
     end
 
-    it 'running the clear task should clear all tables' do
+  end
+
+  steps 'db:sample_data:clear' do
+
+    before do
+      load File.expand_path("../../../lib/tasks/sample_data.rake", __FILE__)
+      Rake::Task.define_task(:environment)
+    end
+
+    it 'should succeed' do
       Rake::Task["db:sample_data:clear"].reenable
       Rake::Task["db:sample_data:clear"].invoke
+    end
 
+    it 'should clear all tables' do
       User.count.should == 0
       UserPreferences.count.should == 0
       Client.count.should == 0
@@ -101,11 +113,11 @@ describe 'db:sample_data namespace rake task', :type => :task do
       WorkUnit.count.should == 0
       Rate.count.should == 0
       RatesUser.count.should == 0
-
-      Activity.count.should == 0
       Bill.count.should == 0
       Invoice.count.should == 0
       InvoiceItem.count.should == 0
+
+      Activity.count.should == 0
     end
 
   end

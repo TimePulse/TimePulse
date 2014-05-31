@@ -19,6 +19,8 @@ namespace :db do
     desc "Fill the database with sample data for demo purposes"
     task :load => [
         :environment,
+        :create_admin,
+        :create_root_project,
         :populate_users,
         :populate_user_preferences,
         :populate_clients,
@@ -30,7 +32,7 @@ namespace :db do
       ]
 
     desc "Reload sample data for demo purposes"
-    task :reload => [ :clear, :create_admin, :create_root_project, :load ]
+    task :reload => [ :clear, :load ]
 
     task :clear => :environment do
       User.delete_all
@@ -40,31 +42,34 @@ namespace :db do
       WorkUnit.delete_all
       Rate.delete_all
       RatesUser.delete_all
-
-      Activity.delete_all
       Bill.delete_all
       Invoice.delete_all
       InvoiceItem.delete_all
 
+      Activity.delete_all
+
       Rails.cache.clear
     end
 
-    # create_admin and create_root_project are here in case reload is called
-    # maybe call seed task after clear instead?
     task :create_admin => :environment do
-      admin = User.unsafe_create!(
-        :login                 => 'admin',
-        :name                  => "Admin",
-        :email                 => "admin@timepulse.io",
-        :password              => 'foobar',
-        :password_confirmation => 'foobar'
-      )
-      admin.admin = true
-      admin.save
-      admin.confirm!
+      if User.where(admin: true).empty?
+        admin = User.unsafe_create!(
+          :login                 => 'admin',
+          :name                  => "Admin",
+          :email                 => "admin@timepulse.io",
+          :password              => 'foobar',
+          :password_confirmation => 'foobar'
+        )
+        admin.admin = true
+        admin.save
+        admin.confirm!
+      end
     end
+
     task :create_root_project => :environment do
-      Project.unsafe_create!(:name => 'root', :client => nil)
+      unless Project.root
+        Project.unsafe_create!(:name => 'root', :client => nil)
+      end
     end
 
     task :populate_users => :environment do
