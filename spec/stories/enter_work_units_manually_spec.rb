@@ -8,6 +8,8 @@ steps "User manually enters work units", :type => :feature do
   let! :user      do FactoryGirl.create(:user, :current_project => project) end
 
   before do
+    Time.zone = 'Pacific Time (US & Canada)'
+
     @work_unit_count = WorkUnit.count
   end
 
@@ -32,8 +34,11 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "when I fill in valid work unit information" do
-    fill_in "Start time", :with => (@start_time = (Time.now - 1.hour)).to_s(:short_datetime)
-    fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
+    @start_time = Time.zone.now - 1.hour
+    @stop_time = Time.zone.now
+
+    fill_in "Start time", :with => @start_time.to_s(:short_datetime)
+    fill_in "Stop time", :with => @stop_time.to_s(:short_datetime)
     fill_in "Notes", :with => "An hour of work"
     # this is not a click button cause at the immediate moment poltergeist
     # interprets
@@ -57,8 +62,8 @@ steps "User manually enters work units", :type => :feature do
     @work_unit = WorkUnit.last
     @work_unit.hours.should == 1.00
     @work_unit.notes.should == "An hour of work"
-    @work_unit.start_time.utc.to_s.should == @start_time.utc.to_s
-    @work_unit.stop_time.utc.to_s.should == @stop_time.utc.to_s
+    @work_unit.start_time.to_s.should == @start_time.to_s
+    @work_unit.stop_time.to_s.should == @stop_time.to_s
     @work_unit.billable?.should == true
 
   end
@@ -86,8 +91,8 @@ steps "User manually enters work units", :type => :feature do
     within "#new_work_unit" do
       find('#work_unit_billable').set(false)
     end
-    fill_in "Start time", :with => (@start_time = (Time.now - 2.hours)).to_s(:short_datetime)
-    fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
+    fill_in "Start time", :with => (@start_time = (Time.zone.now - 2.hours)).to_s(:short_datetime)
+    fill_in "Stop time", :with => (@stop_time = Time.zone.now).to_s(:short_datetime)
     fill_in "Notes", :with => "Two hours of unbillable work"
     # this is not a click button cause at the immediate moment poltergeist interprets
     # this button as obscured by the JS datepicker. the truly proper solution would
@@ -126,8 +131,8 @@ steps "User manually enters work units", :type => :feature do
     within "#new_work_unit" do
       find('#work_unit_billable').set(true)
     end
-    fill_in "Start time", :with => (@start_time = (Time.now - 3.hours)).to_s(:short_datetime)
-    fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
+    fill_in "Start time", :with => (@start_time = (Time.zone.now - 3.hours)).to_s(:short_datetime)
+    fill_in "Stop time", :with => (@stop_time = Time.zone.now).to_s(:short_datetime)
     fill_in "Notes", :with => "Three hours of billable work"
     # this is not a click button cause at the immediate moment poltergeist interprets
     # this button as obscured by the JS datepicker. the truly proper solution would
@@ -155,8 +160,8 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "when I fill in valid work unit information" do
-    fill_in "Start time", :with => (@start_time = (Time.now - 4.hours)).to_s(:short_datetime)
-    fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
+    fill_in "Start time", :with => (@start_time = (Time.zone.now - 4.hours)).to_s(:short_datetime)
+    fill_in "Stop time", :with => (@stop_time = Time.zone.now).to_s(:short_datetime)
     fill_in "Notes", :with => "Four hours of unbillable work"
     # this is not a click button cause at the immediate moment poltergeist interprets
     # this button as obscured by the JS datepicker. the truly proper solution would

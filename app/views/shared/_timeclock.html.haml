@@ -14,7 +14,6 @@
       #overrides
         started:
         = current_work_unit.start_time.to_s(:short_datetime)
-        = f.hidden_field :time_zone
         = f.text_field :stop_time, :size => 15, :placeholder => "Stop Time"
         = f.text_field :hours, :size => 15, :placeholder => "Hours"
       = f.button "Clock Out", :type => :submit
