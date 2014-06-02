@@ -38,6 +38,13 @@ describe UsersController do
       end
     end
 
+    describe " GET new" do
+      it "should not be authorized" do
+        get :new
+        verify_authorization_unsuccessful
+      end
+    end
+
     describe "get edit" do
       it "should allow editing own user" do
         get :edit, :id => @user.id
@@ -116,14 +123,36 @@ describe UsersController do
       @user = authenticate(:admin)
     end
 
-    describe "create" do
+    describe "GET index" do
+      it "should expose all users as @users" do
+        @user = FactoryGirl.create(:user)
+
+        get :index
+        verify_authorization_successful
+        assigns[:users].should include @user
+      end
+    end
+
+    describe "GET new" do
+      it "should allow new users" do
+        get :new
+        assigns[:user].should be_a(User)
+        assigns[:user].should be_new_record
+      end
+    end
+
+    describe "POST create" do
       it "should create users" do
         attributes =  FactoryGirl.attributes_for(:user)
-        expect do
-          post :create, :user => attributes
-        end.to change{ User.count}.by(1)
+        post :create, :user => attributes
 
         response.should be_redirect
+      end
+
+      it "renders new template on fail" do
+        post :create, :user => { :name => nil }
+
+        response.should render_template('new')
       end
 
       it "should be authorized" do

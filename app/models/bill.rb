@@ -24,8 +24,6 @@ class Bill < ActiveRecord::Base
 
   validates_presence_of :user_id
 
-  attr_accessible :notes, :due_on, :paid_on, :reference_number
-
   accepts_nested_attributes_for :work_units
 
   def hours

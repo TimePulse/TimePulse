@@ -20,7 +20,7 @@ steps "Admin archives a project", :type => :feature do
 
   it "and I expand all projects" do
     all(".expand-widget").each do |expand_button|
-      expand_button.trigger("click")
+      expand_button.click
     end
   end
 
@@ -58,7 +58,7 @@ steps "Admin archives a project", :type => :feature do
 
   it "and I expand all projects" do
     all(".expand-widget").each do |expand_button|
-      expand_button.trigger("click")
+      expand_button.click
     end
   end
 
