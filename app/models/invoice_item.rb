@@ -1,5 +1,6 @@
 class InvoiceItem < ActiveRecord::Base
   belongs_to :invoice
 
-  attr_accessible :amount, :hours, :total, :name
+  #TODO Need to replace this with strong params, but anticipating this model to be rewritten with the new archtitecture
+  # attr_accessible :amount, :hours, :total, :name
 end

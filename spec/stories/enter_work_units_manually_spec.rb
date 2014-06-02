@@ -40,7 +40,8 @@ steps "User manually enters work units", :type => :feature do
     # this button as obscured by the JS datepicker. the truly proper solution would
     # be to click somewhere else, then do a click_button once it's visible, but
     # honestly it doesn't seem worth it to spend a lot of time on this.
-    find_button("Save Changes").trigger('click')
+    find('#picker').click #this gets out of the JS datepicker
+    find_button("Save Changes").click
   end
 
   it "should have the correct values for the work unit" do
@@ -83,7 +84,7 @@ steps "User manually enters work units", :type => :feature do
 
   it "when I fill in valid work unit information" do
     within "#new_work_unit" do
-      find("#work_unit_billable").trigger("click")
+      find('#work_unit_billable').set(false)
     end
     fill_in "Start time", :with => (@start_time = (Time.now - 2.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
@@ -92,7 +93,8 @@ steps "User manually enters work units", :type => :feature do
     # this button as obscured by the JS datepicker. the truly proper solution would
     # be to click somewhere else, then do a click_button once it's visible, but
     # honestly it doesn't seem worth it to spend a lot of time on this.
-    find_button("Save Changes").trigger('click')
+    find('#picker').click #this gets out of the JS datepicker
+    find_button("Save Changes").click
   end
 
   it "should have the correct billable state for the work unit" do
@@ -103,6 +105,7 @@ steps "User manually enters work units", :type => :feature do
 
     @work_unit = WorkUnit.last
     @work_unit.notes.should == "Two hours of unbillable work"
+    # debugger
     @work_unit.billable?.should == false
   end
 
@@ -121,7 +124,7 @@ steps "User manually enters work units", :type => :feature do
 
     it "when I fill in valid work unit information" do
     within "#new_work_unit" do
-      find("#work_unit_billable").trigger("click")
+      find('#work_unit_billable').set(true)
     end
     fill_in "Start time", :with => (@start_time = (Time.now - 3.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.now).to_s(:short_datetime)
@@ -130,7 +133,8 @@ steps "User manually enters work units", :type => :feature do
     # this button as obscured by the JS datepicker. the truly proper solution would
     # be to click somewhere else, then do a click_button once it's visible, but
     # honestly it doesn't seem worth it to spend a lot of time on this.
-    find_button("Save Changes").trigger('click')
+    find('#picker').click #this gets out of the JS datepicker
+    find_button("Save Changes").click
   end
 
   it "should have the correct billable state for the work unit" do
@@ -158,7 +162,8 @@ steps "User manually enters work units", :type => :feature do
     # this button as obscured by the JS datepicker. the truly proper solution would
     # be to click somewhere else, then do a click_button once it's visible, but
     # honestly it doesn't seem worth it to spend a lot of time on this.
-    find_button("Save Changes").trigger('click')
+    find('#picker').click #this gets out of the JS datepicker
+    find_button("Save Changes").click
   end
 
   it "should have the correct billable state for the work unit" do

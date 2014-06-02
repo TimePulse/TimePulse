@@ -29,10 +29,9 @@ class BillsController < ApplicationController
 
   # POST /invoices
   def create
-    @bill = Bill.new
-    add_user
+    @bill = Bill.new(bill_params)
     add_work_units
-    if @bill.localized.update_attributes(params[:bill])
+    if @bill.save
       flash[:notice] = 'Bill was successfully created.'
       redirect_to(@bill)
     else
@@ -43,8 +42,8 @@ class BillsController < ApplicationController
 
   # PUT /bills/1
   def update
-    @bill.localized.attributes = params[:bill]
-    add_user
+    @bill = Bill.find(params[:id])
+    @bill.update(bill_params)
     if @bill.save
       flash[:notice] = 'Bill was successfully updated.'
       redirect_to(@bill)
@@ -74,12 +73,6 @@ class BillsController < ApplicationController
     end
   end
 
-  def add_user
-    if params[:bill].has_key?(:user_id)
-      @bill.user_id = params[:bill].delete(:user_id)
-    end
-  end
-
   def add_work_units
     if params[:bill][:work_unit_ids]
       @bill.work_units = []
@@ -87,5 +80,15 @@ class BillsController < ApplicationController
         @bill.work_units << WorkUnit.find(id) if bool == "1"
       end
     end
+  end
+
+  def bill_params
+    params.
+    require(:bill).
+    permit(:notes,
+      :due_on,
+      :paid_on,
+      :reference_number,
+      :user_id)
   end
 end
