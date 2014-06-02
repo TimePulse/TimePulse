@@ -23,12 +23,6 @@ gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivo
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
 
-#for Rails 4 transition
-gem 'protected_attributes'
-gem 'rails-observers'
-gem 'actionpack-page_caching'
-gem 'actionpack-action_caching'
-
 group :assets do
   gem 'sass-rails',   '~> 4.0'
   gem 'uglifier', '>= 1.0.3'
@@ -47,14 +41,13 @@ group :development, :test do
   gem 'thin'
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
-  # gem 'selenium-webdriver'
+  gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'rspec-steps'
   gem 'poltergeist'
   gem 'cadre'
   gem "populator"
   gem "faker"
-  gem "byebug"
 end
 
 group :test do
@@ -74,4 +67,5 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
+  gem "byebug"
 end

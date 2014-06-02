@@ -32,12 +32,11 @@ class WorkUnitsController < WorkUnitBaseController
     parse_date_params
 
     if request.format.to_s == 'text/html' || request.format.to_s == 'text/javascript'
-      @work_unit = WorkUnit.new(params[:work_unit])
+      @work_unit = WorkUnit.new(work_unit_params)
     elsif request.format.to_s == 'application/json'
       mapper = WorkUnitMapper.new(request.body.read)
       @work_unit = mapper.save
     end
-    add_project
 
     @work_unit.user = current_user
     compute_some_fields
@@ -65,8 +64,7 @@ class WorkUnitsController < WorkUnitBaseController
   def update
     parse_date_params
 
-    @work_unit.attributes = params[:work_unit]
-    add_project
+    @work_unit.update(work_unit_params)
 
     compute_some_fields
     if @work_unit.save
@@ -91,12 +89,6 @@ class WorkUnitsController < WorkUnitBaseController
 
   private
 
-  def add_project
-    if params[:work_unit].has_key?(:project_id)
-      @work_unit.project_id = params[:work_unit].delete(:project_id)
-    end
-  end
-
   # compute a few fields based on sensible defaults, if "calculate" param was passed
   def compute_some_fields
     if params["work_unit"]["calculate"]
@@ -114,6 +106,17 @@ class WorkUnitsController < WorkUnitBaseController
 
   def store_location
     session[:return_to] = request.env["HTTP_REFERER"]
+  end
+
+  def work_unit_params
+    params.
+    require(:work_unit).
+    permit(:notes,
+      :start_time,
+      :stop_time,
+      :hours,
+      :billable,
+      :project_id)
   end
 
 end
