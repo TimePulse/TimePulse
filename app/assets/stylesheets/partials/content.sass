@@ -30,6 +30,9 @@ table.listing
   :margin 1em 0
   :background transparent
 
+  thead
+    background: none
+
   td, th
     :padding .5em
     :overflow hidden
@@ -45,7 +48,7 @@ table.listing
     :border-left none
 
   tr:last-child
-    th, td
+    td
       :border-bottom none
   tr:hover
     :background $primary_ultralight
@@ -55,6 +58,7 @@ table.listing
     :border-width 0 1px 1px 1px
     :border-style dotted
     :border-color $primary_dark_2
+    text-align: center
   th:first-child
     :border-left-width 0
   th:last-child
@@ -77,6 +81,8 @@ table.listing
     :overflow hidden
   td.date, td.tools
     :white-space nowrap
+  td.tools
+    text-align: center
 
   td.work_unit_billable
     background-position: center
