@@ -29,11 +29,9 @@ class InvoicesController < ApplicationController
 
   # POST /invoices
   def create
-    @invoice = Invoice.new
-    @invoice.localized.attributes = params[:invoice]
+    @invoice = Invoice.new(invoice_params)
     add_work_units
-    add_client
-    if @invoice.localized.save
+    if @invoice.save
       flash[:notice] = 'Invoice was successfully created.'
       redirect_to(@invoice)
     else
@@ -45,8 +43,10 @@ class InvoicesController < ApplicationController
 
   # PUT /invoices/1
   def update
-    add_client
-    if @invoice.localized.update_attributes(params[:invoice])
+    @invoice = Invoice.find(params[:id])
+    @invoice.update(invoice_params)
+
+    if @invoice.save
       flash[:notice] = 'Invoice was successfully updated.'
       redirect_to(@invoice)
     else
@@ -79,12 +79,6 @@ class InvoicesController < ApplicationController
     @invoice.errors.map{ |error, message| message }.join(', ')
   end
 
-  def add_client
-    if params[:invoice].has_key?(:client_id)
-      @invoice.client_id = params[:invoice].delete(:client_id)
-    end
-  end
-
   def add_work_units
     if params[:invoice][:work_unit_ids]
       @invoice.work_units = []
@@ -92,5 +86,15 @@ class InvoicesController < ApplicationController
         @invoice.work_units << WorkUnit.find(id) if bool == "1"
       end
     end
+  end
+
+  def invoice_params
+    params.
+    require(:invoice).
+    permit(:notes,
+      :due_on,
+      :paid_on,
+      :reference_number,
+      :client_id)
   end
 end

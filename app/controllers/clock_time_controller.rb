@@ -8,6 +8,7 @@ class ClockTimeController < WorkUnitBaseController
   before_filter :convert_hours_from_hhmm
 
   def create
+
     clock_out_current_work_unit
 
     @project = Project.find(params[:id])
@@ -30,14 +31,13 @@ class ClockTimeController < WorkUnitBaseController
   end
 
   def destroy
-
     if params[:work_unit]
 
       if (params[:work_unit][:stop_time])
         parse_date_params
       end
 
-      current_user.current_work_unit.update_attributes(params[:work_unit])
+      current_user.current_work_unit.update(clock_params)
     end
     clock_out_current_work_unit
 
@@ -52,6 +52,19 @@ class ClockTimeController < WorkUnitBaseController
     if @work_unit = current_user.current_work_unit
       @work_unit.clock_out!
     end
+  end
+
+  private
+
+  def clock_params
+    params.
+    require(:work_unit).
+    permit(:notes,
+      :start_time,
+      :stop_time,
+      :hours,
+      :billable,
+      :project_id)
   end
 
 end
