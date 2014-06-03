@@ -6,9 +6,12 @@
   overflow: hidden;
   width: icons-sprite-width(show_small);
   height: icons-sprite-height(show_small);
-  margin: 0 .5em;
+  margin: 0 .5em 0 0;
   text-indent: 101%;
   white-space: nowrap;
+  &:last-of-type {
+    margin: 0;
+  }
   &.show{
     @include icons-sprite(show_small);
   }
