@@ -96,7 +96,7 @@ class WorkUnit < ActiveRecord::Base
   # TODO: spec this method
   def clock_out!
     # debugger
-    self.stop_time ||= Time.now
+    self.stop_time ||= Time.zone.now
     self.hours ||= WorkUnit.decimal_hours_between(self.start_time, self.stop_time)
     self.truncate_hours!
     save!
@@ -151,8 +151,8 @@ class WorkUnit < ActiveRecord::Base
   end
 
   def not_in_the_future
-    errors.add(:stop_time, "must not be in the future") if stop_time && stop_time > Time.now
-    errors.add(:start_time, "must not be in the future") if start_time && start_time > Time.now
+    errors.add(:stop_time, "must not be in the future") if stop_time && stop_time > Time.zone.now
+    errors.add(:start_time, "must not be in the future") if start_time && start_time > Time.zone.now
   end
 
   def set_defaults
