@@ -125,7 +125,6 @@ GEM
       railties (>= 3.0.0)
     faker (1.3.0)
       i18n (~> 0.5)
-    fakeweb (1.3.0)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.3)
@@ -321,6 +320,9 @@ GEM
       equalizer (~> 0.0.9)
     warden (1.2.3)
       rack (>= 1.0)
+    webmock (1.17.4)
+      addressable (>= 2.2.7)
+      crack (>= 0.3.2)
     websocket (1.0.7)
     websocket-driver (0.3.3)
     will_paginate (3.0.5)
@@ -350,7 +352,6 @@ DEPENDENCIES
   dynamic_form
   factory_girl_rails
   faker
-  fakeweb
   fuubar (~> 1.2.1)
   github_api (~> 0.11.1)
   haml-rails
@@ -384,5 +385,6 @@ DEPENDENCIES
   unicorn-rails
   vcr
   virtus
+  webmock
   will_paginate
   zurb-foundation (~> 4.0.0)

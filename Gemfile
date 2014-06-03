@@ -2,13 +2,12 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 4.0.3'
 gem 'rack'
+gem 'pg'
 
 gem 'rake'
 gem "haml-rails"
 gem "mizugumo"
 gem "will_paginate"
-gem 'pg'
-#gem 'mysql2', '~> 0.3.10'
 gem "activerecord"
 gem "lrd_view_tools"
 gem "logical_tabs"
@@ -56,7 +55,7 @@ group :test do
   gem 'simplecov-vim', :platform => "ruby_19"
   gem 'fuubar', "~> 1.2.1"
   gem 'vcr'
-  gem 'fakeweb'
+  gem 'webmock'
   gem 'timecop'
   gem "codeclimate-test-reporter", :require => nil
   gem 'json_spec'
