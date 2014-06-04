@@ -7,6 +7,7 @@ if ENV["CODECLIMATE_REPO_TOKEN"]
 end
 
 require 'simplecov'
+SimpleCov.minimum_coverage 90
 SimpleCov.start 'rails'
 
 require File.expand_path("../../config/environment", __FILE__)
