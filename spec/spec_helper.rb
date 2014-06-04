@@ -7,7 +7,6 @@ if ENV["CODECLIMATE_REPO_TOKEN"]
 end
 
 require 'simplecov'
-SimpleCov.minimum_coverage 90
 SimpleCov.start 'rails'
 
 require File.expand_path("../../config/environment", __FILE__)
@@ -60,11 +59,6 @@ RSpec.configure do |config|
     load 'db/seeds.rb'
   end
 
-
-  config.after :all, :type => :feature do
-    Timecop.return
-  end
-
   config.after :all, :type => proc{ |value| truncation_types.include?(value)} do
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     load 'db/seeds.rb'
@@ -76,6 +70,10 @@ RSpec.configure do |config|
 
   config.after :all, :type => :task do
     DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
+  end
+
+  config.after :all, :type => :feature do
+    Timecop.return
   end
 
   config.before :each, :type => proc{ |value| not truncation_types.include?(value)} do
