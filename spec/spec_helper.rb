@@ -34,30 +34,59 @@ RSpec.configure do |config|
   end
 
   config.use_transactional_fixtures = false
+  truncation_types = [:feature, :task]
 
   DatabaseCleaner.strategy = :transaction
 
-  config.before :all, :type => :feature do
+  # setup VCR to record all external requests with a single casette
+  # works for everything but features
+  config.around :each, :type => proc{ |value| not truncation_types.include?(value)  } do |example|
+    VCR.use_cassette("default_vcr_cassette") { example.call }
+  end
+
+  config.before :suite do
+    File::open("log/test.log", "w") do |log|
+      log.write ""
+    end
+  end
+
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
+
+  config.before :all, :type => proc{ |value| truncation_types.include?(value)} do
     Rails.application.config.action_dispatch.show_exceptions = true
-    DatabaseCleaner.clean_with :truncation
+    DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     load 'db/seeds.rb'
   end
+
 
   config.after :all, :type => :feature do
     Timecop.return
-    DatabaseCleaner.clean_with :truncation
+  end
+
+  config.after :all, :type => proc{ |value| truncation_types.include?(value)} do
+    DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     load 'db/seeds.rb'
   end
 
-  config.before :each, :type => proc{ |value| value != :feature } do
+  config.before :all, :type => :task do
+    DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
+  end
+
+  config.after :all, :type => :task do
+    DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
+  end
+
+  config.before :each, :type => proc{ |value| not truncation_types.include?(value)} do
     DatabaseCleaner.start
   end
-  config.after :each, :type => proc{ |value| value != :feature } do
+
+  config.after :each, :type => proc{ |value| not truncation_types.include?(value)} do
     DatabaseCleaner.clean
   end
 
   config.before :suite do
-    DatabaseCleaner.clean_with :truncation
+    DatabaseCleaner.clean_with :truncation, {:except => %w[spatial_ref_sys]}
     load 'db/seeds.rb'
   end
 
