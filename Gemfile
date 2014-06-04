@@ -51,8 +51,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'simplecov', '~> 0.7.1', :platform => "ruby_19"
-  gem 'simplecov-vim', :platform => "ruby_19"
+  gem 'simplecov', '~> 0.7.1'
+  gem 'simplecov-vim'
   gem 'fuubar', "~> 1.2.1"
   gem 'vcr'
   gem 'webmock'
