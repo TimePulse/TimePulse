@@ -375,7 +375,7 @@ DEPENDENCIES
   rspec-steps
   sass-rails (~> 4.0)
   selenium-webdriver
-  simplecov (~> 0.7.1)
+  simplecov
   simplecov-vim
   thin
   timecop
