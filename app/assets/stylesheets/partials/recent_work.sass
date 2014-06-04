@@ -2,4 +2,41 @@
 
 #recent_work table.listing
   table-layout: auto
+  .work_unit_details
+    display: none
+    border-bottom: 1px dotted $primary_light_2
 
+  .work_unit_label
+    cursor: pointer
+    line-height: 1
+    &::before
+      content: ''
+      display: inline-block
+      width: 0
+      height: 0
+      margin: 0 .25rem 3px 0
+      border: 6px solid gray
+      border-color: white white white gray
+      border-width: 5px 0 5px 10px
+      font-size: 0px
+      vertical-align: middle
+    &.open::before
+      margin-bottom: 0
+      border-color: gray white white white
+      border-width: 10px 5px 0 5px
+      vertical-align: baseline
+
+  dl
+    +clearfix
+    margin: 0
+    padding: 0 0 1ex 1rem
+    font-size: .8em
+    font-weight: bold
+  dt, dd
+    float: left
+    margin: 0
+  dt
+    clear: left
+    width: 25%
+  dd
+    width: 75%
