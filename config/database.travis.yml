@@ -2,4 +2,3 @@ test:
   adapter: postgresql
   username: travis
   database: timepulse_test
-
