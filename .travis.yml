@@ -17,7 +17,7 @@ before_script:
 script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake db:test:prepare
-  - CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6 bundle exec rake
+  - CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6 bundle exec rspec spec
 
 notifications:
   recipients
