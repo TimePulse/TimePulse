@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 
-describe "user login", :type => :feature do
+steps "user login", :type => :feature do
   let! :user do FactoryGirl.create(:user) end
 
   it "should accept username" do
@@ -10,9 +10,9 @@ describe "user login", :type => :feature do
     fill_in "Password", :with => user.password
     click_button 'Login'
     page.should have_link("Logout")
-  #end
+  end
 
-  #it "should accept email" do
+  it "should accept email" do
     click_link 'Logout'
     fill_in "Login", :with => user.email
     fill_in "Password", :with => user.password
