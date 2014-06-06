@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 
-describe "user login", :type => :feature do
+steps "user login", :type => :feature do
   let! :user do FactoryGirl.create(:user) end
 
   it "should accept username" do
