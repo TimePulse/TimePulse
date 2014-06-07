@@ -148,4 +148,3 @@ RSpec.configure do |config|
 
   config.include SnapStep, :snapshots_into => proc{|v| v.is_a? String}
 end
-
