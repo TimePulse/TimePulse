@@ -54,6 +54,7 @@ group :test do
   gem 'simplecov', '~> 0.7.1', :platform => "ruby_19"
   gem 'simplecov-vim', :platform => "ruby_19"
   gem 'fuubar', "~> 1.2.1"
+  gem 'waterpig'
   gem 'vcr'
   gem 'webmock'
   gem 'timecop'
