@@ -36,7 +36,7 @@ class WarningSuppressor
 end
 
 Capybara.register_driver :poltergeist_debug do |app|
-  Capybara::Poltergeist::Driver.new(app, :inspector => true, :phantomjs_logger => StringIO.new, :phantomjs_options => %w{--load-images=false}, :timeout => 60)
+  Capybara::Poltergeist::Driver.new(app, :inspector => true, :phantomjs_logger => StringIO.new, :phantomjs_options => %w{--load-images=true}, :timeout => 60)
 end
 
 Capybara.default_driver = (ENV['CAPYBARA_DRIVER'] || :poltergeist_debug).to_sym

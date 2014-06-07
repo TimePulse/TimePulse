@@ -1,7 +1,9 @@
 = page_block("Recent Work", :id => "recent_work") do
   %table.listing
-    %tr
-      %th Project / Notes
-      %th Hrs
-      %th
-    = render :partial => "shared/work_unit_narrow", :collection => current_user.reload.recent_work_units, :as => :work_unit
+    %thead
+      %tr
+        %th Project
+        %th Hrs
+        %th
+    %tbody
+      = render :partial => "shared/work_unit_narrow", :collection => current_user.reload.recent_work_units, :as => :work_unit

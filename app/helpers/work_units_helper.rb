@@ -26,4 +26,13 @@ module WorkUnitsHelper
       yield
     end
   end
+
+  def work_unit_details_row_tag(token = nil, cssclass = nil, &block)
+    content_tag(:tr,
+                 :id => "details-#{token}",
+                 :class => ['work_unit_details', cssclass ]
+                ) do
+      yield
+    end
+  end
 end
