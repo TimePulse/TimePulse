@@ -318,6 +318,8 @@ GEM
       equalizer (~> 0.0.9)
     warden (1.2.3)
       rack (>= 1.0)
+    waterpig (0.0.2)
+      capybara (~> 2.2.0)
     webmock (1.17.4)
       addressable (>= 2.2.7)
       crack (>= 0.3.2)
@@ -383,6 +385,7 @@ DEPENDENCIES
   unicorn-rails
   vcr
   virtus
+  waterpig
   webmock
   will_paginate
   zurb-foundation (~> 4.0.0)
