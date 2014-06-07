@@ -2,13 +2,12 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 4.0.3'
 gem 'rack'
+gem 'pg'
 
 gem 'rake'
 gem "haml-rails"
 gem "mizugumo"
 gem "will_paginate"
-gem 'pg'
-#gem 'mysql2', '~> 0.3.10'
 gem "activerecord"
 gem "lrd_view_tools"
 gem "logical_tabs"
@@ -23,12 +22,6 @@ gem 'github_api', "~> 0.11.1"
 gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
-
-#for Rails 4 transition
-gem 'protected_attributes'
-gem 'rails-observers'
-gem 'actionpack-page_caching'
-gem 'actionpack-action_caching'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0'
@@ -48,22 +41,21 @@ group :development, :test do
   gem 'thin'
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
-  # gem 'selenium-webdriver'
+  gem 'selenium-webdriver'
   gem 'database_cleaner'
   gem 'rspec-steps'
   gem 'poltergeist'
   gem 'cadre'
   gem "populator"
   gem "faker"
-  gem "byebug"
 end
 
 group :test do
-  gem 'simplecov', :platform => "ruby_19"
+  gem 'simplecov', '~> 0.7.1', :platform => "ruby_19"
   gem 'simplecov-vim', :platform => "ruby_19"
   gem 'fuubar', "~> 1.2.1"
   gem 'vcr'
-  gem 'fakeweb'
+  gem 'webmock'
   gem 'timecop'
   gem "codeclimate-test-reporter", :require => nil
   gem 'json_spec'
@@ -75,4 +67,5 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
+  gem "byebug"
 end

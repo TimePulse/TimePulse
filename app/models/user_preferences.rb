@@ -1,7 +1,6 @@
 class UserPreferences < ActiveRecord::Base
-  belongs_to :user
 
-  attr_accessible :recent_projects_count
+  belongs_to :user
 
   before_save :default_values
 

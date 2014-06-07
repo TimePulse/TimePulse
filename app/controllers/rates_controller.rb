@@ -18,4 +18,13 @@ class RatesController < ApplicationController
     project = Project.find(rate.project)
     redirect_to project, :action => :edit
   end
+
+  private
+
+  def rate_params
+    params.
+    require(:rate).
+    permit(:name,
+      :amount)
+  end
 end

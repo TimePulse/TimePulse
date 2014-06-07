@@ -54,7 +54,7 @@ class WorkUnit < ActiveRecord::Base
   scope :in_last, ->(num_days) {
     where("stop_time > ? ", (Time.zone.now - num_days.days).to_date)
   }
-  attr_accessible :notes, :start_time, :stop_time, :hours, :billable
+
   attr_accessor :time_zone
   belongs_to :user
   belongs_to :project
@@ -96,7 +96,7 @@ class WorkUnit < ActiveRecord::Base
   # TODO: spec this method
   def clock_out!
     # debugger
-    self.stop_time ||= Time.now
+    self.stop_time ||= Time.zone.now
     self.hours ||= WorkUnit.decimal_hours_between(self.start_time, self.stop_time)
     self.truncate_hours!
     save!
@@ -151,8 +151,8 @@ class WorkUnit < ActiveRecord::Base
   end
 
   def not_in_the_future
-    errors.add(:stop_time, "must not be in the future") if stop_time && stop_time > Time.now
-    errors.add(:start_time, "must not be in the future") if start_time && start_time > Time.now
+    errors.add(:stop_time, "must not be in the future") if stop_time && stop_time > Time.zone.now
+    errors.add(:start_time, "must not be in the future") if start_time && start_time > Time.zone.now
   end
 
   def set_defaults

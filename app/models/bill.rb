@@ -14,17 +14,15 @@
 
 class Bill < ActiveRecord::Base
   include I18n::Alchemy
+
   belongs_to :user
   has_many :work_units
 
   scope :overdue, lambda { where("paid_on IS NULL AND due_on < ? ", Date.today) }
   scope :unpaid,  lambda { where(:paid_on => nil) }
-
   scope :paid, lambda { where("paid_on IS NOT NULL") }
 
   validates_presence_of :user_id
-
-  attr_accessible :notes, :due_on, :paid_on, :reference_number
 
   accepts_nested_attributes_for :work_units
 
@@ -40,7 +38,5 @@ class Bill < ActiveRecord::Base
   def clients
     @clients ||= work_units.map{ |wu| wu.project }.uniq.map{ |p| p.client }.uniq
   end
-
-
 
 end

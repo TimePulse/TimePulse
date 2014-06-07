@@ -14,6 +14,10 @@ steps "clock in and out on projects", :type => :feature do
     ]
   end
 
+  before do
+    Time.zone = 'Pacific Time (US & Canada)'
+  end
+
   it "should login as a user" do
     visit root_path
     fill_in "Login", :with => user.login
@@ -24,7 +28,7 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "should have an unclocked timeclock" do
-    page.should have_title /clocked out/i
+    page.should have_title(/clocked out/i)
     page.should have_xpath("/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false)
     page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
     within "#timeclock" do
@@ -42,13 +46,13 @@ steps "clock in and out on projects", :type => :feature do
   it "should show a clock-in form and a clock" do
     page.should have_selector("form[action='/clock_out']")
     page.should have_selector("#timeclock #task_elapsed")
-      page.should have_title /clocked in/i
+    page.should have_title(/clocked in/i)
     page.should have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
     page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false
   end
 
   it "should have created an unfinished work unit in the DB" do
-    WorkUnit.count.should == @work_unit_count +1
+    WorkUnit.count.should == (@work_unit_count + 1)
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_nil
     new_work_unit.project.should == project_1
@@ -63,7 +67,7 @@ steps "clock in and out on projects", :type => :feature do
 
 
   it "should have an unclocked timeclock" do
-    page.should have_title /clocked out/i
+    page.should have_title(/clocked out/i)
     page.should have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false
     page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
     within "#timeclock" do
@@ -86,7 +90,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "and I fill in nine hours and clock out" do
     within "#timeclock" do
-      Timecop.travel(Time.now + 10.hours)
+      Timecop.travel(Time.zone.now + 10.hours)
       click_link("(+ show override tools)")
       fill_in "Hours", :with => '9.0'
       fill_in "Notes", :with => "I worked all day on this"
@@ -105,7 +109,7 @@ steps "clock in and out on projects", :type => :feature do
   it "should have created an completed work unit in the DB" do
     WorkUnit.count.should == @work_unit_count + 2
     new_work_unit = WorkUnit.last
-    new_work_unit.stop_time.should be_within(10.seconds).of(Time.now)
+    new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now)
     new_work_unit.project.should == project_1
     new_work_unit.notes.should == "I worked all day on this"
     #new_work_unit.hours.should be_within(0.1).of(9.0)
@@ -139,9 +143,9 @@ steps "clock in and out on projects", :type => :feature do
 
   it "and I fill in nine hours and clock out" do
     within "#timeclock" do
-      Timecop.travel(Time.now + 3.hours)
+      Timecop.travel(Time.zone.now + 3.hours)
       click_link("(+ show override tools)")
-      fill_in "Stop Time", :with => (Time.now - 2.hours).to_s(:short_datetime)
+      fill_in "Stop Time", :with => (Time.zone.now - 2.hours).to_s(:short_datetime)
       fill_in "Notes", :with => "I worked all day on this"
       click_button "Clock Out"
     end
@@ -158,7 +162,7 @@ steps "clock in and out on projects", :type => :feature do
   it "should have created an completed work unit in the DB" do
     WorkUnit.count.should == @work_unit_count + 3
     new_work_unit = WorkUnit.last
-    new_work_unit.stop_time.should be_within(10.seconds).of(Time.now - 2.hours)
+    new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now - 2.hours)
     new_work_unit.project.should == project_1
     new_work_unit.notes.should == "I worked all day on this"
     new_work_unit.hours.should be_within(0.1).of(1.0)
@@ -166,7 +170,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clocks in on a billable project" do
     within "#project_picker" do
-      find_link("Clock in on [] Foo Project 1").trigger('click')
+      click_link("Clock in on [] Foo Project 1")
     end
   end
 
@@ -190,7 +194,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "user clocks in on a non-billable project" do
     within "#project_picker" do
-      find_link("Clock in on [] Foo Project 2").trigger('click')
+      click_link("Clock in on [] Foo Project 2")
     end
   end
 
