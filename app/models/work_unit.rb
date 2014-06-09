@@ -18,18 +18,18 @@
 
 class WorkUnit < ActiveRecord::Base
 
-  scope :in_progress, lambda { where("hours IS NULL and start_time IS NOT NULL") }
-  scope :completed, lambda { where("hours IS NOT NULL") }
+  scope :in_progress, -> { where("hours IS NULL and start_time IS NOT NULL") }
+  scope :completed, -> { where("hours IS NOT NULL") }
   scope :recent, lambda { order(stop_time: :desc).limit(8) }
 
-  scope :billable, lambda { where(:billable => true) }
+  scope :billable, -> { where(:billable => true) }
 
-  scope :unbilled, lambda { where( :bill_id => nil, :billable => true) }
-  scope :uninvoiced, lambda { where( :invoice_id => nil, :billable => true) }
-  scope :billed, lambda { where("bill_id IS NOT NULL") }
-  scope :invoiced, lambda { where("invoice_id IS NOT NULL") }
+  scope :unbilled, -> { where( :bill_id => nil, :billable => true) }
+  scope :uninvoiced, -> { where( :invoice_id => nil, :billable => true) }
+  scope :billed, -> { where("bill_id IS NOT NULL") }
+  scope :invoiced, -> { where("invoice_id IS NOT NULL") }
 
-  scope :unbillable, lambda { where(:billable => false) }
+  scope :unbillable, -> { where(:billable => false) }
 
   scope :user_work_units, ->(user) {
     where("user_id = ?", user.id)
@@ -49,8 +49,8 @@ class WorkUnit < ActiveRecord::Base
     where(:project_id => projects)
   }
 
-  scope :today, lambda { where("stop_time > ? ", Time.zone.now.to_date) }
-  scope :this_week, lambda { where("stop_time > ? ", Time.zone.now.beginning_of_week.to_date) }
+  scope :today, -> { where("stop_time > ? ", Time.zone.now.to_date) }
+  scope :this_week, -> { where("stop_time > ? ", Time.zone.now.beginning_of_week.to_date) }
   scope :in_last, ->(num_days) {
     where("stop_time > ? ", (Time.zone.now - num_days.days).to_date)
   }
