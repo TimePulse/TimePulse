@@ -42,7 +42,7 @@ group :development, :test do
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
   gem 'selenium-webdriver'
   gem 'poltergeist'
-  gem 'waterpig', :path => "../waterpig/"
+  gem 'waterpig'
   gem 'cadre'
   gem "populator"
   gem "faker"
@@ -65,5 +65,5 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
-  gem "byebug"
+  gem "byebug", :platforms => [:ruby_20, :ruby_21]
 end
