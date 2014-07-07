@@ -36,15 +36,13 @@ group :development, :test do
   gem 'rspec', "~> 2.13.0"
   gem 'rspec-rails', "~> 2.13.0"
   gem 'factory_girl_rails'
-  gem 'capybara'
   gem 'launchy'
   gem 'thin'
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
   gem 'selenium-webdriver'
-  gem 'database_cleaner'
-  gem 'rspec-steps'
   gem 'poltergeist'
+  gem 'waterpig', :path => "../waterpig/"
   gem 'cadre'
   gem "populator"
   gem "faker"
