@@ -19,4 +19,3 @@ steps "user login", :type => :feature do
     page.should have_link("Logout")
   end
 end
-

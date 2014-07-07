@@ -40,4 +40,3 @@ class RatesUser < ActiveRecord::Base
   belongs_to :rate
   belongs_to :user
 end
-

@@ -88,6 +88,15 @@ Ninja.behavior({
       }},
     '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "andDoDefault"] },
 
+    '.work_unit_label': {
+      click: function(evnt, elem) {
+        var $label = $(elem);
+        var $details = $label.parents('tbody').find('#details-'+$label.parents('tr')[0].id);
+        console.log($details);
+        $label.toggleClass('open');
+        $details.toggle();
+      }
+    },
     '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
         busyElement: function(elem){ return $('#timeclock')}
       }),
