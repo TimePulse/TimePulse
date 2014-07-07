@@ -42,7 +42,7 @@ group :development, :test do
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
   gem 'selenium-webdriver'
   gem 'poltergeist'
-  gem 'waterpig', :path => "../waterpig/"
+  gem 'waterpig'
   gem 'cadre'
   gem "populator"
   gem "faker"
