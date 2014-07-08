@@ -34,13 +34,13 @@ class User < ActiveRecord::Base
   has_many :activities
   has_many :rates_users
   has_many :rates, :through => :rates_users
+  has_one  :user_preferences
 
   validates_presence_of :name, :email
 
-  scope :inactive, :conditions => { :inactive => true  }
-  scope :active,   :conditions => { :inactive => false }
+  scope :inactive, lambda { where(inactive: true )  }
 
-  attr_accessible :login, :name, :email, :password, :password_confirmation, :github_user, :pivotal_name
+  scope :active,   lambda { where(inactive: false)  }
 
   def reset_current_work_unit
     @cwu = nil
@@ -56,9 +56,9 @@ class User < ActiveRecord::Base
   end
 
   def recent_projects
-     @wu_list = WorkUnit.user_work_units(self).most_recent(100)
-     @pid_list = @wu_list.collect{ |w| w.project_id }.uniq[0..4]
-     Project.find(@pid_list).sort_by{ |proj| @pid_list.index(proj.id) }
+    @wu_list = (WorkUnit.user_work_units(self).most_recent(100))
+    @pid_list = @wu_list.collect{ |w| w.project_id }.uniq[0..(self.user_preferences.recent_projects_count-1)]
+    Project.find(@pid_list).sort_by{ |proj| @pid_list.index(proj.id) }
   end
 
   def recent_work_units
@@ -144,4 +144,3 @@ class User < ActiveRecord::Base
     end
   end
 end
-

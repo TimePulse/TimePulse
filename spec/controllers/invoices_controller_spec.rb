@@ -25,8 +25,8 @@ describe InvoicesController do
             FactoryGirl.create(:invoice, :client => project.client, :paid_on => nil)
         ]
         @paid_invoices = [
-          FactoryGirl.create(:invoice, :client => project.client, :paid_on => Date.today - 1.day),
-          FactoryGirl.create(:invoice, :client => project.client, :paid_on => Date.today - 1.day)
+          FactoryGirl.create(:invoice, :client => project.client, :paid_on => Date.today - 1.day, created_at: Time.now - 2.day),
+          FactoryGirl.create(:invoice, :client => project.client, :paid_on => Date.today - 2.day, created_at: Time.now - 3.day)
         ]
       end
       it "should paginate all unpaid invoices as @unpaid_invoices" do
@@ -35,7 +35,7 @@ describe InvoicesController do
       end
       it "should paginate all paid invoices as @paid_invoices" do
         get :index
-        assigns[:paid_invoices].should == @paid_invoices.sort_by(&:created_at).paginate
+        assigns[:paid_invoices].should == @paid_invoices.sort_by(&:created_at).sort_by(&:paid_on).reverse.paginate
       end
       it "should be authorized" do
         get :index
@@ -84,7 +84,7 @@ describe InvoicesController do
         end
         it "should assign a list of clients" do
           get :new
-          assigns[:clients].should == Client.find(:all, :order => "abbreviation ASC")
+          assigns[:clients].should == Client.all.order("abbreviation asc")
         end
 
         describe "when a specific client is specified" do

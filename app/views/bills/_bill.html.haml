@@ -10,4 +10,4 @@
   %td.tools
     = link_to 'Show', bill, class: 'actions show'
     = link_to 'Edit', edit_bill_path(bill), class: 'actions edit'
-    = link_to 'Destroy', bill, :confirm => 'Are you sure?', :method => :delete, class: 'actions delete'
+    = link_to 'Destroy', bill, data: { confirm: 'Are you sure?' }, :method => :delete, class: 'actions delete'

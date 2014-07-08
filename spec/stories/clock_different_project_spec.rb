@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "clock in and out on projects", :type => :feature do
+steps "clock in and out on projects", :type => :feature, :snapshots_into => "link" do
 
   let! :client_1 do
     FactoryGirl.create(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
@@ -48,8 +48,9 @@ steps "clock in and out on projects", :type => :feature do
 
   it "I click the clock for project 3 in the picker" do
     within "#picker" do
-      find_link("Clock in on [BAR] project 3").trigger('click')
+      click_link("Clock in on [BAR] project 3")
     end
+
   end
 
   it "should show project 3 in the timeclock" do
@@ -73,7 +74,9 @@ steps "clock in and out on projects", :type => :feature do
   end
 
   it "I click the clock for project 2 in the picker" do
-    page.find("#project_picker .clock_in_on_project_#{project_2.id}").trigger('click')
+    within "#project_2" do
+      click_link("Clock in on [FOO] project 2")
+    end
   end
 
   it "should show project 2 in the timeclock" do
