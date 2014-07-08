@@ -1,12 +1,4 @@
 test:
-  adapter: mysql2
+  adapter: postgresql
   username: travis
-  password:
   database: timepulse_test
-
-development:
-  adapter: mysql2
-  username: travis
-  password:
-  database: timepulse_test
-

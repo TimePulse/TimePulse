@@ -12,9 +12,12 @@ SimpleCov.start 'rails'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 
+
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
+
+require 'waterpig'
 
 RSpec.configure do |config|
   config.mock_with :rspec
@@ -33,36 +36,26 @@ RSpec.configure do |config|
     sign_out :user
   end
 
-  config.use_transactional_fixtures = false
-
-  DatabaseCleaner.strategy = :transaction
-
-  config.before :all, :type => :feature do
-    Rails.application.config.action_dispatch.show_exceptions = true
-    DatabaseCleaner.clean_with :truncation
-    load 'db/seeds.rb'
-  end
-
-  config.after :all, :type => :feature do
-    Timecop.return
-    DatabaseCleaner.clean_with :truncation
-    load 'db/seeds.rb'
-  end
-
-  config.before :each, :type => proc{ |value| value != :feature } do
-    DatabaseCleaner.start
-  end
-  config.after :each, :type => proc{ |value| value != :feature } do
-    DatabaseCleaner.clean
+  # setup VCR to record all external requests with a single casette
+  # works for everything but features
+  config.around :each, :type => proc{ |value| not config.waterpig_truncation_types.include?(value)  } do |example|
+    VCR.use_cassette("default_vcr_cassette") { example.call }
   end
 
   config.before :suite do
-    DatabaseCleaner.clean_with :truncation
-    load 'db/seeds.rb'
+    File::open("log/test.log", "w") do |log|
+      log.write ""
+    end
   end
 
-  config.include(SaveAndOpenOnFail, :type => :feature)
-  config.include(BrowserHelpers, :type => :feature)
+  config.filter_run :focus => true
+  config.run_all_when_everything_filtered = true
+
+  config.waterpig_truncation_types = [:feature, :task]
+
+  config.before :all, :type => proc{ |value| config.waterpig_truncation_types.include?(value)} do
+    Rails.application.config.action_dispatch.show_exceptions = true
+  end
 
   #JL is putting this in here - if it causes problems contact him
   require 'cadre/rspec'

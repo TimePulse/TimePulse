@@ -20,14 +20,14 @@ class ActiveRecord::Base
     record.save!
     record
   end
-  
+
   def unsafe_update_attributes!(attrs)
     self.unsafe_attributes = attrs
     self.save!
   end
 
   def unsafe_update_attributes(attrs)
-    self.unsafe_attributes = attrs   
+    self.unsafe_attributes = attrs
     self.save
   end
 

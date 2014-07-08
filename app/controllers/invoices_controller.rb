@@ -1,6 +1,10 @@
+require 'work_unit_tools'
+
 class InvoicesController < ApplicationController
   before_filter :find_invoice, :only => [ :show, :edit, :update, :destroy ]
   before_filter :require_admin!
+
+  include WorkUnitTools
 
   # GET /invoices
   def index
@@ -15,9 +19,9 @@ class InvoicesController < ApplicationController
   # GET /invoices/new
   def new
     @invoice = Invoice.new(:due_on => Date.today + 21.days)
-    @clients = Client.find(:all, :order => 'abbreviation ASC')
+    @clients = Client.all.order('abbreviation asc')
     if params[:client_id]
-      find_client
+      @client = find_user(Client, params[:client_id])
       @invoice.client = @client
       @work_units = WorkUnit.for_client(@client).completed.billable.uninvoiced.flatten.uniq
     end
@@ -29,11 +33,9 @@ class InvoicesController < ApplicationController
 
   # POST /invoices
   def create
-    @invoice = Invoice.new
-    @invoice.localized.attributes = params[:invoice]
-    add_work_units
-    add_client
-    if @invoice.localized.save
+    @invoice = Invoice.new(invoice_params)
+    add_work_units(@invoice, params[:invoice][:work_unit_ids])
+    if @invoice.save
       flash[:notice] = 'Invoice was successfully created.'
       redirect_to(@invoice)
     else
@@ -45,8 +47,10 @@ class InvoicesController < ApplicationController
 
   # PUT /invoices/1
   def update
-    add_client
-    if @invoice.localized.update_attributes(params[:invoice])
+    @invoice = Invoice.find(params[:id])
+    @invoice.update(invoice_params)
+
+    if @invoice.save
       flash[:notice] = 'Invoice was successfully updated.'
       redirect_to(@invoice)
     else
@@ -67,30 +71,34 @@ class InvoicesController < ApplicationController
     raise ArgumentError, 'Invalid invoice id provided' unless @invoice
   end
 
-  def find_client
-    @client = Client.find_by_id(params[:client_id])
-    unless @client
-      flash[:error] = "Could not find the specified client"
-      redirect_to :back
-    end
-  end
+  # def find_client
+  #   @client = Client.find_by_id(params[:client_id])
+  #   unless @client
+  #     flash[:error] = "Could not find the specified client"
+  #     redirect_to :back
+  #   end
+  # end
 
   def error_list
     @invoice.errors.map{ |error, message| message }.join(', ')
   end
 
-  def add_client
-    if params[:invoice].has_key?(:client_id)
-      @invoice.client_id = params[:invoice].delete(:client_id)
-    end
-  end
+  # def add_work_units
+  #   if params[:invoice][:work_unit_ids]
+  #     @invoice.work_units = []
+  #     params[:invoice][:work_unit_ids].each do |id, bool|
+  #       @invoice.work_units << WorkUnit.find(id) if bool == "1"
+  #     end
+  #   end
+  # end
 
-  def add_work_units
-    if params[:invoice][:work_unit_ids]
-      @invoice.work_units = []
-      params[:invoice][:work_unit_ids].each do |id, bool|
-        @invoice.work_units << WorkUnit.find(id) if bool == "1"
-      end
-    end
+  def invoice_params
+    params.
+    require(:invoice).
+    permit(:notes,
+      :due_on,
+      :paid_on,
+      :reference_number,
+      :client_id)
   end
 end

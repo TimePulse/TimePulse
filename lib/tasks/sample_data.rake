@@ -11,19 +11,6 @@
 # Once the client has real data ... i.e. an initial set of pages and/or
 # a menu/location tree, those should replace the lorem data.
 
-class Array
-  # If +number+ is greater than the size of the array, the method
-  # will simply return the array itself sorted randomly
-  # defaults to picking one item
-  def pick(number = 1)
-    if (number == 1)
-      sort_by{ rand }[0]
-    else
-      sort_by{ rand }.slice(0...number)
-    end
-  end
-end
-
 require 'unsafe_mass_assignment'
 
 namespace :db do
@@ -31,64 +18,103 @@ namespace :db do
 
     desc "Fill the database with sample data for demo purposes"
     task :load => [
-      :environment,
-      :populate_users,
-      :populate_clients_and_projects,
-      :populate_work_units,
-      :populate_rates
+        :environment,
+        :create_admin,
+        :create_root_project,
+        :populate_users,
+        :populate_user_preferences,
+        :populate_clients,
+        :populate_projects,
+        :populate_work_units,
+        :populate_rates,
+        :populate_bills,
+        :populate_invoices
       ]
 
+    desc "Reload sample data for demo purposes"
     task :reload => [ :clear, :load ]
 
     task :clear => :environment do
       User.delete_all
+      UserPreferences.delete_all
       Client.delete_all
       Project.delete_all
+      WorkUnit.delete_all
+      Rate.delete_all
+      RatesUser.delete_all
+      Bill.delete_all
+      Invoice.delete_all
+      InvoiceItem.delete_all
+
+      Activity.delete_all
+
       Rails.cache.clear
     end
 
-
-    # Load users
-    task :populate_users => :environment do
-      user = User.where(:login => 'admin',
-                        :name => "Admin",
-                        :email => "admin@timepulse.io").first
-      unless user
-        user = User.unsafe_create!(:login => 'admin',
-                             :name => "Admin",
-                             :email => "admin@timepulse.io",
-                             :password => 'foobar',
-                             :password_confirmation => 'foobar')
-        user.admin = true
-        user.save
-        user.confirm!
-      end
-
-      5.times do |i|
-        generic_user = User.unsafe_create!(:login => "user#{i}",
-                            :name => "User #{i}",
-                            :email => "user#{i}@example.com",
-                            :password => 'password',
-                            :password_confirmation => 'password')
-        generic_user.confirm!
+    task :create_admin => :environment do
+      if User.where(admin: true).empty?
+        admin = User.unsafe_create!(
+          :login                 => 'admin',
+          :name                  => "Admin",
+          :email                 => "admin@timepulse.io",
+          :password              => 'foobar',
+          :password_confirmation => 'foobar'
+        )
+        admin.admin = true
+        admin.save
+        admin.confirm!
       end
     end
 
-    task :populate_clients_and_projects => :environment do
+    task :create_root_project => :environment do
+      unless Project.root
+        Project.unsafe_create!(:name => 'root', :client => nil)
+      end
+    end
 
-      4.times do |nn|
-        client = Client.unsafe_create!(
-          :name => "Client #{nn}",
-          :abbreviation => "CL#{nn}",
-          :billing_email => "client_#{nn}@example.com"
+    task :populate_users => :environment do
+      5.times do |i|
+        name = Faker::Name.name
+        user = User.unsafe_create!(
+          :name                  => name,
+          :login                 => Faker::Internet.user_name(name),
+          :email                 => Faker::Internet.safe_email(name),
+          :password              => DEFAULT_PASSWORD,
+          :password_confirmation => DEFAULT_PASSWORD
         )
+        user.confirm!
+      end
+    end
+
+    task :populate_user_preferences => :environment do
+      User.all.each do |user|
+        up = UserPreferences.create!
+        up.user = user
+        up.save
+      end
+    end
+
+    task :populate_clients => :environment do
+      5.times do |i|
+        name = Faker::Company.name
+        Client.unsafe_create!(
+          :name          => name,
+          :abbreviation  => "CL#{i}",
+          :billing_email => Faker::Internet.safe_email(name)
+        )
+      end
+    end
+
+    task :populate_projects => :environment do
+      Client.all.each do |client|
         proj = Project.unsafe_create!(
-          :client => client,
-          :name => client.name,
+          :client    => client,
+          :name      => client.name,
           :clockable => false,
-          :billable => true,
-          :parent => Project.root
+          :billable  => true,
+          :parent    => Project.root
         )
+
         Project.unsafe_create!(:client => client, :name => 'Planning',    :clockable => true, :billable => true, :parent => proj)
         Project.unsafe_create!(:client => client, :name => 'Development', :clockable => true, :billable => true, :parent => proj)
         Project.unsafe_create!(:client => client, :name => 'Deployment',  :clockable => true, :billable => true, :parent => proj)
@@ -96,45 +122,52 @@ namespace :db do
     end
 
     task :populate_work_units do
-      projects = Project.where(:clockable => true).to_a
-      User.all.each do |user|
-        (10..20).each do |nn|
-          wu = WorkUnit.unsafe_build(
-            :user => user,
-            :project => projects.pick,
-            :start_time => Time.now - nn.days - nn.hours,
-            :stop_time => Time.now - nn.days - nn.hours + 45.minutes,
-            :notes => Populator.words(2..6)
-          )
-          wu.clock_out!
+      Project.where(:clockable => true).each do |project|
+        User.where(admin: false).each do |user|
+          2.times do |i|
+            wu = WorkUnit.unsafe_build(
+              :user       => user,
+              :project    => project,
+              :start_time => Time.now - (i + 1 * 10).days - (i + 1 * 10).hours,
+              :stop_time  => Time.now - (i + 1 * 10).days - (i + 1 * 10).hours + 45.minutes,
+              :notes      => Populator.words(2..6)
+            )
+            wu.clock_out!
+          end
         end
       end
     end
 
     task :populate_rates do
-      project = Project.where(:parent_id => Project.root.id).first
-      project.rates << Rate.unsafe_create!(:name => 'Rate 1', :amount => 100, :users => [User.first])
+      Project.where(:parent_id => Project.root.id).each do |project|
+        User.where(admin: false).each_with_index do |user, i|
+          Rate.unsafe_create!(
+            :name => "Rate #{i}",
+            :amount => 50 * i,
+            :project => project,
+            :users => [user]
+          )
+        end
+      end
     end
 
-    # An example to be deleted or replaced
-    task :populate_some_table => :environment do
-      require 'populator'
-      SomeTable.delete_all
+    task :populate_bills do
+      User.where(admin: false).each do |user|
+        Bill.unsafe_create!(
+          user: user,
+          work_units: user.work_units.take(5)
+        )
+      end
+    end
 
-      10.times do
-        SomeTable.unsafe_create!(
-          :field => Populator.words(4..8),
-          :date => Date.today - rand(365).days,
-          :url => "http://" + Faker::Internet.domain_name
+    task :populate_invoices do
+      Client.all.each do |client|
+        Invoice.unsafe_create!(
+          client: client,
+          work_units: client.projects.first.children.first.work_units.to_a.take(5)
         )
       end
     end
 
   end
 end
-
-# Do something sometimes (with probability p).
-def sometimes(p, &block)
-  yield(block) if rand <= p
-end
-
