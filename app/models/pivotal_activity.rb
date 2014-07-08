@@ -8,7 +8,7 @@ class PivotalActivity < ActivityBuilder
   attribute :author, String
   attribute :project_id, Integer
   attribute :description, String
-  
+
   def build
     # double check to make sure a commit with this sha is not already in DB
     @activity = Activity.find_by_reference_3(id.to_s)
@@ -20,10 +20,13 @@ class PivotalActivity < ActivityBuilder
   def timestamp
     occurred_at
   end
-  
+
   def activity_params
-    story_id = stories[0]["id"] if stories.present?
-    current_state = stories[0]["current_state"] if stories.present?
+    if stories.present?
+      story = stories[0].symbolize_keys!
+      story_id = story[:id]
+      current_state = story[:current_state]
+    end
     super.merge({
       :source => "pivotal",
       :action => event_type,
