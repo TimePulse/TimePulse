@@ -38,6 +38,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
+  gem 'byebug'
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
   gem 'selenium-webdriver'
