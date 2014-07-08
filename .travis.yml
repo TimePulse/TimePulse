@@ -13,11 +13,12 @@ before_script:
   - cp config/initializers/secret_token.rb.example config/initializers/secret_token.rb
   - cp config/initializers/api_keys.rb.example config/initializers/api_keys.rb
   - psql -c 'create database timepulse_test;' -U postgres
-
-script:
   - RAILS_ENV=test bundle exec rake db:migrate --trace
   - bundle exec rake db:test:prepare
-  - CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6 bundle exec rake
+  - RAILS_ENV=test bundle exec rake assets:precompile
+
+script:
+  - CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6 bundle exec rspec spec
 
 notifications:
   recipients
