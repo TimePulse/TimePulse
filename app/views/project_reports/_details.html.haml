@@ -3,6 +3,7 @@
     %tr
       %th= "User"
       %th= "Hours"
+      %th= "Total $"
     - user_project_hours(@work_units).each do |key, value|
       %tr
         %td= key.is_a?(String) ? key : key.name
