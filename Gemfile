@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '~> 4.0.3'
 gem 'rack'
-gem 'mysql2'
+gem 'pg'
 
 gem 'rake'
 gem "haml-rails"
