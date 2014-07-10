@@ -20,7 +20,7 @@ class ProjectReport
     user_hours
 	end
 
-	def build_report
+	def build_user_report
 		@rows = Hash.new 
 
 		@users.each do |user|

@@ -4,7 +4,7 @@
       %th= "User"
       %th= "Hours"
       %th= "Total $"
-    - @report.each do |key, fields|
+    - @user_report.each do |key, fields|
       %tr
         %td= fields["Name"].to_s
         %td= number_with_precision(fields["Hours"], :precision => 2)
