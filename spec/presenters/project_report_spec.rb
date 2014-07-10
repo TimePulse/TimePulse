@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ProjectReport do
+describe ProjectReport, type: :presenter do
 
 	let! :work_unit do
 		FactoryGirl.create(:work_unit, 
