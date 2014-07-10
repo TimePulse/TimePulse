@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'hours_report'
 
-describe HoursReport do
+describe HoursReport, type: :presenter do
   before(:each) do
     @user       = FactoryGirl.create(:user)
     @user2      = FactoryGirl.create(:user)
