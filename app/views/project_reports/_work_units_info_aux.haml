@@ -19,5 +19,5 @@
         %td= WorkUnit.for_project(@project).completed.uninvoiced.sum(:hours)
       %tr
         %th Shown
-        %td= @work_units.count
-        %td= number_with_precision(@work_units.inject(0.0){ |sum, wu| sum += wu.hours }, :precision => 2)
+        %td= @project_report.work_units.count
+        %td= number_with_precision(@project_report.work_units.inject(0.0){ |sum, wu| sum += wu.hours }, :precision => 2)

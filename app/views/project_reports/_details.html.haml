@@ -1,14 +1,14 @@
-- if @work_units
+- if @project_report.work_units
   %table.listing
     %tr
       %th= "User"
       %th= "Hours"
       %th= "Total $"
-    - @user_report.each do |key, fields|
+    - @project_report.build_user_report.each do |key, fields|
       %tr
-        %td= fields["Name"].to_s
-        %td= number_with_precision(fields["Hours"], :precision => 2)
-        %td= "$ " + number_with_precision(fields["Cost"], :precision => 2)
+        %td= fields[:name].to_s
+        %td= number_with_precision(fields[:hours], :precision => 2)
+        %td= "$ " + number_with_precision(fields[:cost], :precision => 2)
 
   %table.listing
     %tr
@@ -18,7 +18,7 @@
       %th= "Start Date and Time"
       %th= "End Time"
       %th= "Edit"
-    - @work_units.each do |wu|
+    - @project_report.work_units.each do |wu|
       = content_tag_for(:tr, wu) do
         %td.hours
           = label(wu.id, wu.hours, :class => 'hours_count')
