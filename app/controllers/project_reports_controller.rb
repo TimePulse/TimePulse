@@ -5,7 +5,10 @@ class ProjectReportsController < ApplicationController
     @projects = Project.all
     if params[:project_id]
       find_project
-      @project_report = ProjectReport.new(@project)
+      project_report = ProjectReport.new(@project)
+      
+      @report = project_report.build_report
+      @work_units = project_report.work_units
     end
   end
 

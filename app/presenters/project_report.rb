@@ -28,7 +28,7 @@ class ProjectReport
 				rate = rates.amount
 			end
 
-			fields = Hash["Name" => user.name, "Hours" => @user_hours[user.id], "Rate" => rate]
+			fields = Hash["Name" => user.name, "Hours" => @user_hours[user.id], "Rate" => rate, "Cost" => (@user_hours[user.id] * rate)]
 			@rows[user.id] = fields
 		end
 
