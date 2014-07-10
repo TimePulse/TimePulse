@@ -34,8 +34,8 @@ describe ProjectReport, type: :presenter do
 			ProjectReport.new(project).build_user_report
 		end
 
-		xit 'should index row with key userid' do
-			expect(subject[user.id]).to eq(2)
+		xit 'should index rows with key user.id' do
+			expect(subject[user.id]).to eq(user.id)
 		end
 
 		describe 'row' do
@@ -44,16 +44,16 @@ describe ProjectReport, type: :presenter do
 			end
 
 			it 'should store users name with key "Name"' do
-				expect(subject["Name"]).to eq(user.name)
+				expect(subject[:name]).to eq(user.name)
 			end				
 			it 'should store users total hours with key "Hours"' do
-				expect(subject["Hours"]).to eq(9.5)
+				expect(subject[:hours]).to eq(9.5)
 			end				
 			it 'should store users rate with key "Rate"' do
-				expect(subject["Rate"]).to eq(100)
+				expect(subject[:rate]).to eq(100)
 			end
 			it 'should store users total cost (rate * hours) with key "Cost"' do
-				expect(subject["Cost"]).to eq(950)
+				expect(subject[:cost]).to eq(950)
 			end
 		end
 	end

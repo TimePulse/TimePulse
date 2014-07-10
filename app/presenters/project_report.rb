@@ -27,11 +27,11 @@ class ProjectReport
 			if rates = user.rates.find_by(:project_id => @project.id)
 				rate = rates.amount
 			else 
-				#TODO: decide how to handle exception for unset rate
+				#TODO: handle unset rate, for now defaulting to $0.00
 				rate = 0
 			end
 
-			fields = Hash["Name" => user.name, "Hours" => @user_hours[user.id], "Rate" => rate, "Cost" => (@user_hours[user.id] * rate)]
+			fields = Hash[:name => user.name, :hours => @user_hours[user.id], :rate => rate, :cost => (@user_hours[user.id] * rate)]
 			@rows[user.id] = fields
 		end
 
