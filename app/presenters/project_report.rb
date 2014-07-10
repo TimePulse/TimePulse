@@ -26,6 +26,9 @@ class ProjectReport
 		@users.each do |user|
 			if rates = user.rates.find_by(:project_id => @project.id)
 				rate = rates.amount
+			else 
+				#TODO: decide how to handle exception for unset rate
+				rate = 0
 			end
 
 			fields = Hash["Name" => user.name, "Hours" => @user_hours[user.id], "Rate" => rate, "Cost" => (@user_hours[user.id] * rate)]
