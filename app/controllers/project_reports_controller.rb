@@ -6,8 +6,8 @@ class ProjectReportsController < ApplicationController
     if params[:project_id]
       find_project
       project_report = ProjectReport.new(@project)
-      
-      @report = project_report.build_report
+
+      @user_report = project_report.build_user_report
       @work_units = project_report.work_units
     end
   end
