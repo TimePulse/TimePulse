@@ -215,4 +215,9 @@ steps "clock in and out on projects", :type => :feature do
     end
     WorkUnit.last.billable?.should == true
   end
+
+  after do
+    Timecop.return
+  end
+
 end

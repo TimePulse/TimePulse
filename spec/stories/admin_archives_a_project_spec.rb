@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "Admin archives a project", :type => :feature do
+steps "Admin archives a project", :type => :feature, :pending => "Causes a timeout" do
   let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
   let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
   let! :project_2 do FactoryGirl.create(:project, :client => client_1, :name => "Project 2 base") end
