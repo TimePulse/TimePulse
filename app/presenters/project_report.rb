@@ -24,20 +24,7 @@ class ProjectReport
 		@rows = Hash.new 
 
 		@users.each do |user|
-			current_project = @project
-			rate = nil
-
-			while !rate
-				rates = user.rates.find_by(:project_id => current_project.id)
-
-				if rates
-					rate = rates.amount
-				elsif current_project.is_base_project? && !rates
-					rate = 0
-				else 
-					current_project = current_project.parent
-				end
-			end
+			rate = user.rate_for(@project).amount
 
 			fields = Hash[:name => user.name, :hours => @user_hours[user.id], :rate => rate, :cost => (@user_hours[user.id] * rate)]
 			@rows[user.id] = fields
