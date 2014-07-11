@@ -11,7 +11,7 @@ class ProjectReport
 		scope.to_a.map{|pwu| pwu.user}.uniq
 	end
 
-	def user_hours		
+	def user_hours
 		user_hours = {}
     self.work_units.each do |wu|
       user_hours[wu.user.id] ||= 0.0
@@ -20,8 +20,12 @@ class ProjectReport
     user_hours
 	end
 
+	def work_units
+		@work_units = WorkUnit.for_project(@project).completed.billable.uninvoiced.flatten.uniq
+	end
+
 	def build_user_report
-		@rows = Hash.new 
+		@rows = Hash.new
 
 		@users.each do |user|
 			rate = user.rate_for(@project).amount
@@ -33,7 +37,17 @@ class ProjectReport
 		@rows
 	end
 
-	def work_units
-		@work_units = WorkUnit.for_project(@project).completed.billable.uninvoiced.flatten.uniq
+	def build_rate_report
+		@rows = Hash.new
+
+		@users.each do |user|
+			rate = user.rate_for(@project).amount
+
+			fields = Hash[:name => user.name, :hours => @user_hours[user.id], :rate => rate, :cost => (@user_hours[user.id] * rate)]
+			@rows[user.id] = fields
+		end
+
+		@rows
 	end
+
 end

@@ -9,15 +9,24 @@ describe ProjectReport, type: :presenter do
   let :user_3 do FactoryGirl.create(:user) end
   let! :rates_user_1 do FactoryGirl.create(:rates_user, :rate => project_1.rates.last, :user => user_1) end
   let! :rates_user_2 do FactoryGirl.create(:rates_user, :rate => project_1.rates.last, :user => user_2) end
-  let! :rates_user_3 do FactoryGirl.create(:rates_user, :rate => project_2.rates.last, :user => user_3) end  
-	let! :work_unit_1 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1) end    
-	let! :work_unit_2 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1) end    
+  let! :rates_user_3 do FactoryGirl.create(:rates_user, :rate => project_2.rates.last, :user => user_3) end
+	let! :work_unit_1 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1) end
+	let! :work_unit_2 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1) end
 
 	describe '#users' do
-		subject { ProjectReport.new(project_1).users } 
+		subject { ProjectReport.new(project_1).users }
 
 	  it { should include(user_1) }
 	  it { should_not include(user_2, user_3) }
+  end
+
+  describe '#user_hours' do
+  	subject { ProjectReport.new(project_1).user_hours }
+
+  	it "should return sum of user's hours on project at key user_id" do
+  		total_hours = work_unit_1.hours + work_unit_2.hours
+  		expect(subject[user_1.id]).to eq(total_hours)
+  	end
   end
 
 	describe '#work_units' do
@@ -27,14 +36,14 @@ describe ProjectReport, type: :presenter do
 
 		subject { ProjectReport.new(project_1).work_units }
 
-		it { should include(work_unit_1, work_unit_2) }	
+		it { should include(work_unit_1, work_unit_2) }
 		it { should_not include(unrelated_work_unit) }
 	end
 
 	describe '#build_user_report' do
-		
-		describe 'user rows' do
-			subject { ProjectReport.new(project_1).build_user_report.keys } 
+
+		describe 'rows' do
+			subject { ProjectReport.new(project_1).build_user_report.keys }
 
 		  context 'with one contributing user' do
 		  	its (:length) { should eq(1) }
@@ -54,21 +63,21 @@ describe ProjectReport, type: :presenter do
 		end
 
 		describe 'item' do
-			subject { ProjectReport.new(project_1).build_user_report[user_1.id] } 
+			subject { ProjectReport.new(project_1).build_user_report[user_1.id] }
 
 			describe 'keys' do
 				it 'should have key :name' do
 					expect(subject).to have_key(:name)
-				end			
+				end
 				it 'should have key :hours' do
 					expect(subject).to have_key(:hours)
-				end						
+				end
 				it 'should have key :rate' do
 					expect(subject).to have_key(:rate)
-				end					
+				end
 				it 'should have key :cost' do
 					expect(subject).to have_key(:cost)
-				end			
+				end
 			end
 
 			describe 'values' do
@@ -78,21 +87,23 @@ describe ProjectReport, type: :presenter do
 				let :total_cost do
 					user_1.rate_for(project_1).amount * total_hours
 				end
-				
 				it 'should store users name with key :name' do
 					expect(subject[:name]).to eq(user_1.name)
-				end		
+				end
 				it 'should store users rate with key :rate' do
 					project_rate = user_1.rate_for(project_1).amount
 					expect(subject[:rate].to_i).to eq(project_rate)
 				end
 				it 'should calculate and store user total hours with key :hours' do
 					expect(subject[:hours]).to eq(total_hours)
-				end				
+				end
 				it 'should calculate and store users total cost (rate * hours) with key :cost' do
 					expect(subject[:cost]).to eq(total_cost)
 				end
 			end
 		end
+	end
+
+	describe '#build_rate_report' do
 	end
 end
