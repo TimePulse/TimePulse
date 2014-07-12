@@ -158,4 +158,8 @@ class WorkUnit < ActiveRecord::Base
   def set_defaults
     self.billable = project.billable if project && self.billable.nil?
   end
+
+  def rate
+    self.user.rate_for(self.project)
+  end
 end
