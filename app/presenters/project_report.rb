@@ -5,9 +5,9 @@ class ProjectReport
 
 	attr_reader :project, :rates
 
-	def users(scope = self.work_units)
-		scope.to_a.map{|pwu| pwu.user}.uniq
-	end
+  def users(scope = self.work_units)
+    scope.to_a.map{|pwu| pwu.user}.uniq
+  end
 
 	def rates
 		@project.rates.uniq

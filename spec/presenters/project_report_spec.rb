@@ -2,22 +2,22 @@ require 'spec_helper'
 
 describe ProjectReport, type: :presenter do
 
-	let :project_1 do FactoryGirl.create(:project) end
-	let :project_2 do FactoryGirl.create(:project) end
+  let :project_1 do FactoryGirl.create(:project) end
+  let :project_2 do FactoryGirl.create(:project) end
   let :user_1 do FactoryGirl.create(:user) end
   let :user_2 do FactoryGirl.create(:user) end
   let :user_3 do FactoryGirl.create(:user) end
   let! :rates_user_1 do FactoryGirl.create(:rates_user, :rate => project_1.rates.last, :user => user_1) end
   let! :rates_user_2 do FactoryGirl.create(:rates_user, :rate => project_1.rates.last, :user => user_2) end
   let! :rates_user_3 do FactoryGirl.create(:rates_user, :rate => project_2.rates.last, :user => user_3) end
-	let! :work_unit_1 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1) end
-	let! :work_unit_2 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1) end
+  let! :work_unit_1 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1) end
+  let! :work_unit_2 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1) end
 
-	describe '#users' do
-		subject { ProjectReport.new(project_1).users }
+  describe '#users' do
+    subject { ProjectReport.new(project_1).users }
 
-	  it { should include(user_1) }
-	  it { should_not include(user_2, user_3) }
+    it { should include(user_1) }
+    it { should_not include(user_2, user_3) }
   end
 
   describe '#rates' do
