@@ -9,7 +9,9 @@ shared_steps "for a task with project and work units" do |opt_hash|
   end
 
   let :project do
-    FactoryGirl.create(:project)
+    p = FactoryGirl.create(:project)
+    p.rates << FactoryGirl.create(:rate, :amount => 150)
+    p
   end
 
   let :user do FactoryGirl.create(:user) end
@@ -50,12 +52,14 @@ steps "the project reports page", :type => :feature do
   it "should have the proper titles" do
     page.should have_content("User")
     page.should have_content("Hours")
+    page.should have_content("Total $")
     page.should have_content(project.name.upcase)
   end
 
   it "should have the user name and total number of hours" do
     page.should have_content("Administrator")
-    page.should have_content("9")
+    page.should have_content("9.00")
+    page.should have_content("1350.00")
   end
 
   it "should list the work units for the project" do
