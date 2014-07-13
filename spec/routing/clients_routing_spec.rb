@@ -19,15 +19,15 @@ describe ClientsController do
     end
 
     it "recognizes and generates #create" do
-      { :post => "/clients" }.should route_to(:controller => "clients", :action => "create") 
+      { :post => "/clients" }.should route_to(:controller => "clients", :action => "create")
     end
 
     it "recognizes and generates #update" do
-      { :put => "/clients/1" }.should route_to(:controller => "clients", :action => "update", :id => "1") 
+      { :put => "/clients/1" }.should route_to(:controller => "clients", :action => "update", :id => "1")
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/clients/1" }.should route_to(:controller => "clients", :action => "destroy", :id => "1") 
+      { :delete => "/clients/1" }.should route_to(:controller => "clients", :action => "destroy", :id => "1")
     end
   end
 end

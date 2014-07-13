@@ -20,5 +20,3 @@ describe "/work_units/new" do
     end
   end
 end
-
-
