@@ -85,5 +85,3 @@ describe "/invoices/new" do
   end
 
 end
-
-

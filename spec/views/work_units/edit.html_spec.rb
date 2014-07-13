@@ -19,5 +19,3 @@ describe "/work_units/edit" do
     end
   end
 end
-
-
