@@ -46,7 +46,7 @@ class Project < ActiveRecord::Base
   end
 
   def base_rates
-    is_base_project? || parent.blank? ? rates : parent.rates
+    is_base_project? || parent.blank? ? rates : parent.base_rates
   end
 
   private
