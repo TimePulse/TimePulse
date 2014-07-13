@@ -20,5 +20,3 @@ describe "/bills/edit" do
     end
   end
 end
-
-

@@ -7,7 +7,7 @@ describe WorkUnitsController do
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/clock_out" }.should route_to(:controller => "clock_time", :action => "destroy") 
+      { :delete => "/clock_out" }.should route_to(:controller => "clock_time", :action => "destroy")
     end
   end
 end

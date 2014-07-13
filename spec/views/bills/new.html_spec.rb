@@ -93,5 +93,3 @@ describe "/bills/new" do
   end
 
 end
-
-

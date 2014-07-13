@@ -19,15 +19,15 @@ describe ProjectsController do
     end
 
     it "recognizes and generates #create" do
-      { :post => "/projects" }.should route_to(:controller => "projects", :action => "create") 
+      { :post => "/projects" }.should route_to(:controller => "projects", :action => "create")
     end
 
     it "recognizes and generates #update" do
-      { :put => "/projects/1" }.should route_to(:controller => "projects", :action => "update", :id => "1") 
+      { :put => "/projects/1" }.should route_to(:controller => "projects", :action => "update", :id => "1")
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/projects/1" }.should route_to(:controller => "projects", :action => "destroy", :id => "1") 
+      { :delete => "/projects/1" }.should route_to(:controller => "projects", :action => "destroy", :id => "1")
     end
   end
 end

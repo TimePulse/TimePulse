@@ -12,4 +12,3 @@ describe "/bills/show" do
 
   end
 end
-
