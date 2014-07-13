@@ -14,4 +14,3 @@ describe "/invoices/index" do
     render
   end
 end
-

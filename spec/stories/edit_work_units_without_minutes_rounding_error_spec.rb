@@ -22,5 +22,3 @@ steps "Minute truncation", :type => :feature do
 
   end
 end
-
-
