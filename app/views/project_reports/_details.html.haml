@@ -12,6 +12,17 @@
 
   %table.listing
     %tr
+      %th= "Type"
+      %th= "Hours"
+      %th= "Total $"
+    - @project_report.build_rate_report.each do |key, fields|
+      %tr
+        %td= fields[:name].to_s
+        %td= number_with_precision(fields[:hours], :precision => 2)
+        %td= "$ " + number_with_precision(fields[:cost], :precision => 2)
+
+  %table.listing
+    %tr
       %th= "Hours"
       %th= "User"
       %th= "Comments"
