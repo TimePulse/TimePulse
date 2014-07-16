@@ -59,7 +59,13 @@ class ProjectReport
 		rows = Hash.new
 
 		self.rates.each do |rate|
-			fields = Hash[:name => rate.name, :hours => rate_hours[rate.id], :rate => rate.amount, :cost => (rate_hours[rate.id] * rate.amount)]
+			if rate_hours[rate.id]
+				total_cost = rate_hours[rate.id] * rate.amount
+			else
+				total_cost = 0
+			end
+
+			fields = Hash[:name => rate.name, :hours => rate_hours[rate.id], :rate => rate.amount, :cost => total_cost]
 			rows[rate.id] = fields
 		end
 
