@@ -13,7 +13,7 @@ class ProjectReport
 		@project.rates.uniq
 	end
 
-	def by_hour_hash(&block)
+	def by_hours_hash(&block)
 		by_hours = {}
 		self.work_units.each do |wu|
 			model = yield(wu)
@@ -36,9 +36,6 @@ class ProjectReport
 
 	def work_units
 		@work_units = WorkUnit.for_project(@project).completed.billable.uninvoiced.flatten.uniq
-	end
-
-	def build_report_table()
 	end
 
 	def build_user_report
