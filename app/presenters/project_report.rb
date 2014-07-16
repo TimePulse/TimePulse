@@ -10,7 +10,7 @@ class ProjectReport
   end
 
 	def rates
-		@project.rates.uniq
+		@project.base_rates
 	end
 
 	def by_hours_hash(&block)
@@ -63,6 +63,8 @@ class ProjectReport
 				total_cost = rate_hours[rate.id] * rate.amount
 			else
 				total_cost = 0
+				# Places a zero in the table instead of leaving it blank
+				rate_hours[rate.id] = 0
 			end
 
 			fields = Hash[:name => rate.name, :hours => rate_hours[rate.id], :rate => rate.amount, :cost => total_cost]
