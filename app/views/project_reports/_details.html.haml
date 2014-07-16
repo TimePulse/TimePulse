@@ -1,5 +1,5 @@
 - if @project_report.work_units
-  %table.listing
+  %table.listing#user_report
     %tr
       %th= "User"
       %th= "Hours"
@@ -10,7 +10,7 @@
         %td= number_with_precision(fields[:hours], :precision => 2)
         %td= "$ " + number_with_precision(fields[:cost], :precision => 2)
 
-  %table.listing
+  %table.listing#rate_report
     %tr
       %th= "Type"
       %th= "Hours"
