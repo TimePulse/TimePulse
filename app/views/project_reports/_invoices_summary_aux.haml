@@ -6,9 +6,12 @@
         %th Date
         %th Hours
         %th Amount
+        %th
       - @project.client.invoices.each do |inv|
         %tr
           %td= inv.id
           %td= inv.created_at.try(:to_s, :short_date)
           %td= number_with_precision(inv.hours, :precision => 2)
           %td= "$ " + number_with_precision(inv.total, :precision => 2)
+          %td.tools
+            = link_to 'Show', inv, class: 'actions show'

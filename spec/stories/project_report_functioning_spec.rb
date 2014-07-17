@@ -14,10 +14,6 @@ shared_steps "for a task with project and work units" do |opt_hash|
     p
   end
 
-  let :invoice do
-    FactoryGirl.create(:invoice, :client => project.client)
-  end
-
   let :user do FactoryGirl.create(:user) end
   let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => admin) end
 
@@ -26,6 +22,15 @@ shared_steps "for a task with project and work units" do |opt_hash|
       FactoryGirl.create(:work_unit, :user => admin, :project => project, :hours => 3)
     end
 
+  end
+
+  let :work_unit_list do
+    [ FactoryGirl.create(:work_unit, :user => admin, :project => project, :hours => 4) ]
+  end
+
+
+  let! :invoice do
+    FactoryGirl.create(:invoice, :client => project.client, :work_units => work_unit_list )
   end
 
   it "should login as an admin" do
@@ -49,7 +54,6 @@ steps "the project reports page", :type => :feature do
   end
 
   it "should be able to select a project" do
-    invoice
     select_from_chosen(project.name,:from => 'project_id')
     click_button "Select Project"
   end
@@ -88,13 +92,18 @@ steps "the project reports page", :type => :feature do
     end
   end
 
-  #TODO need to add work units to invoice without invalidating earlier tests.
   it "should have the proper values for the invoices summary" do
     within "#previous_invoices" do
       page.should have_content(invoice.id)
       page.should have_content(Date.today.try(:to_s, :short_date))
-      page.should have_content(invoice.hours)
+      page.should have_content(4)
       page.should have_content(invoice.total)
+    end
+  end
+
+  it "should link to individual invoice" do
+    within "#previous_invoices" do
+      page.should have_link("Show")
     end
   end
 
