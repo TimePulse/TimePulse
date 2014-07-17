@@ -7,11 +7,15 @@ shared_steps "for a task with project and work units" do |opt_hash|
   let :admin do
     FactoryGirl.create(:admin)
   end
-  
+
   let :project do
     p = FactoryGirl.create(:project)
     p.rates << FactoryGirl.create(:rate, :amount => 150)
     p
+  end
+
+  let :invoice do
+    FactoryGirl.create(:invoice, :client => project.client)
   end
 
   let :user do FactoryGirl.create(:user) end
@@ -21,7 +25,7 @@ shared_steps "for a task with project and work units" do |opt_hash|
     let! "work_unit_#{idx}" do
       FactoryGirl.create(:work_unit, :user => admin, :project => project, :hours => 3)
     end
-    
+
   end
 
   it "should login as an admin" do
@@ -36,32 +40,33 @@ end
 
 steps "the project reports page", :type => :feature do
   perform_steps "for a task with project and work units"
-  
+
   it "should have proper content" do
     visit "/project_reports/new"
-    
+
     page.should have_content("Project Report")
     page.should have_content("REPORT PARAMETERS")
   end
-  
+
   it "should be able to select a project" do
+    invoice
     select_from_chosen(project.name,:from => 'project_id')
     click_button "Select Project"
   end
-  
+
   it "should have the proper titles" do
     page.should have_content("User")
     page.should have_content("Hours")
     page.should have_content("Total $")
     page.should have_content(project.name.upcase)
   end
-  
+
   it "should have the user name and total number of hours" do
     page.should have_content("Administrator")
     page.should have_content("9.00")
     page.should have_content("1350.00")
   end
-  
+
   it "should list the work units for the project" do
     within "#work_unit_#{work_unit_0.id}" do
       page.should have_link("Edit")
@@ -73,6 +78,25 @@ steps "the project reports page", :type => :feature do
       page.should have_link("Edit")
     end
   end
-    
+
+  it "should have the proper titles for the invoices summary" do
+    within "#previous_invoices" do
+      page.should have_content("Invoice #")
+      page.should have_content("Date")
+      page.should have_content("Hours")
+      page.should have_content("Amount")
+    end
+  end
+
+  #TODO need to add work units to invoice without invalidating earlier tests.
+  it "should have the proper values for the invoices summary" do
+    within "#previous_invoices" do
+      page.should have_content(invoice.id)
+      page.should have_content(Date.today.try(:to_s, :short_date))
+      page.should have_content(invoice.hours)
+      page.should have_content(invoice.total)
+    end
+  end
+
 end
 
