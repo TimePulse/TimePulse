@@ -22,5 +22,3 @@ describe "/invoices/edit" do
     end
   end
 end
-
-

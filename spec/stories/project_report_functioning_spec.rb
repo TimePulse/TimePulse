@@ -58,6 +58,9 @@ steps "the project reports page", :type => :feature do
   end
 
   it "should have the proper titles" do
+    page.should have_content("User")
+    page.should have_content("Hours")
+    page.should have_content("Total $")
     page.should have_content(project.name.upcase)
   end
 
@@ -98,7 +101,6 @@ steps "the project reports page", :type => :feature do
       page.should have_content("1350.00")
     end
   end
-
   it "should list the work units for the project" do
     within "#work_unit_#{work_unit_0.id}" do
       page.should have_link("Edit")

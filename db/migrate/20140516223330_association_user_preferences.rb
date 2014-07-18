@@ -1,8 +1,4 @@
 class AssociationUserPreferences < ActiveRecord::Migration
-  def change
-    User.all.each do |u|
-      up = UserPreferences.create!
-      up.user = u
-    end
-  end
+  #This migration was wrong, but got deployed
+  #And has been open-source for 3 months
 end

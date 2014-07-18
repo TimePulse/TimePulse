@@ -13,4 +13,3 @@ describe "/bills/index" do
 
   end
 end
-
