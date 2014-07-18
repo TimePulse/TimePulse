@@ -62,3 +62,4 @@ errors.err
 .rspec-local
 .ctrlp-root
 apache-passenger.conf
+public/test-assets/
