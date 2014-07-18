@@ -18,4 +18,3 @@ describe "/users/edit" do
     rendered.should have_selector('input#user_inactive')
   end
 end
-

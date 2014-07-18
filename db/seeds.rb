@@ -9,17 +9,15 @@
 
 User.reset_column_information
 
-user = User.create!(:login => 'admin',
-                     :name => "Admin",
-                     :email => "admin@timepulse.io",
-                     :password => 'foobar',
-                     :password_confirmation => 'foobar')
-user.admin = true
-user.save
-user.confirm!
-
-up = UserPreferences.create!
-up.user = user
-up.save
+admin = User.find_or_create_by!(:login => 'admin') do |user|
+  user.login = 'admin'
+  user.name = "Admin"
+  user.email = "admin@timepulse.io"
+  user.password = 'foobar'
+  user.password_confirmation = 'foobar'
+  user.admin = true
+  user.create_user_preferences!
+end
+admin.confirm!
 
 Project.create(:name => 'root', :client => nil)

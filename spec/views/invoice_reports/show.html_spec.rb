@@ -14,4 +14,3 @@ describe "/invoice_reports/show" do
     render
   end
 end
-

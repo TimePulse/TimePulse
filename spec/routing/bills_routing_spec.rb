@@ -19,15 +19,15 @@ describe BillsController do
     end
 
     it "recognizes and generates #create" do
-      { :post => "/bills" }.should route_to(:controller => "bills", :action => "create") 
+      { :post => "/bills" }.should route_to(:controller => "bills", :action => "create")
     end
 
     it "recognizes and generates #update" do
-      { :put => "/bills/1" }.should route_to(:controller => "bills", :action => "update", :id => "1") 
+      { :put => "/bills/1" }.should route_to(:controller => "bills", :action => "update", :id => "1")
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/bills/1" }.should route_to(:controller => "bills", :action => "destroy", :id => "1") 
+      { :delete => "/bills/1" }.should route_to(:controller => "bills", :action => "destroy", :id => "1")
     end
   end
 end

@@ -19,4 +19,3 @@ describe "/invoices/show" do
     rendered.should have_selector('.invoice-items tbody tr')
   end
 end
-
