@@ -2,13 +2,12 @@ require 'spec_helper'
 
 describe WorkUnitsController do
   describe "permissions" do
+    let! :work_unit do FactoryGirl.create(:work_unit) end
+
     describe "accessed by guest" do
-      before(:each) do
-        @work_unit = FactoryGirl.create(:work_unit)
-      end
 
       it "should not permit GET show" do
-        get :show, :id => @work_unit.id
+        get :show, :id => work_unit.id
         verify_authorization_unsuccessful
       end
 
@@ -18,22 +17,22 @@ describe WorkUnitsController do
       end
 
       it "should not permit GET edit" do
-        get :edit, :id => @work_unit.id
+        get :edit, :id => work_unit.id
         verify_authorization_unsuccessful
       end
 
       it "should not permit POST create" do
-        post :create, :work_unit => @work_unit
+        post :create, :work_unit => work_unit
         verify_authorization_unsuccessful
       end
 
       it "should not permit PUT update" do
-        put :update, :id => @work_unit.id
+        put :update, :id => work_unit.id
         verify_authorization_unsuccessful
       end
 
       it "should not permit DELETE destroy" do
-        delete :destroy, :id => @work_unit.id
+        delete :destroy, :id => work_unit.id
         verify_authorization_unsuccessful
       end
     end
