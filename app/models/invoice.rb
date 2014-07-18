@@ -20,11 +20,12 @@ class Invoice < ActiveRecord::Base
 
   validates_presence_of :client_id
 
-  scope :overdue, lambda { { :conditions => [ "paid_on IS NULL AND due_on < ? ", Date.today ] } }
-  scope :unpaid,  :conditions => { :paid_on => nil }
-  scope :paid, :conditions => "paid_on IS NOT NULL"
+  scope :overdue, lambda { where("paid_on IS NULL AND due_on < ? ", Date.today) }
 
-  attr_accessible :notes, :due_on, :paid_on, :reference_number
+  scope :unpaid,  lambda { where("paid_on IS NULL") }
+
+  scope :paid, lambda { where("paid_on IS NOT NULL") }
+
   accepts_nested_attributes_for :work_units, :reject_if => :all_blank, :allow_destroy => :false
 
   before_save :generate_invoice_items, :if => :new_record?

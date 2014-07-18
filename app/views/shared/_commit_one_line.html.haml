@@ -1,7 +1,7 @@
 - cache("commit_one_line_#{commit.id}") do
   - token = SecureRandom.hex(8)
 
-  %tr.commit.one_line.has_tooltip{ :id => token }
+  %tr.commit.one_line{ :id => token }
     %td= commit.try(:project).try(:client).try(:abbreviation)
     %td= truncate(commit.try(:project).try(:name), :length => 25)
     %td= truncate(commit.description, :length =>  30, :omission => '...')
@@ -9,5 +9,3 @@
       = truncate(commit.reference_2, :length => 10)
     %td
       %span.nobr= commit.time.to_datetime.to_s(:short_date)
-      = commit_tooltip_for(commit, token)
-

@@ -10,9 +10,9 @@ module SelectBoxItHelpers
       raise "You must pass a key :from with the value of the name of the select field to choose from"
     end
     base_id = options[:from]
-    container_id = "#" + base_id + "SelectBoxItContainer"
+    arrow_id = "#" + base_id + "SelectBoxItArrowContainer"
     options_id = "#" + base_id + "SelectBoxItOptions"
-    find(container_id).click
+    find(arrow_id).click
     within options_id do
       find('li', :text => item).click
     end

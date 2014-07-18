@@ -19,15 +19,15 @@ describe InvoicesController do
     end
 
     it "recognizes and generates #create" do
-      { :post => "/invoices" }.should route_to(:controller => "invoices", :action => "create") 
+      { :post => "/invoices" }.should route_to(:controller => "invoices", :action => "create")
     end
 
     it "recognizes and generates #update" do
-      { :put => "/invoices/1" }.should route_to(:controller => "invoices", :action => "update", :id => "1") 
+      { :put => "/invoices/1" }.should route_to(:controller => "invoices", :action => "update", :id => "1")
     end
 
     it "recognizes and generates #destroy" do
-      { :delete => "/invoices/1" }.should route_to(:controller => "invoices", :action => "destroy", :id => "1") 
+      { :delete => "/invoices/1" }.should route_to(:controller => "invoices", :action => "destroy", :id => "1")
     end
   end
 end

@@ -10,6 +10,11 @@ class WorkUnitsController < WorkUnitBaseController
 
   # GET /work_units/1
   def show
+    @work_unit = WorkUnit.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.json { render :json => @work_unit }
+    end
   end
 
   # GET /work_units/new
@@ -26,8 +31,12 @@ class WorkUnitsController < WorkUnitBaseController
   def create
     parse_date_params
 
-    @work_unit = WorkUnit.new(params[:work_unit])
-    add_project
+    if request.format.to_s == 'text/html' || request.format.to_s == 'text/javascript'
+      @work_unit = WorkUnit.new(work_unit_params)
+    elsif request.format.to_s == 'application/json'
+      mapper = WorkUnitMapper.new(request.body.read)
+      @work_unit = mapper.save
+    end
 
     @work_unit.user = current_user
     compute_some_fields
@@ -41,8 +50,9 @@ class WorkUnitsController < WorkUnitBaseController
         format.html { redirect_to(@work_unit) }
         format.js {
           @work_unit = WorkUnit.new
-          @work_units = current_user.completed_work_units_for(current_user.current_project).order("stop_time DESC").paginate(:per_page => 10, :page => nil)
+          @work_units = current_user.completed_work_units_for(current_user.current_project).order(stop_time: :desc).paginate(:per_page => 10, :page => nil)
         }
+        format.json { render json: @work_unit }
       else
         format.html { render :action => "new" }
         format.js
@@ -54,8 +64,7 @@ class WorkUnitsController < WorkUnitBaseController
   def update
     parse_date_params
 
-    @work_unit.attributes = params[:work_unit]
-    add_project
+    @work_unit.update(work_unit_params)
 
     compute_some_fields
     if @work_unit.save
@@ -80,12 +89,6 @@ class WorkUnitsController < WorkUnitBaseController
 
   private
 
-  def add_project
-    if params[:work_unit].has_key?(:project_id)
-      @work_unit.project_id = params[:work_unit].delete(:project_id)
-    end
-  end
-
   # compute a few fields based on sensible defaults, if "calculate" param was passed
   def compute_some_fields
     if params["work_unit"]["calculate"]
@@ -103,6 +106,17 @@ class WorkUnitsController < WorkUnitBaseController
 
   def store_location
     session[:return_to] = request.env["HTTP_REFERER"]
+  end
+
+  def work_unit_params
+    params.
+    require(:work_unit).
+    permit(:notes,
+      :start_time,
+      :stop_time,
+      :hours,
+      :billable,
+      :project_id)
   end
 
 end

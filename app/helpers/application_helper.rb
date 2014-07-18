@@ -97,7 +97,7 @@ module ApplicationHelper
   end
 
   def project_options
-    sorted_projects = Project.find(:all).sort_by(&:lft)
+    sorted_projects = Project.all.sort_by(&:lft)
 
     sorted_projects.collect do |p|
       attributes = {}

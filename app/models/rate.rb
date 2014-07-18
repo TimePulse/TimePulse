@@ -17,8 +17,6 @@ class Rate < ActiveRecord::Base
   has_many :rates_users
   has_many :users, :through => :rates_users
 
-  attr_accessible :name, :amount
-
   validates_presence_of :name, :amount
 
   before_destroy :clear_users
@@ -29,17 +27,3 @@ class Rate < ActiveRecord::Base
     users.clear
   end
 end
-
-# == Schema Information
-#
-# Table name: rates_users
-#
-#  rate_id     :integer(4)
-#  user_id     :integer(4)
-#
-
-class RatesUser < ActiveRecord::Base
-  belongs_to :rate
-  belongs_to :user
-end
-
