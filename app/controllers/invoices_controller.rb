@@ -23,7 +23,7 @@ class InvoicesController < ApplicationController
     if params[:client_id]
       @client = find_user(Client, params[:client_id])
       @invoice.client = @client
-      @work_units = WorkUnit.for_client(@client).completed.billable.uninvoiced.flatten.uniq
+      @work_units = WorkUnit.for_client(@client).with_hours.billable.uninvoiced.flatten.uniq
     end
   end
 

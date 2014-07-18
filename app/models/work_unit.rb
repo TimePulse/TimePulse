@@ -19,7 +19,8 @@
 class WorkUnit < ActiveRecord::Base
 
   scope :in_progress, -> { where("hours IS NULL and start_time IS NOT NULL") }
-  scope :completed, -> { where("hours IS NOT NULL") }
+  scope :completed, -> { where.not(:hours => nil).where.not(:stop_time => nil) }
+  scope :with_hours, -> { where.not(:hours => nil) }
   scope :recent, lambda { order(stop_time: :desc).limit(8) }
 
   scope :billable, -> { where(:billable => true) }
