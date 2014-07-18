@@ -7,7 +7,7 @@
         %th Hours
         %th Amount
         %th
-      - @project.client.invoices.each do |inv|
+      - @project_report.invoices.each do |inv|
         %tr
           %td= inv.id
           %td= inv.created_at.try(:to_s, :short_date)
