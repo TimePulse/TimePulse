@@ -1,6 +1,8 @@
 class ProjectReport
   def initialize(project)
     @project = project
+    @user_hours = user_hours
+    @users = users
   end
 
   attr_reader :project, :rates
@@ -77,5 +79,4 @@ class ProjectReport
 
     rows
   end
-
 end
