@@ -1,6 +1,43 @@
 require 'spec_helper'
 
 describe WorkUnitsController do
+  describe "permissions" do
+    describe "accessed by guest" do
+      before(:each) do
+        @work_unit = FactoryGirl.create(:work_unit)
+      end
+
+      it "should not permit GET show" do
+        get :show, :id => @work_unit.id
+        verify_authorization_unsuccessful
+      end
+
+      it "should not permit GET new" do
+        get :new
+        verify_authorization_unsuccessful
+      end
+
+      it "should not permit GET edit" do
+        get :edit, :id => @work_unit.id
+        verify_authorization_unsuccessful
+      end
+
+      it "should not permit POST create" do
+        post :create, :work_unit => @work_unit
+        verify_authorization_unsuccessful
+      end
+
+      it "should not permit PUT update" do
+        put :update, :id => @work_unit.id
+        verify_authorization_unsuccessful
+      end
+
+      it "should not permit DELETE destroy" do
+        delete :destroy, :id => @work_unit.id
+        verify_authorization_unsuccessful
+      end
+    end
+  end
 
   describe "as admin" do
     before(:each) do
@@ -55,9 +92,23 @@ describe WorkUnitsController do
     ########################################################################################
     describe "responding to POST create" do
 
+      describe "for a work unit without a project" do
+        before do
+          post :create, :work_unit => {
+            :start_time => @local_tz.now.to_s,
+            :time_zone => (@local_tz.utc_offset / 3600)
+         }
+        end
+
+        it "should assign an invalid work unit" do
+          assigns[:work_unit].should_not be_valid
+        end
+      end
+
       describe "for a work unit without a start time" do
         before do
-          post :create, :work_unit => { :project_id => project.id }
+          post :create, :work_unit => { :project_id => project.id,
+            :time_zone => (@local_tz.utc_offset / 3600) }
         end
 
         it "should assign an invalid work unit" do
