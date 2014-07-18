@@ -1,5 +1,3 @@
-
-
 class InvoiceReport
   attr_accessor :invoice, :work_units, :report
 
