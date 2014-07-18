@@ -1,10 +1,21 @@
 - if @project_report.work_units
-  %table.listing
+  %table.listing#user_report
     %tr
       %th= "User"
       %th= "Hours"
       %th= "Total $"
     - @project_report.build_user_report.each do |key, fields|
+      %tr
+        %td= fields[:name].to_s
+        %td= number_with_precision(fields[:hours], :precision => 2)
+        %td= "$ " + number_with_precision(fields[:cost], :precision => 2)
+
+  %table.listing#rate_report
+    %tr
+      %th= "Type"
+      %th= "Hours"
+      %th= "Total $"
+    - @project_report.build_rate_report.each do |key, fields|
       %tr
         %td= fields[:name].to_s
         %td= number_with_precision(fields[:hours], :precision => 2)
