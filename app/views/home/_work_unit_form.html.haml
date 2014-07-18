@@ -5,7 +5,7 @@
       Hours are not forced to the difference between start and stop: you may enter "I worked 2 hours
       between 9am and 1pm", for example.  If hours are left blank, they will be computed as
       the difference between start and stop time.
-    = form_for(new_work_unit_for_current_project, :remote => true) do |f|
+    = form_for(new_work_unit_for_current_project) do |f|
       = f.error_messages
       = f.hidden_field  :calculate, :value => true
 
