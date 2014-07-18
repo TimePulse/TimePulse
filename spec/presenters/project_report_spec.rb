@@ -21,43 +21,43 @@ describe ProjectReport, type: :presenter do
   end
 
   describe '#rates' do
-		subject { ProjectReport.new(project_1).rates }
+    subject { ProjectReport.new(project_1).rates }
 
-	  it { should eq(project_1.rates) }
-	  it { should_not eq(project_2.rates) }
+    it { should eq(project_1.rates) }
+    it { should_not eq(project_2.rates) }
   end
 
   describe '#user_hours' do
-  	subject { ProjectReport.new(project_1).user_hours }
+    subject { ProjectReport.new(project_1).user_hours }
 
     it "should return sum of user's hours on project at key user_id" do
       total_hours = work_unit_1.hours + work_unit_2.hours
       expect(subject[user_1.id]).to eq(total_hours)
     end
     it "should retrun nil for unrelated user ids" do
-  		expect(subject[user_2.id]).to eq(nil)
-  	end
+      expect(subject[user_2.id]).to eq(nil)
+    end
   end
 
   describe '#rate_hours' do
     subject { ProjectReport.new(project_1).rate_hours }
 
-  	it "should return sum of rate's hours on project at key rate_id" do
-  		total_hours = work_unit_1.hours + work_unit_2.hours
-  		expect(subject[project_1.rates.first.id]).to eq(total_hours)
-  	end
+    it "should return sum of rate's hours on project at key rate_id" do
+      total_hours = work_unit_1.hours + work_unit_2.hours
+      expect(subject[project_1.rates.first.id]).to eq(total_hours)
+    end
   end
 
-	describe '#work_units' do
-		let :unrelated_work_unit do
-			FactoryGirl.create(:work_unit, :project => project_2)
-		end
+  describe '#work_units' do
+    let :unrelated_work_unit do
+      FactoryGirl.create(:work_unit, :project => project_2)
+    end
 
-		subject { ProjectReport.new(project_1).work_units }
+    subject { ProjectReport.new(project_1).work_units }
 
-		it { should include(work_unit_1, work_unit_2) }
-		it { should_not include(unrelated_work_unit) }
-	end
+    it { should include(work_unit_1, work_unit_2) }
+    it { should_not include(unrelated_work_unit) }
+  end
 
   describe '#build_user_report' do
 
@@ -128,66 +128,66 @@ describe ProjectReport, type: :presenter do
     let :rate_1 do project_1.rates.first end
     let :rate_2 do project_2.rates.first end
 
-		describe 'rows' do
+    describe 'rows' do
 
-			subject { ProjectReport.new(project_1).build_rate_report.keys }
+      subject { ProjectReport.new(project_1).build_rate_report.keys }
 
-		  context 'with one rate types' do
+      context 'with one rate types' do
         its (:length) { should eq(1) }
         it { should include(rate_1.id) }
         it { should_not include(rate_2.id) }
-	  	end
+      end
 
-	  	context 'with two rate types' do
-	  		let! :rate_3 do
-	  			FactoryGirl.create(:rate, :project => project_1)
-	  		end
+      context 'with two rate types' do
+        let! :rate_3 do
+          FactoryGirl.create(:rate, :project => project_1)
+        end
 
-			  its(:length) { should eq(2) }
-			  it { should include(rate_1.id,rate_3.id) }
-			  it { should_not include(rate_2.id) }
-	  	end
-		end
+        its(:length) { should eq(2) }
+        it { should include(rate_1.id,rate_3.id) }
+        it { should_not include(rate_2.id) }
+      end
+    end
 
-		describe 'item' do
-			subject { ProjectReport.new(project_1).build_rate_report[rate_1.id] }
+    describe 'item' do
+      subject { ProjectReport.new(project_1).build_rate_report[rate_1.id] }
 
-			describe 'keys' do
-				it 'should have key :name' do
-					expect(subject).to have_key(:name)
-				end
-				it 'should have key :hours' do
-					expect(subject).to have_key(:hours)
-				end
-				it 'should have key :rate' do
-					expect(subject).to have_key(:rate)
-				end
-				it 'should have key :cost' do
-					expect(subject).to have_key(:cost)
-				end
-			end
+      describe 'keys' do
+        it 'should have key :name' do
+          expect(subject).to have_key(:name)
+        end
+        it 'should have key :hours' do
+          expect(subject).to have_key(:hours)
+        end
+        it 'should have key :rate' do
+          expect(subject).to have_key(:rate)
+        end
+        it 'should have key :cost' do
+          expect(subject).to have_key(:cost)
+        end
+      end
 
-			describe 'values' do
-				let :total_hours do
+      describe 'values' do
+        let :total_hours do
           work_unit_1.hours + work_unit_2.hours
-				end
-				let :total_cost do
+        end
+        let :total_cost do
           rate_1.amount * total_hours
-				end
+        end
 
-				it 'should store rate name with key :name' do
-					expect(subject[:name]).to eq(rate_1.name)
-				end
-				it 'should store rate amount with key :rate' do
-					expect(subject[:rate]).to eq(rate_1.amount)
-				end
-				it 'should calculate and store user total hours with key :hours' do
-					expect(subject[:hours]).to eq(total_hours)
-				end
-				it 'should calculate and store users total cost (rate * hours) with key :cost' do
-					expect(subject[:cost]).to eq(total_cost)
-				end
-			end
-		end
-	end
+        it 'should store rate name with key :name' do
+          expect(subject[:name]).to eq(rate_1.name)
+        end
+        it 'should store rate amount with key :rate' do
+          expect(subject[:rate]).to eq(rate_1.amount)
+        end
+        it 'should calculate and store user total hours with key :hours' do
+          expect(subject[:hours]).to eq(total_hours)
+        end
+        it 'should calculate and store users total cost (rate * hours) with key :cost' do
+          expect(subject[:cost]).to eq(total_cost)
+        end
+      end
+    end
+  end
 end
