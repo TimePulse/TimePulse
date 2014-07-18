@@ -35,7 +35,11 @@ class ProjectReport
   end
 
   def work_units
-    @work_units = WorkUnit.for_project(@project).completed.billable.uninvoiced.flatten.uniq
+    @work_units ||= WorkUnit.for_project(@project).completed.billable.uninvoiced.flatten.uniq
+  end
+
+  def invoices
+    @invoices ||= @project.client.invoices
   end
 
   def build_user_report
