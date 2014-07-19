@@ -51,6 +51,7 @@ Ninja.behavior({
     '.mizugumo_graceful_form': Ninja.becomesAjaxLink,
     '.fix_work_unit_button': Ninja.submitsAsAjax(),
     '*[data-remote=true]': Ninja.submitsAsAjax(),
+    '.ajax-form': Ninja.submitsAsAjax(),
     '#debug':        Ninja.suppressChangeEvents(),
     '.selectboxit':  Ninja.suppressChangeEvents(),
     '#task_elapsed':  Ninja.suppressChangeEvents(),
