@@ -11,9 +11,8 @@ require 'bundler'
 require 'bundler/capistrano'
 set :bundle_without,  [:development, :test]
 
-#set :repository,  "git@github.com:TimePulse/TimePulse.git" #use the public
-#repo, or fork and use your own
-set :deploy_via, :remote_cache
+set :repository,  "git@github.com:LRDesign/TimePulse.git"
+#set :deploy_via, :remote_cache
 set :scm, 'git'
 set :scm_verbose, true
 
