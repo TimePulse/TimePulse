@@ -1,7 +1,7 @@
 set :runner, 'apache'
 set :user, 'root'
 
-set :domain, 'appserver2.lrdesign.com'
+set :domain, 'appserver.lrdesign.com'
 set :application, 'tracks-staging'      # eg 'rfx'
 set :deploy_to, '/var/www/tracks-staging.lrdesign.com'
 

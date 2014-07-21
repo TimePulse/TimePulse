@@ -21,7 +21,15 @@ shared_steps "for a task with project and work units" do |opt_hash|
     let! "work_unit_#{idx}" do
       FactoryGirl.create(:work_unit, :user => admin, :project => project, :hours => 3)
     end
+  end
 
+  let :work_unit_list do
+    [ FactoryGirl.create(:work_unit, :user => admin, :project => project, :hours => 4) ]
+  end
+
+
+  let! :invoice do
+    FactoryGirl.create(:invoice, :client => project.client, :work_units => work_unit_list )
   end
 
   it "should login as an admin" do
@@ -62,6 +70,37 @@ steps "the project reports page", :type => :feature do
     page.should have_content("1350.00")
   end
 
+  it "should have proper table headings for user report" do
+    within "#user_report" do
+      page.should have_content("User")
+      page.should have_content("Hours")
+      page.should have_content("Total $")
+    end
+  end
+
+  it "should have proper values for user report" do
+    within "#user_report" do
+      page.should have_content("Administrator")
+      page.should have_content("9.00")
+      page.should have_content("1350.00")
+    end
+  end
+
+  it "should have proper table headings for rate report" do
+    within "#rate_report" do
+      page.should have_content("Type")
+      page.should have_content("Hours")
+      page.should have_content("Total $")
+    end
+  end
+
+  it "should have the type name and total number of hours" do
+    within "#rate_report" do
+      page.should have_content("amount for name")
+      page.should have_content("9.00")
+      page.should have_content("1350.00")
+    end
+  end
   it "should list the work units for the project" do
     within "#work_unit_#{work_unit_0.id}" do
       page.should have_link("Edit")
@@ -71,6 +110,30 @@ steps "the project reports page", :type => :feature do
     end
     within "#work_unit_#{work_unit_2.id}" do
       page.should have_link("Edit")
+    end
+  end
+
+  it "should have the proper titles for the invoices summary" do
+    within "#previous_invoices" do
+      page.should have_content("Invoice #")
+      page.should have_content("Date")
+      page.should have_content("Hours")
+      page.should have_content("Amount")
+    end
+  end
+
+  it "should have the proper values for the invoices summary" do
+    within "#previous_invoices" do
+      page.should have_content(invoice.id)
+      page.should have_content(Date.today.try(:to_s, :short_date))
+      page.should have_content(4)
+      page.should have_content(invoice.total)
+    end
+  end
+
+  it "should link to individual invoice" do
+    within "#previous_invoices" do
+      page.should have_link("Show")
     end
   end
 

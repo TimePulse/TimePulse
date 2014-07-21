@@ -125,6 +125,11 @@ class WorkUnit < ActiveRecord::Base
     end
   end
 
+  #TODO: spec this method
+  def rate
+    self.user.rate_for(self.project)
+  end
+
   validate :no_double_clocking
   validate :hours_within_time_range
   validate :not_in_the_future
