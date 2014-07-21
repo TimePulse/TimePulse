@@ -20,4 +20,4 @@ admin = User.find_or_create_by!(:login => 'admin') do |user|
 end
 admin.confirm!
 
-Project.find_or_create_by!(:name => 'root', :client => nil)
+Project.find_or_create_by!(:name => 'root', :client_id => nil)
