@@ -60,4 +60,3 @@ end
 before "deploy:assets:precompile", "deploy:link_shared_files"
 after 'deploy:update', 'deploy:cleanup'
 after 'deploy:update', 'deploy:cache_clear'
-
