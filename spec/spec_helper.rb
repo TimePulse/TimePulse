@@ -19,6 +19,11 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 require 'waterpig'
 
+Capybara.register_driver :poltergeist_debug do |app|
+  Capybara::Poltergeist::Driver.new(app, :timeout => 60, :inspector => true, phantomjs_logger: Waterpig::WarningSuppressor)
+end
+
+
 RSpec.configure do |config|
   config.mock_with :rspec
 
