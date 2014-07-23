@@ -1,8 +1,9 @@
 require 'hhmm_to_decimal'
 
 class WorkUnitsController < WorkUnitBaseController
+  before_filter :require_user!
+
   include HhmmToDecimal
-  include UsersHelper
 
   before_filter :convert_hours_from_hhmm, :only => [ :update, :create ]
 
