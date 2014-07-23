@@ -271,6 +271,18 @@ describe WorkUnit do
     end
   end
 
+  describe "rate" do
+    it 'should return appropriate rate for WorkUnit' do
+      project = FactoryGirl.create(:project)
+      user = FactoryGirl.create(:user)
+      rate = FactoryGirl.create(:rate, :project => project)
+      rates_user = FactoryGirl.create(:rates_user, :rate => rate, :user => user)
+      work_unit = FactoryGirl.create(:work_unit, :user => user, :project => project)
+
+      work_unit.rate.should == rate
+    end
+  end
+
   describe "this_week" do
     before(:each) do
       this_week = Time.zone.now.beginning_of_week

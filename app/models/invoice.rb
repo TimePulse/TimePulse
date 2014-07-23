@@ -42,6 +42,14 @@ class Invoice < ActiveRecord::Base
     !paid_on.nil?
   end
 
+  def total
+    total = 0
+    self.invoice_items.each do |item|
+      total += item.total
+    end
+    total
+  end
+
   private
 
   def generate_invoice_items

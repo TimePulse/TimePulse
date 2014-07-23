@@ -9,6 +9,8 @@ TimePulse::Application.configure do
 
   config.eager_load = false
 
+  config.assets.prefix = "/test-assets"
+
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
@@ -30,7 +32,6 @@ TimePulse::Application.configure do
   # config.active_record.schema_format = :sql
 
   # Print deprecation notices to the stderr
-  config.active_support.deprecation = :stderr
+  config.active_support.deprecation = :log
 
-  #config.logical_authz.debug!
 end

@@ -42,7 +42,18 @@ describe Invoice do
         FactoryGirl.create(:work_unit, :user => user, :project => project, :hours => 2.0),
         FactoryGirl.create(:work_unit, :user => user, :project => project, :hours => 3.0)
       ]
-      FactoryGirl.create(:invoice, :client => project.client, :work_units => wus).hours.should == 6.0
+      FactoryGirl.create(:invoice, :client => project.client, :work_units => wus).hours.should == 6
+    end
+  end
+
+  describe "total" do
+    it "should give the sum of the totals in contained work units" do
+      wus = [
+        FactoryGirl.create(:work_unit, :user => user, :project => project, :hours => 1.0),
+        FactoryGirl.create(:work_unit, :user => user, :project => project, :hours => 2.0),
+        FactoryGirl.create(:work_unit, :user => user, :project => project, :hours => 3.0)
+      ]
+      FactoryGirl.create(:invoice, :client => project.client, :work_units => wus).total.should == 600
     end
   end
 
