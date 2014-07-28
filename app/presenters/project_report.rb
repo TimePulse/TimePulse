@@ -51,8 +51,10 @@ class ProjectReport
 
     self.users.each do |user|
       rate = user.rate_for(@project)
+      amount = rate && rate.amount
+      amount ||= 0
 
-      fields = Hash[:name => user.name, :hours => user_hours[user.id], :rate => rate.amount, :cost => (user_hours[user.id] * rate.amount)]
+      fields = Hash[:name => user.name, :hours => user_hours[user.id], :rate => amount, :cost => (user_hours[user.id] * amount)]
       rows[user.id] = fields
     end
 
