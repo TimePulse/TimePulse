@@ -156,6 +156,13 @@ describe ProjectsController do
           put :update, :id => @project.id, :project => {:archived => true}
           @project.reload.should be_archived
         end
+
+        it "can set the project rates" do
+          put :update, :id => @project.id, :project => {:rates_attributes => [{:name => "Senior Captain", :amount => "175" }]}
+          @project.reload.rates.count.should == 2
+          @project.reload.rates[1].name.should == "Senior Captain"
+        end
+
       end
 
       describe "with invalid params" do
