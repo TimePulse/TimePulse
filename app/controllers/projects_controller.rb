@@ -82,7 +82,7 @@ class ProjectsController < ApplicationController
       :archived,
       :github_url,
       :pivotal_id,
-      :rates_attributes,
+      {:rates_attributes => [:id, :name, :amount, :_destroy]},
       :client_id,
       :parent_id)
   end
