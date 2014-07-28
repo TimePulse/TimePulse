@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe InvoiceReport, type: :presenter do
 
-  let :project do FactoryGirl.create(:project) end
+  let :project do FactoryGirl.create(:project, :with_rate) end
   let :user_1 do FactoryGirl.create(:user) end
   let :user_2 do FactoryGirl.create(:user) end
   let :user_3 do FactoryGirl.create(:user) end

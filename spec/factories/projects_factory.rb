@@ -22,8 +22,12 @@ FactoryGirl.define  do
     github_url ""
     pivotal_id 123
     parent_id { Project.root.id }
-    after(:create) { |p| FactoryGirl.create(:rate, :project => p)  }
+    trait :with_rate do
+      after(:create) { |p| FactoryGirl.create(:rate, :project => p)  }
+    end
   end
+
+
 end
 
 FactoryGirl.define  do

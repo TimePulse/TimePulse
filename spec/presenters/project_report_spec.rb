@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe ProjectReport, type: :presenter do
 
-  let :project_1 do FactoryGirl.create(:project) end
-  let :project_2 do FactoryGirl.create(:project) end
+  let :project_1 do FactoryGirl.create(:project, :with_rate) end
+  let :project_2 do FactoryGirl.create(:project, :with_rate) end
   let :user_1 do FactoryGirl.create(:user) end
   let :user_2 do FactoryGirl.create(:user) end
   let :user_3 do FactoryGirl.create(:user) end
@@ -118,6 +118,23 @@ describe ProjectReport, type: :presenter do
         end
         it 'should calculate and store users total cost (rate * hours) with key :cost' do
           expect(subject[:cost]).to eq(total_cost)
+        end
+
+        context "for project with no rates" do
+          let :project_1 do FactoryGirl.create(:project) end
+
+          it 'should store users name with key :name' do
+            expect(subject[:name]).to eq(user_1.name)
+          end
+          it 'should store users rate as 0' do
+            expect(subject[:rate].to_f).to eq(0.0)
+          end
+          it 'should calculate and store user total hours with key :hours' do
+            expect(subject[:hours]).to eq(total_hours)
+          end
+          it 'should calculate and store users total cost as 0' do
+            expect(subject[:cost]).to eq(0.0)
+          end
         end
       end
     end
