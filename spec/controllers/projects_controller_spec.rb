@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ProjectsController do
   before do
-    @project = FactoryGirl.create(:project)
+    @project = FactoryGirl.create(:project, :with_rate)
   end
 
   describe "accessed by a normal user" do

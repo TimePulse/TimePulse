@@ -15,7 +15,7 @@
 require 'spec_helper'
 
 describe Invoice do
-  let :project do FactoryGirl.create(:project) end
+  let :project do FactoryGirl.create(:project, :with_rate) end
   let :user do FactoryGirl.create(:user) end
   let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user) end
 

@@ -8,7 +8,7 @@ shared_steps "for an invoicing task" do |opt_hash|
   end
 
   let :project do
-    FactoryGirl.create(:project)
+    FactoryGirl.create(:project, :with_rate)
   end
 
   let :user do FactoryGirl.create(:user) end
