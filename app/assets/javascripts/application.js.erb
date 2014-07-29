@@ -127,17 +127,18 @@ Ninja.behavior({
         content = $(elem).val();
 
         content = content.replace(/\n/g, '<br>');
+        hiddenDiv = $(elem).parent().find('.hidden-work-unit-notes-div');
         hiddenDiv.html('<br>' + content + '<br>');
 
         $(elem).css('height', hiddenDiv.height());
       },
       transform: function(elem) {
         hiddenDiv = $(document.createElement('div')),
-        content = null;
+        content = $(elem).val();
 
-        hiddenDiv.addClass('hiddendiv');
+        hiddenDiv.addClass('hidden-work-unit-notes-div');
 
-        $('#timeclock').append(hiddenDiv);
+        $(elem).parent().append(hiddenDiv);
       }
     },
     '#timeclock a#override_trigger': {
