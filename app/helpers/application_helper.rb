@@ -35,7 +35,7 @@ module ApplicationHelper
   def labeled_datepicker_field(form, field_name, options = {})
     options.reverse_merge!(:class => :date_entry) unless options[:class]
     fieldval =  form.object.send(field_name)
-    value = fieldval ? fieldval.strftime('%b %d, %Y'): nil
+    value = fieldval ? fieldval.to_s(:long_datetime) : nil
     form.labeled_input(field_name, options.merge!(
       :class => options[:class],
       :value => value

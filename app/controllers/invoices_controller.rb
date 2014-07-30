@@ -48,8 +48,6 @@ class InvoicesController < ApplicationController
   # PUT /invoices/1
   def update
     if @invoice.update_attributes(invoice_params)
-      p invoice_params
-      p @invoice
       flash[:notice] = 'Invoice was successfully updated.'
       redirect_to(@invoice)
     else
@@ -92,7 +90,8 @@ class InvoicesController < ApplicationController
   # end
 
   def invoice_params
-    params.require(:invoice).permit(:notes,
+    params.require(:invoice)
+    .permit(:notes,
       :due_on,
       :paid_on,
       :reference_number,
