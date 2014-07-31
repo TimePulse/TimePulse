@@ -47,10 +47,7 @@ class InvoicesController < ApplicationController
 
   # PUT /invoices/1
   def update
-    @invoice = Invoice.find(params[:id])
-    @invoice.update(invoice_params)
-
-    if @invoice.save
+    if @invoice.update_attributes(invoice_params)
       flash[:notice] = 'Invoice was successfully updated.'
       redirect_to(@invoice)
     else
@@ -93,12 +90,12 @@ class InvoicesController < ApplicationController
   # end
 
   def invoice_params
-    params.
-    require(:invoice).
-    permit(:notes,
+    params.require(:invoice)
+    .permit(:notes,
       :due_on,
       :paid_on,
       :reference_number,
       :client_id)
   end
+
 end
