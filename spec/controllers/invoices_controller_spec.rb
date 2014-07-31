@@ -288,7 +288,9 @@ describe InvoicesController do
       describe "with valid params" do
         before do
           @valid_update_params = {
-            :notes => "different notes."
+            :notes => "different notes.",
+            :due_on => Date.today,
+            :paid_on => Date.today + 10.days
           }
         end
 
@@ -296,10 +298,21 @@ describe InvoicesController do
           put :update, :id => @invoice.id, :invoice => @valid_update_params
           verify_authorization_successful
         end
-        it "should update the requested invoice in the database" do
+        it "should update the requested invoice's notes in the database" do
           lambda do
             put :update, :id => @invoice.id, :invoice => @valid_update_params
           end.should change{ @invoice.reload.notes }.to("different notes.")
+        end
+
+        it "should update the requested invoice's paid_on in the database" do
+          lambda do
+            put :update, :id => @invoice.id, :invoice => @valid_update_params
+          end.should change{ @invoice.reload.paid_on }.to(Date.today + 10.days)
+        end
+        it "should update the requested invoice's due_on in the database" do
+          lambda do
+            put :update, :id => @invoice.id, :invoice => @valid_update_params
+          end.should change{ @invoice.reload.due_on }.to(Date.today)
         end
 
         it "should expose the requested invoice as @invoice" do
