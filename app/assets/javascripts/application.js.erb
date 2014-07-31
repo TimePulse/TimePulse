@@ -55,7 +55,7 @@ Ninja.behavior({
     '#debug':        Ninja.suppressChangeEvents(),
     '.selectboxit':  Ninja.suppressChangeEvents(),
     '#task_elapsed':  Ninja.suppressChangeEvents(),
-    '.date_entry': { transform: function(elem){ $(elem).datepicker() }},
+    '.date_entry': { transform: function(elem){ $(elem).datepicker({ dateFormat: "dd/mm/yy" }) }},
     '.datetime_entry': {
       transform: function(elem){
         $(elem).datetimepicker();
@@ -127,17 +127,18 @@ Ninja.behavior({
         content = $(elem).val();
 
         content = content.replace(/\n/g, '<br>');
+        hiddenDiv = $(elem).parent().find('.hidden-work-unit-notes-div');
         hiddenDiv.html('<br>' + content + '<br>');
 
         $(elem).css('height', hiddenDiv.height());
       },
       transform: function(elem) {
         hiddenDiv = $(document.createElement('div')),
-        content = null;
+        content = $(elem).val();
 
-        hiddenDiv.addClass('hiddendiv');
+        hiddenDiv.addClass('hidden-work-unit-notes-div');
 
-        $('#timeclock').append(hiddenDiv);
+        $(elem).parent().append(hiddenDiv);
       }
     },
     '#timeclock a#override_trigger': {
