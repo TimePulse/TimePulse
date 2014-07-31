@@ -1,4 +1,4 @@
-- cache("commit_narrow_#{commit.id}") do
+- cache("commit_narrow_#{commit.id}", :skip_digest => true) do
   - token = SecureRandom.hex(8)
   = content_tag(:tr, commit, :id => token, :class => ['narrow']) do
     %td
