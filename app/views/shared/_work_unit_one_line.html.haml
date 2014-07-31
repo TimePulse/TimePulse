@@ -1,4 +1,4 @@
-- cache("work_unit_one_line_#{work_unit.id}") do
+- cache("work_unit_one_line_#{work_unit.id}", :skip_digest => true) do
   - token = SecureRandom.hex(8)
 
   = work_unit_row_tag(work_unit, token, :one_line) do
