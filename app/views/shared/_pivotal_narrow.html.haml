@@ -1,4 +1,4 @@
-- cache("pivotal_narrow_#{pivotal.id}") do
+- cache("pivotal_narrow_#{pivotal.id}", :skip_digest => true) do
   - token = SecureRandom.hex(8)
   = content_tag(:tr, pivotal, :id => token, :class => ['narrow']) do
     %td

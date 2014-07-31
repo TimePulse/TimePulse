@@ -1,4 +1,4 @@
-- cache("pivotal_one_line_#{pivotal.id}") do
+- cache("pivotal_one_line_#{pivotal.id}", :skip_digest => true) do
   - token = SecureRandom.hex(8)
 
   %tr.pivotal.one_line{ :id => token }
