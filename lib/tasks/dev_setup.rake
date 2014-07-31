@@ -6,7 +6,6 @@ namespace :dev do
   task :reset_all_passwords => [:environment] do
     pwd = ENV['PASSWORD'] || 'password'
 
-    return unless RAILS_ENV == 'development'
 
     user = User.first
     user.password = pwd
@@ -14,7 +13,7 @@ namespace :dev do
     user.save!
     user.reload
 
-    sql = "UPDATE users SET crypted_password = '#{user.crypted_password}', password_salt = '#{user.password_salt}'"
+    sql = "UPDATE users SET encrypted_password = '#{user.encrypted_password}'"
     User.connection.execute sql
     puts "All passwords are now '#{pwd}'"
   end
