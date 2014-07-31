@@ -1,5 +1,5 @@
 = page_block("Recent Projects", :id => "recent_projects") do
-  - cache("recent_projects_#{current_user.id}_#{current_user.work_units.most_recent(1).first.try(:start_time)}") do
+  - cache("recent_projects_#{current_user.id}_#{current_user.work_units.most_recent(1).first.try(:start_time)}", :skip_digest => true) do
     .recent_projects
       %ul.project-list
         = render :partial => "shared/project_flat", :collection => current_user.reload.recent_projects, :as => :project

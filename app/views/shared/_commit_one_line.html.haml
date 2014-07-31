@@ -1,4 +1,4 @@
-- cache("commit_one_line_#{commit.id}") do
+- cache("commit_one_line_#{commit.id}", :skip_digest => true) do
   - token = SecureRandom.hex(8)
 
   %tr.commit.one_line{ :id => token }
