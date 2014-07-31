@@ -1,7 +1,7 @@
 - cssclass = node.clockable? ? "task" : "category"
 - unless node.archived?
   = content_tag_for(:li, node, :class => cssclass) do
-    = cache("picker_node_#{node.id}") do
+    = cache("picker_node_#{node.id}", :skip_digest => true) do
       .project-entry
         .project_name
           = depth_indicator(depth)
