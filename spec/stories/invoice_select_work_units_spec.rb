@@ -8,16 +8,39 @@ shared_steps "for an invoicing task" do |opt_hash|
   end
 
   let :project do
-    FactoryGirl.create(:project, :with_rate)
+    FactoryGirl.create(:project)
   end
 
-  let :user do FactoryGirl.create(:user) end
-  let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => user) end
+  let :junior_rate do
+    FactoryGirl.create(:rate, :name => "a raw pittance", :project => project, :amount => 15)
+  end
+
+  let :junior_dev do FactoryGirl.create(:user, :login => "plebian") end
+
+  let! :rates_junior_dev do FactoryGirl.create(:rates_user, :rate => junior_rate, :user => junior_dev) end
+
+  let :senior_rate do
+    FactoryGirl.create(:rate, :name => "rolls royce baby", :project => project, :amount => 10000)
+  end
+
+  let :senior_dev do FactoryGirl.create(:user, :login => "mrfancy") end
+
+  let! :rates_senior_dev do FactoryGirl.create(:rates_user, :rate => senior_rate, :user => senior_dev) end
 
   (opt_hash[:wu_count] || 3).times do |idx|
-    let! "work_unit_#{idx}" do
-      FactoryGirl.create(:work_unit, :user => user, :project => project)
+    let! "junior_work_unit_#{idx}" do
+      FactoryGirl.create(:work_unit, :hours => 5, :user => junior_dev, :project => project)
     end
+  end
+
+  (opt_hash[:wu_count] || 3).times do |idx|
+    let! "senior_work_unit_#{idx}" do
+      FactoryGirl.create(:work_unit, :hours => 5, :user => senior_dev, :project => project)
+    end
+  end
+
+  def click_checkbox(id)
+    check(id)
   end
 
   it "should login as an admin" do
@@ -63,16 +86,12 @@ steps "Selects all boxes", :type => :feature do
 
     all(:xpath, XPath.generate do |doc|
       doc.descendant(:tr)[doc.attr(:class) == "work_unit"]
-    end).should have(3).rows
+    end).should have(6).rows
   end
 end
 
 steps "Select a few work units", :type => :feature do
   perform_steps "for an invoicing task", :wu_count => 5
-
-  def click_checkbox(id)
-    check(id)
-  end
 
   it "should select 3 work units" do
     click_checkbox("invoice_work_unit_ids_1")
@@ -96,6 +115,64 @@ steps "Select a few work units", :type => :feature do
     all(:xpath, XPath.generate do |doc|
       doc.descendant(:tr)[doc.attr(:class) == "work_unit"]
     end).should have(3).rows
+  end
+
+end
+
+steps "invoice totals", :type => :feature do
+  perform_steps "for an invoicing task", :wu_count => 5
+
+  let :senior_dev_wu_id do
+    "invoice_work_unit_ids_#{senior_work_unit_1.id}"
+  end
+
+  let :junior_dev_wu_id_1 do
+    "invoice_work_unit_ids_#{junior_work_unit_1.id}"
+  end
+
+  let :junior_dev_wu_id_2 do
+    "invoice_work_unit_ids_#{junior_work_unit_2.id}"
+  end
+
+  it "should select 3 work units" do
+    click_checkbox(senior_dev_wu_id)
+    click_checkbox(junior_dev_wu_id_1)
+    click_checkbox(junior_dev_wu_id_2)
+  end
+
+  it "should have a totals table" do
+    page.should have_css("table#totals")
+  end
+
+  it "should show the senior totals" do
+    within "table#totals" do
+      within "tr#rate_#{senior_rate.id}" do
+        page.should have_content("rolls royce baby")
+        page.should have_content("5.00")
+        page.should have_content("50000.00")
+      end
+    end
+  end
+
+
+  it "should show the junior totals" do
+    within "table#totals" do
+      within "tr#rate_#{junior_rate.id}" do
+        page.should have_content("a raw pittance")
+        page.should have_content("10.00")
+        page.should have_content("150.00")
+      end
+    end
+  end
+
+  it "should show the junior totals" do
+    within "table#totals" do
+      within "tr#rate_total" do
+        page.should have_content("Totals")
+        page.should have_content("15.00")
+        page.should have_content("50150.00")
+      end
+    end
   end
 
 end
