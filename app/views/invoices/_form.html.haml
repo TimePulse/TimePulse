@@ -13,18 +13,25 @@
   - if @work_units
     %input#work_unit_select_all{ :type => 'button', :value => 'select all' }
     %table#totals.listing
-      %tr
-        %th Work Units
-        %th Hours
-      %tr
-        %td#work_unit_count 0
-        %td#hours_total 0
+      %thead
+        %tr
+          %th Rate
+          %th Work Units
+          %th Hours
+          %th Total $
+      %tbody
+        %tr
+          %td#rate_total
+            Totals
+          %td 0
+          %td 0.00
+          %td 0.00
 
     %table.listing
       = f.fields_for :work_unit_ids do |wu_form|
         - @work_units.each do |wu|
-          = content_tag_for(:tr, wu) do
-            %td.hours
+          = content_tag_for(:tr, wu, :class => (!wu.rate ? 'no-rate' : '')) do
+            = work_unit_hours_td(wu) do
               = wu_form.check_box(wu.id, :class => 'work_unit_checkbox')
               = wu_form.label(wu.id, wu.hours, :class => 'hours_count')
             %td= wu.user.login
