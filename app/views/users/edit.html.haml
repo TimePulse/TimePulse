@@ -1,2 +1,7 @@
 - set_headline "Edit Account"
-= render :partial => 'form'
+= tabbed_panel do |tp|
+  = tp.add_tab("Info") do
+    = render :partial => 'info_form'
+  - if @user.user_preferences
+    = tp.add_tab("Preferences") do
+      = render :partial => 'preferences_form'
