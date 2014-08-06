@@ -9,7 +9,7 @@ class UserPreferencesController < ApplicationController
     @user_preferences = current_user.user_preferences
     @user_preferences.update(user_preferences_params)
     flash[:notice] = "Preferences updated!"
-    render :action => :edit
+    redirect_to edit_user_path(current_user)
   end
 
   private

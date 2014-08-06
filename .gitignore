@@ -26,6 +26,7 @@ db/*.sqlite3*
 public/stylesheets/*.css
 public/javascripts/all.js
 public/system
+public/assets/
 uuid.state
 nbproject*
 index/*
