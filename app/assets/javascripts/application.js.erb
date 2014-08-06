@@ -7,6 +7,8 @@
 //= require ajax_flash
 //= require jquery.selectBoxIt
 //= require favicon
+//= require binder
+//= require_tree ./ninjascripts/
 
 $('document').ready( function(){
   startClock();
@@ -68,7 +70,7 @@ Ninja.behavior({
         $(elem).val(zone);
       }
     },
-    '#work_unit_select_all': { click: selectAllWorkUnits },
+    'body.bills #work_unit_select_all': { click: selectAllWorkUnits },
     '.expand-widget': {
       click: function(evnt, elem) {
         var target = $(elem).data('target');
@@ -87,7 +89,7 @@ Ninja.behavior({
         var target = "#" + $(elem).data('target');
         $(target).addClass("toggle-target");
       }},
-    '.work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "andDoDefault"] },
+    'body.bills .work_unit_checkbox': { click: [ updateWorkUnitHoursTotal, "andDoDefault"] },
 
     '.work_unit_label': {
       click: function(evnt, elem) {
