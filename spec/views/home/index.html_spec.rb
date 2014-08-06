@@ -116,6 +116,17 @@ describe "/home/index" do
       @picker.should_not have_text(short_name_with_client(project_1))
       @picker.should_not have_text(short_name_with_client(project_4))
     end
+
+    it "should render a recent projects block with the user's preference of how many recent projects from the current user in the correct order" do
+      current_user.user_preferences.update(:recent_projects_count => 3)
+      render
+      @picker = view.content_for(:picker)
+      @picker.should have_text(short_name_with_client(project_5))
+      @picker.should have_text(short_name_with_client(project_7))
+      @picker.should have_text(short_name_with_client(project_6))
+      @picker.should_not have_text(short_name_with_client(project_2))
+      @picker.should_not have_text(short_name_with_client(project_3))
+    end
   end
 
   describe "recent work box" do
