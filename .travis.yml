@@ -21,6 +21,6 @@ notifications: recipients - evan@lrdesign.com
 install: .travis-support/cached-bundle install --deployment
 env:
   global:
-  - AWS_S3_BUCKET=lrd-travis-caching
+  - AMAZON_S3_BUCKET=lrd-travis-caching
   - secure: kc7LwLqkUhq8PJScY/pNhzT8GzRolGZ33Jkxvo2Xr/uM1j7N58xFBMdzRXgUS6/1LrvnHZd2z6n4+N0c14778oJQ5Apnq+ldIWhk2lSxy2pLMRoOPxWl4OH6rAU5zZYX/YnPAgsDjAnXTT+uudodYjuszALPp1GCuGrxUuk6uGo=
   - secure: qf0OQQ6hD1ME50OYTDUhSgwiszzNB4XMSqpyIbBfKLdE0+7KAZ3k8gjGSaJKvbirkXaUlDbIePh7eoKVZ2yJ6SL/mgwgFMifvnBdJQNlLxx69i0aE7QyA0nL2cf9xm8ZZFEMQ+ey+NY9LM9jC5MJfF+7KESIXDjecN1Nxteaz1E=
