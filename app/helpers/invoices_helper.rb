@@ -27,4 +27,15 @@ module InvoicesHelper
       content_tag(:th, number_to_currency(totals[:total], :precision => 2))
     end
   end
+
+  def work_unit_hours_td(work_unit, &block)
+    rate = work_unit.rate
+    attributes = {:class => "hours"}
+    if rate
+      attributes[:'data-rate-id'] = rate.id
+      attributes[:'data-rate-name'] = rate.name
+      attributes[:'data-rate-amount'] = rate.amount
+    end
+    content_tag(:td, attributes, &block)
+  end
 end
