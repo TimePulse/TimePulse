@@ -81,6 +81,9 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    capybara-email (2.3.0)
+      capybara (~> 2.2.0)
+      mail
     childprocess (0.5.3)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
@@ -348,6 +351,7 @@ DEPENDENCIES
   cadre
   capistrano (< 3.0)
   capistrano-ext
+  capybara-email
   chronic
   codeclimate-test-reporter
   compass-rails

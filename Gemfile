@@ -46,6 +46,7 @@ group :development, :test do
   gem 'cadre'
   gem "populator"
   gem "faker"
+  gem 'capybara-email'
 end
 
 group :test do
