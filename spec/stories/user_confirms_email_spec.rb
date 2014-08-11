@@ -20,18 +20,12 @@ steps "User confirms email", :type => :feature, :js => true, :vcr => {} do
     within '#new_user' do
       fill_in "user_login", :with => 'Codemaster'
       fill_in "user_password", :with => 'foobar'
+      click_button "Login"
     end
   end
 
-  it "logsin" do
-    click_button "Login"
-  end
-
-
   it "should log me in" do
-    page.driver.debug
-    page.should have_content("Dashboard")
-    page.should have_content(@user.name)
+    page.should have_content("Logout")
   end
 
 end
