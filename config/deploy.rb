@@ -36,7 +36,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/initializers/smtp.rb #{release_path}/config/initializers"
     run "ln -nfs #{shared_path}/config/initializers/api_keys.rb #{release_path}/config/initializers"
     run "ln -nfs #{shared_path}/config/initializers/devise.rb #{release_path}/config/initializers"
-    run "ln -nfs #{shared_path}/config/bibliotech/config.yaml #{release_path}/config/bibliotech"
+    run "ln -nfs #{shared_path}/config/bibliotech/ #{release_path}/config/bibliotech"
   end
 
   desc "Install the database"
