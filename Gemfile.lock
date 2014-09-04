@@ -283,6 +283,8 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0.4)
+    shoulda-matchers (2.6.1)
+      activesupport (>= 3.0.0)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
@@ -392,6 +394,7 @@ DEPENDENCIES
   rspec-rails (~> 2.13.0)
   sass-rails (~> 4.0)
   selenium-webdriver
+  shoulda-matchers
   simplecov (~> 0.7.1)
   simplecov-vim
   thin

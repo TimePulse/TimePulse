@@ -18,8 +18,8 @@ namespace :db do
       }
     }
 
-    to_bool.each do |table, column|
-      column.each do |column, options|
+    to_bool.each do |table, columns|
+      columns.each do |column, options|
         query = "ALTER TABLE #{table} ADD COLUMN #{column}_new BOOLEAN"
         if options
           defaults = ""
@@ -33,6 +33,31 @@ namespace :db do
           query += defaults
         end
         query += ";"
+        ActiveRecord::Base.connection.execute(query)
+      end
+    end
+  end
+
+  task :revert_bool_columns => :environment do
+    to_bool = {
+      :projects => {
+        :clockable => {:null => false, :default => false},
+        :billable => {:default => true},
+        :flat_rate => {:default => false},
+        :archived => {}
+      },
+      :users => {
+        :inactive => {:default => false},
+        :admin => {:default => false}
+      },
+      :work_units => {
+        :billable => {}
+      }
+    }
+
+    to_bool.each do |table, columns|
+      columns.each do |column, options|
+        query = "ALTER TABLE #{table} DROP COLUMN #{column}_new;"
         ActiveRecord::Base.connection.execute(query)
       end
     end
