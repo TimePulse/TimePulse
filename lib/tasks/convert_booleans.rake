@@ -1,5 +1,6 @@
 namespace :db do
 
+  desc "Build the wall!!"
   task :convert_booleans => [
     :environment,
     :load_bool_queue,
@@ -9,6 +10,7 @@ namespace :db do
     :rename_new_columns
   ]
 
+  desc "The things to fix"
   task :load_bool_queue do
     @to_bool = {
       :projects => {
