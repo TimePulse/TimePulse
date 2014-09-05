@@ -58,6 +58,7 @@ group :test do
   gem 'timecop'
   gem "codeclimate-test-reporter", :require => nil
   gem 'json_spec'
+  gem 'shoulda-matchers'
 end
 
 group :development do
