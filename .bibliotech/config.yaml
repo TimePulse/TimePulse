@@ -1,12 +1,12 @@
 production:
   user: root
   host: appserver2.lrdesign.com
-  path: /var/www/tracks.lrdesign.com
+  path: /var/www/tracks.lrdesign.com/current
 
 staging:
   user: root
   host: appserver2.lrdesign.com
-  path: /var/www/tracks-staging.lrdesign.com
+  path: /var/www/tracks-staging.lrdesign.com/current
 
 development:
   rsa_files:
