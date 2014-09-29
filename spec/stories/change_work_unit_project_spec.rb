@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "edit a work unit to move it from one project to another", :type => :feature do
+steps "edit a work unit to move it from one project to another", :type => :feature, :snapshots_into => "edit_work_unit" do
   include SelectBoxItHelpers
   let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.') end
   let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
@@ -39,6 +39,8 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "should show Project 1 selected in the project picker" do
+    p project_1
+    p project_2
     page.should have_selector("#project_#{project_1.id}.current")
   end
 
