@@ -96,8 +96,14 @@ module ApplicationHelper
     end
   end
 
-  def project_options
-    sorted_projects = Project.all.sort_by(&:lft)
+  def project_options(include_archived = false)
+    projects = []
+    if include_archived
+      projects = Project.all
+    else
+      projects = Project.where("archived = ? OR parent_id = ?", false, nil)
+    end
+    sorted_projects = projects.sort_by(&:lft)
 
     sorted_projects.collect do |p|
       attributes = {}
@@ -108,4 +114,5 @@ module ApplicationHelper
       [p.name, p.id, attributes]
     end
   end
+
 end
