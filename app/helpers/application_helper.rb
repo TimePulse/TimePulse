@@ -101,7 +101,7 @@ module ApplicationHelper
     if include_archived
       projects = Project.all
     else
-      projects = Project.where("archived = ? OR parent_id = ?", false, nil)
+      projects = Project.unarchived
     end
     sorted_projects = projects.sort_by(&:lft)
 
