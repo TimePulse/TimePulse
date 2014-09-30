@@ -56,9 +56,6 @@ steps "the project reports page", :type => :feature do
     page.should have_content("REPORT PARAMETERS")
   end
 
-  it "should not list archived projects" do
-  end
-
   it "should be able to select a project" do
     select_from_chosen(project.name,:from => 'project_id')
     click_button "Select Project"
