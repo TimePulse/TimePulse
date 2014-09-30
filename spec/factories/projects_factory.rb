@@ -19,6 +19,7 @@ FactoryGirl.define  do
     sequence(:name) { |n|  "Foo Project #{n}" }
     association :client
     clockable true
+    archived false
     github_url ""
     pivotal_id 123
     parent_id { Project.root.id }
