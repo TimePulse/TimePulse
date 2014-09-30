@@ -39,8 +39,6 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "should show Project 1 selected in the project picker" do
-    p project_1
-    p project_2
     page.should have_selector("#project_#{project_1.id}.current")
   end
 
