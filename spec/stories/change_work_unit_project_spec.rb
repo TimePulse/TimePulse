@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "edit a work unit to move it from one project to another", :type => :feature, :snapshots_into => "edit_work_unit" do
+steps "edit a work unit to move it from one project to another", :type => :feature do
   include SelectBoxItHelpers
   let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.') end
   let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
