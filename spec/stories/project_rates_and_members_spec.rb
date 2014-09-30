@@ -13,7 +13,7 @@ shared_steps "for a project rates task" do |opt_hash|
   end
 
   let! :project do
-    project = FactoryGirl.create(:project)
+    FactoryGirl.create(:project)
   end
 
   let! :active_users do
@@ -42,7 +42,7 @@ shared_steps "for a project rates task" do |opt_hash|
   end
 end
 
-steps "adding rates to a project", :type => :feature do
+steps "adding rates to a project", :type => :feature, :snapshots_into => "adding rates to a project" do
   perform_steps "for a project rates task"
 
   it "should create a new project" do
