@@ -14,6 +14,10 @@ shared_steps "for a task with project and work units" do |opt_hash|
     p
   end
 
+  let :archived_project do
+    FactoryGirl.create(:project, :archived => true)
+  end
+
   let :user do FactoryGirl.create(:user) end
   let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => admin) end
 
@@ -42,7 +46,7 @@ shared_steps "for a task with project and work units" do |opt_hash|
 
 end
 
-steps "the project reports page", :type => :feature do
+steps "the project reports page", :type => :feature, :snapshots_into => "project reports page" do
   perform_steps "for a task with project and work units"
 
   it "should have proper content" do
@@ -50,6 +54,9 @@ steps "the project reports page", :type => :feature do
 
     page.should have_content("Project Report")
     page.should have_content("REPORT PARAMETERS")
+  end
+
+  it "should not list archived projects" do
   end
 
   it "should be able to select a project" do
