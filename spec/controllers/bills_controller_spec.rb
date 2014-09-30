@@ -353,6 +353,7 @@ describe BillsController do
         delete :destroy, :id => @bill.id
         response.should redirect_to(bills_url)
       end
+
     end
 
   end

@@ -118,4 +118,21 @@ describe Bill do
     end
   end
 
+  describe "dissociate_work_units" do
+    before(:each) do
+      @wus = [
+        FactoryGirl.create(:work_unit),
+        FactoryGirl.create(:work_unit),
+        FactoryGirl.create(:work_unit),
+      ]
+      @bill = FactoryGirl.create(:bill, :work_units => @wus)
+
+      @bill.send(:dissociate_work_units)
+    end
+
+    it "should set all work units' bill to nil" do
+      @wus.map(&:bill).should eq([nil,nil,nil])
+    end
+  end
+
 end
