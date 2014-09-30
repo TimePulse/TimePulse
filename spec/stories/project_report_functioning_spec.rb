@@ -46,7 +46,7 @@ shared_steps "for a task with project and work units" do |opt_hash|
 
 end
 
-steps "the project reports page", :type => :feature, :snapshots_into => "project reports page" do
+steps "the project reports page", :type => :feature do
   perform_steps "for a task with project and work units"
 
   it "should have proper content" do
