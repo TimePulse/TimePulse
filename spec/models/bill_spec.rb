@@ -85,7 +85,6 @@ describe Bill do
     end
   end
 
-
   describe "clients" do
     it "should return an array containing the single client for associated work units" do
       @client = FactoryGirl.create(:client)
