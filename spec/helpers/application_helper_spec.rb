@@ -33,6 +33,10 @@ describe ApplicationHelper do
 
       subject { project_options }
 
+      it "should include root" do
+        expect(project_option_ids).to include(1)
+      end
+
       it "should include ids of all unarchived projects" do
         expect(project_option_ids).to include(*unarchived_projects.map(&:id))
       end
