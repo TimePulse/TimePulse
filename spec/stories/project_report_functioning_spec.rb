@@ -14,6 +14,10 @@ shared_steps "for a task with project and work units" do |opt_hash|
     p
   end
 
+  let :archived_project do
+    FactoryGirl.create(:project, :archived => true)
+  end
+
   let :user do FactoryGirl.create(:user) end
   let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => admin) end
 
