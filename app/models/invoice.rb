@@ -50,6 +50,13 @@ class Invoice < ActiveRecord::Base
     total
   end
 
+  def dissociate_work_units
+    self.work_units.each do |wu|
+      wu.invoice = nil
+      wu.save
+    end
+  end
+
   private
 
   def generate_invoice_items
@@ -86,11 +93,5 @@ class Invoice < ActiveRecord::Base
     end
   end
 
-  def dissociate_work_units
-    self.work_units.each do |wu|
-      wu.invoice = nil
-      wu.save
-    end
-  end
 
 end
