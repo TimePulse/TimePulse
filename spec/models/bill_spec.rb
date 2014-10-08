@@ -126,11 +126,14 @@ describe Bill do
       ]
       @bill = FactoryGirl.create(:bill, :work_units => @wus)
 
-      @bill.send(:dissociate_work_units)
     end
 
     it "should set all work units' bill to nil" do
-      @wus.map(&:bill).should eq([nil,nil,nil])
+      expect do
+        @bill.dissociate_work_units
+      end.to change{
+        @wus.map{ |wu| wu.reload.bill }
+      }.to [nil,nil,nil]
     end
   end
 
