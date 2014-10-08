@@ -137,4 +137,25 @@ describe Invoice do
     end
   end
 
+  describe "dissociate_work_units" do
+    before(:each) do
+      @wus = [
+        FactoryGirl.create(:work_unit),
+        FactoryGirl.create(:work_unit),
+        FactoryGirl.create(:work_unit)
+      ]
+      @invoice = FactoryGirl.build(:invoice, :client => project.client)
+      @invoice.save!
+      @invoice.work_units << @wus
+    end
+
+    it "should set all work units' invoice to nil" do
+      expect do
+        @invoice.dissociate_work_units
+      end.to change{
+        @wus.map{ |wu| wu.reload.invoice }
+      }.to [nil,nil,nil]
+    end
+  end
+
 end
