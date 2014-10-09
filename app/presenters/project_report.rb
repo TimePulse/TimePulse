@@ -37,7 +37,7 @@ class ProjectReport
   end
 
   def work_units
-    @work_units ||= WorkUnit.for_project(@project).completed.billable.uninvoiced.flatten.uniq
+    @work_units ||= WorkUnit.for_project(@project).order(stop_time: :asc).completed.billable.uninvoiced.flatten.uniq
   end
 
   def invoices

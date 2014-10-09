@@ -23,7 +23,7 @@ gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivo
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
 
-gem 'bibliotech', :path => "../BiblioTech/"
+gem 'bibliotech'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0'
@@ -59,6 +59,7 @@ group :test do
   gem 'timecop'
   gem "codeclimate-test-reporter", :require => nil
   gem 'json_spec'
+  gem 'shoulda-matchers'
 end
 
 group :development do
