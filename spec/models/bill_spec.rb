@@ -85,7 +85,6 @@ describe Bill do
     end
   end
 
-
   describe "clients" do
     it "should return an array containing the single client for associated work units" do
       @client = FactoryGirl.create(:client)
@@ -115,6 +114,26 @@ describe Bill do
       it "should return an array with only the right number of clients" do
         @bill.clients.should have(2).clients
       end
+    end
+  end
+
+  describe "dissociate_work_units" do
+    before(:each) do
+      @wus = [
+        FactoryGirl.create(:work_unit),
+        FactoryGirl.create(:work_unit),
+        FactoryGirl.create(:work_unit),
+      ]
+      @bill = FactoryGirl.create(:bill, :work_units => @wus)
+
+    end
+
+    it "should set all work units' bill to nil" do
+      expect do
+        @bill.dissociate_work_units
+      end.to change{
+        @wus.map{ |wu| wu.reload.bill }
+      }.to [nil,nil,nil]
     end
   end
 
