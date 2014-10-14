@@ -36,6 +36,7 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/initializers/smtp.rb #{release_path}/config/initializers"
     run "ln -nfs #{shared_path}/config/initializers/api_keys.rb #{release_path}/config/initializers"
     run "ln -nfs #{shared_path}/config/initializers/devise.rb #{release_path}/config/initializers"
+    run "ln -nfs #{shared_path}/config/initializers/airbrake.rb #{release_path}/config/initializers"
     run "ln -nfs #{shared_path}/config/bibliotech/ #{release_path}/config/bibliotech"
   end
 
@@ -60,3 +61,6 @@ end
 before "deploy:assets:precompile", "deploy:link_shared_files"
 after 'deploy:update', 'deploy:cleanup'
 after 'deploy:update', 'deploy:cache_clear'
+
+        require './config/boot'
+        require 'airbrake/capistrano'
