@@ -22,6 +22,7 @@ gem 'github_api', "~> 0.11.1"
 gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
+
 gem 'bibliotech'
 
 group :assets do

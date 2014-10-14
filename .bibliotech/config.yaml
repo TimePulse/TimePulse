@@ -9,6 +9,7 @@ staging:
   path: /var/www/tracks-staging.lrdesign.com/current
 
 development:
+  path: tmp/
   rsa_files:
     staging: lrd_rsa
     production: lrd_rsa
