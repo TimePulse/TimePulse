@@ -9,7 +9,10 @@
         %th
       - @project_report.invoices.each do |inv|
         %tr
-          %td= inv.id
+          - if inv.reference_number.length == 0
+            %td= "[##{inv.id.to_s}]"
+          - else
+            %td= inv.reference_number
           %td= inv.created_at.try(:to_s, :short_date)
           %td= number_with_precision(inv.hours, :precision => 2)
           %td= "$ " + number_with_precision(inv.total, :precision => 2)
