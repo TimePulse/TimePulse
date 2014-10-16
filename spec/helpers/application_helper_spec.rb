@@ -32,13 +32,13 @@ describe ApplicationHelper do
       FactoryGirl.create(:project, archived: true, parent_id: archived_parent.id)
     end
 
+    let :project_options_ids do
+      returned_project_options.map{ |row| row[1] }
+    end
+
     context "displaying only unarchived projects (default)" do
-      let :project_options_ids do
-        ids = []
-        project_options.each do |row|
-          ids << row[1]
-        end
-        ids
+      let :returned_project_options do
+        helper.project_options
       end
 
       it "should return only unarchived projects with their children in the proper order" do
@@ -47,12 +47,8 @@ describe ApplicationHelper do
     end
 
     context "displaying all projects" do
-      let :project_options_ids do
-        ids = []
-        project_options(true).each do |row|
-          ids << row[1]
-        end
-        ids
+      let :returned_project_options do
+        project_options(true)
       end
 
       it "should return all projects with their children in the proper order" do
