@@ -101,8 +101,14 @@ module ApplicationHelper
     if include_archived
       projects = Project.all
     else
+      projects = Project.root.children.unarchived
+      projects.each do |project|
+        project.children.unarchived.each do |child|
+          projects << child
+        end
+      end
       # include root project with unarchived
-      projects = Project.where("archived = ? OR id = ?", false, 1)
+      projects << Project.root
     end
     sorted_projects = projects.sort_by(&:lft)
 
