@@ -1,4 +1,4 @@
-= cache "project_picker" do
+= cache("project_picker", :skip_digest => true) do
   = page_block("Projects", :id => 'project_picker') do
     .project_picker
       = list_tree('home/project_node', 'home/project_list', Project.root.descendants)
