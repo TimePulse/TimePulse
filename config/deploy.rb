@@ -9,6 +9,9 @@ require 'lib/capistrano/set_ownership'
 require 'capistrano/ext/multistage'
 require 'bundler'
 require 'bundler/capistrano'
+
+load './config/deploy/chruby'
+
 set :bundle_without,  [:development, :test]
 
 set :repository,  "git@github.com:LRDesign/TimePulse.git"
@@ -23,6 +26,7 @@ set :use_sudo, false
 set :user,   'root'
 set :runner, 'apache'
 set :group,  'web'
+
 
 role(:app) { domain }
 role(:web) { domain }
@@ -51,6 +55,7 @@ namespace :deploy do
 
 end
 
+
 namespace :sample_data do
   task :reload, :roles => :app do
     run "cd #{current_path} && rake db:migrate:reset RAILS_ENV=production"
@@ -62,5 +67,5 @@ before "deploy:assets:precompile", "deploy:link_shared_files"
 after 'deploy:update', 'deploy:cleanup'
 after 'deploy:update', 'deploy:cache_clear'
 
-        require './config/boot'
-        require 'airbrake/capistrano'
+require './config/boot'
+require 'airbrake/capistrano'
