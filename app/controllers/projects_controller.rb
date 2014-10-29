@@ -61,6 +61,7 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
     @id = params[:id]
     @project.destroy
+    expire_fragment "project_picker"
 
     respond_to do |format|
       format.html { redirect_to projects_path }

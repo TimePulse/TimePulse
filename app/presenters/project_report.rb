@@ -41,7 +41,7 @@ class ProjectReport
   end
 
   def invoices
-    @invoices ||= @project.client.invoices
+    @invoices ||= @project.client.invoices.order(created_at: :desc)
   end
 
   def build_user_report
