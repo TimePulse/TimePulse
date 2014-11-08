@@ -158,4 +158,19 @@ describe Invoice do
     end
   end
 
+  describe "invoice for project with decimal rates" do
+    let :decimal_project do FactoryGirl.create(:project) end
+    let! :decimal_rate do FactoryGirl.create(:rate, :amount => 100.75, :project => decimal_project) end
+    let :decimal_user do FactoryGirl.create(:user) end
+    let! :decimal_rates_user do FactoryGirl.create(:rates_user, :rate => decimal_project.rates.last, :user => decimal_user) end
+    it "should have a total calculated with the correct rates" do
+      wus = [
+        FactoryGirl.create(:work_unit, :user => decimal_user, :project => decimal_project, :hours => 1.0),
+        FactoryGirl.create(:work_unit, :user => decimal_user, :project => decimal_project, :hours => 2.0),
+        FactoryGirl.create(:work_unit, :user => decimal_user, :project => decimal_project, :hours => 3.0)
+      ]
+      FactoryGirl.create(:invoice, :client => decimal_project.client, :work_units => wus).total.should == 604.5
+    end
+  end
+
 end
