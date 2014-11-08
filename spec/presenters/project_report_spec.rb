@@ -13,6 +13,9 @@ describe ProjectReport, type: :presenter do
   let! :work_unit_1 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1, :hours => 1.5) end
   let! :work_unit_2 do FactoryGirl.create(:work_unit, :project => project_1, :user => user_1, :hours => 2.5) end
 
+  let :decimal_project do FactoryGirl.create(:project) end
+  let! :decimal_rate do FactoryGirl.create(:rate, :amount => 100.50, :project => decimal_project) end
+
   describe '#users' do
     subject { ProjectReport.new(project_1).users }
 
@@ -205,6 +208,12 @@ describe ProjectReport, type: :presenter do
           expect(subject[:cost]).to eq(total_cost)
         end
       end
+    end
+  end
+
+  describe 'with decimal values for rates' do
+    it "should have non-rounded values in the project report" do
+      expect(ProjectReport.new(decimal_project).rates.first.amount).to eq(100.50)
     end
   end
 end

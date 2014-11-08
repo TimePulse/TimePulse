@@ -24,7 +24,7 @@ describe Rate do
     Rate.create!(@valid_attributes)
   end
 
-  it "should allow users to be aassociated" do
+  it "should allow users to be associated" do
     rate = Rate.new
 
     rate.users << FactoryGirl.create(:user)
@@ -46,5 +46,10 @@ describe Rate do
     rate.destroy
 
     RatesUser.all.should be_empty
+  end
+
+  it "should allow rates to include decimals" do
+    decimal_rate = Rate.create!(@valid_attributes.merge({:amount=>100.50}))
+    expect(decimal_rate.amount).to eq(100.50)
   end
 end
