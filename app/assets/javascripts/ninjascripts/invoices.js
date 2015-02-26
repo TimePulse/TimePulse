@@ -48,7 +48,7 @@ InvoiceCalculator = {
     rowString += "'><td>";
     rowString += name;
     if (rateTotal.amount) {
-      rowString += (" (" + rateTotal.amount.toFixed(2) +")")
+      rowString += (" (" + (Math.round(rateTotal.amount*100)/100).toFixed(2) +")")
     }
     rowString += "</td><td>";
     rowString += rateTotal.count;
