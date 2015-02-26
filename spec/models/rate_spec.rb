@@ -50,6 +50,6 @@ describe Rate do
 
   it "should allow rates to include decimals" do
     decimal_rate = Rate.create!(@valid_attributes.merge({:amount=>100.50}))
-    expect(decimal_rate.amount).to eq(100.50)
+    expect(decimal_rate.reload.amount).to eq(100.50)
   end
 end
