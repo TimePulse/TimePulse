@@ -1,0 +1,11 @@
+= content_tag_for(:tr, bill) do
+  %td= bill.user.name
+  %td= bill.hours
+  %td.date= bill.created_at.to_s(:date)
+  %td.date= bill.due_on
+  %td.date= bill.paid_on
+  %td= bill.notes
+  %td= bill.clients.map{ |c| c.abbreviation }.join(', ')
+
+  %td.tools
+    = link_to 'Show', my_bill_path(bill.id), class: 'actions show'
