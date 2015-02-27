@@ -390,7 +390,7 @@ DEPENDENCIES
   populator
   quiet_assets
   rack
-  rails (~> 4.0.3)
+  rails (~> 4.0.13)
   rake
   rspec (~> 2.13.0)
   rspec-rails (~> 2.13.0)
