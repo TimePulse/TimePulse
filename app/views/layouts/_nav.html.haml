@@ -15,6 +15,7 @@
           %li.admin= link_to(name, path)
       - if logged_in?
         %li= link_to(current_user.name, edit_user_path(current_user))
+        %li= link_to("My Bills", my_bills_path)
         %li= link_to("Logout", logout_path)
       -else
         %li= link_to("Login", login_path)
