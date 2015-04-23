@@ -13,6 +13,12 @@
 
 require 'unsafe_mass_assignment'
 
+def sometimes(prob = 0.5)
+  if rand(1.0 < prob)
+    yield
+  end
+end
+
 namespace :db do
   namespace :sample_data do
 
@@ -74,10 +80,17 @@ namespace :db do
 
     task :populate_users => :environment do
       5.times do |i|
-        name = Faker::Name.name
+        if i == 0
+          name = "Jane Doe"
+          login = 'jane'
+        else
+          name = Faker::Name.name
+          login = Faker::Internet.user_name(name)
+        end
+
         user = User.unsafe_create!(
           :name                  => name,
-          :login                 => Faker::Internet.user_name(name),
+          :login                 => login,
           :email                 => Faker::Internet.safe_email(name),
           :password              => DEFAULT_PASSWORD,
           :password_confirmation => DEFAULT_PASSWORD
@@ -124,13 +137,23 @@ namespace :db do
     task :populate_work_units do
       Project.where(:clockable => true).each do |project|
         User.where(admin: false).each do |user|
-          2.times do |i|
+          if user.login == 'jane'
+            unit_count = 500
+          else
+            unit_count = 50
+          end
+
+          unit_count.times do |i|
+            length = rand(300).minutes
+            days_ago = [2, rand(5)+(i/2)].max
+            start_time = Time.now - days_ago.days - rand(10).hours
+
             wu = WorkUnit.unsafe_build(
               :user       => user,
               :project    => project,
-              :start_time => Time.now - (i + 1 * 10).days - (i + 1 * 10).hours,
-              :stop_time  => Time.now - (i + 1 * 10).days - (i + 1 * 10).hours + 45.minutes,
-              :notes      => Populator.words(2..6)
+              :start_time => start_time,
+              :stop_time  => start_time + length,
+              :notes      => Populator.words(0..6)
             )
             wu.clock_out!
           end
@@ -160,13 +183,18 @@ namespace :db do
       end
     end
 
-    task :populate_invoices do
+    task :populate_invoices => :environment do
       Client.all.each do |client|
-        Invoice.unsafe_create!(
-          client: client,
-          work_units: client.projects.first.children.first.work_units.to_a.take(5)
-        )
+        wus_by_month = WorkUnit.for_client(client).order("start_time ASC").group_by{ |wu| wu.start_time.strftime("%Y%B") }
+
+        wus_by_month.each do |month, work_units|
+          Invoice.unsafe_create!(
+            client: client,
+            work_units: work_units
+          )
+        end
       end
+
     end
 
   end
