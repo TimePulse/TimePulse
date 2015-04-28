@@ -1,0 +1,58 @@
+- set_headline  "Listing Users' Hours"
+
+.button-wrap
+  %div.button.radius#all-user-hours-btn
+    All
+  %div.button.radius#total-user-hours-btn
+    Total
+  %div.button.radius#billable-user-hours-btn
+    Billable
+  %div.button.radius#unbillable-user-hours-btn
+    Unbillable
+
+%table.listing
+  %tr.week_row
+    %td
+    - @sundays.each do |sun|
+      %td
+        %h2= 'Week ending ' + sun
+  - @users.each do |u|
+    %tr.user_row
+      %td
+        %h2= u.name
+      %td
+        %span.billable= u.billable_hours('six_weeks_ago')
+        %br
+        %span.unbillable= u.unbillable_hours('six_weeks_ago')
+        %br
+        %span.total= u.total_hours('six_weeks_ago')
+      %td
+        %span.billable= u.billable_hours('five_weeks_ago')
+        %br
+        %span.unbillable= u.unbillable_hours('five_weeks_ago')
+        %br
+        %span.total= u.total_hours('five_weeks_ago')
+      %td
+        %span.billable= u.billable_hours('four_weeks_ago')
+        %br
+        %span.unbillable= u.unbillable_hours('four_weeks_ago')
+        %br
+        %span.total= u.total_hours('four_weeks_ago')
+      %td
+        %span.billable= u.billable_hours('three_weeks_ago')
+        %br
+        %span.unbillable= u.unbillable_hours('three_weeks_ago')
+        %br
+        %span.total= u.total_hours('three_weeks_ago')
+      %td
+        %span.billable= u.billable_hours('two_weeks_ago')
+        %br
+        %span.unbillable= u.unbillable_hours('two_weeks_ago')
+        %br
+        %span.total= u.total_hours('two_weeks_ago')
+      %td
+        %span.billable= u.billable_hours('one_week_ago')
+        %br
+        %span.unbillable= u.unbillable_hours('one_week_ago')
+        %br
+        %span.total= u.total_hours('one_week_ago')
