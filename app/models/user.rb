@@ -142,53 +142,17 @@ class User < ActiveRecord::Base
     else
       where(conditions).first
     end
-	end
+  end
 
-	def total_hours(time_period)
-		if time_period == 'six_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).sum(:hours).to_s.to_f
-		elsif time_period == 'five_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f
-		elsif time_period == 'four_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).sum(:hours).to_s.to_f
-		elsif time_period == 'three_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).sum(:hours).to_s.to_f
-		elsif time_period == 'two_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).sum(:hours).to_s.to_f
-		elsif time_period == 'one_week_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).sum(:hours).to_s.to_f
-		end
-	end
+  def total_hours(num_weeks_ago)
+    work_units.where(:start_time => Time.now.beginning_of_week - 1.second - ((num_weeks_ago * 7) - 1).days..Time.now.beginning_of_week - 1.second - ((num_weeks_ago - 1) * 7).days).sum(:hours).to_s.to_f
+  end
 
-	def billable_hours(time_period)
-		if time_period == 'six_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).billable.sum(:hours).to_s.to_f
-		elsif time_period == 'five_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).billable.sum(:hours).to_s.to_f
-		elsif time_period == 'four_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).billable.sum(:hours).to_s.to_f
-		elsif time_period == 'three_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).billable.sum(:hours).to_s.to_f
-		elsif time_period == 'two_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).billable.sum(:hours).to_s.to_f
-		elsif time_period == 'one_week_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f
-		end
-	end
+  def billable_hours(num_weeks_ago)
+    work_units.where(:start_time => Time.now.beginning_of_week - 1.second - ((num_weeks_ago * 7) - 1).days..Time.now.beginning_of_week - 1.second - ((num_weeks_ago - 1) * 7).days).billable.sum(:hours).to_s.to_f
+  end
 
-	def unbillable_hours(time_period)
-		if time_period == 'six_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).unbillable.sum(:hours).to_s.to_f
-		elsif time_period == 'five_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).unbillable.sum(:hours).to_s.to_f
-		elsif time_period == 'four_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).unbillable.sum(:hours).to_s.to_f
-		elsif time_period == 'three_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).unbillable.sum(:hours).to_s.to_f
-		elsif time_period == 'two_weeks_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).unbillable.sum(:hours).to_s.to_f
-		elsif time_period == 'one_week_ago'
-			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).unbillable.sum(:hours).to_s.to_f
-		end
-	end
+  def unbillable_hours(num_weeks_ago)
+    work_units.where(:start_time => Time.now.beginning_of_week - 1.second - ((num_weeks_ago * 7) - 1).days..Time.now.beginning_of_week - 1.second - ((num_weeks_ago - 1) * 7).days).unbillable.sum(:hours).to_s.to_f
+  end
 end

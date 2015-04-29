@@ -10,6 +10,12 @@
   %div.button.radius#unbillable-user-hours-btn
     Unbillable
 
+
+-#= form_for :hours_report do |f|
+-#  = f.error_messages
+-#  = labeled_datepicker_field f, :start_time
+-#  = labeled_datepicker_field f, :stop_time
+
 %table.listing
   %tr.week_row
     %td
@@ -21,38 +27,38 @@
       %td
         %h2= u.name
       %td
-        %span.billable= u.billable_hours('six_weeks_ago')
+        %span.billable= u.billable_hours(6)
         %br
-        %span.unbillable= u.unbillable_hours('six_weeks_ago')
+        %span.unbillable= u.unbillable_hours(6)
         %br
-        %span.total= u.total_hours('six_weeks_ago')
+        %span.total= u.total_hours(6)
       %td
-        %span.billable= u.billable_hours('five_weeks_ago')
+        %span.billable= u.billable_hours(5)
         %br
-        %span.unbillable= u.unbillable_hours('five_weeks_ago')
+        %span.unbillable= u.unbillable_hours(5)
         %br
-        %span.total= u.total_hours('five_weeks_ago')
+        %span.total= u.total_hours(5)
       %td
-        %span.billable= u.billable_hours('four_weeks_ago')
+        %span.billable= u.billable_hours(4)
         %br
-        %span.unbillable= u.unbillable_hours('four_weeks_ago')
+        %span.unbillable= u.unbillable_hours(4)
         %br
-        %span.total= u.total_hours('four_weeks_ago')
+        %span.total= u.total_hours(4)
       %td
-        %span.billable= u.billable_hours('three_weeks_ago')
+        %span.billable= u.billable_hours(3)
         %br
-        %span.unbillable= u.unbillable_hours('three_weeks_ago')
+        %span.unbillable= u.unbillable_hours(3)
         %br
-        %span.total= u.total_hours('three_weeks_ago')
+        %span.total= u.total_hours(3)
       %td
-        %span.billable= u.billable_hours('two_weeks_ago')
+        %span.billable= u.billable_hours(2)
         %br
-        %span.unbillable= u.unbillable_hours('two_weeks_ago')
+        %span.unbillable= u.unbillable_hours(2)
         %br
-        %span.total= u.total_hours('two_weeks_ago')
+        %span.total= u.total_hours(2)
       %td
-        %span.billable= u.billable_hours('one_week_ago')
+        %span.billable= u.billable_hours(1)
         %br
-        %span.unbillable= u.unbillable_hours('one_week_ago')
+        %span.unbillable= u.unbillable_hours(1)
         %br
-        %span.total= u.total_hours('one_week_ago')
+        %span.total= u.total_hours(1)
