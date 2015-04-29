@@ -2,9 +2,9 @@ require 'spec_helper'
 
 steps "Admin views the hours reports", :type => :feature do
 
-	before do
-		Timecop.travel(Time.local(2015, 4, 27, 10, 0, 0))
-	end
+  before do
+    Timecop.travel(Time.local(2015, 4, 27, 10, 0, 0))
+  end
 
   let! :user_1 do FactoryGirl.create(:user, :name => "Foo Bar 1") end
   let! :user_2 do FactoryGirl.create(:user, :name => "Foo Bar 2") end
@@ -15,10 +15,10 @@ steps "Admin views the hours reports", :type => :feature do
   end
   let! :work_unit_2 do
     FactoryGirl.create(:work_unit, :hours => 5, :user => user_2, :project => project_2, :start_time => Time.now - 8.weeks, :stop_time => Time.now - 7.weeks)
-	end
-	let! :work_unit_3 do
-		FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 3.weeks, :stop_time => Time.now - 20.days)
-	end
+  end
+  let! :work_unit_3 do
+    FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 3.weeks, :stop_time => Time.now - 20.days)
+  end
   let! :admin do FactoryGirl.create(:admin) end
 
   it 'should login as the admin' do
@@ -57,39 +57,39 @@ steps "Admin views the hours reports", :type => :feature do
     page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).sum(:hours).to_s.to_f)
     page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
     page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).unbillable.sum(:hours).to_s.to_f)
-	end
+  end
 
-	it "should show billable, nonbillable, and total work units for two weeks ago" do
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).billable.sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).unbillable.sum(:hours).to_s.to_f)
-	end
+  it "should show billable, nonbillable, and total work units for two weeks ago" do
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).billable.sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).unbillable.sum(:hours).to_s.to_f)
+  end
 
-	it "should show billable, nonbillable, and total work units for three weeks ago" do
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).billable.sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).unbillable.sum(:hours).to_s.to_f)
-	end
+  it "should show billable, nonbillable, and total work units for three weeks ago" do
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).billable.sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).unbillable.sum(:hours).to_s.to_f)
+  end
 
-	it "should show billable, nonbillable, and total work units for four weeks ago" do
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).billable.sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).unbillable.sum(:hours).to_s.to_f)
-	end
+  it "should show billable, nonbillable, and total work units for four weeks ago" do
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).billable.sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).unbillable.sum(:hours).to_s.to_f)
+  end
 
-	it "should show billable, nonbillable, and total work units for five weeks ago" do
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).billable.sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).unbillable.sum(:hours).to_s.to_f)
-	end
+  it "should show billable, nonbillable, and total work units for five weeks ago" do
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).billable.sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).unbillable.sum(:hours).to_s.to_f)
+  end
 
-	it "should show billable, nonbillable, and total work units for six weeks ago" do
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).billable.sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).unbillable.sum(:hours).to_s.to_f)
-	end
+  it "should show billable, nonbillable, and total work units for six weeks ago" do
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).billable.sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).unbillable.sum(:hours).to_s.to_f)
+  end
 
-	after do
-		Timecop.return
-	end
+  after do
+    Timecop.return
+  end
 end
