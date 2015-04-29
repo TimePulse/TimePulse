@@ -144,15 +144,11 @@ class User < ActiveRecord::Base
     end
   end
 
-  def total_hours(num_weeks_ago)
-    work_units.where(:start_time => Time.now.beginning_of_week - 1.second - ((num_weeks_ago * 7) - 1).days..Time.now.beginning_of_week - 1.second - ((num_weeks_ago - 1) * 7).days).sum(:hours).to_s.to_f
-  end
-
-  def billable_hours(num_weeks_ago)
-    work_units.where(:start_time => Time.now.beginning_of_week - 1.second - ((num_weeks_ago * 7) - 1).days..Time.now.beginning_of_week - 1.second - ((num_weeks_ago - 1) * 7).days).billable.sum(:hours).to_s.to_f
-  end
-
-  def unbillable_hours(num_weeks_ago)
-    work_units.where(:start_time => Time.now.beginning_of_week - 1.second - ((num_weeks_ago * 7) - 1).days..Time.now.beginning_of_week - 1.second - ((num_weeks_ago - 1) * 7).days).unbillable.sum(:hours).to_s.to_f
-  end
+	def hours(num_weeks_ago, scope)
+		if scope == 'total'
+			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - ((num_weeks_ago * 7) - 1).days..Time.now.beginning_of_week - 1.second - ((num_weeks_ago - 1) * 7).days).sum(:hours).to_s.to_f
+		elsif scope == 'billable' || scope == 'unbillable'
+			work_units.where(:start_time => Time.now.beginning_of_week - 1.second - ((num_weeks_ago * 7) - 1).days..Time.now.beginning_of_week - 1.second - ((num_weeks_ago - 1) * 7).days).send(scope.to_sym).sum(:hours).to_s.to_f
+		end
+	end
 end
