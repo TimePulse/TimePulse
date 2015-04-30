@@ -30,7 +30,7 @@
     %tr.user_row
       %td
         %h2= u.name
-      - (1..((((@end_date.beginning_of_week - @start_date.beginning_of_week).to_i) / 7) + 1)).each do |w|
+      - (1..number_of_weeks_between(@start_date, @end_date)).each do |w|
         %td
           %div.billable= WorkUnitQuery.new(u,@end_date,w,'billable').hours
           %div.unbillable= WorkUnitQuery.new(u,@end_date,w,'unbillable').hours

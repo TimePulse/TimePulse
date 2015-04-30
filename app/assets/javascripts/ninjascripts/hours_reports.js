@@ -13,7 +13,6 @@ Ninja.behavior({
 	'#total-user-hours-btn': {
 		click: function() {
 			showHours('total');
-			//$('#total-user-hours-btn').css("font-style","italic");
 			$('#total-user-hours-btn').css("background-color","#165D75");
 			$('#all-user-hours-btn').css("background-color","#2BA6CB");
 			$('#billable-user-hours-btn').css("background-color","#2BA6CB");
@@ -23,7 +22,6 @@ Ninja.behavior({
 	'#billable-user-hours-btn': {
 		click: function() {
 			showHours('billable');
-			//$('#billable-user-hours-btn').css("font-style","italic");
 			$('#billable-user-hours-btn').css("background-color","#165D75");
 			$('#all-user-hours-btn').css("background-color","#2BA6CB");
 			$('#total-user-hours-btn').css("background-color","#2BA6CB");
@@ -33,7 +31,6 @@ Ninja.behavior({
 	'#unbillable-user-hours-btn': {
 		click: function() {
 			showHours('unbillable');
-			//$('#unbillable-user-hours-btn').css("font-style","italic");
 			$('#unbillable-user-hours-btn').css("background-color","#165D75");
 			$('#all-user-hours-btn').css("background-color","#2BA6CB");
 			$('#billable-user-hours-btn').css("background-color","#2BA6CB");
