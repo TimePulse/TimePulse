@@ -15,6 +15,3 @@ class WorkUnitQuery
 	end
 
 end
-
-
-# h1= WorkUnitQuery.new(user,6,'billable').hours

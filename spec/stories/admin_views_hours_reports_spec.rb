@@ -14,7 +14,7 @@ steps "Admin views the hours reports", :type => :feature do
     FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 2.weeks, :stop_time => Time.now - 10.days)
   end
   let! :work_unit_2 do
-    FactoryGirl.create(:work_unit, :hours => 5, :user => user_2, :project => project_2, :start_time => Time.now - 8.weeks, :stop_time => Time.now - 7.weeks)
+    FactoryGirl.create(:work_unit, :hours => 5, :user => user_2, :project => project_2, :start_time => Time.now - 12.weeks, :stop_time => Time.now - 11.weeks)
   end
   let! :work_unit_3 do
     FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 3.weeks, :stop_time => Time.now - 20.days)
@@ -54,9 +54,9 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show billable, nonbillable, and total work units for one week ago" do
-    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).sum(:hours).to_s.to_f)
-    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
-    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 6.days..Time.now.beginning_of_week - 1.second).unbillable.sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
+    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).unbillable.sum(:hours).to_s.to_f)
   end
 
   it "should show billable, nonbillable, and total work units for two weeks ago" do
@@ -87,7 +87,35 @@ steps "Admin views the hours reports", :type => :feature do
     page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).sum(:hours).to_s.to_f)
     page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).billable.sum(:hours).to_s.to_f)
     page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).unbillable.sum(:hours).to_s.to_f)
-  end
+	end
+
+	it "should change the date of the last Sunday" do
+		fill_in "end-datepicker", :with => "03/06/2015"
+		find('#datepicker-submit-btn').trigger('click')
+	end
+
+	it "should show the last six Sundays from the end date as column headers" do
+		page.should have_content((Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 1.day).strftime("%b %d %y"))
+		page.should have_content((Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 8.days).strftime("%b %d %y"))
+		page.should have_content((Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 15.days).strftime("%b %d %y"))
+		page.should have_content((Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 22.days).strftime("%b %d %y"))
+		page.should have_content((Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 29.days).strftime("%b %d %y"))
+		page.should have_content((Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 36.days).strftime("%b %d %y"))
+	end
+
+	it "should show users with work units in the last six weeks as rows" do
+		page.should have_content("Foo Bar 2")
+	end
+
+	it "should not show users with work units not in the last six weeks" do
+		page.should_not have_content("Foo Bar 1")
+	end
+
+	it "should show total, billable, and unbillable work units for the last week" do
+		page.should have_content(user_2.work_units.where(:start_time => Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 7.days..Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 1.second).sum(:hours).to_s.to_f)
+		page.should have_content(user_2.work_units.where(:start_time => Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 7.days..Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
+		page.should have_content(user_2.work_units.where(:start_time => Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 7.days..Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 1.second).unbillable.sum(:hours).to_s.to_f)
+	end
 
   after do
     Timecop.return

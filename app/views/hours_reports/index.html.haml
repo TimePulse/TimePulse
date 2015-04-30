@@ -1,3 +1,4 @@
+
 - set_headline  "Listing Users' Hours"
 
 .button-wrap
@@ -10,11 +11,12 @@
   %div.button.radius#unbillable-user-hours-btn
     Unbillable
 
-
--#= form_for :hours_report do |f|
--#  = f.error_messages
--#  = labeled_datepicker_field f, :start_time
--#  = labeled_datepicker_field f, :stop_time
+= form_tag hours_reports_path do
+  %p End Date
+  %input.american_date_entry#end-datepicker{:type => "text", :name => "start_date"}
+  -#.button-wrap
+    -#%div.button.radius
+  = submit_tag "Submit", :id => 'datepicker-submit-btn'
 
 %table.listing
   %tr.week_row
