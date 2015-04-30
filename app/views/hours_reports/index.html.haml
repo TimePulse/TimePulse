@@ -29,38 +29,38 @@
       %td
         %h2= u.name
       %td
-        %span.billable= WorkUnitQuery.new(u,6,'billable').hours
+        %span.billable= WorkUnitQuery.new(u,@end_date,6,'billable').hours
         %br
-        %span.unbillable= WorkUnitQuery.new(u,6,'unbillable').hours
+        %span.unbillable= WorkUnitQuery.new(u,@end_date,6,'unbillable').hours
         %br
-        %span.total= WorkUnitQuery.new(u,6,'total').hours
+        %span.total= WorkUnitQuery.new(u,@end_date,6,'total').hours
       %td
-        %span.billable= WorkUnitQuery.new(u,5,'billable').hours
+        %span.billable= WorkUnitQuery.new(u,@end_date,5,'billable').hours
         %br
-        %span.unbillable= WorkUnitQuery.new(u,5,'unbillable').hours
+        %span.unbillable= WorkUnitQuery.new(u,@end_date,5,'unbillable').hours
         %br
-        %span.total= WorkUnitQuery.new(u,5,'total').hours
+        %span.total= WorkUnitQuery.new(u,@end_date,5,'total').hours
       %td
-        %span.billable= WorkUnitQuery.new(u,4,'billable').hours
+        %span.billable= WorkUnitQuery.new(u,@end_date,4,'billable').hours
         %br
-        %span.unbillable= WorkUnitQuery.new(u,4,'unbillable').hours
+        %span.unbillable= WorkUnitQuery.new(u,@end_date,4,'unbillable').hours
         %br
-        %span.total= WorkUnitQuery.new(u,4,'total').hours
+        %span.total= WorkUnitQuery.new(u,@end_date,4,'total').hours
       %td
-        %span.billable= WorkUnitQuery.new(u,3,'billable').hours
+        %span.billable= WorkUnitQuery.new(u,@end_date,3,'billable').hours
         %br
-        %span.unbillable= WorkUnitQuery.new(u,3,'unbillable').hours
+        %span.unbillable= WorkUnitQuery.new(u,@end_date,3,'unbillable').hours
         %br
-        %span.total= WorkUnitQuery.new(u,3,'total').hours
+        %span.total= WorkUnitQuery.new(u,@end_date,3,'total').hours
       %td
-        %span.billable= WorkUnitQuery.new(u,2,'billable').hours
+        %span.billable= WorkUnitQuery.new(u,@end_date,2,'billable').hours
         %br
-        %span.unbillable= WorkUnitQuery.new(u,2,'unbillable').hours
+        %span.unbillable= WorkUnitQuery.new(u,@end_date,2,'unbillable').hours
         %br
-        %span.total= WorkUnitQuery.new(u,2,'total').hours
+        %span.total= WorkUnitQuery.new(u,@end_date,2,'total').hours
       %td
-        %span.billable= WorkUnitQuery.new(u,1,'billable').hours
+        %span.billable= WorkUnitQuery.new(u,@end_date,1,'billable').hours
         %br
-        %span.unbillable= WorkUnitQuery.new(u,1,'unbillable').hours
+        %span.unbillable= WorkUnitQuery.new(u,@end_date,1,'unbillable').hours
         %br
-        %span.total= WorkUnitQuery.new(u,1,'total').hours
+        %span.total= WorkUnitQuery.new(u,@end_date,1,'total').hours
