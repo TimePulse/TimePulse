@@ -10,20 +10,35 @@ steps "Admin views the hours reports", :type => :feature do
   let! :user_2 do FactoryGirl.create(:user, :name => "Foo Bar 2") end
   let! :project_1 do FactoryGirl.create(:project) end
   let! :project_2 do FactoryGirl.create(:project) end
+	let! :work_unit_0 do
+		FactoryGirl.create(:work_unit, :hours => 10, :user => user_2, :project => project_2, :start_time => Time.now - 124.days, :stop_time => Time.now - 123.days, :billable => false)
+	end
   let! :work_unit_1 do
-    FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 2.weeks, :stop_time => Time.now - 10.days)
-  end
-  let! :work_unit_2 do
-    FactoryGirl.create(:work_unit, :hours => 5, :user => user_2, :project => project_2, :start_time => Time.now - 12.weeks, :stop_time => Time.now - 11.weeks)
-  end
-  let! :work_unit_3 do
-    FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 3.weeks, :stop_time => Time.now - 20.days, :billable => false)
+		FactoryGirl.create(:work_unit, :hours => 9, :user => user_2, :project => project_2, :start_time => Time.now - 122.days, :stop_time => Time.now - 121.days)
 	end
-	let! :work_unit_4 do
-		FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 5.weeks, :stop_time => Time.now - 34.days, :billable => false)
+	let! :work_unit_2 do
+		FactoryGirl.create(:work_unit, :hours => 8, :user => user_2, :project => project_2, :start_time => Time.now - 115.days, :stop_time => Time.now - 114.days, :billable => false)
 	end
-	let! :work_unit_5 do
-		FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 4.days, :stop_time => Time.now - 3.days)
+	let! :work_unit_3 do
+		FactoryGirl.create(:work_unit, :hours => 7, :user => user_2, :project => project_2, :start_time => Time.now - 108.days, :stop_time => Time.now - 107.days)
+	end
+  let! :work_unit_4 do
+		FactoryGirl.create(:work_unit, :hours => 6, :user => user_1, :project => project_1, :start_time => Time.now - 37.days, :stop_time => Time.now - 36.days)
+  end
+  let! :work_unit_5 do
+    FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 30.days, :stop_time => Time.now - 29.days, :billable => false)
+	end
+	let! :work_unit_6 do
+		FactoryGirl.create(:work_unit, :hours => 4, :user => user_1, :project => project_1, :start_time => Time.now - 23.days, :stop_time => Time.now - 22.days, :billable => false)
+	end
+	let! :work_unit_7 do
+		FactoryGirl.create(:work_unit, :hours => 3, :user => user_1, :project => project_1, :start_time => Time.now - 16.days, :stop_time => Time.now - 15.days)
+	end
+	let! :work_unit_8 do
+		FactoryGirl.create(:work_unit, :hours => 2, :user => user_1, :project => project_1, :start_time => Time.now - 9.days, :stop_time => Time.now - 8.days)
+	end
+	let! :work_unit_9 do
+		FactoryGirl.create(:work_unit, :hours => 1, :user => user_1, :project => project_1, :start_time => Time.now - 2.days, :stop_time => Time.now - 1.day)
 	end
   let! :admin do FactoryGirl.create(:admin) end
 
@@ -100,28 +115,61 @@ steps "Admin views the hours reports", :type => :feature do
 	end
 
 	it "should show only the total number of hours for each user" do
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
-		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).sum(:hours).to_s.to_f)
+		page.should have_content("1.0")
+		page.should have_content("2.0")
+		page.should have_content("3.0")
+		page.should have_content("4.0")
+		page.should have_content("5.0")
+		page.should have_content("6.0")
+	end
+
+	it "should click the 'billable' button" do
+		find('#billable-user-hours-btn').trigger('click')
+	end
+
+	it "should show only the total number of billable hours for each user" do
+		page.should have_content("1.0")
+		page.should have_content("2.0")
+		page.should have_content("3.0")
+		page.should have_content("6.0")
+		page.should_not have_content("4.0")
+		page.should_not have_content("5.0")
+	end
+
+	it "should click the 'unbillable' button" do
+		find('#unbillable-user-hours-btn').trigger('click')
+	end
+
+	it "should show only the total number of unbillable hours for each user" do
+		page.should have_content("4.0")
+		page.should have_content("5.0")
+		page.should have_content("0.0")
+		page.should_not have_content("1.0")
+		page.should_not have_content("2.0")
+		page.should_not have_content("3.0")
+		page.should_not have_content("6.0")
+	end
+
+	it "should click the 'billable' button" do
+		find('#billable-user-hours-btn').trigger('click')
+	end
+
+	it "should show only the billable hours for each user" do
+		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
+		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).billable.sum(:hours).to_s.to_f)
+		page.should_not have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).unbillable.sum(:hours).to_s.to_f)
+		page.should_not have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
 	end
 
 	it "should change the date range" do
-		fill_in "end-datepicker", :with => "03/06/2015"
-		fill_in "start-datepicker", :with => "01/16/2015"
+		fill_in "start-datepicker", :with => "01/01/2015"
+		fill_in "end-datepicker", :with => "01/15/2015"
 		find('#datepicker-submit-btn').trigger('click')
 	end
 
 	it "should show the Sundays between the start and end dates as column headers" do
-		page.should have_content("Mar 01 15")
-		page.should have_content("Feb 22 15")
-		page.should have_content("Feb 15 15")
-		page.should have_content("Feb 08 15")
-		page.should have_content("Feb 01 15")
-		page.should have_content("Jan 25 15")
-		page.should have_content("Jan 18 15")
+		page.should have_content("Dec 28 14")
+		page.should have_content("Jan 04 15")
 		page.should have_content("Jan 11 15")
 	end
 
@@ -134,9 +182,48 @@ steps "Admin views the hours reports", :type => :feature do
 	end
 
 	it "should show total, billable, and unbillable work units for the last week" do
-		page.should have_content(user_2.work_units.where(:start_time => Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 7.days..Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 1.second).sum(:hours).to_s.to_f)
-		page.should have_content(user_2.work_units.where(:start_time => Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 7.days..Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
-		page.should have_content(user_2.work_units.where(:start_time => Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 7.days..Date.strptime("03/06/2015", '%m/%d/%Y').beginning_of_week - 1.second).unbillable.sum(:hours).to_s.to_f)
+		page.should have_content("19.0")
+		page.should have_content("10.0")
+		page.should have_content("9.0")
+		page.should have_content("8.0")
+		page.should have_content("7.0")
+		page.should have_content("0.0")
+	end
+
+	it "should click the 'total' button" do
+		find('#total-user-hours-btn').trigger('click')
+	end
+
+	it "should show only the total number of hours for each user" do
+		page.should have_content("19.0")
+		page.should have_content("8.0")
+		page.should have_content("7.0")
+		page.should_not have_content("10.0")
+		page.should_not have_content("0.0")
+	end
+
+	it "should click the 'billable' button" do
+		find('#billable-user-hours-btn').trigger('click')
+	end
+
+	it "should show only the total number of billable hours for each user" do
+		page.should have_content("9.0")
+		page.should have_content("7.0")
+		page.should have_content("0.0")
+		page.should_not have_content("8.0")
+		page.should_not have_content("10.0")
+	end
+
+	it "should click the 'unbillable' button" do
+		find('#unbillable-user-hours-btn').trigger('click')
+	end
+
+	it "should show only the total number of unbillable hours for each user" do
+		page.should_not have_content("9.0")
+		page.should_not have_content("7.0")
+		page.should have_content("0.0")
+		page.should have_content("8.0")
+		page.should have_content("10.0")
 	end
 
   after do
