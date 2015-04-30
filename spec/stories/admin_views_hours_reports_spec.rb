@@ -17,8 +17,14 @@ steps "Admin views the hours reports", :type => :feature do
     FactoryGirl.create(:work_unit, :hours => 5, :user => user_2, :project => project_2, :start_time => Time.now - 12.weeks, :stop_time => Time.now - 11.weeks)
   end
   let! :work_unit_3 do
-    FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 3.weeks, :stop_time => Time.now - 20.days)
-  end
+    FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 3.weeks, :stop_time => Time.now - 20.days, :billable => false)
+	end
+	let! :work_unit_4 do
+		FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 5.weeks, :stop_time => Time.now - 34.days, :billable => false)
+	end
+	let! :work_unit_5 do
+		FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => Time.now - 4.days, :stop_time => Time.now - 3.days)
+	end
   let! :admin do FactoryGirl.create(:admin) end
 
   it 'should login as the admin' do
@@ -89,7 +95,20 @@ steps "Admin views the hours reports", :type => :feature do
    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).unbillable.sum(:hours).to_s.to_f)
 	end
 
-	it "should change the date of the last Sunday" do
+	it "should click the 'total' button" do
+		find('#total-user-hours-btn').trigger('click')
+	end
+
+	it "should show only the total number of hours for each user" do
+		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).sum(:hours).to_s.to_f)
+		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).sum(:hours).to_s.to_f)
+		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).sum(:hours).to_s.to_f)
+		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).sum(:hours).to_s.to_f)
+		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
+		page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).sum(:hours).to_s.to_f)
+	end
+
+	it "should change the date range" do
 		fill_in "end-datepicker", :with => "03/06/2015"
 		fill_in "start-datepicker", :with => "01/16/2015"
 		find('#datepicker-submit-btn').trigger('click')
