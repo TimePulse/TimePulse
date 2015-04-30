@@ -13,11 +13,11 @@ class HoursReportsController < ApplicationController
 	end
 
   private
-  def hours_for(user, start_date, end_date = @start_date + 5.weeks)
+  def hours_for(user, start_date, end_date = @end_date)
     user.work_units.where(:start_time => start_date..end_date)
   end
 
-  def week_endings(start_date, end_date = (@start_date + 5.weeks).beginning_of_week)
+  def week_endings(start_date, end_date = (@end_date).beginning_of_week)
     [].tap do |arr|
       sunday = start_date.beginning_of_week - 1.day
       sunday.step(end_date, 7) do |time|
@@ -28,16 +28,19 @@ class HoursReportsController < ApplicationController
 
 	def default_date_range
 		@start_date = DateTime.now - 5.weeks
+		@end_date = DateTime.now
 	end
 
 	def build_report
 		@users = User.all.select{ |u| hours_for(u, @start_date).sum(:hours).to_s.to_f > 0.0 }
 		@sundays = week_endings(@start_date)
+		p @users
 		p @sundays
 	end
 
 	def param_date_range
 		@start_date = Date.strptime(params[:start_date], '%m/%d/%Y') - 5.weeks
+		@end_date = Date.strptime(params[:start_date], '%m/%d/%Y')
 	end
 
 end
