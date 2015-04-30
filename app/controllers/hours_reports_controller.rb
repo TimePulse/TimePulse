@@ -34,7 +34,6 @@ class HoursReportsController < ApplicationController
 	def build_report
 		@users = User.all.select{ |u| hours_for(u, @start_date.beginning_of_week - 1.second).sum(:hours).to_s.to_f > 0.0 }
 		@sundays = week_endings(@start_date)
-		p @sundays
 	end
 
 	def param_date_range
