@@ -12,10 +12,10 @@
     Unbillable
 
 = form_tag hours_reports_path do
+  %p Start Date
+  %input.american_date_entry#start-datepicker{:type => "text", :name => "start_date"}
   %p End Date
-  %input.american_date_entry#end-datepicker{:type => "text", :name => "start_date"}
-  -#.button-wrap
-    -#%div.button.radius
+  %input.american_date_entry#end-datepicker{:type => "text", :name => "end_date"}
   = submit_tag "Submit", :id => 'datepicker-submit-btn'
 
 %table.listing
@@ -28,39 +28,10 @@
     %tr.user_row
       %td
         %h2= u.name
-      %td
-        %span.billable= WorkUnitQuery.new(u,@end_date,6,'billable').hours
-        %br
-        %span.unbillable= WorkUnitQuery.new(u,@end_date,6,'unbillable').hours
-        %br
-        %span.total= WorkUnitQuery.new(u,@end_date,6,'total').hours
-      %td
-        %span.billable= WorkUnitQuery.new(u,@end_date,5,'billable').hours
-        %br
-        %span.unbillable= WorkUnitQuery.new(u,@end_date,5,'unbillable').hours
-        %br
-        %span.total= WorkUnitQuery.new(u,@end_date,5,'total').hours
-      %td
-        %span.billable= WorkUnitQuery.new(u,@end_date,4,'billable').hours
-        %br
-        %span.unbillable= WorkUnitQuery.new(u,@end_date,4,'unbillable').hours
-        %br
-        %span.total= WorkUnitQuery.new(u,@end_date,4,'total').hours
-      %td
-        %span.billable= WorkUnitQuery.new(u,@end_date,3,'billable').hours
-        %br
-        %span.unbillable= WorkUnitQuery.new(u,@end_date,3,'unbillable').hours
-        %br
-        %span.total= WorkUnitQuery.new(u,@end_date,3,'total').hours
-      %td
-        %span.billable= WorkUnitQuery.new(u,@end_date,2,'billable').hours
-        %br
-        %span.unbillable= WorkUnitQuery.new(u,@end_date,2,'unbillable').hours
-        %br
-        %span.total= WorkUnitQuery.new(u,@end_date,2,'total').hours
-      %td
-        %span.billable= WorkUnitQuery.new(u,@end_date,1,'billable').hours
-        %br
-        %span.unbillable= WorkUnitQuery.new(u,@end_date,1,'unbillable').hours
-        %br
-        %span.total= WorkUnitQuery.new(u,@end_date,1,'total').hours
+      - (1..((((@end_date.beginning_of_week - @start_date.beginning_of_week).to_i) / 7) + 1)).each do |w|
+        %td
+          %span.billable= WorkUnitQuery.new(u,@end_date,w,'billable').hours
+          %br
+          %span.unbillable= WorkUnitQuery.new(u,@end_date,w,'unbillable').hours
+          %br
+          %span.total= WorkUnitQuery.new(u,@end_date,w,'total').hours

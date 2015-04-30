@@ -31,16 +31,5 @@ Ninja.behavior({
 			$('span.billable').show();
 			$('span.unbillable').show();
 		}
-	},
-	'#new-dates-btn': {
-		click: function() {
-			var end_date = $('#datepicker').datepicker('getDate');
-			$('h2#sunday_5').html('Week ending ' + formatDate(end_date));
-			$('h2#sunday_4').html('Week ending ' + formatDate(new Date(end_date.setDate(end_date.getDate() - 7))));
-			$('h2#sunday_3').html('Week ending ' + formatDate(new Date(end_date.setDate(end_date.getDate() - 7))));
-			$('h2#sunday_2').html('Week ending ' + formatDate(new Date(end_date.setDate(end_date.getDate() - 7))));
-			$('h2#sunday_1').html('Week ending ' + formatDate(new Date(end_date.setDate(end_date.getDate() - 7))));
-			$('h2#sunday_0').html('Week ending ' + formatDate(new Date(end_date.setDate(end_date.getDate() - 7))));
-		}
 	}
 });
