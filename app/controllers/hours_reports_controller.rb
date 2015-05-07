@@ -25,13 +25,13 @@ class HoursReportsController < ApplicationController
 
   def build_date_range
     if params[:start_date].present?
-      @start_date = Date.parse(params[:start_date])
+      @start_date = Chronic.parse(params[:start_date]).to_date
     else
       @start_date = Date.today - 5.weeks
     end
 
     if params[:end_date].present?
-      @end_date = Date.parse(params[:end_date])
+      @end_date = Chronic.parse(params[:end_date]).to_date
     else
       @end_date = Date.today
     end
