@@ -14,10 +14,10 @@
 = form_tag hours_reports_path do
   %div.input-container
     %p Start Date
-    %input.american_date_entry#start-datepicker{:type => "text", :name => "start_date"}
+    %input.american_date_entry#start-datepicker{:type => "text", :name => "start_date", :value => @start_date}
   %div.input-container
     %p End Date
-    %input.american_date_entry#end-datepicker{:type => "text", :name => "end_date"}
+    %input.american_date_entry#end-datepicker{:type => "text", :name => "end_date", :value => @end_date}
   = submit_tag "Submit", :id => 'datepicker-submit-btn'
 
 %table.listing
