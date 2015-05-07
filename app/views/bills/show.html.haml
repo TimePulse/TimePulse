@@ -46,7 +46,7 @@
 
 %h2 Work Unit Details:
 %table.listing
-  - @bill.work_units.each do |wu|
+  - @bill.work_units.order(:start_time => :asc).each do |wu|
     = content_tag_for(:tr, wu) do
       %td.nobr
         %b= wu.hours
