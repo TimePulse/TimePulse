@@ -32,6 +32,12 @@
       -#- (1..number_of_weeks_between(@start_date, @end_date)+1).each do |w|
       - @sundays.each do |sunday|
         %td
+<<<<<<< HEAD
           %div.billable= WorkUnitQuery.new(u,sunday,'billable').hours
           %div.unbillable= WorkUnitQuery.new(u,sunday,'unbillable').hours
           %div.total= WorkUnitQuery.new(u,sunday,'total').hours
+=======
+          %div.billable= WorkUnitQuery.new(u,@end_date,w,'billable').hours
+          %div.unbillable= WorkUnitQuery.new(u,@end_date,w,'unbillable').hours
+          %div.total= WorkUnitQuery.new(u,@end_date,w,'total').hours
+>>>>>>> fdb0c3ef2e0bbcb499f9dc80a268716d8c50282d
