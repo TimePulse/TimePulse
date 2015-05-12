@@ -53,7 +53,6 @@ public/sitemap.xml
 insight.sqlite
 coverage.vim
 coverage/
-.idea
 db_backups/
 *.esproj
 .sass-cache
