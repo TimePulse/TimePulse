@@ -58,56 +58,56 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show the last six Sundays as column headers" do
-    page.should have_content((Time.now.beginning_of_week - 1.day).strftime("%b %d %y"))
-    page.should have_content((Time.now.beginning_of_week - 8.days).strftime("%b %d %y"))
-    page.should have_content((Time.now.beginning_of_week - 15.days).strftime("%b %d %y"))
-    page.should have_content((Time.now.beginning_of_week - 22.days).strftime("%b %d %y"))
-    page.should have_content((Time.now.beginning_of_week - 29.days).strftime("%b %d %y"))
-    page.should have_content((Time.now.beginning_of_week - 36.days).strftime("%b %d %y"))
+    expect(page).to have_content((Time.now.beginning_of_week - 1.day).strftime("%b %d %y"))
+    expect(page).to have_content((Time.now.beginning_of_week - 8.days).strftime("%b %d %y"))
+    expect(page).to have_content((Time.now.beginning_of_week - 15.days).strftime("%b %d %y"))
+    expect(page).to have_content((Time.now.beginning_of_week - 22.days).strftime("%b %d %y"))
+    expect(page).to have_content((Time.now.beginning_of_week - 29.days).strftime("%b %d %y"))
+    expect(page).to have_content((Time.now.beginning_of_week - 36.days).strftime("%b %d %y"))
   end
 
   it "should show users with work units in the last six weeks as rows" do
-    page.should have_content("Foo Bar 1")
+    expect(page).to have_content("Foo Bar 1")
   end
 
   it "should not show users with work units not in the last six weeks" do
-    page.should_not have_content("Foo Bar 2")
+    expect(page).to_not have_content("Foo Bar 2")
   end
 
   it "should show billable, nonbillable, and total work units for one week ago" do
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).unbillable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).unbillable.sum(:hours).to_s.to_f)
   end
 
   it "should show billable, nonbillable, and total work units for two weeks ago" do
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).billable.sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).unbillable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).billable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).unbillable.sum(:hours).to_s.to_f)
   end
 
   it "should show billable, nonbillable, and total work units for three weeks ago" do
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).billable.sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).unbillable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).billable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).unbillable.sum(:hours).to_s.to_f)
   end
 
   it "should show billable, nonbillable, and total work units for four weeks ago" do
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).billable.sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).unbillable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).billable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).unbillable.sum(:hours).to_s.to_f)
   end
 
   it "should show billable, nonbillable, and total work units for five weeks ago" do
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).billable.sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).unbillable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).billable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).unbillable.sum(:hours).to_s.to_f)
   end
 
   it "should show billable, nonbillable, and total work units for six weeks ago" do
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).billable.sum(:hours).to_s.to_f)
-   page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).unbillable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).billable.sum(:hours).to_s.to_f)
+   expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 41.days..Time.now.beginning_of_week - 1.second - 35.days).unbillable.sum(:hours).to_s.to_f)
   end
 
   it "should click the 'total' button" do
@@ -115,12 +115,12 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show only the total number of hours for each user" do
-    page.should have_content("1.0")
-    page.should have_content("2.0")
-    page.should have_content("3.0")
-    page.should have_content("4.0")
-    page.should have_content("5.0")
-    page.should have_content("6.0")
+    expect(page).to have_content("1.0")
+    expect(page).to have_content("2.0")
+    expect(page).to have_content("3.0")
+    expect(page).to have_content("4.0")
+    expect(page).to have_content("5.0")
+    expect(page).to have_content("6.0")
   end
 
   it "should click the 'billable' button" do
@@ -128,12 +128,12 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show only the total number of billable hours for each user" do
-    page.should have_content("1.0")
-    page.should have_content("2.0")
-    page.should have_content("3.0")
-    page.should have_content("6.0")
-    page.should_not have_content("4.0")
-    page.should_not have_content("5.0")
+    expect(page).to have_content("1.0")
+    expect(page).to have_content("2.0")
+    expect(page).to have_content("3.0")
+    expect(page).to have_content("6.0")
+    expect(page).to_not have_content("4.0")
+    expect(page).to_not have_content("5.0")
   end
 
   it "should click the 'unbillable' button" do
@@ -141,13 +141,13 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show only the total number of unbillable hours for each user" do
-    page.should have_content("4.0")
-    page.should have_content("5.0")
-    page.should have_content("0.0")
-    page.should_not have_content("1.0")
-    page.should_not have_content("2.0")
-    page.should_not have_content("3.0")
-    page.should_not have_content("6.0")
+    expect(page).to have_content("4.0")
+    expect(page).to have_content("5.0")
+    expect(page).to have_content("0.0")
+    expect(page).to_not have_content("1.0")
+    expect(page).to_not have_content("2.0")
+    expect(page).to_not have_content("3.0")
+    expect(page).to_not have_content("6.0")
   end
 
   it "should click the 'billable' button" do
@@ -155,10 +155,10 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show only the billable hours for each user" do
-    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
-    page.should have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).billable.sum(:hours).to_s.to_f)
-    page.should_not have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).unbillable.sum(:hours).to_s.to_f)
-    page.should_not have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
+    expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 7.days..Time.now.beginning_of_week - 1.second).billable.sum(:hours).to_s.to_f)
+    expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 20.days..Time.now.beginning_of_week - 1.second - 14.days).billable.sum(:hours).to_s.to_f)
+    expect(page).to_not have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 27.days..Time.now.beginning_of_week - 1.second - 21.days).unbillable.sum(:hours).to_s.to_f)
+    expect(page).to_not have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 34.days..Time.now.beginning_of_week - 1.second - 28.days).sum(:hours).to_s.to_f)
   end
 
   it "should change the date range" do
@@ -168,26 +168,26 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show the Sundays between the start and end dates as column headers" do
-    page.should have_content("Dec 28 14")
-    page.should have_content("Jan 04 15")
-    page.should have_content("Jan 11 15")
+    expect(page).to have_content("Dec 28 14")
+    expect(page).to have_content("Jan 04 15")
+    expect(page).to have_content("Jan 11 15")
   end
 
-  it "should show users with work units in the last six weeks as rows" do
-    page.should have_content("Foo Bar 2")
+  it "should show users with work units as rows" do
+    expect(page).to have_content("Foo Bar 2")
   end
 
-  it "should not show users with work units not in the last six weeks" do
-    page.should_not have_content("Foo Bar 1")
+  it "should not show users with no work units" do
+    expect(page).to_not have_content("Foo Bar 1")
   end
 
   it "should show total, billable, and unbillable work units for the last week" do
-    page.should have_content("19.0")
-    page.should have_content("10.0")
-    page.should have_content("9.0")
-    page.should have_content("8.0")
-    page.should have_content("7.0")
-    page.should have_content("0.0")
+    expect(page).to have_content("19.0")
+    expect(page).to have_content("10.0")
+    expect(page).to have_content("9.0")
+    expect(page).to have_content("8.0")
+    expect(page).to have_content("7.0")
+    expect(page).to have_content("0.0")
   end
 
   it "should click the 'total' button" do
@@ -195,11 +195,11 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show only the total number of hours for each user" do
-    page.should have_content("19.0")
-    page.should have_content("8.0")
-    page.should have_content("7.0")
-    page.should_not have_content("10.0")
-    page.should_not have_content("0.0")
+    expect(page).to have_content("19.0")
+    expect(page).to have_content("8.0")
+    expect(page).to have_content("7.0")
+    expect(page).to_not have_content("10.0")
+    expect(page).to_not have_content("0.0")
   end
 
   it "should click the 'billable' button" do
@@ -207,11 +207,11 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show only the total number of billable hours for each user" do
-    page.should have_content("9.0")
-    page.should have_content("7.0")
-    page.should have_content("0.0")
-    page.should_not have_content("8.0")
-    page.should_not have_content("10.0")
+    expect(page).to     have_content("9.0")
+    expect(page).to     have_content("7.0")
+    expect(page).to     have_content("0.0")
+    expect(page).to_not have_content("8.0")
+    expect(page).to_not have_content("10.0")
   end
 
   it "should click the 'unbillable' button" do
@@ -219,11 +219,29 @@ steps "Admin views the hours reports", :type => :feature do
   end
 
   it "should show only the total number of unbillable hours for each user" do
-    page.should_not have_content("9.0")
-    page.should_not have_content("7.0")
-    page.should have_content("0.0")
-    page.should have_content("8.0")
-    page.should have_content("10.0")
+    expect(page).to_not have_content("9.0")
+    expect(page).to_not have_content("7.0")
+    expect(page).to     have_content("0.0")
+    expect(page).to     have_content("8.0")
+    expect(page).to     have_content("10.0")
+  end
+
+  it "should click the graph tab" do
+    click_on "Graph"
+  end
+
+  it "should show the Sundays between the start and end dates as column headers" do
+    expect(page).to have_content("Dec 28 14")
+    expect(page).to have_content("Jan 04 15")
+    expect(page).to have_content("Jan 11 15")
+  end
+
+  it "should show users with work units in the legend" do
+    expect(page).to have_content("Foo Bar 2")
+  end
+
+  it "should not show users with no work units in the legend" do
+    expect(page).to_not have_content("Foo Bar 1")
   end
 
   after do
