@@ -13,11 +13,11 @@ class HoursReportsController < ApplicationController
   end
 
   private
-  def hours_for(user, start_date, end_date = @end_date.beginning_of_week - 1.second)
-    user.work_units.where(:start_time => start_date..end_date)
+  def hours_for(user, start_date, end_date = @end_date.end_of_week - 1.week)
+    user.work_units.where(:start_time => start_date..end_date).sum(:hours).to_s.to_f
   end
 
-  def week_endings(start_date, end_date = @end_date.beginning_of_week - 1.day)
+  def week_endings(start_date, end_date = @end_date.end_of_week - 1.week)
     [].tap do |arr|
       sunday = start_date.beginning_of_week - 1.day
       sunday.step(end_date, 7) do |time|
@@ -32,7 +32,7 @@ class HoursReportsController < ApplicationController
   end
 
   def build_report
-    @users = User.all.select{ |u| hours_for(u, @start_date.beginning_of_week - 1.second).sum(:hours).to_s.to_f > 0.0 }
+    @users = User.all.select{ |u| hours_for(u, @start_date.end_of_week - 1.week) > 0.0 }
     @sundays = week_endings(@start_date)
   end
 

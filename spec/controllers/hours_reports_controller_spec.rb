@@ -7,6 +7,10 @@ describe HoursReportsController do
       authenticate(:admin)
     end
 
+    before do
+      Timecop.travel(Time.local(2015, 4, 27, 0, 0, 0))
+    end
+
     let! :user_1 do FactoryGirl.create(:user, :name => "Foo Bar 1") end
     let! :user_2 do FactoryGirl.create(:user, :name => "Foo Bar 2") end
     let! :project_1 do FactoryGirl.create(:project) end
@@ -18,10 +22,6 @@ describe HoursReportsController do
       FactoryGirl.create(:work_unit, :hours => 5, :user => user_2, :project => project_2, :start_time => Time.now - 8.weeks, :stop_time => Time.now - 7.weeks)
     end
     let! :admin do FactoryGirl.create(:admin) end
-
-    before do
-      Timecop.travel(Time.local(2015, 4, 27, 0, 0, 0))
-    end
 
     describe "responding to GET index" do
 

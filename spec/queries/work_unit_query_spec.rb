@@ -50,15 +50,15 @@ describe WorkUnitQuery, :type => :query do
 													 :start_time => Time.now - 7.weeks,
 													 :stop_time => Time.now - 7.weeks + 6.hours,
 													 :billable => false)
-    @billable_work_units_1 = WorkUnitQuery.new(@user_1,Time.now,2,'billable')
-    @billable_work_units_2 = WorkUnitQuery.new(@user_2,Time.now,2,'billable')
-    @unbillable_work_units_1 = WorkUnitQuery.new(@user_1,Time.now,2,'unbillable')
-    @unbillable_work_units_2 = WorkUnitQuery.new(@user_1,Time.now,3,'unbillable')
-    @total_work_units_1 = WorkUnitQuery.new(@user_1,Time.now,3,'total')
+    @billable_work_units_1 = WorkUnitQuery.new(@user_1,Time.now - 2.weeks,'billable')
+    @billable_work_units_2 = WorkUnitQuery.new(@user_2,Time.now - 2.weeks,'billable')
+    @unbillable_work_units_1 = WorkUnitQuery.new(@user_1,Time.now - 2.weeks,'unbillable')
+    @unbillable_work_units_2 = WorkUnitQuery.new(@user_1,Time.now - 3.weeks,'unbillable')
+    @total_work_units_1 = WorkUnitQuery.new(@user_1,Time.now - 3.weeks,'total')
 	end
 
 	it "should find older billable hours" do
-		expect(WorkUnitQuery.new(@user_2,Time.now,6,'billable').hours).to eq(6.0)
+		expect(WorkUnitQuery.new(@user_2,Time.now - 6.weeks,'billable').hours).to eq(6.0)
 	end
 
   it "should find the recent billable hours" do
