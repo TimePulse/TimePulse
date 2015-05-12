@@ -41,36 +41,44 @@
               %div.unbillable= WorkUnitQuery.new(u,sunday,'unbillable').hours
               %div.total= WorkUnitQuery.new(u,sunday,'total').hours
   = tp.add_tab('Graph') do
-    #placeholder{ :style => 'width:850px;height:450px;' }
+    #total-graph-container{ :style => 'width:850px;height:450px;' }
+    #billable-graph-container{ :style => 'width:850px;height:450px;display:none;' }
+    #unbillable-graph-container{ :style => 'width:850px;height:450px;display:none;' }
 
 :javascript
   $(document).ready(function () {
-    function convertToDate(timestamp) {
-        var newDate = new Date(timestamp);
-        var dateString = newDate.getMonth();
-        var monthName = getMonthName(dateString);
-
-        return monthName;
-    }
-
     var totalHoursDataset = #{hours_reports_data(@users,@sundays,'total')};
-    console.log(totalHoursDataset);
-    var labels = [];
+    var billableHoursDataset = #{hours_reports_data(@users,@sundays,'billable')};
+    var unbillableHoursDataset = #{hours_reports_data(@users,@sundays,'unbillable')};
+    var totalHours = [];
+    var billableHours = [];
+    var unbillableHours = [];
     var users = #{get_names(@users)};
-    var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66"];
     var sundays = #{@sundays};
     var xTicks = #{xaxis_labels(@sundays)};
+    var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66"];
 
     for (var i = 0; i < users.length; i++) {
-      labels.push(
+      totalHours.push(
         { label: users[i],
           data: totalHoursDataset[i],
           points: { symbol: "circle", fillColor: colors[i] },
           color: colors[i] }
       );
+      billableHours.push(
+        { label: users[i],
+          data: billableHoursDataset[i],
+          points: { symbol: "square", fillColor: colors[i] },
+          color: colors[i] }
+      );
+      unbillableHours.push(
+        { label: users[i],
+          data: unbillableHoursDataset[i],
+          points: { symbol: "triangle", fillColor: colors[i] },
+          color: colors[i] }
+      );
     }
-    $.plot("#placeholder", labels, {
-      series: {lines:{show: true}},
+    var options = {
       xaxis: {
         axisLabel: 'Week endings',
         axisLabelUseCanvas: true,
@@ -95,5 +103,8 @@
         labelBoxBorderColor: 'none',
         position: 'left'
       }
-    });
+    }
+    $.plot("#total-graph-container", totalHours, options);
+    $.plot("#billable-graph-container", billableHours, options);
+    $.plot("#unbillable-graph-container", unbillableHours, options);
   });
