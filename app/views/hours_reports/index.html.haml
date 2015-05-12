@@ -24,7 +24,6 @@
 
 = tabbed_panel do |tp|
   = tp.add_tab('Table') do
-    -#= will_paginate @unpaid_invoices
     %table.listing
       %tr.week_row
         %td
@@ -152,10 +151,9 @@
         display: 'none',
         top: y + 5,
         left: x + 5,
-        //border: '1px solid #fdd',
         padding: '8px',
         'background-color': '#f0f0f0',
-        opacity: 0.80
-      }).appendTo("body").fadeIn(200);
+        opacity: 0.50
+      }).appendTo('body').fadeIn(200);
     }
   });
