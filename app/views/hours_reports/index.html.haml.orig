@@ -20,6 +20,7 @@
     %input.american_date_entry#end-datepicker{:type => "text", :name => "end_date", :value => @end_date}
   = submit_tag "Submit", :id => 'datepicker-submit-btn'
 
+<<<<<<< HEAD
 = tabbed_panel do |tp|
   = tp.add_tab('Table') do
     -#= will_paginate @unpaid_invoices
@@ -46,3 +47,21 @@
     var hoursDataset = #{hours_reports_data(@users)};
     $.plot("#placeholder", hoursDataset);
   });
+=======
+%table.listing
+  %tr.week_row
+    %td
+    - @sundays.each do |sun|
+      %td
+        %h2= 'Week ending ' + sun
+  - @users.each do |u|
+    %tr.user_row
+      %td
+        %h2= u.name
+      -#- (1..number_of_weeks_between(@start_date, @end_date)+1).each do |w|
+      - @sundays.each do |sunday|
+        %td
+          %div.billable= WorkUnitQuery.new(u,sunday,'billable').hours
+          %div.unbillable= WorkUnitQuery.new(u,sunday,'unbillable').hours
+          %div.total= WorkUnitQuery.new(u,sunday,'total').hours
+>>>>>>> hours_reports_date_selector_93493736
