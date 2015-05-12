@@ -1,5 +1,5 @@
 - set_headline  "Listing Users' Hours"
-  = javascript_include_tag "/flot/jquery.flot.js"
+= javascript_include_tag "/flot/jquery.flot.js"
 
 .button-wrap
   %div.button.radius#all-user-hours-btn
@@ -20,18 +20,36 @@
     %input.american_date_entry#end-datepicker{:type => "text", :name => "end_date"}
   = submit_tag "Submit", :id => 'datepicker-submit-btn'
 
-%table.listing
-  %tr.week_row
-    %td
-    - @sundays.each do |sun|
-      %td
-        %h2= 'Week ending ' + sun
-  - @users.each do |u|
-    %tr.user_row
-      %td
-        %h2= u.name
-      - (1..number_of_weeks_between(@start_date, @end_date)).each do |w|
+= tabbed_panel do |tp|
+  = tp.add_tab('Table') do
+    -#= will_paginate @unpaid_invoices
+    %table.listing
+      %tr.week_row
         %td
-          %div.billable= WorkUnitQuery.new(u,@end_date,w,'billable').hours
-          %div.unbillable= WorkUnitQuery.new(u,@end_date,w,'unbillable').hours
-          %div.total= WorkUnitQuery.new(u,@end_date,w,'total').hours
+        - @sundays.each do |sun|
+          %td
+            %h2= 'Week ending ' + sun
+      - @users.each do |u|
+        %tr.user_row
+          %td
+            %h2= u.name
+          - (1..number_of_weeks_between(@start_date, @end_date)).each do |w|
+            %td
+              %div.billable= WorkUnitQuery.new(u,@end_date,w,'billable').hours
+              %div.unbillable= WorkUnitQuery.new(u,@end_date,w,'unbillable').hours
+              %div.total= WorkUnitQuery.new(u,@end_date,w,'total').hours
+  = tp.add_tab('Graph') do
+    #placeholder{ :style => 'width:750px;height:450px;' }
+
+:javascript
+  $(function() {
+    var hoursDataset = #{hours_reports_data(@users)};
+    var d1 = [];
+    for (var i = 0; i < 14; i += 0.5) {
+     d1.push([i, Math.sin(i)]);
+    }
+    var d2 = [[0, 3], [4, 8], [8, 5], [9, 13]];
+    // A null signifies separate line segments
+    var d3 = [[0, 12], [7, 12], null, [7, 2.5], [12, 2.5]];
+    $.plot("#placeholder", [ d1, d2, d3 ]);
+  });
