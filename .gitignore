@@ -64,3 +64,4 @@ errors.err
 apache-passenger.conf
 public/test-assets/
 .idea/
+*.orig
