@@ -23,7 +23,7 @@ describe WorkUnitQuery, :type => :query do
                            :user => @user_1,
                            :project => @project_1,
                            :start_time => Time.now - 3.weeks,
-			   :stop_time => Time.now - 3.weeks + 5.hours)							 :stop_time => Time.now - 3.weeks + 6.hours)
+			                     :stop_time => Time.now - 3.weeks + 5.hours)
 		@recent_work_unit_3 = FactoryGirl.create(:work_unit,
                            :hours => 5,
                            :user => @user_1,
