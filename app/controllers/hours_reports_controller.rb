@@ -2,22 +2,19 @@ class HoursReportsController < ApplicationController
   before_filter :require_admin!
 
   def index
-    default_date_range
-    build_report
-  end
-
-  def create
-    param_date_range
+    build_date_range
     build_report
     render :action => :index
   end
 
+  alias :create :index
+
   private
-  def hours_for(user, start_date, end_date = @end_date.beginning_of_week - 1.second)
-    user.work_units.where(:start_time => start_date..end_date)
+  def hours_for(user, start_date, end_date = @end_date.end_of_week - 1.week)
+    user.work_units.where(:start_time => start_date..end_date).sum(:hours).to_s.to_f
   end
 
-  def week_endings(start_date, end_date = @end_date.beginning_of_week - 1.day)
+  def week_endings(start_date, end_date = @end_date.end_of_week - 1.week)
     [].tap do |arr|
       sunday = start_date.beginning_of_week - 1.day
       sunday.step(end_date, 7) do |time|
@@ -26,19 +23,23 @@ class HoursReportsController < ApplicationController
     end
   end
 
-  def default_date_range
-    @start_date = Date.strptime((DateTime.now - 5.weeks).strftime('%m/%d/%Y'), '%m/%d/%Y')
-    @end_date = Date.strptime((DateTime.now).strftime('%m/%d/%Y'), '%m/%d/%Y')
+  def build_date_range
+    if params[:start_date].present?
+      @start_date = Chronic.parse(params[:start_date]).to_date
+    else
+      @start_date = Date.today - 5.weeks
+    end
+
+    if params[:end_date].present?
+      @end_date = Chronic.parse(params[:end_date]).to_date
+    else
+      @end_date = Date.today
+    end
   end
 
   def build_report
-    @users = User.all.select{ |u| hours_for(u, @start_date.beginning_of_week - 1.second).sum(:hours).to_s.to_f > 0.0 }
+    @users = User.all.select{ |u| hours_for(u, @start_date.end_of_week - 1.week) > 0.0 }
     @sundays = week_endings(@start_date)
-  end
-
-  def param_date_range
-    @start_date = Date.strptime(params[:start_date], '%m/%d/%Y')
-    @end_date = Date.strptime(params[:end_date], '%m/%d/%Y')
   end
 
 end
