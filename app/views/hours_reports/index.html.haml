@@ -1,5 +1,7 @@
 - set_headline  "Listing Users' Hours"
 = javascript_include_tag "/flot/jquery.flot.js"
+= javascript_include_tag "/flot/jquery.flot.symbol.js"
+= javascript_include_tag "/flot/jquery.flot.axislabels.js"
 
 .button-wrap
   %div.button.radius#all-user-hours-btn
@@ -33,16 +35,65 @@
         %tr.user_row
           %td
             %h2= u.name
-          - (1..number_of_weeks_between(@start_date, @end_date)).each do |w|
+          - @sundays.each do |sunday|
             %td
-              %div.billable= WorkUnitQuery.new(u,@end_date,w,'billable').hours
-              %div.unbillable= WorkUnitQuery.new(u,@end_date,w,'unbillable').hours
-              %div.total= WorkUnitQuery.new(u,@end_date,w,'total').hours
+              %div.billable= WorkUnitQuery.new(u,sunday,'billable').hours
+              %div.unbillable= WorkUnitQuery.new(u,sunday,'unbillable').hours
+              %div.total= WorkUnitQuery.new(u,sunday,'total').hours
   = tp.add_tab('Graph') do
-    #placeholder{ :style => 'width:750px;height:450px;' }
+    #placeholder{ :style => 'width:850px;height:450px;' }
 
 :javascript
-  $(function() {
-    var hoursDataset = #{hours_reports_data(@users)};
-    $.plot("#placeholder", hoursDataset);
+  $(document).ready(function () {
+    function convertToDate(timestamp) {
+        var newDate = new Date(timestamp);
+        var dateString = newDate.getMonth();
+        var monthName = getMonthName(dateString);
+
+        return monthName;
+    }
+
+    var totalHoursDataset = #{hours_reports_data(@users,@sundays,'total')};
+    console.log(totalHoursDataset);
+    var labels = [];
+    var users = #{get_names(@users)};
+    var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66"];
+    var sundays = #{@sundays};
+    var xTicks = #{xaxis_labels(@sundays)};
+
+    for (var i = 0; i < users.length; i++) {
+      labels.push(
+        { label: users[i],
+          data: totalHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+    }
+    $.plot("#placeholder", labels, {
+      series: {lines:{show: true}},
+      xaxis: {
+        axisLabel: 'Week endings',
+        axisLabelUseCanvas: true,
+        axisLabelFontSizePixels: 12,
+        axisLabelFontFamily: 'sans-serif',
+        axisLabelPadding: 30,
+        ticks: xTicks,
+        tickColor: 'transparent'
+      },
+      yaxis: {
+        axisLabel: 'Number of Work Units',
+        axisLabelUseCanvas: true,
+        axisLabelFontSizePixels: 12,
+        axisLabelFontFamily: 'sans-serif',
+        axisLabelPadding: 30
+      },
+      grid: {
+        hoverable: true,
+        borderWidth: 1
+      },
+      legend: {
+        labelBoxBorderColor: 'none',
+        position: 'left'
+      }
+    });
   });

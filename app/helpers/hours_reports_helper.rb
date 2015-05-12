@@ -5,12 +5,31 @@ module HoursReportsHelper
   end
 
   def hours_reports_data(users,sundays,scope)
-    data = []
+    dataset = []
     users.each do |u|
+      points = []
       sundays.each do |sun|
-        data << [sun, WorkUnitQuery(u,sun,scope).hours]
+        points << [(Date.parse(sun)).strftime('%s').to_i, WorkUnitQuery.new(u,sun,scope).hours]
       end
+      dataset << points
     end
+    return dataset
+  end
+
+  def get_names(users)
+    names = []
+    users.each do |u|
+      names << u.name
+    end
+    return names
+  end
+
+  def xaxis_labels(sundays)
+    ticks = []
+    sundays.each do |sun|
+      ticks << [(Date.parse(sun)).strftime('%s').to_i, sun]
+    end
+    return ticks
   end
 
 end
