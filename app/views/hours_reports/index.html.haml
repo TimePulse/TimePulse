@@ -37,6 +37,8 @@
           - billable = WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'billable').hours
           - unbillable = WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'unbillable').hours
           - total = WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'total').hours
+          - check_for_missing_weeks(billable)
+
           - (0..@sundays.length-1).each do |week|
             %td
               - if billable[week].nil?

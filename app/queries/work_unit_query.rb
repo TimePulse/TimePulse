@@ -6,23 +6,23 @@ class WorkUnitQuery
     if start_date.is_a?(String) && end_date.is_a?(String)
       if DateTime.parse(start_date).strftime('%A') == 'Sunday'
         @starting_monday = DateTime.parse(start_date).beginning_of_day + 1.day
+      elsif DateTime.parse(start_date).strftime('%A') != 'Sunday'
+        @starting_monday = DateTime.parse(start_date).beginning_of_week
       end
       if DateTime.parse(end_date).strftime('%A') == 'Sunday'
         @ending_sunday = DateTime.parse(end_date).end_of_week
-      end
-      if DateTime.parse(start_date).strftime('%A') != 'Sunday' && DateTime.parse(end_date).strftime('%A') != 'Sunday'
-        @starting_monday = DateTime.parse(start_date).beginning_of_week
+      elsif DateTime.parse(end_date).strftime('%A') != 'Sunday'
         @ending_sunday = DateTime.parse(end_date).beginning_of_week - 1.second
       end
     elsif !start_date.is_a?(String) && !end_date.is_a?(String)
       if start_date.strftime('%A') == 'Sunday'
         @starting_monday = start_date.beginning_of_day + 1.day
+      elsif
+        @starting_monday = start_date.beginning_of_week
       end
       if end_date.strftime('%A') == 'Sunday'
         @ending_sunday = end_date.end_of_week
-      end
-      if start_date.strftime('%A') != 'Sunday' && end_date.strftime('%A') != 'Sunday'
-        @starting_monday = start_date.beginning_of_week
+      elsif
         @ending_sunday = end_date.beginning_of_week - 1.second
       end
     end
@@ -40,7 +40,7 @@ class WorkUnitQuery
       scope = scope.send(@kind.to_sym)
     end
 
-    result = scope.map { |res| {sunday: res.min_start_time.beginning_of_week - 1.second, hours: res.hours.to_f } }
+    result = scope.map { |res| {sunday: (res.min_start_time.beginning_of_week - 1.second).strftime('%b %d %y'), hours: res.hours.to_f } }
     return result.sort_by { |hash| hash[:sunday] }
   end
 

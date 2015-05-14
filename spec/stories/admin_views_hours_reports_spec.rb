@@ -11,34 +11,49 @@ steps "Admin views the hours reports", :type => :feature do
   let! :project_1 do FactoryGirl.create(:project) end
   let! :project_2 do FactoryGirl.create(:project) end
   let! :work_unit_0 do
-    FactoryGirl.create(:work_unit, :hours => 10, :user => user_2, :project => project_2, :start_time => 13.weeks.ago, :stop_time => 13.weeks.ago+10.hours, :billable => false)
+    FactoryGirl.create(:work_unit, :hours => 10, :user => user_2, :project => project_2,
+                       :start_time => 13.weeks.ago, :stop_time => 13.weeks.ago+10.hours,
+                       :billable => false)
   end
   let! :work_unit_1 do
-    FactoryGirl.create(:work_unit, :hours => 9, :user => user_2, :project => project_2, :start_time => 11.weeks.ago, :stop_time => 11.weeks.ago+10.hours)
+    FactoryGirl.create(:work_unit, :hours => 9, :user => user_2, :project => project_2,
+                       :start_time => 11.weeks.ago, :stop_time => 11.weeks.ago+10.hours)
   end
   let! :work_unit_2 do
-    FactoryGirl.create(:work_unit, :hours => 8, :user => user_1, :project => project_2, :start_time => 12.weeks.ago, :stop_time => 12.weeks.ago+10.hours, :billable => false)
+    FactoryGirl.create(:work_unit, :hours => 8, :user => user_1, :project => project_2,
+                       :start_time => 12.weeks.ago, :stop_time => 12.weeks.ago+10.hours,
+                       :billable => false)
   end
   let! :work_unit_3 do
-    FactoryGirl.create(:work_unit, :hours => 7, :user => user_1, :project => project_2, :start_time => 6.weeks.ago, :stop_time => 6.weeks.ago+10.hours)
+    FactoryGirl.create(:work_unit, :hours => 7, :user => user_1, :project => project_2,
+                       :start_time => 6.weeks.ago, :stop_time => 6.weeks.ago+10.hours)
   end
   let! :work_unit_4 do
-    FactoryGirl.create(:work_unit, :hours => 6, :user => user_1, :project => project_1, :start_time => 5.weeks.ago, :stop_time => 5.weeks.ago+10.hours)
+    FactoryGirl.create(:work_unit, :hours => 6, :user => user_1, :project => project_1,
+                       :start_time => 5.weeks.ago, :stop_time => 5.weeks.ago+10.hours)
   end
   let! :work_unit_5 do
-    FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1, :start_time => 4.weeks.ago, :stop_time => 4.weeks.ago+10.hours, :billable => false)
+    FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1,
+                       :start_time => 4.weeks.ago, :stop_time => 4.weeks.ago+10.hours,
+                       :billable => false)
   end
   let! :work_unit_6 do
-    FactoryGirl.create(:work_unit, :hours => 4, :user => user_1, :project => project_1, :start_time => 3.weeks.ago, :stop_time => 3.weeks.ago+10.hours, :billable => false)
+    FactoryGirl.create(:work_unit, :hours => 4, :user => user_1, :project => project_1,
+                       :start_time => 3.weeks.ago, :stop_time => 3.weeks.ago+10.hours,
+                       :billable => false)
   end
   let! :work_unit_7 do
-    FactoryGirl.create(:work_unit, :hours => 3, :user => user_1, :project => project_1, :start_time => 2.weeks.ago, :stop_time => 2.weeks.ago+10.hours)
+    FactoryGirl.create(:work_unit, :hours => 3, :user => user_1, :project => project_1,
+                       :start_time => 2.weeks.ago, :stop_time => 2.weeks.ago+10.hours)
   end
   let! :work_unit_8 do
-    FactoryGirl.create(:work_unit, :hours => 2, :user => user_1, :project => project_1, :start_time => 1.week.ago, :stop_time => 1.week.ago+10.hours)
+    FactoryGirl.create(:work_unit, :hours => 2, :user => user_1, :project => project_1,
+                       :start_time => 1.week.ago, :stop_time => 1.week.ago+10.hours)
   end
   let! :work_unit_9 do
-    FactoryGirl.create(:work_unit, :hours => 1, :user => user_1, :project => project_1, :start_time => 1.week.ago, :stop_time => 1.week.ago+10.hours, :billable => false)
+    FactoryGirl.create(:work_unit, :hours => 10, :user => user_1, :project => project_1,
+                       :start_time => 4.days.ago, :stop_time => 4.days.ago+10.hours,
+                       :billable => false)
   end
   let! :admin do FactoryGirl.create(:admin) end
 
@@ -66,11 +81,8 @@ steps "Admin views the hours reports", :type => :feature do
     expect(page).to have_content('Apr 26 15')
   end
 
-  it 'should show users with work units in the last six weeks as rows' do
+  it 'should show appropriate users as rows' do
     expect(page).to have_content('Foo Bar 1')
-  end
-
-  it 'should not show users with work units not in the last six weeks' do
     expect(page).to_not have_content('Foo Bar 2')
   end
 
@@ -81,15 +93,9 @@ steps "Admin views the hours reports", :type => :feature do
     expect(page).to have_content('4.0')
     expect(page).to have_content('3.0')
     expect(page).to have_content('2.0')
-    expect(page).to have_content('1.0')
+    expect(page).to have_content('10.0')
+    expect(page).to have_content('12.0')
   end
-
-  # it 'should show billable, nonbillable, and total work units for one week ago' do
-  #   expect(page).to have_content('17.0')
-  #   expect(page).to have_content('9.0')
-  #   expect(page).to have_content('8.0')
-  #   expect(page).to_not have_content('2.0')
-  # end
 
   # it 'should show billable, nonbillable, and total work units for two weeks ago' do
   #  expect(page).to have_content(user_1.work_units.where(:start_time => Time.now.beginning_of_week - 1.second - 13.days..Time.now.beginning_of_week - 1.second - 7.days).sum(:hours).to_s.to_f)
@@ -125,26 +131,26 @@ steps "Admin views the hours reports", :type => :feature do
     find('#total-user-hours-btn').trigger('click')
   end
 
-  it "should show only the total number of hours for each user" do
-    expect(page).to have_content("1.0")
-    expect(page).to have_content("2.0")
-    expect(page).to have_content("3.0")
-    expect(page).to have_content("4.0")
-    expect(page).to have_content("5.0")
-    expect(page).to have_content("6.0")
+  it 'should show only the total number of hours for each user' do
+    expect(page).to have_content('1.0')
+    expect(page).to have_content('2.0')
+    expect(page).to have_content('3.0')
+    expect(page).to have_content('4.0')
+    expect(page).to have_content('5.0')
+    expect(page).to have_content('6.0')
   end
 
   it "should click the 'billable' button" do
     find('#billable-user-hours-btn').trigger('click')
   end
 
-  it "should show only the total number of billable hours for each user" do
-    expect(page).to have_content("1.0")
-    expect(page).to have_content("2.0")
-    expect(page).to have_content("3.0")
-    expect(page).to have_content("6.0")
-    expect(page).to_not have_content("4.0")
-    expect(page).to_not have_content("5.0")
+  it 'should show only the total number of billable hours for each user' do
+    expect(page).to have_content('1.0')
+    expect(page).to have_content('2.0')
+    expect(page).to have_content('3.0')
+    expect(page).to have_content('6.0')
+    expect(page).to_not have_content('4.0')
+    expect(page).to_not have_content('5.0')
   end
 
   it "should click the 'unbillable' button" do
