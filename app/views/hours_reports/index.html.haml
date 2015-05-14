@@ -34,25 +34,20 @@
         %tr.user_row
           %td
             %h2= u.name
-          - billable = WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'billable').hours
-          - unbillable = WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'unbillable').hours
-          - total = WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'total').hours
-          - check_for_missing_weeks(billable)
+          - last = @sundays.length-1
+          - billable = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'billable').hours
+          - unbillable = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'unbillable').hours
+          - total = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'total').hours
 
-          - (0..@sundays.length-1).each do |week|
+          - billable = check_for_missing_weeks(billable)
+          - unbillable = check_for_missing_weeks(unbillable)
+          - total = check_for_missing_weeks(total)
+
+          - (0..last).each do |week|
             %td
-              - if billable[week].nil?
-                %div.billable 0.0
-              - else
-                %div.billable= billable[week][:hours]
-              - if unbillable[week].nil?
-                %div.unbillable 0.0
-              - else
-                %div.unbillable= unbillable[week][:hours]
-              - if total[week].nil?
-                %div.total 0.0
-              - else
-                %div.total= total[week][:hours]
+              %div.billable= billable[week][:hours]
+              %div.unbillable= unbillable[week][:hours]
+              %div.total= total[week][:hours]
 
   = tp.add_tab('Graph') do
     #total-graph-container{ :style => 'width:1000px;height:550px;' }
