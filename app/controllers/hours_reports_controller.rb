@@ -16,7 +16,7 @@ class HoursReportsController < ApplicationController
 
   def week_endings(start_date, end_date = @end_date.end_of_week - 1.week)
     [].tap do |arr|
-      sunday = start_date.beginning_of_week - 1.day
+      sunday = (start_date.beginning_of_week - 1.day) + 1.week
       sunday.step(end_date, 7) do |time|
         arr << time.strftime('%b %d %y')
       end
@@ -27,7 +27,7 @@ class HoursReportsController < ApplicationController
     if params[:start_date].present?
       @start_date = Chronic.parse(params[:start_date]).to_date
     else
-      @start_date = Date.today - 5.weeks
+      @start_date = Date.today - 6.weeks
     end
 
     if params[:end_date].present?

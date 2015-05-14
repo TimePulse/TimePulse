@@ -5,15 +5,15 @@ module HoursReportsHelper
   end
 
   def check_for_missing_weeks(query)
-    if query.length != @sundays.length
-      (0..@sundays.length-1).each do |idx|
-        if query[idx].nil? || (query[idx][:sunday] != @sundays[idx])
-          query.push({:sunday => @sundays[idx], :hours => 0.0})
-        end
-      end
+    query_sundays = []
+    (0..query.length-1).each do |i|
+      query_sundays << query[i][:sunday]
     end
-    query = query.sort_by{ |hash| hash[:sunday] }
-    return query
+    missing_sundays = @sundays - query_sundays
+    (0..missing_sundays.length-1).each do |j|
+      query.push( {:sunday => missing_sundays[j], :hours => 0.0} )
+    end
+    return query.sort_by{ |hash| Date.parse(hash[:sunday]) }
   end
 
   def hours_reports_data(users,sundays,scope)
@@ -21,7 +21,7 @@ module HoursReportsHelper
     users.each do |u|
       points = []
       sundays.each do |sun|
-        points << [(Date.parse(sun)).strftime('%s').to_i, WorkUnitQuery.new(u,sun,scope).hours]
+        points << [(Date.parse(sun)).strftime('%s').to_i, WorkUnitQuery.new(u,sun,sun,scope).hours]
       end
       dataset << points
     end
