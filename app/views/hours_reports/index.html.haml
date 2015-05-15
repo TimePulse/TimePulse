@@ -39,9 +39,9 @@
           - unbillable = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'unbillable').hours
           - total = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'total').hours
 
-          - billable = check_for_missing_weeks(billable)
-          - unbillable = check_for_missing_weeks(unbillable)
-          - total = check_for_missing_weeks(total)
+          - billable = check_for_missing_weeks(billable,@sundays)
+          - unbillable = check_for_missing_weeks(unbillable,@sundays)
+          - total = check_for_missing_weeks(total,@sundays)
 
           - (0..last).each do |week|
             %td
@@ -50,6 +50,127 @@
               %div.total= total[week][:hours]
 
   = tp.add_tab('Graph') do
-    #total-graph-container{ :style => 'width:1000px;height:550px;' }
-    #billable-graph-container{ :style => 'width:1000px;height:550px;display:none;' }
-    #unbillable-graph-container{ :style => 'width:1000px;height:550px;display:none;' }
+    .graph-container
+      #total-graph-container
+      #billable-graph-container.hidden
+      #unbillable-graph-container.hidden
+      #legend
+
+:javascript
+  $(document).ready(function () {
+    var totalHoursDataset = #{ hours_reports_data(@users,@sundays,'total') };
+    var billableHoursDataset = #{ hours_reports_data(@users,@sundays,'billable') };
+    var unbillableHoursDataset = #{ hours_reports_data(@users,@sundays,'unbillable') };
+    var totalHours = [];
+    var billableHours = [];
+    var unbillableHours = [];
+    var users = #{ get_names(@users) };
+    var sundays = #{ @sundays };
+    var xTicks = #{ xaxis_labels(@sundays) };
+    var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66"];
+
+    for (var i = 0; i < users.length; i++) {
+      totalHours.push(
+        { label: users[i],
+          data: totalHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+      billableHours.push(
+        { label: users[i],
+          data: billableHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+      unbillableHours.push(
+        { label: users[i],
+          data: unbillableHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+    }
+    console.log(totalHours);
+    var options = {
+      xaxis: {
+        axisLabel: 'Ending Sundays',
+        axisLabelUseCanvas: true,
+        axisLabelPadding: 30,
+        ticks: xTicks,
+        tickColor: 'transparent'
+      },
+      yaxis: {
+        axisLabel: 'Number of Work Units',
+        axisLabelUseCanvas: true,
+        axisLabelPadding: 30,
+        min: 0,
+        max: 3000
+      },
+      points: { show: true },
+      lines: { show: true },
+      grid: {
+        hoverable: true,
+        borderWidth: 1
+      },
+      legend: {
+        labelBoxBorderColor: 'none',
+        position: 'left',
+        container:$('#legend')
+      }
+    };
+
+    $.plot("#total-graph-container", totalHours, options);
+    $.plot("#billable-graph-container", billableHours, options);
+    $.plot("#unbillable-graph-container", unbillableHours, options);
+
+    var previousPoint = null;
+    $("#total-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          var info = item.series.label + ': ' + item.datapoint[1] + ' hours';
+          showTooltip(item.pageX, item.pageY, info);
+          console.log(item);
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+    $("#billable-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          showTooltip(item.pageX, item.pageY, item.datapoint[1] + ' hours');
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+    $("#unbillable-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          showTooltip(item.pageX, item.pageY, item.datapoint[1] + ' hours');
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+
+    function showTooltip(x, y, contents) {
+      $('<div id="tooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 5,
+        padding: '8px',
+        'background-color': '#f0f0f0',
+        opacity: 0.50
+      }).appendTo('body').fadeIn(200);
+    }
+  });
