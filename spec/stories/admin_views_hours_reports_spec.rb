@@ -190,23 +190,45 @@ steps 'Admin views the hours reports', :type => :feature do
     expect(page).to_not have_content('9.0')
   end
 
-  # it "should click the graph tab" do
-  #   click_on "Graph"
-  # end
-  #
-  # it "should show the Sundays between the start and end dates as column headers" do
-  #   expect(page).to have_content("Dec 28 14")
-  #   expect(page).to have_content("Jan 04 15")
-  #   expect(page).to have_content("Jan 11 15")
-  # end
-  #
-  # it "should show users with work units in the legend" do
-  #   expect(page).to have_content("Foo Bar 2")
-  # end
-  #
-  # it "should not show users with no work units in the legend" do
-  #   expect(page).to_not have_content("Foo Bar 1")
-  # end
+  it 'should click the graph tab' do
+    click_on 'Graph'
+  end
+
+  it 'should show the Sundays between the start and end dates as x-axis labels' do
+    expect(page).to have_content('Feb 08 15')
+    expect(page).to have_content('Feb 15 15')
+  end
+
+  it 'should show users with work units in the legend' do
+    expect(page).to have_content('Foo Bar 2')
+    expect(page).to_not have_content('Foo Bar 1')
+  end
+
+  it 'should change the date range' do
+    fill_in 'start-datepicker', :with => '02/04/2015'
+    fill_in 'end-datepicker', :with => '04/27/2015'
+    find('#datepicker-submit-btn').trigger('click')
+  end
+
+  it 'should show users with work units in the legend' do
+    expect(page).to have_content('Foo Bar 1')
+    expect(page).to have_content('Foo Bar 2')
+  end
+
+  it 'should show the Sundays between the start and end dates as x-axis labels' do
+    expect(page).to have_content('Feb 08 15')
+    expect(page).to have_content('Feb 15 15')
+    expect(page).to have_content('Feb 22 15')
+    expect(page).to have_content('Mar 01 15')
+    expect(page).to have_content('Mar 08 15')
+    expect(page).to have_content('Mar 15 15')
+    expect(page).to have_content('Mar 22 15')
+    expect(page).to have_content('Mar 29 15')
+    expect(page).to have_content('Apr 05 15')
+    expect(page).to have_content('Apr 12 15')
+    expect(page).to have_content('Apr 19 15')
+    expect(page).to have_content('Apr 26 15')
+  end
 
   after do
     Timecop.return
