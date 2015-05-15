@@ -4,13 +4,13 @@
 = javascript_include_tag "/flot/jquery.flot.axislabels.js"
 
 .button-wrap
-  %div.button.radius#all-user-hours-btn
+  .button.radius#all-user-hours-btn.selected-btn
     All
-  %div.button.radius#total-user-hours-btn
+  .button.radius#total-user-hours-btn
     Total
-  %div.button.radius#billable-user-hours-btn
+  .button.radius#billable-user-hours-btn
     Billable
-  %div.button.radius#unbillable-user-hours-btn
+  .button.radius#unbillable-user-hours-btn
     Unbillable
 
 = form_tag hours_reports_path do
