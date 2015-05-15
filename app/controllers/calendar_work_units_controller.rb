@@ -12,7 +12,7 @@ class CalendarWorkUnitsController < ApplicationController
       end
     respond_to do |format|
       format.html
-      format.json { render :json => @work_units, serializer: CalendarEventSerializer}
+      format.json { render :json => @work_units, each_serializer: CalendarEventSerializer, root: false}
     end
 
   end
