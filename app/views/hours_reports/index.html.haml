@@ -68,7 +68,7 @@
     var users = #{ get_names(@users) };
     var sundays = #{ @sundays };
     var xTicks = #{ xaxis_labels(@sundays) };
-    var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66"];
+    var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66","black"];
 
     for (var i = 0; i < users.length; i++) {
       totalHours.push(
@@ -112,25 +112,26 @@
         borderWidth: 1
       },
       legend: {
-        labelBoxBorderColor: 'none',
-        position: 'left',
-        container:$('#legend')
-        //labelFormatter: function(label, series) {
-        //  return '<input type="checkbox" name="' + label + '" checked="checked" id="id' + label + '"> ' + label;
-        //}
+        show: false
+        //labelBoxBorderColor: 'none'
+        //position: 'left',
+        //container:$('#legend')
       }
     };
 
-    var choiceContainer = $("#checkboxes");
+    var choiceContainer = $("#legend");
     $.each(totalHours, function(key, val) {
-        choiceContainer.append('<br/><input type="checkbox" name="' + key +
-                               '" checked="checked" id="id' + key + '">' +
-                               '<label for="id' + key + '">'
-                                + val.label + '</label>');
+      choiceContainer.append(
+        '<input type="checkbox" name="' + key + '" checked="checked" id="checkbox' + key + '"> <label style="color:' + colors[key] + '" id="name' + key + '" for="id' + key + '">' + val.label + '</label>' +
+        '<br>'
+      );
     });
-    choiceContainer.find("input").click(plotAccordingToChoices);
 
-    function plotAccordingToChoices() {
+    choiceContainer.find("input").click(plotAccordingToChoicesTotal);
+    choiceContainer.find("input").click(plotAccordingToChoicesBillable);
+    choiceContainer.find("input").click(plotAccordingToChoicesUnbillable);
+
+    function plotAccordingToChoicesTotal() {
       var data = [];
       choiceContainer.find("input:checked").each(function () {
         var key = $(this).attr("name");
@@ -142,8 +143,34 @@
         $.plot($("#total-graph-container"), data, options);
       }
     }
+    function plotAccordingToChoicesBillable() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && billableHours[key]) {
+          data.push(billableHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#billable-graph-container"), data, options);
+      }
+    }
+    function plotAccordingToChoicesUnbillable() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && unbillableHours[key]) {
+          data.push(unbillableHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#unbillable-graph-container"), data, options);
+      }
+    }
 
-    plotAccordingToChoices();
+    plotAccordingToChoicesTotal();
+    plotAccordingToChoicesBillable();
+    plotAccordingToChoicesUnbillable();
 
     //$.plot("#total-graph-container", totalHours, options);
     //$.plot("#billable-graph-container", billableHours, options);
