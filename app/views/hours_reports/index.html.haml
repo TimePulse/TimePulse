@@ -55,6 +55,7 @@
       #billable-graph-container.hidden
       #unbillable-graph-container.hidden
       #legend
+      #checkboxes
 
 :javascript
   $(document).ready(function () {
@@ -89,7 +90,6 @@
           color: colors[i] }
       );
     }
-    console.log(totalHours);
     var options = {
       xaxis: {
         axisLabel: 'Ending Sundays',
@@ -115,12 +115,39 @@
         labelBoxBorderColor: 'none',
         position: 'left',
         container:$('#legend')
+        //labelFormatter: function(label, series) {
+        //  return '<input type="checkbox" name="' + label + '" checked="checked" id="id' + label + '"> ' + label;
+        //}
       }
     };
 
-    $.plot("#total-graph-container", totalHours, options);
-    $.plot("#billable-graph-container", billableHours, options);
-    $.plot("#unbillable-graph-container", unbillableHours, options);
+    var choiceContainer = $("#checkboxes");
+    $.each(totalHours, function(key, val) {
+        choiceContainer.append('<br/><input type="checkbox" name="' + key +
+                               '" checked="checked" id="id' + key + '">' +
+                               '<label for="id' + key + '">'
+                                + val.label + '</label>');
+    });
+    choiceContainer.find("input").click(plotAccordingToChoices);
+
+    function plotAccordingToChoices() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && totalHours[key]) {
+          data.push(totalHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#total-graph-container"), data, options);
+      }
+    }
+
+    plotAccordingToChoices();
+
+    //$.plot("#total-graph-container", totalHours, options);
+    //$.plot("#billable-graph-container", billableHours, options);
+    //$.plot("#unbillable-graph-container", unbillableHours, options);
 
     var previousPoint = null;
     $("#total-graph-container").bind("plothover", function (event, pos, item) {
@@ -130,7 +157,6 @@
           $("#tooltip").remove();
           var info = item.series.label + ': ' + item.datapoint[1] + ' hours';
           showTooltip(item.pageX, item.pageY, info);
-          console.log(item);
         }
       } else {
         $("#tooltip").remove();
@@ -170,7 +196,7 @@
         left: x + 5,
         padding: '8px',
         'background-color': '#f0f0f0',
-        opacity: 0.50
+        opacity: 0.75
       }).appendTo('body').fadeIn(200);
     }
   });
