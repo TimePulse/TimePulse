@@ -19,30 +19,24 @@ Ninja.behavior({
 	'#total-user-hours-btn': {
 		click: function() {
 			showHours('total');
-			$('#total-user-hours-btn').css("background-color","#165D75");
-			$('#all-user-hours-btn').css("background-color","#2BA6CB");
-			$('#billable-user-hours-btn').css("background-color","#2BA6CB");
-			$('#unbillable-user-hours-btn').css("background-color","#2BA6CB");
+			$('.selected-btn').removeClass('selected-btn');
+			$('#total-user-hours-btn').addClass('selected-btn');
 			showGraph('total');
 		}
 	},
 	'#billable-user-hours-btn': {
 		click: function() {
 			showHours('billable');
-			$('#billable-user-hours-btn').css("background-color","#165D75");
-			$('#all-user-hours-btn').css("background-color","#2BA6CB");
-			$('#total-user-hours-btn').css("background-color","#2BA6CB");
-			$('#unbillable-user-hours-btn').css("background-color","#2BA6CB");
+      $('.selected-btn').removeClass('selected-btn');
+      $('#billable-user-hours-btn').addClass('selected-btn');
       showGraph('billable');
 		}
 	},
 	'#unbillable-user-hours-btn': {
 		click: function() {
 			showHours('unbillable');
-			$('#unbillable-user-hours-btn').css("background-color","#165D75");
-			$('#all-user-hours-btn').css("background-color","#2BA6CB");
-			$('#billable-user-hours-btn').css("background-color","#2BA6CB");
-			$('#total-user-hours-btn').css("background-color","#2BA6CB");
+      $('.selected-btn').removeClass('selected-btn');
+      $('#unbillable-user-hours-btn').addClass('selected-btn');
       showGraph('unbillable');
 		}
 	},
@@ -51,10 +45,8 @@ Ninja.behavior({
 			$('div.total').show();
 			$('div.billable').show();
 			$('div.unbillable').show();
-			$('#all-user-hours-btn').css("background-color","#165D75");
-			$('#unbillable-user-hours-btn').css("background-color","#2BA6CB");
-			$('#billable-user-hours-btn').css("background-color","#2BA6CB");
-			$('#total-user-hours-btn').css("background-color","#2BA6CB");
+      $('.selected-btn').removeClass('selected-btn');
+      $('#all-user-hours-btn').addClass('selected-btn');
       showGraph('total');
 		}
 	}
