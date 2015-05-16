@@ -16,12 +16,12 @@ class HoursReportsController < ApplicationController
     users_with_hours = {}
     users.each do |u|
       users_with_hours[u.login.to_sym] = {
-        :billable => check_for_missing_weeks(WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'billable').hours),
+        :billable =>   check_for_missing_weeks(WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'billable').hours),
         :unbillable => check_for_missing_weeks(WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'unbillable').hours),
-        :total => check_for_missing_weeks(WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'total').hours)
+        :total =>      check_for_missing_weeks(WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'total').hours)
       }
     end
-    return users_with_hours
+    users_with_hours
   end
 
   def hours_for(user, start_date, end_date = @end_date.end_of_week - 1.week)
