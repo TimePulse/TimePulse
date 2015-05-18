@@ -107,6 +107,7 @@
     };
 
     var choiceContainer = $("#legend");
+    choiceContainer.append("<div id='selectAll' class='button radius'>Select/Deselect All</div><br>");
     $.each(totalHours, function(key, val) {
       choiceContainer.append(
         '<input type="checkbox" name="' + key + '" checked="checked" id="checkbox' + key + '"> <label style="color:' + colors[key] + '" id="name' + key + '" for="id' + key + '">' + val.label + '</label>' +
