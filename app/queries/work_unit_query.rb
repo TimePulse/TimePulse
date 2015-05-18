@@ -28,9 +28,9 @@ class WorkUnitQuery
       scope = scope.send(@kind.to_sym)
     end
 
-    result = scope.map { |res| {:sunday => (res.min_start_time.end_of_week).strftime('%b %d %y'),
-                                :hours => res.hours.to_f } }
-    return result.sort_by{ |hash| Date.parse(hash[:sunday]) }
+    result = scope.map { |res| {:sunday => res.min_start_time.end_of_week,
+                                :hours  => res.hours.to_f } }
+    return result.sort_by{ |hash| hash[:sunday] }
   end
 
 end

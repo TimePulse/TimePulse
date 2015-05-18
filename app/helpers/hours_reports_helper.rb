@@ -9,24 +9,24 @@ module HoursReportsHelper
     (0..query.length-1).each do |i|
       query_sundays << query[i][:sunday]
     end
-    missing_sundays = sundays - query_sundays
+    missing_sundays = sundays - dates_as_strings(query_sundays)
     (0..missing_sundays.length-1).each do |j|
-      query.push( {:sunday => missing_sundays[j], :hours => 0.0} )
+      query.push( {:sunday => Date.parse(missing_sundays[j]), :hours => 0.0} )
     end
-    return query.sort_by{ |hash| Date.parse(hash[:sunday]) }
+    query.sort_by{ |hash| hash[:sunday] }
   end
 
   def hours_reports_data(users,sundays,kind)
     dataset = []
     users.each do |u|
-      query = check_for_missing_weeks(WorkUnitQuery.new(u,sundays[0],sundays[sundays.length-1],kind).hours, sundays)
+      query = check_for_missing_weeks(WorkUnitQuery.new(u,sundays.first,sundays.last,kind).hours, sundays)
       points = []
       (0..query.length-1).each do |i|
-        points << [Date.parse(query[i][:sunday]).strftime('%s').to_i, query[i][:hours]]
+        points << [query[i][:sunday].strftime('%s').to_i, query[i][:hours]]
       end
       dataset << points
     end
-    return dataset
+    dataset
   end
 
   def get_names(users)
@@ -34,15 +34,23 @@ module HoursReportsHelper
     users.each do |u|
       names << u.name
     end
-    return names
+    names
   end
 
   def xaxis_labels(sundays)
-    ticks = []
+    labels = []
     sundays.each do |sun|
-      ticks << [(Date.parse(sun)).strftime('%s').to_i, sun]
+      labels << [sun.end_of_day.strftime('%s').to_i, sun.strftime('%b %d %y')]
     end
-    return ticks
+    labels
+  end
+
+  def dates_as_strings(dates)
+    dates_as_strings = []
+    dates.each do |d|
+      dates_as_strings << d.strftime('%b %d %y')
+    end
+    dates_as_strings
   end
 
 end

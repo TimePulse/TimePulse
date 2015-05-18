@@ -16,18 +16,18 @@
 = form_tag hours_reports_path do
   %div.input-container
     %p Start Date
-    %input.american_date_entry#start-datepicker{:type => "text", :name => "start_date", :value => @start_date}
+    %input.american_date_entry#start-datepicker{:type => 'text', :name => 'start_date', :value => @start_date}
   %div.input-container
     %p End Date
-    %input.american_date_entry#end-datepicker{:type => "text", :name => "end_date", :value => @end_date}
-  = submit_tag "Submit", :id => 'datepicker-submit-btn'
+    %input.american_date_entry#end-datepicker{:type => 'text', :name => 'end_date', :value => @end_date}
+  = submit_tag 'Submit', :id => 'datepicker-submit-btn'
 
 = tabbed_panel do |tp|
   = tp.add_tab('Table') do
     %table.listing
       %tr.week_row
         %td
-        - @sundays.each do |sun|
+        - @sundays_as_strings.each do |sun|
           %td
             %h2= 'Week ending ' + sun
       - @users.each do |u|
@@ -50,15 +50,16 @@
 
 :javascript
   $(document).ready(function () {
-    var totalHoursDataset = #{ hours_reports_data(@users,@sundays,'total') };
-    var billableHoursDataset = #{ hours_reports_data(@users,@sundays,'billable') };
-    var unbillableHoursDataset = #{ hours_reports_data(@users,@sundays,'unbillable') };
+    var totalHoursDataset = #{ hours_reports_data(@users,@sundays_as_strings,'total') };
+    var billableHoursDataset = #{ hours_reports_data(@users,@sundays_as_strings,'billable') };
+    var unbillableHoursDataset = #{ hours_reports_data(@users,@sundays_as_strings,'unbillable') };
     var totalHours = [];
     var billableHours = [];
     var unbillableHours = [];
     var users = #{ get_names(@users) };
-    var sundays = #{ @sundays };
+    var sundays = #{ @sundays_as_strings };
     var xTicks = #{ xaxis_labels(@sundays) };
+    console.log(xTicks);
     var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66","black"];
 
     for (var i = 0; i < users.length; i++) {
@@ -94,7 +95,7 @@
         axisLabelUseCanvas: true,
         axisLabelPadding: 30,
         min: 0,
-        max: 100
+        max: 2200
       },
       points: { show: true },
       lines: { show: true },
@@ -157,10 +158,6 @@
     plotAccordingToChoicesTotal();
     plotAccordingToChoicesBillable();
     plotAccordingToChoicesUnbillable();
-
-    //$.plot("#total-graph-container", totalHours, options);
-    //$.plot("#billable-graph-container", billableHours, options);
-    //$.plot("#unbillable-graph-container", unbillableHours, options);
 
     var previousPoint = null;
     $("#total-graph-container").bind("plothover", function (event, pos, item) {
