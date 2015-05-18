@@ -61,32 +61,32 @@ describe WorkUnitQuery, :type => :query do
 
   it 'should find recent hours' do
     expect(@billable_work_units_1[0][:hours]).to eq(5.0)
-    expect(@billable_work_units_1[0][:sunday]).to eq('Apr 12 15')
+    expect(@billable_work_units_1[0][:sunday].strftime('%b %d %y')).to eq('Apr 12 15')
     expect(@billable_work_units_1[1][:hours]).to eq(5.0)
-    expect(@billable_work_units_1[1][:sunday]).to eq('Apr 19 15')
+    expect(@billable_work_units_1[1][:sunday].strftime('%b %d %y')).to eq('Apr 19 15')
 
     expect(@unbillable_work_units_1[0][:hours]).to eq(5.0)
-    expect(@unbillable_work_units_1[0][:sunday]).to eq('Apr 12 15')
+    expect(@unbillable_work_units_1[0][:sunday].strftime('%b %d %y')).to eq('Apr 12 15')
 
     expect(@total_work_units_1[0][:hours]).to eq(10.0)
-    expect(@total_work_units_1[0][:sunday]).to eq('Apr 12 15')
+    expect(@total_work_units_1[0][:sunday].strftime('%b %d %y')).to eq('Apr 12 15')
     expect(@total_work_units_1[1][:hours]).to eq(5.0)
-    expect(@total_work_units_1[1][:sunday]).to eq('Apr 19 15')
+    expect(@total_work_units_1[1][:sunday].strftime('%b %d %y')).to eq('Apr 19 15')
   end
 
   it 'should find older hours' do
     expect(@billable_work_units_2[0][:hours]).to eq(5.0)
-    expect(@billable_work_units_2[0][:sunday]).to eq('Mar 15 15')
+    expect(@billable_work_units_2[0][:sunday].strftime('%b %d %y')).to eq('Mar 15 15')
     expect(@billable_work_units_2[1][:hours]).to eq(6.0)
-    expect(@billable_work_units_2[1][:sunday]).to eq('Mar 22 15')
+    expect(@billable_work_units_2[1][:sunday].strftime('%b %d %y')).to eq('Mar 22 15')
 
     expect(@unbillable_work_units_2[0][:hours]).to eq(5.0)
-    expect(@unbillable_work_units_2[0][:sunday]).to eq('Mar 15 15')
+    expect(@unbillable_work_units_2[0][:sunday].strftime('%b %d %y')).to eq('Mar 15 15')
 
     expect(@total_work_units_2[0][:hours]).to eq(10.0)
-    expect(@total_work_units_2[0][:sunday]).to eq('Mar 15 15')
+    expect(@total_work_units_2[0][:sunday].strftime('%b %d %y')).to eq('Mar 15 15')
     expect(@total_work_units_2[1][:hours]).to eq(6.0)
-    expect(@total_work_units_2[1][:sunday]).to eq('Mar 22 15')
+    expect(@total_work_units_2[1][:sunday].strftime('%b %d %y')).to eq('Mar 22 15')
   end
 
   after do

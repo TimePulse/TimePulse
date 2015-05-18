@@ -59,7 +59,6 @@
     var users = #{ get_names(@users) };
     var sundays = #{ @sundays_as_strings };
     var xTicks = #{ xaxis_labels(@sundays) };
-    console.log(xTicks);
     var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66","black"];
 
     for (var i = 0; i < users.length; i++) {
@@ -95,7 +94,7 @@
         axisLabelUseCanvas: true,
         axisLabelPadding: 30,
         min: 0,
-        max: 2200
+        max: 100
       },
       points: { show: true },
       lines: { show: true },
