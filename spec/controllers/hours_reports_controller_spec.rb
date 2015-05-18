@@ -39,8 +39,8 @@ describe HoursReportsController do
 
       it 'should show the appropriate Sundays' do
         get :index
-        expect(assigns(:sundays)).to include(Date.parse('Apr 26 15'))
-        expect(assigns(:sundays)).to_not include(Date.parse('Mar 22 15'))
+        expect(assigns(:sundays)).to include(DateTime.parse('Apr 26 15').end_of_day)
+        expect(assigns(:sundays)).to_not include(DateTime.parse('Mar 22 15').end_of_day)
       end
 
     end

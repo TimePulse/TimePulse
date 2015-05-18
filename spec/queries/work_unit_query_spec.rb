@@ -51,12 +51,12 @@ describe WorkUnitQuery, :type => :query do
                            :stop_time => DateTime.parse('Mar 12 15') + 6.hours,
                            :billable => false)
 
-    @billable_work_units_1   = WorkUnitQuery.new(@user_1,'Apr 06 15','Apr 19 15','billable').hours
-    @unbillable_work_units_1 = WorkUnitQuery.new(@user_1,'Apr 06 15','Apr 19 15','unbillable').hours
-    @total_work_units_1      = WorkUnitQuery.new(@user_1,'Apr 06 15','Apr 19 15','total').hours
-    @billable_work_units_2   = WorkUnitQuery.new(@user_2,'Mar 09 15','Mar 22 15','billable').hours
-    @unbillable_work_units_2 = WorkUnitQuery.new(@user_2,'Mar 09 15','Mar 22 15','unbillable').hours
-    @total_work_units_2      = WorkUnitQuery.new(@user_2,'Mar 09 15','Mar 22 15','total').hours
+    @billable_work_units_1   = WorkUnitQuery.new(@user_1,DateTime.parse('Apr 06 15').end_of_day,DateTime.parse('Apr 19 15').end_of_day,'billable').hours
+    @unbillable_work_units_1 = WorkUnitQuery.new(@user_1,DateTime.parse('Apr 06 15').end_of_day,DateTime.parse('Apr 19 15').end_of_day,'unbillable').hours
+    @total_work_units_1      = WorkUnitQuery.new(@user_1,DateTime.parse('Apr 06 15').end_of_day,DateTime.parse('Apr 19 15').end_of_day,'total').hours
+    @billable_work_units_2   = WorkUnitQuery.new(@user_2,DateTime.parse('Mar 09 15').end_of_day,DateTime.parse('Mar 22 15').end_of_day,'billable').hours
+    @unbillable_work_units_2 = WorkUnitQuery.new(@user_2,DateTime.parse('Mar 09 15').end_of_day,DateTime.parse('Mar 22 15').end_of_day,'unbillable').hours
+    @total_work_units_2      = WorkUnitQuery.new(@user_2,DateTime.parse('Mar 09 15').end_of_day,DateTime.parse('Mar 22 15').end_of_day,'total').hours
   end
 
   it 'should find recent hours' do
