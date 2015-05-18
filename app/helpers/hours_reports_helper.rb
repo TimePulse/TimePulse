@@ -4,14 +4,20 @@ module HoursReportsHelper
     (((end_date.beginning_of_week - start_date.beginning_of_week).to_i) / 7)
   end
 
+  def dates_to_strings(dates)
+    dates_stringified = []
+    dates.each { |d| dates_stringified << d.strftime('%b %d %y') }
+    dates_stringified
+  end
+
   def check_for_missing_weeks(query,sundays)
     query_sundays = []
     (0..query.length-1).each do |i|
-      query_sundays << query[i][:sunday]
+      query_sundays << query[i][:sunday].to_datetime # datetime objects
     end
-    missing_sundays = sundays - dates_as_strings(query_sundays)
+    missing_sundays = dates_to_strings(sundays) - dates_to_strings(query_sundays.sort)
     (0..missing_sundays.length-1).each do |j|
-      query.push( {:sunday => Date.parse(missing_sundays[j]), :hours => 0.0} )
+      query.push( {:sunday => DateTime.parse(missing_sundays[j]).end_of_day, :hours => 0.0} )
     end
     query.sort_by{ |hash| hash[:sunday] }
   end
@@ -43,14 +49,6 @@ module HoursReportsHelper
       labels << [sun.end_of_day.strftime('%s').to_i, sun.strftime('%b %d %y')]
     end
     labels
-  end
-
-  def dates_as_strings(dates)
-    dates_as_strings = []
-    dates.each do |d|
-      dates_as_strings << d.strftime('%b %d %y')
-    end
-    dates_as_strings
   end
 
 end
