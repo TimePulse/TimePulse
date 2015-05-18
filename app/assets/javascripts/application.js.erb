@@ -58,6 +58,7 @@ Ninja.behavior({
     '.selectboxit':  Ninja.suppressChangeEvents(),
     '#task_elapsed':  Ninja.suppressChangeEvents(),
     '.date_entry': { transform: function(elem){ $(elem).datepicker({ dateFormat: "dd/mm/yy" }) }},
+    '.american_date_entry': { transform: function(elem){ $(elem).datepicker() }},
     '.datetime_entry': {
       transform: function(elem){
         $(elem).datetimepicker();
