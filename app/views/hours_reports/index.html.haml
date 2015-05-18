@@ -41,6 +41,175 @@
               .total= @users_with_hours[u.login.to_sym][:total][week][:hours]
 
   = tp.add_tab('Graph') do
-    #total-graph-container{ :style => 'width:1000px;height:550px;' }
-    #billable-graph-container{ :style => 'width:1000px;height:550px;display:none;' }
-    #unbillable-graph-container{ :style => 'width:1000px;height:550px;display:none;' }
+    .graph-container
+      #total-graph-container
+      #billable-graph-container.hidden
+      #unbillable-graph-container.hidden
+      #legend
+      #checkboxes
+
+:javascript
+  $(document).ready(function () {
+    var totalHoursDataset = #{ hours_reports_data(@users,@sundays,'total') };
+    var billableHoursDataset = #{ hours_reports_data(@users,@sundays,'billable') };
+    var unbillableHoursDataset = #{ hours_reports_data(@users,@sundays,'unbillable') };
+    var totalHours = [];
+    var billableHours = [];
+    var unbillableHours = [];
+    var users = #{ get_names(@users) };
+    var sundays = #{ @sundays };
+    var xTicks = #{ xaxis_labels(@sundays) };
+    var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66","black"];
+
+    for (var i = 0; i < users.length; i++) {
+      totalHours.push(
+        { label: users[i],
+          data: totalHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+      billableHours.push(
+        { label: users[i],
+          data: billableHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+      unbillableHours.push(
+        { label: users[i],
+          data: unbillableHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+    }
+    var options = {
+      xaxis: {
+        axisLabel: 'Ending Sundays',
+        axisLabelUseCanvas: true,
+        axisLabelPadding: 30,
+        ticks: xTicks,
+        tickColor: 'transparent'
+      },
+      yaxis: {
+        axisLabel: 'Number of Work Units',
+        axisLabelUseCanvas: true,
+        axisLabelPadding: 30,
+        min: 0,
+        max: 100
+      },
+      points: { show: true },
+      lines: { show: true },
+      grid: {
+        hoverable: true,
+        borderWidth: 1
+      },
+      legend: { show: false }
+    };
+
+    var choiceContainer = $("#legend");
+    $.each(totalHours, function(key, val) {
+      choiceContainer.append(
+        '<input type="checkbox" name="' + key + '" checked="checked" id="checkbox' + key + '"> <label style="color:' + colors[key] + '" id="name' + key + '" for="id' + key + '">' + val.label + '</label>' +
+        '<br>'
+      );
+    });
+
+    choiceContainer.find("input").click(plotAccordingToChoicesTotal);
+    choiceContainer.find("input").click(plotAccordingToChoicesBillable);
+    choiceContainer.find("input").click(plotAccordingToChoicesUnbillable);
+
+    function plotAccordingToChoicesTotal() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && totalHours[key]) {
+          data.push(totalHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#total-graph-container"), data, options);
+      }
+    }
+    function plotAccordingToChoicesBillable() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && billableHours[key]) {
+          data.push(billableHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#billable-graph-container"), data, options);
+      }
+    }
+    function plotAccordingToChoicesUnbillable() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && unbillableHours[key]) {
+          data.push(unbillableHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#unbillable-graph-container"), data, options);
+      }
+    }
+
+    plotAccordingToChoicesTotal();
+    plotAccordingToChoicesBillable();
+    plotAccordingToChoicesUnbillable();
+
+    //$.plot("#total-graph-container", totalHours, options);
+    //$.plot("#billable-graph-container", billableHours, options);
+    //$.plot("#unbillable-graph-container", unbillableHours, options);
+
+    var previousPoint = null;
+    $("#total-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          var info = item.series.label + ': ' + item.datapoint[1] + ' hours';
+          showTooltip(item.pageX, item.pageY, info);
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+    $("#billable-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          showTooltip(item.pageX, item.pageY, item.datapoint[1] + ' hours');
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+    $("#unbillable-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          showTooltip(item.pageX, item.pageY, item.datapoint[1] + ' hours');
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+
+    function showTooltip(x, y, contents) {
+      $('<div id="tooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 5,
+        padding: '8px',
+        'background-color': '#f0f0f0',
+        opacity: 0.75
+      }).appendTo('body').fadeIn(200);
+    }
+  });
