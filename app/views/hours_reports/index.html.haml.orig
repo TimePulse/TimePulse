@@ -1,14 +1,16 @@
 - set_headline  "Listing Users' Hours"
 = javascript_include_tag "/flot/jquery.flot.js"
+= javascript_include_tag "/flot/jquery.flot.symbol.js"
+= javascript_include_tag "/flot/jquery.flot.axislabels.js"
 
 .button-wrap
-  %div.button.radius#all-user-hours-btn
+  .button.radius#all-user-hours-btn.selected-btn
     All
-  %div.button.radius#total-user-hours-btn
+  .button.radius#total-user-hours-btn
     Total
-  %div.button.radius#billable-user-hours-btn
+  .button.radius#billable-user-hours-btn
     Billable
-  %div.button.radius#unbillable-user-hours-btn
+  .button.radius#unbillable-user-hours-btn
     Unbillable
 
 = form_tag hours_reports_path do
@@ -20,10 +22,8 @@
     %input.american_date_entry#end-datepicker{:type => "text", :name => "end_date", :value => @end_date}
   = submit_tag "Submit", :id => 'datepicker-submit-btn'
 
-<<<<<<< HEAD
 = tabbed_panel do |tp|
   = tp.add_tab('Table') do
-    -#= will_paginate @unpaid_invoices
     %table.listing
       %tr.week_row
         %td
@@ -34,34 +34,195 @@
         %tr.user_row
           %td
             %h2= u.name
-          - (1..number_of_weeks_between(@start_date, @end_date)).each do |w|
+<<<<<<< HEAD
+          - (0..@sundays.length-1).each do |week|
+=======
+          - last = @sundays.length-1
+          - billable = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'billable').hours
+          - unbillable = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'unbillable').hours
+          - total = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'total').hours
+
+          - billable = check_for_missing_weeks(billable,@sundays)
+          - unbillable = check_for_missing_weeks(unbillable,@sundays)
+          - total = check_for_missing_weeks(total,@sundays)
+
+          - (0..last).each do |week|
+>>>>>>> graph_view_for_hours_reports_94354764
             %td
-              %div.billable= WorkUnitQuery.new(u,@end_date,w,'billable').hours
-              %div.unbillable= WorkUnitQuery.new(u,@end_date,w,'unbillable').hours
-              %div.total= WorkUnitQuery.new(u,@end_date,w,'total').hours
+              .billable= @users_with_hours[u.login.to_sym][:billable][week][:hours]
+              .unbillable= @users_with_hours[u.login.to_sym][:unbillable][week][:hours]
+              .total= @users_with_hours[u.login.to_sym][:total][week][:hours]
+
   = tp.add_tab('Graph') do
-    #placeholder{ :style => 'width:750px;height:450px;' }
+    .graph-container
+      #total-graph-container
+      #billable-graph-container.hidden
+      #unbillable-graph-container.hidden
+      #legend
+      #checkboxes
 
 :javascript
-  $(function() {
-    var hoursDataset = #{hours_reports_data(@users)};
-    $.plot("#placeholder", hoursDataset);
+  $(document).ready(function () {
+    var totalHoursDataset = #{ hours_reports_data(@users,@sundays,'total') };
+    var billableHoursDataset = #{ hours_reports_data(@users,@sundays,'billable') };
+    var unbillableHoursDataset = #{ hours_reports_data(@users,@sundays,'unbillable') };
+    var totalHours = [];
+    var billableHours = [];
+    var unbillableHours = [];
+    var users = #{ get_names(@users) };
+    var sundays = #{ @sundays };
+    var xTicks = #{ xaxis_labels(@sundays) };
+    var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66","black"];
+
+    for (var i = 0; i < users.length; i++) {
+      totalHours.push(
+        { label: users[i],
+          data: totalHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+      billableHours.push(
+        { label: users[i],
+          data: billableHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+      unbillableHours.push(
+        { label: users[i],
+          data: unbillableHoursDataset[i],
+          points: { symbol: "circle", fillColor: colors[i] },
+          color: colors[i] }
+      );
+    }
+    var options = {
+      xaxis: {
+        axisLabel: 'Ending Sundays',
+        axisLabelUseCanvas: true,
+        axisLabelPadding: 30,
+        ticks: xTicks,
+        tickColor: 'transparent'
+      },
+      yaxis: {
+        axisLabel: 'Number of Work Units',
+        axisLabelUseCanvas: true,
+        axisLabelPadding: 30,
+        min: 0,
+        max: 100
+      },
+      points: { show: true },
+      lines: { show: true },
+      grid: {
+        hoverable: true,
+        borderWidth: 1
+      },
+      legend: { show: false }
+    };
+
+    var choiceContainer = $("#legend");
+    $.each(totalHours, function(key, val) {
+      choiceContainer.append(
+        '<input type="checkbox" name="' + key + '" checked="checked" id="checkbox' + key + '"> <label style="color:' + colors[key] + '" id="name' + key + '" for="id' + key + '">' + val.label + '</label>' +
+        '<br>'
+      );
+    });
+
+    choiceContainer.find("input").click(plotAccordingToChoicesTotal);
+    choiceContainer.find("input").click(plotAccordingToChoicesBillable);
+    choiceContainer.find("input").click(plotAccordingToChoicesUnbillable);
+
+    function plotAccordingToChoicesTotal() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && totalHours[key]) {
+          data.push(totalHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#total-graph-container"), data, options);
+      }
+    }
+    function plotAccordingToChoicesBillable() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && billableHours[key]) {
+          data.push(billableHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#billable-graph-container"), data, options);
+      }
+    }
+    function plotAccordingToChoicesUnbillable() {
+      var data = [];
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && unbillableHours[key]) {
+          data.push(unbillableHours[key]);
+        }
+      });
+      if (data.length > 0) {
+        $.plot($("#unbillable-graph-container"), data, options);
+      }
+    }
+
+    plotAccordingToChoicesTotal();
+    plotAccordingToChoicesBillable();
+    plotAccordingToChoicesUnbillable();
+
+    //$.plot("#total-graph-container", totalHours, options);
+    //$.plot("#billable-graph-container", billableHours, options);
+    //$.plot("#unbillable-graph-container", unbillableHours, options);
+
+    var previousPoint = null;
+    $("#total-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          var info = item.series.label + ': ' + item.datapoint[1] + ' hours';
+          showTooltip(item.pageX, item.pageY, info);
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+    $("#billable-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          showTooltip(item.pageX, item.pageY, item.datapoint[1] + ' hours');
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+    $("#unbillable-graph-container").bind("plothover", function (event, pos, item) {
+      if (item) {
+        if (previousPoint != item.datapoint) {
+          previousPoint = item.datapoint;
+          $("#tooltip").remove();
+          showTooltip(item.pageX, item.pageY, item.datapoint[1] + ' hours');
+        }
+      } else {
+        $("#tooltip").remove();
+        previousPoint = null;
+      }
+    });
+
+    function showTooltip(x, y, contents) {
+      $('<div id="tooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 5,
+        padding: '8px',
+        'background-color': '#f0f0f0',
+        opacity: 0.75
+      }).appendTo('body').fadeIn(200);
+    }
   });
-=======
-%table.listing
-  %tr.week_row
-    %td
-    - @sundays.each do |sun|
-      %td
-        %h2= 'Week ending ' + sun
-  - @users.each do |u|
-    %tr.user_row
-      %td
-        %h2= u.name
-      -#- (1..number_of_weeks_between(@start_date, @end_date)+1).each do |w|
-      - @sundays.each do |sunday|
-        %td
-          %div.billable= WorkUnitQuery.new(u,sunday,'billable').hours
-          %div.unbillable= WorkUnitQuery.new(u,sunday,'unbillable').hours
-          %div.total= WorkUnitQuery.new(u,sunday,'total').hours
->>>>>>> hours_reports_date_selector_93493736
