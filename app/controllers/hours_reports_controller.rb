@@ -30,8 +30,7 @@ class HoursReportsController < ApplicationController
 
   def week_endings(start_date, end_date = @end_date.end_of_week)
     [].tap do |arr|
-      sunday = (start_date.beginning_of_week - 1.day) + 1.week
-      # sunday = start_date.end_of_week
+      sunday = start_date.end_of_week
       sunday.step(end_date, 7) do |time|
         arr << time.to_datetime.end_of_day
       end
