@@ -41,8 +41,8 @@ describe GithubUpdate do
       last_activity.action.should == "commit"
       last_activity.description.should == "Update Version"
       last_activity.time.should == "2013-05-23T16:48:39-07:00"
-      last_activity.reference_1.should == "042ec79f159fe8f0b7a520330f05dfda8741cc75"
-      last_activity.reference_2.should == "master"
+      last_activity.properties['id'].should == "042ec79f159fe8f0b7a520330f05dfda8741cc75"
+      last_activity.properties['branch'].should == "master"
       last_activity.project.should == project
       last_activity.user.should == user
     end
