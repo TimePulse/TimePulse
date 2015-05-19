@@ -1,10 +1,12 @@
 FactoryGirl.define do
   factory :activity do
-    source "Github"
+    source "github"
     time Time.now
     action "commit"
-    description "New Commit"
-    reference_1 "safdsfdas334"
-    reference_2 "afdfdsfdsafds"
+    description "New commit"
+    properties {
+      {:id => '12345',
+      :branch => 'master'}
+    }
   end
 end

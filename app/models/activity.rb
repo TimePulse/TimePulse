@@ -13,5 +13,5 @@ class Activity < ActiveRecord::Base
 
   scope :pivotal_updates, lambda { where(:source => "pivotal") }
 
-  scope :story_changes, lambda { where("reference_2 IS NOT NULL") }
+  scope :story_changes, lambda { where("defined(properties, ?)", "current_state") }
 end
