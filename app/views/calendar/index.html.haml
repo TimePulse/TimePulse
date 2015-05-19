@@ -1,0 +1,19 @@
+#calendar
+
+:javascript
+  $(document).ready(function() {
+    $('#calendar').fullCalendar({
+          // put your options and callbacks here
+          eventSources: [
+            #{@users.map do |user|
+                "{
+                  url: '/calendar_work_units.json?user_id=#{user.id}',
+                  color: '#{@colorsArray[index]',
+                  textColor: 'black'
+                }"
+            end.join(', ')}
+            ]
+
+
+    });
+  });
