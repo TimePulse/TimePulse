@@ -1,14 +1,26 @@
+#users
+  - @users.each_with_index.map do |user, index|
+    %div{:id => [user.name]}
+      =user.name
+
+
 #calendar
 
 :javascript
   $(document).ready(function() {
     $('#calendar').fullCalendar({
           // put your options and callbacks here
+          header: {
+              left:   'title',
+              center: 'agendaWeek,month,today prev,next',
+              right:  ''
+          },
+          defaultView:'agendaWeek',
           eventSources: [
-            #{@users.map do |user|
+            #{@users.each_with_index.map do |user, index|
                 "{
                   url: '/calendar_work_units.json?user_id=#{user.id}',
-                  color: '#{@colorsArray[index]',
+                  color: '#{@colorsArray[index % @colorsArray.length]}',
                   textColor: 'black'
                 }"
             end.join(', ')}
