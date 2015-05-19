@@ -1,19 +1,16 @@
 <div id="users">
   <% @users.each_with_index.map do |user, index| %>
     <div id='<%= user.name %>'>
-    <%= check_box_tag(user.name, checked = false) %>
+    <%= check_box_tag(id=user.id, checked = false) %>
       <%= user.name  %>
       </div>
       <% end %>
 </div>
 
-
 <div id="calendar"></div>
 
-
-
 <%=  javascript_tag do %>
-  var source = [<%  @users.each_with_index do |user, index| %>
+  var sources = [<%  @users.each_with_index do |user, index| %>
                 <%= "{
                   url: '/calendar_work_units.json?user_id=#{user.id}',
                   color: '#{@colorsArray[index % @colorsArray.length]}',
@@ -31,9 +28,24 @@
               right:  ''
           },
           defaultView:'agendaWeek',
-          eventSources: source
-
-
+          eventSources: []
+    });
+    $('#users').find('input[type="checkbox"]').click(function(){
+       var id = parseInt($(this).attr("id"));
+       if (!this.checked){
+         if (id == 1){
+          $('#calendar').fullCalendar( 'removeEventSource', sources[sources.length-1] );
+         } else {
+          $('#calendar').fullCalendar( 'removeEventSource', sources[id-2] );
+         }
+        } else {
+          if (id == 1){
+           $('#calendar').fullCalendar( 'addEventSource', sources[sources.length-1] );
+          } else {
+           $('#calendar').fullCalendar( 'addEventSource', sources[id-2] );
+          }
+        }
+       $('#calendar').fullCalendar('refetchEvents');
     });
 
   });

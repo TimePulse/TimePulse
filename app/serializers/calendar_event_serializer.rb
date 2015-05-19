@@ -15,7 +15,7 @@ class CalendarEventSerializer < ActiveModel::Serializer
    end
 
    def className
-    object.user_id
+    "work-unit"
    end
 
    def url
