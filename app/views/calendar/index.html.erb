@@ -1,0 +1,41 @@
+<div id="users">
+  <% @users.each_with_index.map do |user, index| %>
+    <div id='<%= user.name %>'>
+    <%= check_box_tag(user.name, checked = false) %>
+      <%= user.name  %>
+      </div>
+      <% end %>
+</div>
+
+
+<div id="calendar"></div>
+
+
+
+<%=  javascript_tag do %>
+  var source = [<%  @users.each_with_index do |user, index| %>
+                <%= "{
+                  url: '/calendar_work_units.json?user_id=#{user.id}',
+                  color: '#{@colorsArray[index % @colorsArray.length]}',
+                  textColor: 'black'
+                }".html_safe %>,
+            <% end %>
+            ];
+
+  $(document).ready(function() {
+    $('#calendar').fullCalendar({
+          // put your options and callbacks here
+          header: {
+              left:   'title',
+              center: 'agendaWeek,month,today prev,next',
+              right:  ''
+          },
+          defaultView:'agendaWeek',
+          eventSources: source
+
+
+    });
+
+  });
+<% end %>
+
