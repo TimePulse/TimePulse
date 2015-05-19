@@ -8,7 +8,7 @@ class CalendarWorkUnitsController < CalendarController
       # if @start_time && @end_time
       #   @work_units = current_user.work_units.where('start_time >= ?', Time.parse(@start_time).utc).where('stop_time <= ?', Time.parse(@end_time).utc)
       # else
-      @work_units = user.work_units.where('start_time >= ?', Time.parse(@start_time).utc).where('stop_time <= ?', Time.parse(@end_time).utc)
+    @work_units = user.work_units.where('start_time >= ?', Time.parse(@start_time).utc).where('stop_time <= ?', Time.parse(@end_time).utc)
 
 
     respond_to do |format|
