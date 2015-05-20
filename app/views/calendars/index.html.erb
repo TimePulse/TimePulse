@@ -4,6 +4,7 @@
       <%#= check_box_tag(id=index, checked = false) %>
       <!-- <p style="background-color:<%#=COLORS_ARRAY[index % COLORS_ARRAY.length]%>"> <%#= user.name  %> </p> -->
       <% end %>
+      <%= button_tag("Select All", style: "background-color:red!important;", id: "select-all", class: "fc-button fc-state-default fc-corner-left fc-corner-right", value: "false" ) %>
 </div>
 
 <div id="calendar"></div>
@@ -29,7 +30,7 @@
           defaultView:'agendaWeek',
           eventSources: []
     });
-    $('#users').find('button').click(function(){
+    $('#users').find('.user-buttons').click(function(){
 
        var id = parseInt($(this).attr("id"));
        console.log("click happened on button "+id);
@@ -46,6 +47,23 @@
         }
        $('#calendar').fullCalendar('refetchEvents');
     });
+    $('#users').find('#select-all').click(function(){
+      if (this.value == "true"){
+        $('#users').find('.user-buttons[value="true"]').click();
+        this.innerHTML = "Select All";
+        this.classList.remove("fc-state-active");
+        this.classList.add("fc-state-default");
+        this.value = "false";
+      }
+      else {
+        $('#users').find('.user-buttons[value="false"]').click();
+        this.innerHTML = "Select None";
+        this.classList.remove("fc-state-default");
+        this.classList.add("fc-state-active");
+        this.value = "true";
+      }
+    });
+
 
   });
 <% end %>
