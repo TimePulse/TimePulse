@@ -1,9 +1,9 @@
 class CalendarEventSerializer < ActiveModel::Serializer
   self.root = false
-   attributes :id, :title, :start, :end, :className, :url
+   attributes :id, :title, :start, :end, :className
 
    def title
-    "#{object.project.name} - #{object.notes}"
+    object.project.name
    end
 
    def start
@@ -16,9 +16,5 @@ class CalendarEventSerializer < ActiveModel::Serializer
 
    def className
     "work-unit"
-   end
-
-   def url
-    edit_work_unit_path(object.id)
    end
 end
