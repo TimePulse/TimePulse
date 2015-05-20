@@ -1,8 +1,9 @@
 <div id="users">
   <% @users.each_with_index.map do |user, index| %>
     <div id='<%= user.name %>'>
-      <%= check_box_tag(id=index, checked = false) %>
-      <p style="background-color:<%=COLORS_ARRAY[index % COLORS_ARRAY.length]%>"> <%= user.name  %> </p>
+      <%= button_tag(user.name, style: "background-color:#{COLORS_ARRAY[index % COLORS_ARRAY.length]}!important;", id: "#{index}", class: "user-buttons fc-button fc-state-default fc-corner-left fc-corner-right", value: "false" ) %>
+      <%#= check_box_tag(id=index, checked = false) %>
+      <!-- <p style="background-color:<%#=COLORS_ARRAY[index % COLORS_ARRAY.length]%>"> <%#= user.name  %> </p> -->
       </div>
       <% end %>
 </div>
@@ -30,14 +31,20 @@
           defaultView:'agendaWeek',
           eventSources: []
     });
-    $('#users').find('input[type="checkbox"]').click(function(){
+    $('#users').find('button').click(function(){
 
        var id = parseInt($(this).attr("id"));
-       console.log("click happened on checkbox "+id);
-       if (!this.checked){
+       console.log("click happened on button "+id);
+       if (this.value == "true"){
           $('#calendar').fullCalendar( 'removeEventSource', sources[id] );
-        } else {
-           $('#calendar').fullCalendar( 'addEventSource', sources[id] );
+          this.classList.remove("fc-state-active");
+          this.classList.add("fc-state-default");
+          this.value = "false";
+       }else {
+          $('#calendar').fullCalendar( 'addEventSource', sources[id] );
+          this.value = "true";
+          this.classList.remove("fc-state-default");
+          this.classList.add("fc-state-active");
         }
        $('#calendar').fullCalendar('refetchEvents');
     });
