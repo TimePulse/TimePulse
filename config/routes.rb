@@ -6,6 +6,7 @@ TimePulse::Application.routes.draw do
   resources :permissions
   resources :work_units, :except => :index
   resources :clients
+  resources :calendar_work_units, :only => :index
   resources :projects do
     resource :github_pull, :controller => 'github_pull', :only => [:create]
     resource :pivotal_pull, :controller => 'pivotal_pull', :only => [:create]
@@ -41,5 +42,8 @@ TimePulse::Application.routes.draw do
   match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete
 
   root :to => 'home#index'
+
+  get "my_bills" => "my_bills#index", :as => :my_bills
+  get "my_bills/:bill_id" => "my_bills#show", :as => :my_bill
 
 end

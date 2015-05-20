@@ -1,8 +1,7 @@
 - set_headline "Bill for #{@bill.user.name}"
 
 .button-wrap
-  = link_to 'Edit', edit_bill_path(@bill), class: 'button radius'
-  = link_to 'Back to List', bills_path, class: 'button radius'
+  = link_to 'Back to List', my_bills_path, class: 'button radius'
 
 %h2 Overview
 %table.listing
@@ -46,7 +45,7 @@
 
 %h2 Work Unit Details:
 %table.listing
-  - @bill.work_units.order(:start_time => :asc).each do |wu|
+  - @bill.work_units.each do |wu|
     = content_tag_for(:tr, wu) do
       %td.nobr
         %b= wu.hours
