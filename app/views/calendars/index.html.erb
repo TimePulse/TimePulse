@@ -13,7 +13,7 @@
   var sources = [<%  @users.each_with_index do |user, index| %>
                 <%= "{
                   url: '/calendar_work_units.json?user_id=#{user.id}',
-                  color: '#{@colorsArray[index % @colorsArray.length]}',
+                  color: '#{COLORS_ARRAY[index % COLORS_ARRAY.length]}',
                   textColor: 'black'
                 }".html_safe %>,
             <% end %>
