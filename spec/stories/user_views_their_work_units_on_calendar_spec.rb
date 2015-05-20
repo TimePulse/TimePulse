@@ -1,11 +1,23 @@
 require 'spec_helper'
 
 steps "see user work units on calendar", :type => :feature do
+  # before :all do
+  #   Timecop.travel(Time.zone.parse("May 19, 2015 14:00"))
+  # end
   let! :user do FactoryGirl.create(:user) end
-  let! :user_work_units do FactoryGirl.create(:work_unit, :user => user, :hours => 4, :notes => "Best calendar Evarrr") end
-  let! :non_user_work_units do FactoryGirl.create(:work_unit, :hours => 7) end
-  let! :user_work_units_in_range do FactoryGirl.create(:work_unit, :start_time => Time.now-36.hours, :stop_time => Time.now-30.hours, :hours => 6, :user => user, :notes => "Best calendar Evarrr") end
-  let! :user_work_units_out_of_range do FactoryGirl.create(:work_unit, :start_time => Time.now-90.hours, :stop_time => Time.now-60.hours, :hours =>30, :user => user, :notes => "Worst calendar Evarrr") end
+  let! :user_work_units do
+    puts Time.now
+    FactoryGirl.create(:work_unit, :user => user, :hours => 4, :notes => "Number1")
+  end
+  let! :non_user_work_units do
+    FactoryGirl.create(:work_unit, :hours => 7, :notes => "Number2")
+  end
+  let! :user_work_units_in_range do
+    FactoryGirl.create(:work_unit, :start_time => Time.now-4.hours, :stop_time => Time.now-3.hours, :hours => 1, :user => user, :notes => "Number3")
+  end
+  let! :user_work_units_out_of_range do
+    FactoryGirl.create(:work_unit, :start_time => Time.now-90.hours, :stop_time => Time.now-88.hours, :hours =>2, :user => user, :notes => "Number4")
+  end
 
   it "log in as a regular user" do
     visit root_path
@@ -23,17 +35,19 @@ steps "see user work units on calendar", :type => :feature do
   end
 
   it "should have my work unit events in the calendar" do
-    page.should have_selector(".work-unit:last-child", :text => "#{user_work_units_in_range.project.name} - #{user_work_units.notes}")
+    page.should have_selector("input")
+    #check the box to load the feed
+    check user.id
   end
 
   it "should go to work unit show page when item is clicked" do
-    click_on user_work_units.project.name
+    puts page.body
+    require "pp"
+    pp WorkUnit.all.to_a
+    click_on ("#{user_work_units_in_range.project.name} - #{user_work_units_in_range.notes}")
     page.should have_content("Editing Work Unit")
   end
 
-  it "should display users work units for the range when their checkbox is clicked" do
-    check(user.id)
-    page.should have_content(user_work_units_in_range.project.name)
-  end
+
 
 end
