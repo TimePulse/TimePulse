@@ -1,8 +1,8 @@
 function showHours(scope) {
-	$('div.total').hide();
-	$('div.billable').hide();
-	$('div.unbillable').hide();
-	$('div.' + scope).show();
+  $('div.total').hide();
+  $('div.billable').hide();
+  $('div.unbillable').hide();
+  $('div.' + scope).show();
 }
 function showGraph(scope) {
   $('#total-graph-container').hide();
@@ -11,11 +11,20 @@ function showGraph(scope) {
   $('#' + scope + '-graph-container').show();
 }
 function formatDate(date) {
-	var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-	return monthNames[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear().toString().split('')[2] + date.getFullYear().toString().split('')[3];
+  var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return monthNames[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear().toString().split('')[2] + date.getFullYear().toString().split('')[3];
+}
+function toggleCheckboxes() {
+  var checkboxes = $(':checkbox');
+  checkboxes.prop('checked', !checkboxes.prop('checked'));
 }
 
 Ninja.behavior({
+  '#selectAll': {
+    click: function() {
+      toggleCheckboxes();
+    }
+  },
 	'#total-user-hours-btn': {
 		click: function() {
 			showHours('total');

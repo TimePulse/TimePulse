@@ -4,8 +4,8 @@ class WorkUnitQuery
     @user = user
     @kind = kind
 
-    start_date = DateTime.parse(start_date) if start_date.is_a?(String)
-    end_date = DateTime.parse(end_date) if end_date.is_a?(String)
+    # start_date = DateTime.parse(start_date) if start_date.is_a?(String)
+    # end_date = DateTime.parse(end_date) if end_date.is_a?(String)
     if start_date.cwday == 7
       @starting_monday = start_date.beginning_of_day + 1.day - 1.week
     else
@@ -28,9 +28,9 @@ class WorkUnitQuery
       scope = scope.send(@kind.to_sym)
     end
 
-    result = scope.map { |res| {:sunday => (res.min_start_time.end_of_week).strftime('%b %d %y'),
-                                :hours => res.hours.to_f } }
-    return result.sort_by{ |hash| Date.parse(hash[:sunday]) }
+    result = scope.map { |res| {:sunday => res.min_start_time.end_of_week.to_datetime,
+                                :hours  => res.hours.to_f } }
+    return result.sort_by{ |hash| hash[:sunday] }
   end
 
 end

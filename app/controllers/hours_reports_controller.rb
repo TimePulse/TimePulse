@@ -16,23 +16,23 @@ class HoursReportsController < ApplicationController
     users_with_hours = {}
     users.each do |u|
       users_with_hours[u.login.to_sym] = {
-        :billable =>   check_for_missing_weeks(WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'billable').hours),
-        :unbillable => check_for_missing_weeks(WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'unbillable').hours),
-        :total =>      check_for_missing_weeks(WorkUnitQuery.new(u,@sundays[0],@sundays[@sundays.length-1],'total').hours)
+        :billable =>   check_for_missing_weeks(WorkUnitQuery.new(u,@sundays.first,@sundays.last,'billable').hours,@sundays),
+        :unbillable => check_for_missing_weeks(WorkUnitQuery.new(u,@sundays.first,@sundays.last,'unbillable').hours,@sundays),
+        :total =>      check_for_missing_weeks(WorkUnitQuery.new(u,@sundays.first,@sundays.last,'total').hours,@sundays)
       }
     end
     users_with_hours
   end
 
-  def hours_for(user, start_date, end_date = @end_date.end_of_week - 1.week)
+  def hours_for(user, start_date, end_date = @end_date.end_of_week)
     user.work_units.where(:start_time => start_date..end_date).sum(:hours).to_s.to_f
   end
 
-  def week_endings(start_date, end_date = @end_date.end_of_week - 1.week)
+  def week_endings(start_date, end_date = @end_date.end_of_week)
     [].tap do |arr|
-      sunday = (start_date.beginning_of_week - 1.day) + 1.week
+      sunday = start_date.end_of_week
       sunday.step(end_date, 7) do |time|
-        arr << time.strftime('%b %d %y')
+        arr << time.to_datetime.end_of_day
       end
     end
   end
@@ -41,7 +41,7 @@ class HoursReportsController < ApplicationController
     if params[:start_date].present?
       @start_date = Chronic.parse(params[:start_date]).to_date
     else
-      @start_date = Date.today - 6.weeks
+      @start_date = Date.today - 5.weeks
     end
 
     if params[:end_date].present?
@@ -52,7 +52,7 @@ class HoursReportsController < ApplicationController
   end
 
   def build_report
-    @users = User.all.select{ |u| hours_for(u, @start_date.end_of_week - 1.week) > 0.0 }
+    @users = User.all.select{ |u| hours_for(u, @start_date.beginning_of_week) > 0.0 }
     @sundays = week_endings(@start_date)
   end
 

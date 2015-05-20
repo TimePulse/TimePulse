@@ -8,7 +8,7 @@ describe HoursReportsController do
     end
 
     before do
-      Timecop.travel(Time.local(2015, 4, 27, 0, 0, 0))
+      Timecop.travel(Time.local(2015, 4, 27, 10, 0, 0))
     end
 
     let! :user_1 do FactoryGirl.create(:user, :name => "Foo Bar 1") end
@@ -23,24 +23,24 @@ describe HoursReportsController do
     end
     let! :admin do FactoryGirl.create(:admin) end
 
-    describe "responding to GET index" do
+    describe 'responding to GET index' do
 
-      it "should be a successful request" do
+      it 'should be a successful request' do
         get :index
         expect(response).to be_success
       end
 
-      it "should show the appropriate users" do
+      it 'should show the appropriate users' do
         get :index
         expect(assigns(:users)).to_not be_empty
         expect(assigns(:users)).to include(user_1)
         expect(assigns(:users)).to_not include(user_2)
       end
 
-      it "should show the appropriate Sundays" do
+      it 'should show the appropriate Sundays' do
         get :index
-        expect(assigns(:sundays)).to include((DateTime.now.beginning_of_week - 1.day).strftime('%b %d %y'))
-        expect(assigns(:sundays)).to_not include((DateTime.now.beginning_of_week - 43.days).strftime('%b %d %y'))
+        expect(assigns(:sundays)).to include(DateTime.parse('Apr 26 15').end_of_day)
+        expect(assigns(:sundays)).to_not include(DateTime.parse('Mar 22 15').end_of_day)
       end
 
     end
