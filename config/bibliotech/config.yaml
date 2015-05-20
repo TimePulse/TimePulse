@@ -1,0 +1,7 @@
+database_config:
+  username: brookefox
+  adapter: postgresql
+  encoding: unicode
+  database: timepulse_dev
+  host: 127.0.0.1
+  pool: 5
