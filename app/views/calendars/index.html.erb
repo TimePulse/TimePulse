@@ -1,8 +1,8 @@
 <div id="users">
   <% @users.each_with_index.map do |user, index| %>
     <div id='<%= user.name %>'>
-    <%= check_box_tag(id=user.id, checked = false) %>
-      <%= user.name  %>
+      <%= check_box_tag(id=index, checked = false) %>
+      <p style="background-color:<%=COLORS_ARRAY[index % COLORS_ARRAY.length]%>"> <%= user.name  %> </p>
       </div>
       <% end %>
 </div>
@@ -31,19 +31,13 @@
           eventSources: []
     });
     $('#users').find('input[type="checkbox"]').click(function(){
+
        var id = parseInt($(this).attr("id"));
+       console.log("click happened on checkbox "+id);
        if (!this.checked){
-         if (id == 1){
-          $('#calendar').fullCalendar( 'removeEventSource', sources[sources.length-1] );
-         } else {
-          $('#calendar').fullCalendar( 'removeEventSource', sources[id-2] );
-         }
+          $('#calendar').fullCalendar( 'removeEventSource', sources[id] );
         } else {
-          if (id == 1){
-           $('#calendar').fullCalendar( 'addEventSource', sources[sources.length-1] );
-          } else {
-           $('#calendar').fullCalendar( 'addEventSource', sources[id-2] );
-          }
+           $('#calendar').fullCalendar( 'addEventSource', sources[id] );
         }
        $('#calendar').fullCalendar('refetchEvents');
     });
