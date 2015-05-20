@@ -1,10 +1,8 @@
 <div id="users">
   <% @users.each_with_index.map do |user, index| %>
-    <div id='<%= user.name %>'>
       <%= button_tag(user.name, style: "background-color:#{COLORS_ARRAY[index % COLORS_ARRAY.length]}!important;", id: "#{index}", class: "user-buttons fc-button fc-state-default fc-corner-left fc-corner-right", value: "false" ) %>
       <%#= check_box_tag(id=index, checked = false) %>
       <!-- <p style="background-color:<%#=COLORS_ARRAY[index % COLORS_ARRAY.length]%>"> <%#= user.name  %> </p> -->
-      </div>
       <% end %>
 </div>
 
