@@ -38,8 +38,8 @@ describe PivotalActivity do
       last_activity.action.should == "story_create"
       last_activity.description.should == "Hannah Howard added \"Testing Awesomeness\""
       last_activity.time.should == DateTime.parse("Mon, 27 May 2013 06:25:17 +0000").to_s
-      last_activity.reference_1.should == "50584573"
-      last_activity.reference_2.should == "unscheduled"
+      last_activity.properties['story_id'].should == "50584573"
+      last_activity.properties['current_state'].should == "unscheduled"
       last_activity.project.should == project
       last_activity.user.should == user
     end

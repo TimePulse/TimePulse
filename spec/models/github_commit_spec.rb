@@ -78,8 +78,8 @@ describe GithubCommit do
         last_activity.action.should == "commit"
         last_activity.description.should == "Fixed some stuff"
         last_activity.time.should == timestamp
-        last_activity.reference_1.should == "1234"
-        last_activity.reference_2.should == "1234_fix_stuff"
+        last_activity.properties['id'].should == "1234"
+        last_activity.properties['branch'].should == "1234_fix_stuff"
       end
 
       it "should associate a user by email" do
