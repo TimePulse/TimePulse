@@ -28,7 +28,6 @@ class InvoiceReport
     end
   end
 
-
   class DateReport
     include ActionView::Helpers::TextHelper
 
@@ -39,7 +38,7 @@ class InvoiceReport
       @report = []
       @units.map{|wu| wu.user}.uniq.each do |user|
         @report << [ user.name,
-          units_by_user(user).map{|wu| wu.hours }.sum.to_s,
+          units_by_user(user).map{|wu| wu.hours}.sum.to_s,
           units_by_user(user).map(&:notes).select(&:present?),
           units_by_user(user).map{|wu| work_unit_commits(wu)}.flatten.uniq,
           units_by_user(user).map{|wu| work_unit_pivotal_updates(wu)}.flatten.uniq
@@ -52,16 +51,18 @@ class InvoiceReport
       stop_time = work_unit.stop_time.advance(:minutes => 15)
       commits = work_unit.user.git_commits_for(work_unit.project).where("time >= ? and time <= ?", start_time, stop_time)
       commits.to_a.map do |commit|
-        truncate(commit.reference_1, :length => 10) + " \"#{commit.description}\""
+        truncate(commit.properties['id'], :length => 10) + " \"#{commit.description}\""
       end
     end
 
     def work_unit_pivotal_updates(work_unit)
       start_time = work_unit.start_time.advance(:minutes => -15)
       stop_time = work_unit.stop_time.advance(:minutes => 15)
-      pivotal_updates = work_unit.user.pivotal_updates_for(work_unit.project).story_changes.where("time >= ? and time <= ?", start_time, stop_time)
+      pivotal_updates = work_unit.user.pivotal_updates_for(work_unit.project)
+                                      .story_changes
+                                      .where("time >= ? and time <= ?", start_time, stop_time)
       pivotal_updates.to_a.map do |pivotal|
-        truncate(pivotal.reference_1, :length => 10) + " #{pivotal.description}"
+        truncate(pivotal.properties['story_id'], :length => 10) + " #{pivotal.description}"
       end
     end
 
