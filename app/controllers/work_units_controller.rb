@@ -1,4 +1,4 @@
-require 'hhmm_to_decimal'
+  require 'hhmm_to_decimal'
 
 class WorkUnitsController < WorkUnitBaseController
   before_filter :require_user!
