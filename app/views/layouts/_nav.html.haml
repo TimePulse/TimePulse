@@ -10,7 +10,13 @@
     %ul.right
       %li= link_to("Dashboard", root_path)
       - if current_user and current_user.admin?
-        - items = ["Users", users_path], ["Clients", clients_path], ["Invoices", invoices_path], ["Bills", bills_path ], ["Projects", projects_path], ["Project Reports", new_project_report_path]
+        - items = ["Hours Reports", hours_reports_path],
+                  ["Users", users_path],
+                  ["Clients", clients_path],
+                  ["Invoices", invoices_path],
+                  ["Bills", bills_path ],
+                  ["Projects", projects_path],
+                  ["Project Reports", new_project_report_path]
         -items.each do |name, path|
           %li.admin= link_to(name, path)
       - if logged_in?
