@@ -3,6 +3,7 @@ TimePulse::Application.routes.draw do
   resources :invoices
   resources :bills
   resources :groups
+  resources :user_api_tokens, :only => :update
   resources :permissions
   resources :work_units, :except => :index
   resources :clients
