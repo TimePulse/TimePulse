@@ -65,3 +65,4 @@ apache-passenger.conf
 public/test-assets/
 .idea/
 *.orig
+config/bibliotech
