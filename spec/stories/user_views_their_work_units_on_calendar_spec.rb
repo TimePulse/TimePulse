@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 steps "see user work units on calendar", :type => :feature do
-  # before :all do
-  #   Timecop.travel(Time.zone.parse("May 19, 2015 14:00"))
-  # end
+  before :all do
+    Timecop.travel(Time.zone.parse("May 19, 2015 14:00"))
+  end
   let! :user do FactoryGirl.create(:user) end
   let! :user_work_units do
     puts Time.now
@@ -35,15 +35,17 @@ steps "see user work units on calendar", :type => :feature do
   end
 
   it "should have my work unit events in the calendar" do
-    page.should have_selector("input")
+    page.should have_selector(".user-buttons")
     #check the box to load the feed
-    check user.id
+    click_button(user.name)
+    page.should have_content("#{user_work_units_in_range.project.name} - #{user_work_units_in_range.notes}")
+    page.should_not have_content("#{user_work_units_out_of_range.project.name} - #{user_work_units_out_of_range.notes}")
   end
 
   it "should go to work unit show page when item is clicked" do
-    puts page.body
-    require "pp"
-    pp WorkUnit.all.to_a
+    # puts page.body
+    # require "pp"
+    # pp WorkUnit.all.to_a
     click_on ("#{user_work_units_in_range.project.name} - #{user_work_units_in_range.notes}")
     page.should have_content("Editing Work Unit")
   end
