@@ -1,7 +1,8 @@
 FactoryGirl.define  do
   factory :work_unit do
-    start_time (Time.now - 20.hours).utc
-    stop_time (Time.now).utc
+
+    start_time {(Time.now - 20.hours).utc}
+    stop_time {(Time.now).utc}
     hours 9.50
     sequence(:notes){ |n| "Work Unit Notes #{n}" }
     association :user
