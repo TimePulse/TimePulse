@@ -53,7 +53,6 @@ public/sitemap.xml
 insight.sqlite
 coverage.vim
 coverage/
-.idea
 db_backups/
 *.esproj
 .sass-cache
@@ -64,4 +63,6 @@ errors.err
 .ctrlp-root
 apache-passenger.conf
 public/test-assets/
-config/bibliotech/
+.idea/
+*.orig
+config/bibliotech
