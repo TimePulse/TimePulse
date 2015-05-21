@@ -27,6 +27,8 @@ class Project < ActiveRecord::Base
   belongs_to :client
   has_many :work_units
   has_many :activities
+  has_many :repositories
+
   # Rates added to sub-project will override parent project rates completely.
   # Users may see rates disappear from a child when adding rates specifically for a child.
   has_many :rates
