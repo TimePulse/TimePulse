@@ -3,7 +3,7 @@ RateTotal.prototype = {
     this.hours += newHours;
     this.totalDollars = this.hours * this.amount;
   }
-}
+};
 function RateTotal(id, amount) {
   this.id = id;
   this.amount = amount;
@@ -26,7 +26,7 @@ InvoiceCalculator = {
       if ($(this).find('.work_unit_checkbox').is(':checked')) {
         rateId = $(this).data('rate-id');
         rateName = $(this).data('rate-name');
-        rateAmount = $(this).data('rate-amount')
+        rateAmount = $(this).data('rate-amount');
         if (typeof rateName == 'undefined') {
           show_ajax_message('Work Unit has no rate!', 'error');
           return;
@@ -63,7 +63,7 @@ InvoiceCalculator = {
   updateDisplay: function() {
     var totalsTable = $('#new_invoice #totals tbody');
     totalsTable.find('tr').remove();
-    var grandTotal = new RateTotal('total', null)
+    var grandTotal = new RateTotal('total', null);
     for (key in this.rateTotals) {
       this.buildRow(key, this.rateTotals[key]).appendTo(totalsTable);
       grandTotal.count += this.rateTotals[key].count;
@@ -76,7 +76,7 @@ InvoiceCalculator = {
   setup: function() {
     this.workUnitHours = $('#new_invoice .work_unit .hours');
   }
-}
+};
 
 Binder.bindAll(InvoiceCalculator);
 
