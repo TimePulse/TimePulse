@@ -24,11 +24,11 @@ steps "user logs in and edits user preferences", :type => :feature do
   end
 
   it "should have a generate token button" do
-    page.should have_link("Generate API Token")
+    page.should have_button("Generate API Token")
   end
 
   it "when I click on generate api token button" do
-    click_link "Generate API Token"
+    click_button "Generate API Token"
   end
 
   it "should display the unencrypted token" do
