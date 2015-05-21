@@ -45,8 +45,12 @@ describe HomeController do
       end
 
       it "should find the pivotal_updates" do
-        @pu1 = FactoryGirl.create(:activity, :source => "pivotal", :project => @user.current_project, :user => @user)
-        @pu2 = FactoryGirl.create(:activity, :source => "pivotal", :project => @user.current_project, :user => @user)
+        @pu1 = FactoryGirl.create(:activity, :source => "pivotal",
+                                             :project => @user.current_project, :user => @user,
+                                             :properties => {story_id: '12345', current_state: 'started', id: '23456'})
+        @pu2 = FactoryGirl.create(:activity, :source => "pivotal",
+                                  :project => @user.current_project, :user => @user,
+                                  :properties => {story_id: '45678', current_state: 'started', id: '23456'})
         get 'index'
         assigns[:pivotal_updates].should include(@pu1)
         assigns[:pivotal_updates].should include(@pu2)
