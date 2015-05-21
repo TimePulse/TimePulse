@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
   end
 
   def git_commits_for(project)
-    source = project.github_url_source
+    source = project.repositories
     source ||= project
     activity_for(source).git_commits
   end
