@@ -35,9 +35,9 @@ steps "see user work units on calendar", :type => :feature do
   end
 
   it "should have my work unit events in the calendar" do
-    page.should have_selector(".user-buttons")
+    #page.should have_selector(".user-buttons")
     #check the box to load the feed
-    click_button(user.name)
+    #click_button(user.name)
     page.should have_content("#{user_work_units_in_range.project.name} - #{user_work_units_in_range.notes}")
     page.should_not have_content("#{user_work_units_out_of_range.project.name} - #{user_work_units_out_of_range.notes}")
   end
