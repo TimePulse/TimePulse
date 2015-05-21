@@ -22,7 +22,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Project do
 
-  let :github_url do "https://github.com/Awesome/McAwesome" end
+  # let :repository do "https://github.com/Awesome/McAwesome" end
   let :pivotal_id do 12345 end
 
   let :root_project do Project.root end
@@ -102,13 +102,14 @@ describe Project do
         @grandparent.reload.descendants.should include(@project)
       end
     end
-    describe "github_url" do
+
+    describe "repository" do
       it "should return a project's github URL" do
-        FactoryGirl.create(:project, :github_url => github_url ).github_url.should == github_url
+        expect(FactoryGirl.create(:project, :with_repo).repositories.first.url).to eq('github.com/new_project')
       end
       it "should return a project's parent's github URL if the project has no github URL" do
-        @parent = FactoryGirl.create(:project, :github_url => github_url )
-        FactoryGirl.create(:project, :github_url => nil , :parent => @parent).github_url.should == github_url
+        @parent = FactoryGirl.create(:project, :with_repo)
+        expect(FactoryGirl.create(:project, :parent => @parent).repositories.first.url).to eq('github.com/new_project')
       end
       it "should return a project's grandparent's github URL if the project and parent have no github URL" do
         @grandparent = FactoryGirl.create(:project, :github_url => github_url, :name => 'GP')
@@ -128,22 +129,23 @@ describe Project do
         @grandparent.reload.descendants.should include(@project)
       end
     end
+
     describe "pivotal_id" do
-      it "should return a project's github URL" do
+      it "should return a project's pivotal ID" do
         FactoryGirl.create(:project, :pivotal_id => pivotal_id ).pivotal_id.should == pivotal_id
       end
-      it "should return a project's parent's github URL if the project has no github URL" do
+      it "should return a project's parent's pivotal ID if the project has no pivotal ID" do
         @parent = FactoryGirl.create(:project, :pivotal_id => pivotal_id )
         FactoryGirl.create(:project, :pivotal_id => nil , :parent => @parent).pivotal_id.should == pivotal_id
       end
-      it "should return a project's grandparent's github URL if the project and parent have no github URL" do
+      it "should return a project's grandparent's pivotal ID if the project and parent have no pivotal ID" do
         @grandparent = FactoryGirl.create(:project, :pivotal_id => pivotal_id, :name => 'GP')
         @parent = FactoryGirl.create(:project, :parent => @grandparent, :pivotal_id => nil, :name => "P")
         @project = FactoryGirl.create(:project, :pivotal_id => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.pivotal_id.should == pivotal_id
       end
-      it "should return a project's parent's github URL if the project has no github URL  and the grandparent has a different github URL" do
+      it "should return a project's parent's pivotal ID if the project has no pivotal ID  and the grandparent has a different pivotal ID" do
         @grandparent = FactoryGirl.create(:project, :pivotal_id => 54321)
         @parent = FactoryGirl.create(:project, :parent => @grandparent, :pivotal_id => pivotal_id)
         @project = FactoryGirl.create(:project, :pivotal_id => nil, :parent => @parent)

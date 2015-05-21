@@ -39,7 +39,7 @@ class Project < ActiveRecord::Base
   # default_scope :joins => :client
 
   validates_presence_of :name
-  cascades :account, :clockable, :github_url, :pivotal_id
+  cascades :account, :clockable, :pivotal_id
 
   before_save :no_rates_for_children, :cascade_client
 
