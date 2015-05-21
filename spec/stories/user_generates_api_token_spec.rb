@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-require 'spec_helper'
-
 steps "user logs in and edits user preferences", :type => :feature do
   let! :user do FactoryGirl.create(:user) end
 
