@@ -9,20 +9,23 @@
   %section.top-bar-section
     %ul.right
       %li= link_to("Dashboard", root_path)
-      - if current_user and current_user.admin?
-        - items = ["Hours Reports", hours_reports_path],
-                  ["Users", users_path],
-                  ["Clients", clients_path],
-                  ["Invoices", invoices_path],
-                  ["Bills", bills_path ],
-                  ["Projects", projects_path],
-                  ["Project Reports", new_project_report_path]
-        -items.each do |name, path|
-          %li.admin= link_to(name, path)
-      - if logged_in?
-        %li= link_to(current_user.name, edit_user_path(current_user))
-        %li= link_to("My Bills", my_bills_path)
-        %li= link_to("Calendar", calendars_path)
-        %li= link_to("Logout", logout_path)
-      -else
-        %li= link_to("Login", login_path)
+      %li.has-dropdown
+        %a{:href => '#'} Menu
+        %ul.dropdown
+          - if current_user and current_user.admin?
+            - items = ["Hours Reports", hours_reports_path],
+                      ["Users", users_path],
+                      ["Clients", clients_path],
+                      ["Invoices", invoices_path],
+                      ["Bills", bills_path ],
+                      ["Projects", projects_path],
+                      ["Project Reports", new_project_report_path]
+            -items.each do |name, path|
+              %li.admin= link_to(name, path)
+          - if logged_in?
+            %li= link_to(current_user.name, edit_user_path(current_user))
+            %li= link_to("My Bills", my_bills_path)
+            %li= link_to("Calendar", calendars_path)
+            %li= link_to("Logout", logout_path)
+          -else
+            %li= link_to("Login", login_path)
