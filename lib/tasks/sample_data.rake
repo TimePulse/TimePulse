@@ -19,6 +19,23 @@ def sometimes(prob = 0.5)
   end
 end
 
+def pick_from(array)
+  array[rand(array.length)]
+end
+
+
+#require 'benchmark'
+
+#class Rake::Task
+  #def execute_with_benchmark(*args)
+    #bench = Benchmark.measure do
+      #execute_without_benchmark(*args)
+    #end
+    #puts "  #{name} --> #{bench}"
+  #end
+  #alias_method_chain :execute, :benchmark
+#end
+
 namespace :db do
   namespace :sample_data do
 
@@ -135,28 +152,32 @@ namespace :db do
     end
 
     task :populate_work_units do
-      Project.where(:clockable => true).each do |project|
-        User.where(admin: false).each do |user|
-          if user.login == 'jane'
-            unit_count = 500
-          else
-            unit_count = 50
-          end
+      projects = Project.where(:clockable => true).to_a
+      users = User.where(admin: false).to_a
 
-          unit_count.times do |i|
-            length = rand(300).minutes
-            days_ago = [2, rand(5)+(i/2)].max
-            start_time = Time.now - days_ago.days - rand(10).hours
+      BusinessTime::Config.beginning_of_workday = "9:30am"
+      BusinessTime::Config.end_of_workday = "6:00pm"
 
-            wu = WorkUnit.unsafe_build(
-              :user       => user,
-              :project    => project,
-              :start_time => start_time,
-              :stop_time  => start_time + length,
-              :notes      => Populator.words(0..6)
-            )
-            wu.clock_out!
+      users.each do |user|
+        start = Time.beginning_of_workday(80.business_days.ago)
+        this_morning = Time.now.beginning_of_day
+
+        until (start > this_morning) do
+          s_t = start + rand(5).minutes
+          if Time.after_business_hours?(s_t)
+            start = Time.roll_forward(start) # go to the next business_day
+            next
           end
+          hours = rand() * 3  # work units from 0 to 3 hours
+          e_t = s_t + hours.hours
+          user.work_units.create(
+            :project => pick_from(projects),
+            :start_time => s_t,
+            :stop_time => e_t,
+            :hours     => hours,
+            :notes     => Populator.words(0..6)
+          )
+          start = e_t
         end
       end
     end
