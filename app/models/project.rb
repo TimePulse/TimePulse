@@ -27,9 +27,10 @@ class Project < ActiveRecord::Base
   belongs_to :client
   has_many :work_units
   has_many :activities
-  has_many :repositories
 
-  attr_accessor :github_url
+  has_many :repositories, :dependent => :destroy
+  attr_accessor :github_url, :repositories_attributes
+  accepts_nested_attributes_for :repositories, allow_destroy: true, :reject_if => lambda { |a| a[:url].blank? }
 
   # Rates added to sub-project will override parent project rates completely.
   # Users may see rates disappear from a child when adding rates specifically for a child.

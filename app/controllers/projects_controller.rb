@@ -17,7 +17,8 @@ class ProjectsController < ApplicationController
   def new
     @project = Project.new
     @project.rates.build
-    @repo = Repository.new(project_id: @project.id)
+    # @repo = Repository.new(project_id: @project.id)
+    @project.repositories.build
   end
 
   # GET /projects/1/edit
@@ -32,7 +33,6 @@ class ProjectsController < ApplicationController
     @project = Project.new(project_params)
     @repo = Repository.create(url: params[:project][:github_url])
     @repo.project = @project
-    # @repo.project_id = @project.id
     @repo.save
     if @project.save && @repo.save
       flash[:notice] = 'Project was successfully created.'
@@ -69,8 +69,8 @@ class ProjectsController < ApplicationController
   def destroy
     @project = Project.find(params[:id])
     @id = params[:id]
-    @repos = @project.repositories
-    @repos.each { |repo| repo.destroy }
+    # @repos = @project.repositories
+    # @repos.each { |repo| repo.destroy }
     @project.destroy
 
     expire_fragment "project_picker"
