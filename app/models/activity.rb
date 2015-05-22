@@ -18,13 +18,13 @@ class Activity < ActiveRecord::Base
   #TODO Fix these - it may involve using STI so we have actual classes for each
   #activity type
   def story_id
-    self.properties[:story_id]
+    self.properties['story_id']
   end
   def state
-    self.properties[:state]
+    self.properties['state']
   end
   def branch
-    self.properties[:branch]
+    self.properties['branch']
   end
 
 end
