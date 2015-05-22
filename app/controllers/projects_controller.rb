@@ -9,7 +9,7 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   def show
     @project = Project.find(params[:id])
-
+    @repos = Repository.where(project_id: params[:id])
     @active_users = User.active
   end
 
@@ -17,18 +17,24 @@ class ProjectsController < ApplicationController
   def new
     @project = Project.new
     @project.rates.build
+    @repo = Repository.new(project_id: @project.id)
   end
 
   # GET /projects/1/edit
   def edit
     @project = Project.find(params[:id])
+    @repos = @project.repositories
     @project.rates.build if @project.parent == Project.root
   end
 
   # POST /projects
   def create
     @project = Project.new(project_params)
-    if @project.save
+    @repo = Repository.create(url: params[:project][:github_url])
+    @repo.project = @project
+    # @repo.project_id = @project.id
+    @repo.save
+    if @project.save && @repo.save
       flash[:notice] = 'Project was successfully created.'
       expire_fragment "picker_node_#{@project.id}"
       expire_fragment "project_picker"
@@ -42,6 +48,9 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   def update
     @project = Project.find(params[:id])
+    @repos = @project.repositories.first
+    @repos.url = params[:project][:github_url]
+    @repos.save
     if @project.update(project_params)
       expire_fragment "picker_node_#{@project.id}"
       expire_fragment "project_picker"
@@ -60,7 +69,10 @@ class ProjectsController < ApplicationController
   def destroy
     @project = Project.find(params[:id])
     @id = params[:id]
+    @repos = @project.repositories
+    @repos.each { |repo| repo.destroy }
     @project.destroy
+
     expire_fragment "project_picker"
 
     respond_to do |format|
@@ -81,7 +93,6 @@ class ProjectsController < ApplicationController
       :billable,
       :flat_rate,
       :archived,
-      :github_url,
       :pivotal_id,
       {:rates_attributes => [:id, :name, :amount, :_destroy]},
       :client_id,

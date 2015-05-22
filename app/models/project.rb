@@ -29,6 +29,8 @@ class Project < ActiveRecord::Base
   has_many :activities
   has_many :repositories
 
+  attr_accessor :github_url
+
   # Rates added to sub-project will override parent project rates completely.
   # Users may see rates disappear from a child when adding rates specifically for a child.
   has_many :rates
