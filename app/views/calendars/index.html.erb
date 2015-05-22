@@ -35,7 +35,6 @@
       $('#users').find('.user-buttons').click(function(){
 
          var id = parseInt($(this).attr("id"));
-         console.log("click happened on button "+id);
          if (this.value == "true"){
             $('#calendar').fullCalendar( 'removeEventSource', sources[id] );
             this.classList.remove("fc-state-active");
