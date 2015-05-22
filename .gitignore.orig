@@ -53,7 +53,10 @@ public/sitemap.xml
 insight.sqlite
 coverage.vim
 coverage/
+<<<<<<< HEAD
 .idea/
+=======
+>>>>>>> master
 db_backups/
 *.esproj
 .sass-cache
@@ -65,7 +68,8 @@ errors.err
 apache-passenger.conf
 public/test-assets/
 <<<<<<< HEAD
-config/bibliotech
 =======
-config/bibliotech/
->>>>>>> change_schema_for_Activity_94904896
+.idea/
+*.orig
+>>>>>>> master
+config/bibliotech

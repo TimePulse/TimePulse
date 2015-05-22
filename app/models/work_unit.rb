@@ -90,7 +90,7 @@ class WorkUnit < ActiveRecord::Base
     !bill_id.nil?
   end
 
-  def annotated?
+  def sufficiently_annotated?
     hours < SHORT_WORK_THRESHOLD or not notes.blank?
   end
 
