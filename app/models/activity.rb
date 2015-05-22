@@ -20,8 +20,8 @@ class Activity < ActiveRecord::Base
   def story_id
     self.properties['story_id']
   end
-  def state
-    self.properties['state']
+  def current_state
+    self.properties['current_state']
   end
   def branch
     self.properties['branch']
