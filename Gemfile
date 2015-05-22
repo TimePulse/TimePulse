@@ -24,6 +24,7 @@ gem 'newrelic_rpm'
 gem 'active_model_serializers'
 gem 'bibliotech'
 gem 'business_time'
+gem 'airbrake'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0'
