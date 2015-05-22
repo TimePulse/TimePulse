@@ -8,6 +8,9 @@
 //= require jquery.selectBoxIt
 //= require favicon
 //= require binder
+//= require moment.min
+//= require fullcalendar
+//= require calendar_work_units
 //= require_tree ./ninjascripts/
 
 $('document').ready( function(){
@@ -58,6 +61,7 @@ Ninja.behavior({
     '.selectboxit':  Ninja.suppressChangeEvents(),
     '#task_elapsed':  Ninja.suppressChangeEvents(),
     '.date_entry': { transform: function(elem){ $(elem).datepicker({ dateFormat: "dd/mm/yy" }) }},
+    '.american_date_entry': { transform: function(elem){ $(elem).datepicker() }},
     '.datetime_entry': {
       transform: function(elem){
         $(elem).datetimepicker();

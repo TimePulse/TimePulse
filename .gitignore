@@ -57,10 +57,13 @@ coverage/
 db_backups/
 *.esproj
 .sass-cache
+.ruby-version
 .ruby-gemset
 errors.err
 .rspec-local
 .ctrlp-root
 apache-passenger.conf
 public/test-assets/
-config/bibliotech/
+.idea/
+*.orig
+config/bibliotech

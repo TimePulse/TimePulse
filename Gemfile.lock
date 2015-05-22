@@ -50,9 +50,6 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 0.3.37)
     addressable (2.3.7)
-    airbrake (4.1.0)
-      builder
-      multi_json
     annotate (2.6.5)
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
@@ -68,6 +65,9 @@ GEM
       thor (~> 0.19.1)
       valise (~> 1.1.4)
     builder (3.1.4)
+    business_time (0.7.4)
+      activesupport (>= 3.1.0)
+      tzinfo
     byebug (3.5.1)
       columnize (~> 0.8)
       debugger-linecache (~> 1.2)
@@ -296,8 +296,6 @@ GEM
       rubyzip (~> 1.0)
       websocket (~> 1.0)
     sexp_processor (4.4.5)
-    shoulda-matchers (2.8.0)
-      activesupport (>= 3.0.0)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
@@ -368,10 +366,10 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   activerecord
-  airbrake
   annotate
   awesome_nested_set!
   bibliotech
+  business_time
   byebug
   cadre
   capistrano (< 3.0)
@@ -407,7 +405,6 @@ DEPENDENCIES
   rspec-rails (~> 2.13.0)
   sass-rails (~> 4.0)
   selenium-webdriver
-  shoulda-matchers
   simplecov (~> 0.7.1)
   simplecov-vim
   thin

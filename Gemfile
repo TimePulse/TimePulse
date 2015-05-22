@@ -22,9 +22,8 @@ gem 'github_api', "~> 0.11.1"
 gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
-
 gem 'bibliotech'
-gem 'airbrake'
+gem 'business_time'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0'
@@ -60,7 +59,6 @@ group :test do
   gem 'timecop'
   gem "codeclimate-test-reporter", :require => nil
   gem 'json_spec'
-  gem 'shoulda-matchers'
 end
 
 group :development do
