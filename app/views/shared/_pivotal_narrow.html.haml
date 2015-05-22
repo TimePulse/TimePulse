@@ -4,6 +4,6 @@
     %td
       %span.nobr= short_name_with_client(pivotal.project)
     %td
-      = truncate(pivotal.reference_1, :length => 10)
+      = truncate(pivotal.story_id, :length => 10)
     %td.tools.nobr
-      = truncate(pivotal.reference_2, :length => 15)
+      = truncate(pivotal.state, :length => 15)
