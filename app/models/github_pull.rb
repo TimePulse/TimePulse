@@ -33,7 +33,7 @@ class GithubPull < GithubCommitSaver
   def github_api_interface
     if defined?(::API_KEYS)
       @github_api_interface ||= begin
-        url_parts = project.github_url.split("/")
+        url_parts = project.repositories.first.url.split("/")
         repo = url_parts.pop
         user = url_parts.pop
         Github.new(:oauth_token => ::API_KEYS[:github],
