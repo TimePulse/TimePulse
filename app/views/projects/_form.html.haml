@@ -9,12 +9,16 @@
     = f.labeled_input :description
     = f.labeled_input :pivotal_id, :text => "Pivotal Project ID", :comment => "(number at the end of URL for project)"
 
-    = f.fields_for :repositories do |rf|
-      .repository-fields
-        = rf.label :url, 'URL'
-        = rf.text_field :url
-        = rf.hidden_field :_destroy
-        = link_to_function 'remove', 'remove_fields(this)'
+    -#= f.nested_fields_for :repositories, legend: 'Repositories' do |ff|
+    -#  .repository-fields
+    -#    = ff.labeled_input :url
+    -#    = ff.remove_nested_fields_link 'Remove this repository.', class: 'button radius'
+    -#= f.add_nested_fields_link :repositories, 'Add another repository.', class: 'button radius'
+
+    = f.fields_for :repositories do |ff|
+      = render 'repository_fields', :f => ff
+    .links
+      = link_to_add_association 'add repository', f, :repositories
 
     = f.labeled_input(:clockable){ f.check_box(:clockable) }
     = f.labeled_input(:billable){ f.check_box(:billable)  }

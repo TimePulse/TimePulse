@@ -29,7 +29,7 @@ class Project < ActiveRecord::Base
   has_many :activities
 
   has_many :repositories, :dependent => :destroy
-  attr_accessor :github_url, :repositories_attributes
+  attr_accessor :repositories_attributes
   accepts_nested_attributes_for :repositories, allow_destroy: true, :reject_if => lambda { |a| a[:url].blank? }
 
   # Rates added to sub-project will override parent project rates completely.
