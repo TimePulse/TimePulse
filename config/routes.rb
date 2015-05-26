@@ -1,5 +1,10 @@
 TimePulse::Application.routes.draw do
 
+  # testing API
+  match '/curl_example' => 'activities#curl_get_example', via: :get
+  match '/curl_example' => 'activities#curl_post_example', via: :post
+
+  resources :activities
   resources :invoices
   resources :bills
   resources :groups

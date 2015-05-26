@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   include AJAXFlash
 
   protect_from_forgery
+  skip_before_action :verify_authenticity_token, if: :json_request?
 
   helper :all # include all helpers, all the time
 
@@ -44,6 +45,11 @@ class ApplicationController < ActionController::Base
 
   def set_current_time
     @server_time_now = Time.zone.now
+  end
+
+protected
+ def json_request?
+    request.format.json?
   end
 
 end
