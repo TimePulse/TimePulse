@@ -32,7 +32,7 @@
     %th Hours
     - sanity_sum = 0
     - @bill.work_units.collect{ |wu| wu.project if wu.project.clockable }.uniq.each do |proj|
-      - hrs = ProjectWorkQuery.new(@bill.work_units).find_for_project(proj).sum(:hours)
+      - hrs = ProjectWorkQuery.new(@bill.work_units).find_for_project(proj, {:exclusive => true}).sum(:hours)
       - sanity_sum += hrs
       %tr
         %td
