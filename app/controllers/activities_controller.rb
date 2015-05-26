@@ -50,15 +50,12 @@ private
 
   #should we leave this here or put it in Application Controller for global use?
   def restrict_access
-    p request.headers["Authorization"]
-    # p request.headers["login"]
-    p User.where(:login => request.headers["login"]).first
+    request.headers["Authorization"]
+    User.where(:login => request.headers["login"]).first
     unless user = User.where(:login => request.headers["login"]).first
       render json: "authorization failed no user" , status: 403
     end
-    p utoken = request.headers["Authorization"]
-    # p etoken = BCrypt::Password.create(utoken)
-    # p BCrypt::Password.new(user.encrypted_token)
+    utoken = request.headers["Authorization"]
     if BCrypt::Password.new(user.encrypted_token) == utoken
       return true
     else
