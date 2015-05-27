@@ -30,9 +30,13 @@ class ProjectsController < ApplicationController
   # POST /projects
   def create
     @project = Project.new(project_params)
-    @repo = Repository.create(url: params[:project][:repositories_attributes][:url])
-    @repo.project = @project
-    @repo.save
+    params[:project][:repositories_attributes].values.each do |r|
+      unless (r[:url].blank? || r[:_destroy] == '1')
+        @repo = Repository.create(url: r[:url])
+        @repo.project = @project
+        @repo.save
+      end
+    end
     if @project.save
       flash[:notice] = 'Project was successfully created.'
       expire_fragment "picker_node_#{@project.id}"
@@ -47,9 +51,16 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   def update
     @project = Project.find(params[:id])
-    @repos = @project.repositories.first
-    @repos.url = params[:project][:repositories_attributes][:url]
-    @repos.save
+    @project.repositories.each do |repo|
+      repo.destroy
+    end
+    params[:project][:repositories_attributes].values.each do |r|
+      unless (r[:url].blank? || r[:_destroy] == '1')
+        repo = Repository.create(url: r[:url])
+        repo.project = @project
+        repo.save
+      end
+    end
     if @project.update(project_params)
       expire_fragment "picker_node_#{@project.id}"
       expire_fragment "project_picker"
@@ -68,8 +79,8 @@ class ProjectsController < ApplicationController
   def destroy
     @project = Project.find(params[:id])
     @id = params[:id]
-    # @repos = @project.repositories
-    # @repos.each { |repo| repo.destroy }
+    @repos = @project.repositories
+    @repos.each { |repo| repo.destroy }
     @project.destroy
 
     expire_fragment "project_picker"
@@ -86,17 +97,17 @@ class ProjectsController < ApplicationController
     params.
     require(:project).
     permit(:name,
-      :account,
-      :description,
-      :clockable,
-      :billable,
-      :flat_rate,
-      :archived,
-      :pivotal_id,
-      :client_id,
-      :parent_id,
-      rates_attributes: [:id, :name, :amount, :_destroy],
-      repositories_attributes: [:id, :url, :_destroy],
+           :account,
+           :description,
+           :clockable,
+           :billable,
+           :flat_rate,
+           :archived,
+           :pivotal_id,
+           :client_id,
+           :parent_id,
+           :rates_attributes => [:id, :name, :amount, :_destroy],
+           :repositories_attributes => [:id, :url, :_destroy]
     )
   end
 

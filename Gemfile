@@ -23,8 +23,7 @@ gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivo
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
 gem 'bibliotech'
-# gem 'nested_form_fields', :git => 'https://github.com/ncri/nested_form_fields.git'
-gem 'cocoon'
+gem 'nested_form_fields', :git => 'https://github.com/ncri/nested_form_fields.git'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0'
