@@ -28,14 +28,18 @@ class Project < ActiveRecord::Base
   has_many :work_units
   has_many :activities
 
-  has_many :repositories, :dependent => :destroy
+  has_many :repositories
   attr_accessor :repositories_attributes
-  accepts_nested_attributes_for :repositories, allow_destroy: true, :reject_if => lambda { |a| a[:url].blank? }
+  accepts_nested_attributes_for :repositories,
+                                :allow_destroy => true,
+                                :reject_if => lambda { |attr| attr['url'].blank? }
 
   # Rates added to sub-project will override parent project rates completely.
   # Users may see rates disappear from a child when adding rates specifically for a child.
   has_many :rates
-  accepts_nested_attributes_for :rates, :allow_destroy => true, :reject_if => lambda { |attr| attr['name'].blank? || attr['amount'].to_i < 1  }
+  accepts_nested_attributes_for :rates,
+                                :allow_destroy => true,
+                                :reject_if => lambda { |attr| attr['name'].blank? || attr['amount'].to_i < 1  }
 
   scope :archived, lambda { where( :archived => true) }
   scope :unarchived, lambda { where( :archived => false) }
@@ -67,4 +71,5 @@ class Project < ActiveRecord::Base
       end
     end
   end
+
 end
