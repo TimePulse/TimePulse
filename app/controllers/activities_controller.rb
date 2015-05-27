@@ -15,7 +15,9 @@ class ActivitiesController < ApplicationController
   end
 
   def create
-    p params
+    # p params
+    # p headers
+    # p request.headers
 
     @activity = Activity.new(activity_params)
       if @activity.save
@@ -51,7 +53,7 @@ private
   #should we leave this here or put it in Application Controller for global use?
   def restrict_access
     request.headers["Authorization"]
-    User.where(:login => request.headers["login"]).first
+    user = User.where(:login => request.headers["login"]).first
     unless user = User.where(:login => request.headers["login"]).first
       render json: "authorization failed no user" , status: 403
     end
