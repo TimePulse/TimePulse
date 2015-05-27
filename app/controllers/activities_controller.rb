@@ -20,6 +20,7 @@ class ActivitiesController < ApplicationController
     # p request.headers
 
     @activity = Activity.new(activity_params)
+    p @activity
       if @activity.save
         render json: @activity, status: 201
       else
@@ -28,7 +29,7 @@ class ActivitiesController < ApplicationController
   end
 
   def update
-    p params
+
 
     @activity = Activity.find(params[:activity][:id])
       if @activity.update(activity_params)
@@ -57,6 +58,7 @@ private
     unless user = User.where(:login => request.headers["login"]).first
       render json: "authorization failed no user" , status: 403
     end
+    p user
     utoken = request.headers["Authorization"]
     if BCrypt::Password.new(user.encrypted_token) == utoken
       return true
