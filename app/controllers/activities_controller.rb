@@ -52,7 +52,7 @@ private
 
   #should we leave this here or put it in Application Controller for global use?
   def restrict_access
-    request.headers["Authorization"]
+    p request.headers["Authorization"]
     user = User.where(:login => request.headers["login"]).first
     unless user = User.where(:login => request.headers["login"]).first
       render json: "authorization failed no user" , status: 403
