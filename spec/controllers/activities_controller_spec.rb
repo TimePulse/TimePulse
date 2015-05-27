@@ -7,6 +7,7 @@
     before(:each) do
       @activity = FactoryGirl.create(:activity)
       @user = FactoryGirl.create(:user)
+      @project = FactoryGirl.create(:project)
       p @user.login
 
     end
@@ -24,7 +25,9 @@
         request.headers["Content-Type"] = 'application/json'
         request.headers["login"] = @user.login
         request.headers["Authorization"] = 'AEsXr_Ec6R_trmAoLd5S'
-        p post :create, {activity: {description: "UPDATE AUTH TEST EXPICCSAASD", project_id: 4, source: "QWE"}}
+        post :create, {activity: {description: "UPDATE AUTH TEST EXPICCSAASD", project_id: 1, source: "QWE"}}
+        # ,
+        #   {accept: 'application/json', 'Content-Type' => 'application/json', login: @user.login, 'Authorization' => 'AEsXr_Ec6R_trmAoLd5S'  }
         expect(response.status).to eq(201)
       end
     end
