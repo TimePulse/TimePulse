@@ -18,9 +18,9 @@ class ActivitiesController < ApplicationController
     # p params
     # p headers
     # p request.headers
-
+    puts params
     @activity = Activity.new(activity_params)
-    p @activity
+    puts @activity.properties
       if @activity.save
         render json: @activity, status: 201
       else
@@ -48,7 +48,7 @@ class ActivitiesController < ApplicationController
 private
 
   def activity_params
-    params.require(:activity).permit(:description, :project_id, :source)
+    params.require(:activity).permit(:description, :project_id, :source, properties: [:story_id])
   end
 
   #should we leave this here or put it in Application Controller for global use?
