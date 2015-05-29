@@ -14,7 +14,7 @@
         %li= link_to("Calendar", calendars_path)
         %li= link_to("My Bills", my_bills_path)
         %li= link_to("Logout", logout_path)
-      -elsif !logged_in?
+      -else !logged_in?
         %li= link_to("Login", login_path)
       - if logged_in? and current_user and current_user.admin?
         %li= link_to("Dashboard", root_path)
