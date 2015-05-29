@@ -48,7 +48,7 @@ class ActivitiesController < ApplicationController
 private
 
   def activity_params
-    params.require(:activity).permit(:description, :project_id, :source, properties: [:story_id])
+    params.require(:activity).permit(:description, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
   end
 
   #should we leave this here or put it in Application Controller for global use?
