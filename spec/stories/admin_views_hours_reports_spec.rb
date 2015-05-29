@@ -74,6 +74,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it 'should click the hours reports' do
+    click_link 'Reports'
     click_link 'Hours Reports'
   end
 
