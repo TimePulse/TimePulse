@@ -2,7 +2,7 @@ require 'spec_helper'
 
 steps "see user work units on calendar", :type => :feature do
   before :all do
-    Timecop.travel(Time.zone.parse("May 19, 2015 14:00"))
+    Timecop.travel(Time.parse("May 29, 2015 14:00"))
   end
   let! :admin do FactoryGirl.create(:admin ) end
   let! :admin_work_units do
@@ -17,10 +17,10 @@ steps "see user work units on calendar", :type => :feature do
     FactoryGirl.create(:work_unit, :start_time => Time.now-4.hours, :stop_time => Time.now-3.hours, :hours => 1, :user => admin, :notes => "Number3")
   end
   let! :admin_work_units_out_of_range do
-    FactoryGirl.create(:work_unit, :start_time => Time.now-90.hours, :stop_time => Time.now-88.hours, :hours =>2, :user => admin, :notes => "Number4")
+    FactoryGirl.create(:work_unit, :start_time => Time.now-200.hours, :stop_time => Time.now-198.hours, :hours =>2, :user => admin, :notes => "Number4")
   end
   let! :user_work_units_out_of_range do
-    FactoryGirl.create(:work_unit, :start_time => Time.now-100.hours, :stop_time => Time.now-98.hours, :hours =>2, :user => user, :notes => "Number5")
+    FactoryGirl.create(:work_unit, :start_time => Time.now-200.hours, :stop_time => Time.now-198.hours, :hours =>2, :user => user, :notes => "Number5")
   end
   let! :user_work_units_in_range do
     FactoryGirl.create(:work_unit, :start_time => Time.now-2.hours, :stop_time => Time.now-1.hours, :hours =>1, :user => user, :notes => "Number6")
@@ -41,7 +41,9 @@ steps "see user work units on calendar", :type => :feature do
     page.should have_selector(".fc-view-container")
   end
 
-  it "should have my work unit events in the calendar" do
+  it "should have admin work unit events in the calendar" do
+    p Time.now
+    p admin_work_units_in_range
     page.should have_selector(".user-buttons")
     #check the box to load the feed
     click_button(admin.name)

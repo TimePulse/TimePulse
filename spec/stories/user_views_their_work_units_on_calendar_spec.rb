@@ -2,7 +2,7 @@ require 'spec_helper'
 
 steps "see user work units on calendar", :type => :feature do
   before :all do
-    Timecop.travel(Time.zone.parse("May 19, 2015 14:00"))
+    Timecop.travel(Time.parse("May 29, 2015 14:00"))
   end
   let! :user do FactoryGirl.create(:user) end
   let! :user_work_units do
@@ -16,7 +16,7 @@ steps "see user work units on calendar", :type => :feature do
     FactoryGirl.create(:work_unit, :start_time => Time.now-4.hours, :stop_time => Time.now-3.hours, :hours => 1, :user => user, :notes => "Number3")
   end
   let! :user_work_units_out_of_range do
-    FactoryGirl.create(:work_unit, :start_time => Time.now-90.hours, :stop_time => Time.now-88.hours, :hours =>2, :user => user, :notes => "Number4")
+    FactoryGirl.create(:work_unit, :start_time => Time.now-200.hours, :stop_time => Time.now-198.hours, :hours =>2, :user => user, :notes => "Number4")
   end
 
   it "log in as a regular user" do
