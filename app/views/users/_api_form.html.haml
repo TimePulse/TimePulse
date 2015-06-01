@@ -1,0 +1,7 @@
+= button_tag("Generate API Token", id: "generate_api_token")
+
+#api_token_modal.reveal-modal{:'data-reveal' => true, :'aria-labelledby' => "modalTitle", :'aria-hidden' => "true", :role => "dialog"}
+
+  %h2#modalTitle API Token
+  %p.lead Here is your API token
+  %p#token
