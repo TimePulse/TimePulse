@@ -13,7 +13,6 @@ class CalendarWorkUnitsController < ApplicationController
     respond_to do |format|
     format.json { render :json => @work_units, each_serializer: CalendarEventSerializer, root: false}
     end
-
   end
 
 end
