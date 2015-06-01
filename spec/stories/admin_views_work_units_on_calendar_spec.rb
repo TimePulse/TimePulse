@@ -41,8 +41,6 @@ steps "see user work units on calendar", :type => :feature do
   end
 
   it "should have admin work unit events in the calendar" do
-    p Time.now
-    p admin_work_units_in_range
     page.should have_selector(".user-buttons")
     #check the box to load the feed
     click_button(admin.name)
@@ -63,9 +61,6 @@ steps "see user work units on calendar", :type => :feature do
   end
 
   it "should go to work unit show page when item is clicked" do
-    # puts page.body
-    # require "pp"
-    # pp WorkUnit.all.to_a
     click_on ("#{admin_work_units_in_range.project.name} - #{admin_work_units_in_range.notes}")
     page.should have_content("Editing Work Unit")
   end
