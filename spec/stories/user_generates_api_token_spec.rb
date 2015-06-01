@@ -33,6 +33,7 @@ steps "user logs in and edits user preferences", :type => :feature do
 
   it "should display the unencrypted token" do
     page.should have_content("Here is your API token")
+    page.should have_content(/[-_2-9A-HJ-NP-Za-z]{19,21}/)
   end
 
 
