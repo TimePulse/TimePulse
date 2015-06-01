@@ -1,8 +1,12 @@
 TimePulse::Application.routes.draw do
 
+
+  resources :activities, :only => [:index, :create]
+  put '/activities' =>'activities#update'
   resources :invoices
   resources :bills
   resources :groups
+  resource :user_api_tokens, :only => :update
   resources :permissions
   resources :work_units, :except => :index
   resources :clients
