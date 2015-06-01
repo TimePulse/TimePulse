@@ -8,8 +8,6 @@
 </div>
 
 <div id="calendar"></div>
-
-
   <%=  javascript_tag do %>
     <% if @users.length > 1 %>
     var sources = [<%  @users.each_with_index do |user, index| %>
@@ -64,8 +62,6 @@
           this.value = "true";
         }
       });
-
-
     });
   <% else %>
     $(document).ready(function() {
@@ -82,4 +78,3 @@
     });
   <% end %>
 <% end %>
-

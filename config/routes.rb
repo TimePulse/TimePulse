@@ -2,7 +2,7 @@ TimePulse::Application.routes.draw do
 
 
   resources :activities, :only => [:index, :create]
-  patch '/activities' =>'activities#update'
+  put '/activities' =>'activities#update'
   resources :invoices
   resources :bills
   resources :groups

@@ -15,12 +15,7 @@ class ActivitiesController < ApplicationController
   end
 
   def create
-    # p params
-    # p headers
-    # p request.headers
-    puts params
     @activity = Activity.new(activity_params)
-    puts @activity.properties
       if @activity.save
         render json: @activity, status: 201
       else
@@ -29,8 +24,6 @@ class ActivitiesController < ApplicationController
   end
 
   def update
-
-
     @activity = Activity.find(params[:activity][:id])
       if @activity.update(activity_params)
         render json: @activity, status: 200
@@ -42,7 +35,6 @@ class ActivitiesController < ApplicationController
   def destroy
     @activity.destroy
       render json: :no_content
-
   end
 
 private
@@ -66,6 +58,5 @@ private
       render json: "authorization failed wrong token", status: 403
     end
   end
-
 
 end
