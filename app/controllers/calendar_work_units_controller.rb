@@ -16,5 +16,4 @@ class CalendarWorkUnitsController < ApplicationController
 
   end
 
-
 end
