@@ -1,9 +1,10 @@
 class CalendarEventSerializer < ActiveModel::Serializer
   self.root = false
    attributes :id, :title, :start, :end, :className, :url
+   include ProjectsHelper
 
    def title
-    "#{object.project.name} - #{object.notes}"
+    "#{project_name_with_client(object.project, short=false)} - #{object.notes}"
    end
 
    def start

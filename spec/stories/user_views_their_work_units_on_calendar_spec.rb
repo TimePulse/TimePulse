@@ -38,15 +38,15 @@ steps "see user work units on calendar", :type => :feature do
     #page.should have_selector(".user-buttons")
     #check the box to load the feed
     #click_button(user.name)
-    page.should have_content("#{user_work_units_in_range.project.name} - #{user_work_units_in_range.notes}")
-    page.should_not have_content("#{user_work_units_out_of_range.project.name} - #{user_work_units_out_of_range.notes}")
+    page.should have_content("[#{user_work_units_in_range.project.client.abbreviation}] #{user_work_units_in_range.project.name} - #{user_work_units_in_range.notes}")
+    page.should_not have_content("[#{user_work_units_out_of_range.project.client.abbreviation}] #{user_work_units_out_of_range.project.name} - #{user_work_units_out_of_range.notes}")
   end
 
   it "should go to work unit show page when item is clicked" do
     # puts page.body
     # require "pp"
     # pp WorkUnit.all.to_a
-    click_on ("#{user_work_units_in_range.project.name} - #{user_work_units_in_range.notes}")
+    click_on ("[#{user_work_units_in_range.project.client.abbreviation}] #{user_work_units_in_range.project.name} - #{user_work_units_in_range.notes}")
     page.should have_content("Editing Work Unit")
   end
 
