@@ -4,7 +4,6 @@ steps "see user work units on calendar", :type => :feature do
   let :base_time do
     Time.now.beginning_of_day-1.day+12.hours
   end
-
   let! :admin do FactoryGirl.create(:admin ) end
   let! :admin_work_units do
     puts Time.now
@@ -42,7 +41,9 @@ steps "see user work units on calendar", :type => :feature do
     page.should have_selector(".fc-view-container")
   end
 
-  it "should have my work unit events in the calendar" do
+  it "should have admin work unit events in the calendar" do
+    p Time.now
+    p admin_work_units_in_range
     page.should have_selector(".user-buttons")
     #check the box to load the feed
     click_button(admin.name)
