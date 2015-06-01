@@ -17,5 +17,17 @@
         post :create, {activity: {description: "UPDATE AUTH TEST", project_id: 1  , source: "QWE"}}
         expect(response.status).to eq(201)
       end
+
+      it "should create a new activity in the database" do
+        expect do
+          request.headers["accept"] = 'application/json'
+          request.headers["Content-Type"] = 'application/json'
+          request.headers["login"] = @user.login
+          request.headers["Authorization"] = 'AEsXr_Ec6R_trmAoLd5S'
+          post :create, {activity: {description: "UPDATE AUTH TEST", project_id: 1  , source: "QWE"}}
+        end.to change{
+            Activity.where(description: "UPDATE AUTH TEST").count
+            }.from(0).to(1)
+      end
     end
   end
