@@ -6,7 +6,6 @@ steps "see user work units on calendar", :type => :feature do
   end
   let! :user do FactoryGirl.create(:user) end
   let! :user_work_units do
-    puts Time.now
     FactoryGirl.create(:work_unit, :user => user, :hours => 4, :notes => "Number1")
   end
   let! :non_user_work_units do
