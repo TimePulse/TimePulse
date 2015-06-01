@@ -17,14 +17,11 @@ private
     params.require(:activity).permit(:description, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
   end
 
-  #should we leave this here or put it in Application Controller for global use?
   def restrict_access
-    p request.headers["Authorization"]
     user = User.where(:login => request.headers["login"]).first
     unless user = User.where(:login => request.headers["login"]).first
       render json: "authorization failed no user" , status: 403
     end
-    p user
     utoken = request.headers["Authorization"]
     if BCrypt::Password.new(user.encrypted_token) == utoken
       return true

@@ -6,11 +6,9 @@ class CalendarsController < ApplicationController
     else
       @users = [current_user]
     end
-
     respond_to do |format|
       format.html
     end
-
   end
 
 end
