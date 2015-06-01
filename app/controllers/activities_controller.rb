@@ -1,18 +1,6 @@
 require 'bcrypt'
 class ActivitiesController < ApplicationController
-  before_action :restrict_access, only: [:update, :create, :destroy]
-
-  def index
-    @activities = Activity.all
-    render json:Activity.all
-  end
-
-  def show
-   render json:Activity.last
-  end
-
-  def edit
-  end
+  before_action :restrict_access, only: [:create]
 
   def create
     @activity = Activity.new(activity_params)
@@ -21,20 +9,6 @@ class ActivitiesController < ApplicationController
       else
         render json: @activity.errors, status: 422
       end
-  end
-
-  def update
-    @activity = Activity.find(params[:activity][:id])
-      if @activity.update(activity_params)
-        render json: @activity, status: 200
-      else
-        render json: @activity.errors, status: 422
-      end
-  end
-
-  def destroy
-    @activity.destroy
-      render json: :no_content
   end
 
 private
@@ -58,5 +32,4 @@ private
       render json: "authorization failed wrong token", status: 403
     end
   end
-
 end
