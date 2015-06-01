@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 steps "see user work units on calendar", :type => :feature do
-  before :all do
-    Timecop.travel(Time.zone.parse("May 19, 2015 14:00"))
+  let :base_time do
+    Time.now.beginning_of_day-1.day+12.hours
   end
   let! :user do FactoryGirl.create(:user) end
   let! :user_work_units do
@@ -13,10 +13,10 @@ steps "see user work units on calendar", :type => :feature do
     FactoryGirl.create(:work_unit, :hours => 7, :notes => "Number2")
   end
   let! :user_work_units_in_range do
-    FactoryGirl.create(:work_unit, :start_time => Time.now-4.hours, :stop_time => Time.now-3.hours, :hours => 1, :user => user, :notes => "Number3")
+    FactoryGirl.create(:work_unit, :start_time => base_time-4.hours, :stop_time => base_time-3.hours, :hours => 1, :user => user, :notes => "Number3")
   end
   let! :user_work_units_out_of_range do
-    FactoryGirl.create(:work_unit, :start_time => Time.now-90.hours, :stop_time => Time.now-88.hours, :hours =>2, :user => user, :notes => "Number4")
+    FactoryGirl.create(:work_unit, :start_time => base_time-1.week, :stop_time => base_time-1.week+2.hours, :hours =>2, :user => user, :notes => "Number4")
   end
 
   it "log in as a regular user" do
