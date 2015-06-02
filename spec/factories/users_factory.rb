@@ -6,6 +6,9 @@ FactoryGirl.define  do
     password_confirmation "foobar"
     inactive false
 
+    #encrypted token from unencrypted token "AEsXr_Ec6R_trmAoLd5S"
+    encrypted_token "$2a$10$qnaBgfd73JFi3oLAXfBGKugIvHDgcJCxmOXWBknwUpNY7jfvCgeTu"
+
     sequence(:email) {|n| "quentin#{n}@example.com"}
     sequence(:reset_password_token) { |n| "hYggoHueyySp#{n}czmffos" }
     sequence(:reset_password_sent_at) { |n| n.weeks.ago }
