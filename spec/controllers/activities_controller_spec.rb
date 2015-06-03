@@ -10,6 +10,7 @@
       #create activity and work_unit that both have the same project associated
       @activity = FactoryGirl.create(:activity, :project => @project, :user => @user)
       @current_work_unit = FactoryGirl.create(:work_unit, :project => @project, :start_time => @base_time, :stop_time => nil, :user => @user, :hours => nil, :notes => "Work Unit, Clocked in")
+      @non_current_work_unit = FactoryGirl.create(:work_unit, :project => @project, :start_time => @base_time, :stop_time => @base_time+1.hours, :hours => 1, :user => @user, :notes => "Work Unit, Not Clocked in")
       #create activity and work_unit with different projects associated
       @activity_different = FactoryGirl.create(:activity, :project => @project_different, :user => @user)
       @activity_request = {activity: {description: @activity.description, project_id: @activity.project_id, source: @activity.source, time: @base_time, user_id: @user.id}}
@@ -48,6 +49,10 @@
       it "confirms current_work_unit and activity_different don't have to same project associated"do
         expect(@current_work_unit.project_id).not_to eq(@activity_different.project_id)
       end
-
+      it "confirms that work units that have a stop time aren't associated to the activity" do
+        p @activity.work_unit_id
+        p @activity_different.work_unit_id
+        expect(@activity.work_unit_id).not_to eq(@non_current_work_unit.project_id)
+      end
     end
   end
