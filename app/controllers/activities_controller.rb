@@ -2,20 +2,18 @@ require 'bcrypt'
 class ActivitiesController < ApplicationController
   # include WorkUnitsHelper
   before_action :restrict_access, only: [:create]
+  before_filter :authenticate_user!
 
   def create
-    @user = User.where(:login => request.headers["login"]).first
-    @current_work_unit = @user.work_units.where(:stop_time => nil).last
+    @user = current_user
+    @current_work_unit = @user.current_work_unit
     @activity = Activity.new(activity_params)
     #check to see if the user making the request has an open work unit
     if @current_work_unit
       if @current_work_unit.project_id == @activity.project_id
-        p "project_id is equal"
         @activity.work_unit_id = @current_work_unit.id
-        p @activity.work_unit_id
       end
     end
-
       if @activity.save
         render json: @activity, status: 201
       else
@@ -30,15 +28,14 @@ private
   end
 
   def restrict_access
-    @user = User.where(:login => request.headers["login"]).first
-    unless @user = User.where(:login => request.headers["login"]).first
-      render json: "authorization failed no user" , status: 403
-    end
-    utoken = request.headers["Authorization"]
-    if BCrypt::Password.new(@user.encrypted_token) == utoken
-      return true
-    else
-      render json: "authorization failed wrong token", status: 403
+    user_email = request.headers["login"].presence
+    user       = user_email && User.find_by(:login => user_email)
+    if user
+      presented_token = request.headers["Authorization"]
+      stored_token = BCrypt::Password.new(user.encrypted_token)
+      if stored_token == presented_token
+        sign_in user, store: false
+      end
     end
   end
 end
