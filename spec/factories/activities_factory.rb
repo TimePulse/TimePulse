@@ -4,7 +4,7 @@ FactoryGirl.define do
     time Time.now
     project
     user
-    # work_unit_id nil
+    work_unit_id nil
     action "commit"
     description "New commit"
     properties {

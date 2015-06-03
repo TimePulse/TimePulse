@@ -1,16 +1,14 @@
 require 'bcrypt'
 class ActivitiesController < ApplicationController
-  include WorkUnitsHelper
+  # include WorkUnitsHelper
   before_action :restrict_access, only: [:create]
 
   def create
     @user = User.where(:login => request.headers["login"]).first
     @current_work_unit = @user.work_units.where(:stop_time => nil).last
     @activity = Activity.new(activity_params)
-    p @current_work_unit.id
     #check to see if the user making the request has an open work unit
     if @current_work_unit
-      p "there is an open work unit"
       if @current_work_unit.project_id == @activity.project_id
         p "project_id is equal"
         @activity.work_unit_id = @current_work_unit.id
