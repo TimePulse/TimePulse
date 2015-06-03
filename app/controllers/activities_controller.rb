@@ -14,14 +14,14 @@ class ActivitiesController < ApplicationController
         @activity.work_unit_id = @current_work_unit.id
       end
     end
-      if @activity.save
-        render json: @activity, status: 201
-      else
-        render json: @activity.errors, status: 422
-      end
+    if @activity.save
+      render json: @activity, status: 201
+    else
+      render json: @activity.errors, status: 422
+    end
   end
 
-private
+  private
 
   def activity_params
     params.require(:activity).permit(:description, :work_unit_id, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
@@ -31,9 +31,11 @@ private
     user_email = request.headers["login"].presence
     user       = user_email && User.find_by(:login => user_email)
     if user
-      presented_token = request.headers["Authorization"]
-      stored_token = BCrypt::Password.new(user.encrypted_token)
-      if stored_token == presented_token
+      stored_token = user.encrypted_token
+      stored_password = BCrypt::Password.new(stored_token)
+      presented_token = BCrypt::Engine.hash_secret(request.headers["Authorization"], stored_password.salt)
+
+      if Devise::secure_compare(stored_token, presented_token)
         sign_in user, store: false
       end
     end
