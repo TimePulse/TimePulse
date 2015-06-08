@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 steps "see user work units on calendar", :type => :feature do
-  # before :all do
-  #   Timecop.travel(Time.zone.parse("May 19, 2015 14:00"))
-  # end
   let! :user do FactoryGirl.create(:user) end
   let! :user_work_units do
     puts Time.now
