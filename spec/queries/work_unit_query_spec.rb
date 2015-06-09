@@ -61,32 +61,32 @@ describe WorkUnitQuery, :type => :query do
 
   it 'should find recent hours' do
     expect(@billable_work_units_1[0][:hours]).to eq(5.0)
-    expect(@billable_work_units_1[0][:sunday]).to eq(DateTime.parse('Apr 12 15').end_of_day)
+    expect(@billable_work_units_1[0][:sunday].to_s).to eq(DateTime.parse('Apr 12 15').end_of_day.to_s)
     expect(@billable_work_units_1[1][:hours]).to eq(5.0)
-    expect(@billable_work_units_1[1][:sunday]).to eq(DateTime.parse('Apr 19 15').end_of_day)
+    expect(@billable_work_units_1[1][:sunday].to_s).to eq(DateTime.parse('Apr 19 15').end_of_day.to_s)
 
     expect(@unbillable_work_units_1[0][:hours]).to eq(5.0)
-    expect(@unbillable_work_units_1[0][:sunday]).to eq(DateTime.parse('Apr 12 15').end_of_day)
+    expect(@unbillable_work_units_1[0][:sunday].to_s).to eq(DateTime.parse('Apr 12 15').end_of_day.to_s)
 
     expect(@total_work_units_1[0][:hours]).to eq(10.0)
-    expect(@total_work_units_1[0][:sunday]).to eq(DateTime.parse('Apr 12 15').end_of_day)
+    expect(@total_work_units_1[0][:sunday].to_s).to eq(DateTime.parse('Apr 12 15').end_of_day.to_s)
     expect(@total_work_units_1[1][:hours]).to eq(5.0)
-    expect(@total_work_units_1[1][:sunday]).to eq(DateTime.parse('Apr 19 15').end_of_day)
+    expect(@total_work_units_1[1][:sunday].to_s).to eq(DateTime.parse('Apr 19 15').end_of_day.to_s)
   end
 
   it 'should find older hours' do
     expect(@billable_work_units_2[0][:hours]).to eq(5.0)
-    expect(@billable_work_units_2[0][:sunday]).to eq(DateTime.parse('Mar 15 15').end_of_day)
+    expect(@billable_work_units_2[0][:sunday].to_s).to eq(DateTime.parse('Mar 15 15').end_of_day.to_s)
     expect(@billable_work_units_2[1][:hours]).to eq(6.0)
-    expect(@billable_work_units_2[1][:sunday]).to eq(DateTime.parse('Mar 22 15').end_of_day)
+    expect(@billable_work_units_2[1][:sunday].to_s).to eq(DateTime.parse('Mar 22 15').end_of_day.to_s)
 
     expect(@unbillable_work_units_2[0][:hours]).to eq(5.0)
-    expect(@unbillable_work_units_2[0][:sunday]).to eq(DateTime.parse('Mar 15 15').end_of_day)
+    expect(@unbillable_work_units_2[0][:sunday].to_s).to eq(DateTime.parse('Mar 15 15').end_of_day.to_s)
 
     expect(@total_work_units_2[0][:hours]).to eq(10.0)
-    expect(@total_work_units_2[0][:sunday]).to eq(DateTime.parse('Mar 15 15').end_of_day)
+    expect(@total_work_units_2[0][:sunday].to_s).to eq(DateTime.parse('Mar 15 15').end_of_day.to_s)
     expect(@total_work_units_2[1][:hours]).to eq(6.0)
-    expect(@total_work_units_2[1][:sunday]).to eq(DateTime.parse('Mar 22 15').end_of_day)
+    expect(@total_work_units_2[1][:sunday].to_s).to eq(DateTime.parse('Mar 22 15').end_of_day.to_s)
   end
 
   after do
