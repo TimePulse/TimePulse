@@ -19,8 +19,8 @@
     %input.american_date_entry#start-datepicker{:type => "text", :name => "start_date", :value => @start_date}
   %div.input-container
     %p End Date
-    %input.american_date_entry#end-datepicker{:type => "text", :name => "end_date", :value => @end_date}
-  = submit_tag "Submit", :id => 'datepicker-submit-btn'
+    %input.american_date_entry#end-datepicker{:type => 'text', :name => 'end_date', :value => @end_date}
+  = submit_tag 'Submit', :id => 'datepicker-submit-btn'
 
 = tabbed_panel do |tp|
   = tp.add_tab('Table') do
