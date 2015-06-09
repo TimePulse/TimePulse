@@ -33,12 +33,13 @@ steps 'Admin views a bill', :type => :feature do
   end
 
   it 'should view the bills' do
-    click_on 'Bills'
-    expect(page).to have_content(user.name)
+    click_on 'Reports'
+    click_on 'My Bills'
   end
 
   it "should view the user's bill" do
     visit '/bills/1'
+    expect(page).to have_content(user.name)
     expect(page).to have_content('12.0') # grandchild project
     expect(page).to have_content('8.0') # child project
     expect(page).to have_content('4.0') # parent project
