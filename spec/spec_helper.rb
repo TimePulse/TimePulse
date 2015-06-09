@@ -17,6 +17,11 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+require 'selenium-webdriver'
+Capybara.register_driver(:selenium_chrome) do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
+
 require 'waterpig'
 
 Capybara.register_driver :poltergeist_debug do |app|
