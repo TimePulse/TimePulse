@@ -51,5 +51,5 @@ TimePulse::Application.routes.draw do
 
   get "my_bills" => "my_bills#index", :as => :my_bills
   get "my_bills/:bill_id" => "my_bills#show", :as => :my_bill
-
+  
 end
