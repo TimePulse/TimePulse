@@ -92,4 +92,5 @@ describe WorkUnitQuery, :type => :query do
   after do
     Timecop.return
   end
+
 end
