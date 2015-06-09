@@ -48,6 +48,6 @@ describe HoursReportsController do
     after do
       Timecop.return
     end
-
   end
+
 end

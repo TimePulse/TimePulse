@@ -25,38 +25,38 @@ Ninja.behavior({
       toggleCheckboxes();
     }
   },
-	'#total-user-hours-btn': {
-		click: function() {
-			showHours('total');
-			$('.selected-btn').removeClass('selected-btn');
-			$('#total-user-hours-btn').addClass('selected-btn');
-			showGraph('total');
-		}
-	},
-	'#billable-user-hours-btn': {
-		click: function() {
-			showHours('billable');
+  '#total-user-hours-btn': {
+    click: function() {
+      showHours('total');
+      $('.selected-btn').removeClass('selected-btn');
+      $('#total-user-hours-btn').addClass('selected-btn');
+      showGraph('total');
+    }
+  },
+  '#billable-user-hours-btn': {
+    click: function() {
+      showHours('billable');
       $('.selected-btn').removeClass('selected-btn');
       $('#billable-user-hours-btn').addClass('selected-btn');
       showGraph('billable');
-		}
-	},
-	'#unbillable-user-hours-btn': {
-		click: function() {
-			showHours('unbillable');
+    }
+  },
+  '#unbillable-user-hours-btn': {
+    click: function() {
+      showHours('unbillable');
       $('.selected-btn').removeClass('selected-btn');
       $('#unbillable-user-hours-btn').addClass('selected-btn');
       showGraph('unbillable');
-		}
-	},
-	'#all-user-hours-btn': {
-		click: function() {
-			$('div.total').show();
-			$('div.billable').show();
-			$('div.unbillable').show();
+    }
+  },
+  '#all-user-hours-btn': {
+    click: function() {
+      $('div.total').show();
+      $('div.billable').show();
+      $('div.unbillable').show();
       $('.selected-btn').removeClass('selected-btn');
       $('#all-user-hours-btn').addClass('selected-btn');
       showGraph('total');
-		}
-	}
+    }
+  }
 });
