@@ -4,19 +4,19 @@
 = javascript_include_tag "/flot/jquery.flot.axislabels.js"
 
 .button-wrap
-  %div.button.radius#all-user-hours-btn
+  .button.radius#all-user-hours-btn.selected-btn
     All
-  %div.button.radius#total-user-hours-btn
+  .button.radius#total-user-hours-btn
     Total
-  %div.button.radius#billable-user-hours-btn
+  .button.radius#billable-user-hours-btn
     Billable
-  %div.button.radius#unbillable-user-hours-btn
+  .button.radius#unbillable-user-hours-btn
     Unbillable
 
 = form_tag hours_reports_path do
   %div.input-container
     %p Start Date
-    %input.american_date_entry#start-datepicker{:type => "text", :name => "start_date", :value => @start_date}
+    %input.american_date_entry#start-datepicker{:type => 'text', :name => 'start_date', :value => @start_date}
   %div.input-container
     %p End Date
     %input.american_date_entry#end-datepicker{:type => 'text', :name => 'end_date', :value => @end_date}
@@ -29,25 +29,16 @@
         %td
         - @sundays.each do |sun|
           %td
-            %h2= 'Week ending ' + sun
+            %h2= 'Week ending ' + sun.strftime('%b %d %y')
       - @users.each do |u|
         %tr.user_row
           %td
             %h2= u.name
-          - last = @sundays.length-1
-          - billable = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'billable').hours
-          - unbillable = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'unbillable').hours
-          - total = WorkUnitQuery.new(u,@sundays[0],@sundays[last],'total').hours
-
-          - billable = check_for_missing_weeks(billable,@sundays)
-          - unbillable = check_for_missing_weeks(unbillable,@sundays)
-          - total = check_for_missing_weeks(total,@sundays)
-
-          - (0..last).each do |week|
+          - (0..@sundays.length-1).each do |week|
             %td
-              %div.billable= billable[week][:hours]
-              %div.unbillable= unbillable[week][:hours]
-              %div.total= total[week][:hours]
+              .billable= @users_with_hours[u.login.to_sym][:billable][week][:hours]
+              .unbillable= @users_with_hours[u.login.to_sym][:unbillable][week][:hours]
+              .total= @users_with_hours[u.login.to_sym][:total][week][:hours]
 
   = tp.add_tab('Graph') do
     .graph-container
@@ -66,7 +57,7 @@
     var billableHours = [];
     var unbillableHours = [];
     var users = #{ get_names(@users) };
-    var sundays = #{ @sundays };
+    //var sundays = #{ @sundays_as_strings };
     var xTicks = #{ xaxis_labels(@sundays) };
     var colors = ["blue","#009900","deeppink","#00CCFF","#6600CC","magenta","orange","darkgray","#66FF66","black"];
 
@@ -90,6 +81,7 @@
           color: colors[i] }
       );
     }
+    //console.log(totalHours);
     var options = {
       xaxis: {
         axisLabel: 'Ending Sundays',
@@ -115,10 +107,12 @@
     };
 
     var choiceContainer = $("#legend");
+    choiceContainer.append("<div id='selectAll' class='button radius'>Select/Deselect All</div><br>");
     $.each(totalHours, function(key, val) {
       choiceContainer.append(
-        '<input type="checkbox" name="' + key + '" checked="checked" id="checkbox' + key + '"> <label style="color:' + colors[key] + '" id="name' + key + '" for="id' + key + '">' + val.label + '</label>' +
-        '<br>'
+        '<label style="color:' + colors[key] + '" id="name' + key + '" for="id' + key + '">' +
+        '<input type="checkbox" name="' + key + '" checked="checked" id="checkbox' + key + '">' +
+        val.label + '</label>' + '<br>'
       );
     });
 
@@ -166,10 +160,6 @@
     plotAccordingToChoicesTotal();
     plotAccordingToChoicesBillable();
     plotAccordingToChoicesUnbillable();
-
-    //$.plot("#total-graph-container", totalHours, options);
-    //$.plot("#billable-graph-container", billableHours, options);
-    //$.plot("#unbillable-graph-container", unbillableHours, options);
 
     var previousPoint = null;
     $("#total-graph-container").bind("plothover", function (event, pos, item) {

@@ -1,0 +1,80 @@
+<div id="users">
+  <%if @users.length > 1 %>
+    <% @users.each_with_index.map do |user, index| %>
+      <%= button_tag(user.name, style: "background-color:#{COLORS_ARRAY[index % COLORS_ARRAY.length]}!important;", id: "#{index}", class: "user-buttons fc-button fc-state-default fc-corner-left fc-corner-right", value: "false" ) %>
+    <% end %>
+    <%= button_tag("Select All", style: "background-color:red!important;", id: "select-all", class: "fc-button fc-state-default fc-corner-left fc-corner-right", value: "false" ) %>
+  <% end %>
+</div>
+
+<div id="calendar"></div>
+  <%=  javascript_tag do %>
+    <% if @users.length > 1 %>
+    var sources = [<%  @users.each_with_index do |user, index| %>
+                  <%= "{
+                    url: '/calendar_work_units.json?user_id=#{user.id}',
+                    color: '#{COLORS_ARRAY[index % COLORS_ARRAY.length]}',
+                    textColor: 'black'
+                  }".html_safe %>,
+                  <% end %>
+                  ];
+
+    $(document).ready(function() {
+      $('#calendar').fullCalendar({
+            // put your options and callbacks here
+            header: {
+                left:   'title',
+                center: 'agendaDay,agendaWeek,month,today prev,next',
+                right:  ''
+            },
+            defaultView:'agendaWeek',
+            eventSources: []
+      });
+      $('#users').find('.user-buttons').click(function(){
+
+         var id = parseInt($(this).attr("id"));
+         if (this.value == "true"){
+            $('#calendar').fullCalendar( 'removeEventSource', sources[id] );
+            this.classList.remove("fc-state-active");
+            this.classList.add("fc-state-default");
+            this.value = "false";
+         }else {
+            $('#calendar').fullCalendar( 'addEventSource', sources[id] );
+            this.value = "true";
+            this.classList.remove("fc-state-default");
+            this.classList.add("fc-state-active");
+          }
+         $('#calendar').fullCalendar('refetchEvents');
+      });
+      $('#users').find('#select-all').click(function(){
+        if (this.value == "true"){
+          $('#users').find('.user-buttons[value="true"]').click();
+          this.innerHTML = "Select All";
+          this.classList.remove("fc-state-active");
+          this.classList.add("fc-state-default");
+          this.value = "false";
+        }
+        else {
+          $('#users').find('.user-buttons[value="false"]').click();
+          this.innerHTML = "Select None";
+          this.classList.remove("fc-state-default");
+          this.classList.add("fc-state-active");
+          this.value = "true";
+        }
+      });
+    });
+  <% else %>
+    $(document).ready(function() {
+      $('#calendar').fullCalendar({
+            // put your options and callbacks here
+            header: {
+                left:   'title',
+                center: 'agendaDay,agendaWeek,month,today prev,next',
+                right:  ''
+            },
+            defaultView:'agendaWeek',
+            events: '<%= "/calendar_work_units.json?user_id=#{@users[0].id}"%>'
+      });
+    });
+  <% end %>
+<% end %>
