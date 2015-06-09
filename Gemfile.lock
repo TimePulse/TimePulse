@@ -59,12 +59,15 @@ GEM
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
     bcrypt (3.1.10)
-    bibliotech (0.4.1)
+    bibliotech (0.6.0)
       caliph (~> 0.3.1)
       mattock (~> 0.9.0)
       thor (~> 0.19.1)
       valise (~> 1.1.4)
     builder (3.1.4)
+    business_time (0.7.4)
+      activesupport (>= 3.1.0)
+      tzinfo
     byebug (3.5.1)
       columnize (~> 0.8)
       debugger-linecache (~> 1.2)
@@ -366,6 +369,7 @@ DEPENDENCIES
   annotate
   awesome_nested_set!
   bibliotech
+  business_time
   byebug
   cadre
   capistrano (< 3.0)

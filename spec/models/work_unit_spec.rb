@@ -302,29 +302,45 @@ describe WorkUnit do
     end
   end
 
-  describe "#annotated?" do
-    it "should be annotated if the elapsed time <= 0.10 hour and the note is blank" do
+  describe "#sufficiently_annotated?" do
+    it "should be sufficiently_annotated if the elapsed time <= 0.10 hour and the note is blank" do
       start_time = Time.now - 1.day
-      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 6.minutes, :hours => 0.09, :notes => "")
-      work_unit.annotated?.should be(true)
+      work_unit = FactoryGirl.create(:work_unit,
+                                     :start_time => start_time,
+                                     :stop_time => start_time + 6.minutes,
+                                     :hours => 0.09,
+                                     :notes => "")
+      work_unit.sufficiently_annotated?.should be(true)
     end
 
-    it "should be annotated if the elapsed time > 0.10 hour and the note is blank" do
+    it "should not be sufficiently_annotated if the elapsed time > 0.10 hour and the note is blank" do
       start_time = Time.now - 1.day
-      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.20, :notes => "")
-      work_unit.annotated?.should be(false)
+      work_unit = FactoryGirl.create(:work_unit,
+                                     :start_time => start_time,
+                                     :stop_time => start_time + 12.minutes,
+                                     :hours => 0.20,
+                                     :notes => "")
+      work_unit.sufficiently_annotated?.should be(false)
     end
 
-    it "should not be annotated if the elapsed time > 0.10 hour and the note is not blank" do
+    it "should be sufficiently_annotated if the elapsed time > 0.10 hour and the note is not blank" do
       start_time = Time.now - 1.day
-      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.20, :notes => "Work unit task")
-      work_unit.annotated?.should be(true)
+      work_unit = FactoryGirl.create(:work_unit,
+                                     :start_time => start_time,
+                                     :stop_time => start_time + 12.minutes,
+                                     :hours => 0.20,
+                                     :notes => "Work unit task")
+      work_unit.sufficiently_annotated?.should be(true)
     end
 
-    it "should not be annotated if the elapsed time <= 0.10 hour and the note is not blank" do
+    it "should be sufficiently_annotated if the elapsed time <= 0.10 hour and the note is not blank" do
       start_time = Time.now - 1.day
-      work_unit = FactoryGirl.create(:work_unit, :start_time => start_time, :stop_time => start_time + 12.minutes, :hours => 0.10, :notes => "Work unit task")
-      work_unit.annotated?.should be(true)
+      work_unit = FactoryGirl.create(:work_unit,
+                                     :start_time => start_time,
+                                     :stop_time => start_time + 12.minutes,
+                                     :hours => 0.10,
+                                     :notes => "Work unit task")
+      work_unit.sufficiently_annotated?.should be(true)
     end
   end
 end

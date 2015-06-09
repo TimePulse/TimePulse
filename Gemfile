@@ -23,6 +23,7 @@ gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivo
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
 gem 'bibliotech'
+gem 'business_time'
 
 group :assets do
   gem 'sass-rails',   '~> 4.0'

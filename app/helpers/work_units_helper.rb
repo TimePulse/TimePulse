@@ -21,7 +21,7 @@ module WorkUnitsHelper
   def work_unit_row_tag(work_unit, token = nil, cssclass = nil, &block)
     content_tag(:tr,
                  :id => token,
-                 :class => ['work_unit', work_unit.annotated? ? nil : "needs-note" ] + [ cssclass ]
+                 :class => ['work_unit', work_unit.sufficiently_annotated? ? nil : "needs-note" ] + [ cssclass ]
                 ) do
       yield
     end

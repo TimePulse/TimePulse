@@ -11,7 +11,9 @@ class PivotalActivity < ActivityBuilder
 
   def build
     # double check to make sure a commit with this sha is not already in DB
-    @activity = Activity.find_by_reference_3(id.to_s)
+    @activity = Activity.where('properties @> hstore(:key, :value)',
+                                           key: 'id', value: id.to_s
+    ).first
     super
   end
 
@@ -32,9 +34,11 @@ class PivotalActivity < ActivityBuilder
       :action => event_type,
       :description => description,
       :time => occurred_at,
-      :reference_1 => story_id,
-      :reference_2 => current_state,
-      :reference_3 => id.to_s
+      :properties => {
+        story_id: story_id,
+        current_state: current_state,
+        id: id.to_s
+      }
     })
   end
 

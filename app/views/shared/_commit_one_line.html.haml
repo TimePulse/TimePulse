@@ -6,6 +6,6 @@
     %td= truncate(commit.try(:project).try(:name), :length => 25)
     %td= truncate(commit.description, :length =>  30, :omission => '...')
     %td
-      = truncate(commit.reference_2, :length => 10)
+      = truncate(commit.branch, :length => 10)
     %td
       %span.nobr= commit.time.to_datetime.to_s(:short_date)

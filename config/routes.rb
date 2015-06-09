@@ -1,13 +1,17 @@
 TimePulse::Application.routes.draw do
 
+
+  resources :activities, :only => [:index, :create]
+  put '/activities' =>'activities#update'
   resources :invoices
   resources :bills
   resources :groups
+  resource :user_api_tokens, :only => :update
   resources :permissions
   resources :work_units, :except => :index
   resources :clients
   resources :hours_reports, :only => [:index, :create]
-  resources :calendar_work_units, :only => :index
+  resources :calendars, :only => :index
   resources :projects do
     resource :github_pull, :controller => 'github_pull', :only => [:create]
     resource :pivotal_pull, :controller => 'pivotal_pull', :only => [:create]
