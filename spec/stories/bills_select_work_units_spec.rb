@@ -25,6 +25,7 @@ shared_steps "for an billing task" do |opt_hash|
   end
 
   it "should go to bills" do
+    click_link "Tools"
     click_link "Bills"
     page.should have_link("New Bill")
   end
