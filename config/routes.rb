@@ -10,6 +10,7 @@ TimePulse::Application.routes.draw do
   resources :permissions
   resources :work_units, :except => :index
   resources :clients
+  resources :calendar_work_units, :only => :index
   resources :hours_reports, :only => [:index, :create]
   resources :calendars, :only => :index
   resources :projects do
@@ -50,5 +51,5 @@ TimePulse::Application.routes.draw do
 
   get "my_bills" => "my_bills#index", :as => :my_bills
   get "my_bills/:bill_id" => "my_bills#show", :as => :my_bill
-
+  
 end
