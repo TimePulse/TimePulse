@@ -4,8 +4,6 @@ class WorkUnitQuery
     @user = user
     @kind = kind
 
-    # start_date = DateTime.parse(start_date) if start_date.is_a?(String)
-    # end_date = DateTime.parse(end_date) if end_date.is_a?(String)
     if start_date.cwday == 7
       @starting_monday = start_date.beginning_of_day + 1.day - 1.week
     else

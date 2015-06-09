@@ -36,9 +36,9 @@
             %h2= u.name
           - (0..@sundays.length-1).each do |week|
             %td
-              .billable= @users_with_hours[u.login.to_sym][:billable][week][:hours]
+              .billable=   @users_with_hours[u.login.to_sym][:billable][week][:hours]
               .unbillable= @users_with_hours[u.login.to_sym][:unbillable][week][:hours]
-              .total= @users_with_hours[u.login.to_sym][:total][week][:hours]
+              .total=      @users_with_hours[u.login.to_sym][:total][week][:hours]
 
   = tp.add_tab('Graph') do
     .graph-container
