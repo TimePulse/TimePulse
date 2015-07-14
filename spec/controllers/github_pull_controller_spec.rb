@@ -49,7 +49,7 @@ describe GithubPullController, :vcr => {} do
 
     describe "POST create" do
       let :github_project do
-        FactoryGirl.create(:project, :github_url => "http://github.com/a_project/with_commits")
+        FactoryGirl.create(:project, :with_repo)
       end
 
       let :number_of_commits_in_repository do
