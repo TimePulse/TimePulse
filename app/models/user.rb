@@ -66,6 +66,7 @@ class User < ActiveRecord::Base
   end
 
   def recent_commits
+    
     activities.git_commits.recent.includes(:project => :client)
   end
 
@@ -90,7 +91,14 @@ class User < ActiveRecord::Base
   end
 
   def git_commits_for(project)
-    activity_for(project).git_commits
+    # TODO
+    # Send parent project to activitty_for of project has no repositories and
+    # parent does
+    debugger
+    source = project.repositories_source
+    source ||= project
+
+    activity_for(source).git_commits
   end
 
   def pivotal_updates_for(project)

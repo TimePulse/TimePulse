@@ -40,6 +40,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
+  gem "byebug", :platforms => [:ruby_20, :ruby_21]
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
   gem 'selenium-webdriver'
@@ -67,5 +68,4 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
-  gem "byebug", :platforms => [:ruby_20, :ruby_21]
 end
