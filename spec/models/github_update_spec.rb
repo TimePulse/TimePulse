@@ -13,9 +13,15 @@ describe GithubUpdate do
     JSON.parse(payload_string, :symbolize_names => true)
   end
 
-  let! :project do
-    FactoryGirl.create(:project, :github_url => "http://github.com/hannahhoward/activerecord-postgis-array")
+  let :project do
+    FactoryGirl.create(:project)
   end
+  
+  let! :repo do
+    FactoryGirl.create(:repository, :project => project,
+      :url => "https://github.com/hannahhoward/activerecord-postgis-array")
+  end 
+
 
   let! :user do
     FactoryGirl.create(:user, :github_user => "hannahhoward")
