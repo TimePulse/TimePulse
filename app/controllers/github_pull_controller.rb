@@ -1,6 +1,9 @@
 class GithubPullController < ApplicationController
   before_filter :require_admin!
 
+  # TODO
+  # Test github_pulls on projects with multiple and zero repositories
+  
   # POST /projects/1/github_pull
   def create
     @github_pull = GithubPull.new(:project_id => params[:project_id])

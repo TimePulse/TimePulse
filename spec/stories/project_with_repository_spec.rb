@@ -16,6 +16,8 @@ steps 'create a new project with repositories', :type => :feature, :snapshots_in
 
   it 'should navigate to the new project page' do
     click_on 'Projects'
+    # TODO
+    # this story should include creating a new project
     # click_on 'New Project'
     expect(page).to have_content 'Cool Project'
   end
