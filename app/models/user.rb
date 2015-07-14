@@ -91,10 +91,6 @@ class User < ActiveRecord::Base
   end
 
   def git_commits_for(project)
-    # TODO
-    # Send parent project to activitty_for of project has no repositories and
-    # parent does
-    debugger
     source = project.repositories_source
     source ||= project
 

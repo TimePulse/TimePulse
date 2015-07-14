@@ -15,7 +15,6 @@ class GithubUpdate < GithubCommitSaver
   end
 
   def project
-
     unless @project
       url = repository[:url]
       id = Repository.where(url: url).first.project_id
