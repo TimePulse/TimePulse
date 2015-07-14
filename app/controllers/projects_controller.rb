@@ -30,11 +30,13 @@ class ProjectsController < ApplicationController
   # POST /projects
   def create
     @project = Project.new(project_params)
-    params[:project][:repositories_attributes].values.each do |r|
-      unless (r[:url].blank? || r[:_destroy] == '1')
-        @repo = Repository.create(url: r[:url])
-        @repo.project = @project
-        @repo.save
+    if params[:project][:repositories_attributes]
+      params[:project][:repositories_attributes].values.each do |r|
+        unless (r[:url].blank? || r[:_destroy] == '1')
+          @repo = Repository.create(url: r[:url])
+          @repo.project = @project
+          @repo.save
+        end
       end
     end
     if @project.save
@@ -54,11 +56,13 @@ class ProjectsController < ApplicationController
     @project.repositories.each do |repo|
       repo.destroy
     end
-    params[:project][:repositories_attributes].values.each do |r|
-      unless (r[:url].blank? || r[:_destroy] == '1')
-        repo = Repository.create(url: r[:url])
-        repo.project = @project
-        repo.save
+    if params[:project][:repositories_attributes]
+      params[:project][:repositories_attributes].values.each do |r|
+        unless (r[:url].blank? || r[:_destroy] == '1')
+          repo = Repository.create(url: r[:url])
+          repo.project = @project
+          repo.save
+        end
       end
     end
     if @project.update(project_params)
