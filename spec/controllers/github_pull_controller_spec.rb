@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+# TODO
+# Revise specs to test for multiple repositories
+# Possibly also need a spec for the github_pull model (none exists now)
+
 describe GithubPullController, :vcr => {} do
   before do
     @project = FactoryGirl.create(:project)

@@ -33,6 +33,9 @@ class GithubPull < GithubCommitSaver
   def github_api_interface
     if defined?(::API_KEYS)
       @github_api_interface ||= begin
+        # TODO
+        # This needs to be revised to include information for all
+        # project repositories instead of just the first.
         url_parts = project.repositories.first.url.split("/")
         repo = url_parts.pop
         user = url_parts.pop
