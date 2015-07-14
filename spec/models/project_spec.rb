@@ -104,26 +104,27 @@ describe Project do
     end
 
     describe "repository" do
-      it "should return a project's github URL" do
+      it "should return the URL of a project's repository" do
         expect(FactoryGirl.create(:project, :with_repo).repositories.first.url).to eq('github.com/new_project')
       end
-      it "should return a project's parent's github URL if the project has no github URL" do
+      it "should return a project's parent's repositories if the project has no repositories" do
         @parent = FactoryGirl.create(:project, :with_repo)
-        expect(FactoryGirl.create(:project, :parent => @parent).repositories.first.url).to eq('github.com/new_project')
+        expect(FactoryGirl.create(:project, :parent => @parent).repositories).to eq(@parent.repositories)
       end
       it "should return a project's grandparent's github URL if the project and parent have no github URL" do
-        @grandparent = FactoryGirl.create(:project, :github_url => github_url, :name => 'GP')
-        @parent = FactoryGirl.create(:project, :parent => @grandparent, :github_url => nil, :name => "P")
-        @project = FactoryGirl.create(:project, :github_url => nil, :parent => @parent)
+        @grandparent = FactoryGirl.create(:project, :with_repo, :name => 'GP')
+        @parent = FactoryGirl.create(:project, :parent => @grandparent, :name => "P")
+        @project = FactoryGirl.create(:project, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
-        @project.github_url.should == github_url
+        @project.repositories.should == @grandparent.repositories
       end
-      it "should return a project's parent's github URL if the project has no github URL  and the grandparent has a different github URL" do
-        @grandparent = FactoryGirl.create(:project, :github_url => "https://github.com/Awesome/NotAwesome")
-        @parent = FactoryGirl.create(:project, :parent => @grandparent, :github_url => github_url)
-        @project = FactoryGirl.create(:project, :github_url => nil, :parent => @parent)
+      it "should return a project's parent's repositories if the project has no repositories and the grandparent has different repositories" do
+        @grandparent = FactoryGirl.create(:project)
+        @gp_repo = FactoryGirl.create(:repository, project: @grandparent, url: "https://github.com/Awesome/NotAwesome")
+        @parent = FactoryGirl.create(:project, :with_repo, :parent => @grandparent)
+        @project = FactoryGirl.create(:project, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
-        @project.github_url.should == github_url
+        @project.repositories.should == @parent.repositories
 
         @grandparent.reload.descendants.should include(@parent)
         @grandparent.reload.descendants.should include(@project)
