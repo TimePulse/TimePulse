@@ -46,7 +46,7 @@ class Project < ActiveRecord::Base
   # default_scope :joins => :client
 
   validates_presence_of :name
-  cascades :account, :clockable, :pivotal_id, :repositories
+  cascades :account, :clockable, :pivotal_id
 
   before_save :no_rates_for_children, :cascade_client
 
@@ -57,7 +57,16 @@ class Project < ActiveRecord::Base
   def base_rates
     is_base_project? || parent.blank? ? rates : parent.base_rates
   end
-
+  
+  # _source method taken from cascade.rb
+  def repositories_source
+      if(ancestor = ancestors.reverse.find{|a| !a.repositories.blank? }).nil?
+        nil
+      else
+        ancestor
+      end
+  end
+  
   private
 
   def no_rates_for_children
