@@ -90,9 +90,7 @@ class User < ActiveRecord::Base
   end
 
   def git_commits_for(project)
-    source = project.repositories
-    source ||= project
-    activity_for(source).git_commits
+    activity_for(project).git_commits
   end
 
   def pivotal_updates_for(project)

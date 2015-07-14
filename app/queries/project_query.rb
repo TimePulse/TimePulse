@@ -1,7 +1,6 @@
 class ProjectQuery
 
   def find_for_project(project, options = {})
-
     if options[:exclusive]
       ids = project.id
     else
