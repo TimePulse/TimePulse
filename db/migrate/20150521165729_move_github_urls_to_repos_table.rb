@@ -10,7 +10,9 @@ class MoveGithubUrlsToReposTable < ActiveRecord::Migration
 
   def up
     Project.all.each do |proj|
-      Repository.create(url: proj.github_url, project_id: proj.id)
+      if not(proj.github_url.blank?)
+        Repository.create(url: proj.github_url, project_id: proj.id)
+      end
     end
   end
 
