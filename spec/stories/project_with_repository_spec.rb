@@ -4,7 +4,6 @@ steps 'create a new project with repositories', :type => :feature, :snapshots_in
 
   let! :admin do FactoryGirl.create(:admin) end
   let! :client do FactoryGirl.create(:client) end
-  let! :project do FactoryGirl.create(:project, :client => client, :name => 'Cool Project') end
 
   it 'should log in as user' do
     visit root_path
@@ -16,14 +15,21 @@ steps 'create a new project with repositories', :type => :feature, :snapshots_in
 
   it 'should navigate to the new project page' do
     click_on 'Projects'
-    # TODO
-    # this story should include creating a new project
-    # click_on 'New Project'
-    expect(page).to have_content 'Cool Project'
+    click_on 'New Project'
+    expect(page).to have_content "New Project"
   end
+  
+  it 'should create a new project with a repository' do
+    select client.name, from: "project[client_id]"
 
-  it 'should show the new project' do
-    find('a.show').click
+    root_project = Project.where(:name => "root").first
+    page.find(:css, "#project_parent_idSelectBoxIt").click
+    page.find(:css, "#project_parent_idSelectBoxItOptions [data-val='#{root_project.id}']").click
+
+    fill_in 'Name', with: "Cool Project"
+    fill_in 'project_repositories_attributes_0_url',
+            with: "github.com/new_project"
+    click_button 'Submit'
     expect(page).to have_content 'Cool Project'
   end
 
