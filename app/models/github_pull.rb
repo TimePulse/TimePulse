@@ -3,7 +3,7 @@ class GithubPull < GithubCommitSaver
   attr_accessor :project_id
 
   def project
-    @project ||= Project.find(project_id)
+    @project ||= Project.find(project_id).repository_source
   end
 
   def commits
