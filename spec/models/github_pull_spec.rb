@@ -43,6 +43,9 @@ describe GithubPull do
   context "when a project has no repositories" do
 
     it "shouldn't change the activity count" do
+      expect do
+        GithubPull.new(project_id: project.id).save
+      end.to_not change{Activity.count}
     end
     
     it "shouldn't call the API" do
@@ -55,6 +58,9 @@ describe GithubPull do
   context "when a project and its ancestors have no repositories" do
 
     it "shouldn't change the activity count" do
+      expect do
+        GithubPull.new(project_id: child_project.id).save
+      end.to_not change{Activity.count}
     end
     
     it "shouldn't call the API" do
