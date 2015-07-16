@@ -2,6 +2,14 @@ require 'spec_helper'
 
 describe GithubPull do
   
+  let :project do
+    FactoryGirl.create(:project)
+  end
+  
+  let :child_project do
+    FactoryGirl.create(:project, parent: project)
+  end
+  
   context "when the project has a repository" do
 
     context "when github returns no changes" do
@@ -32,7 +40,27 @@ describe GithubPull do
     
   end
   
-  context "when neither a project nor its ancestors has repositories" do
+  context "when a project has no repositories" do
+
+    it "shouldn't change the activity count" do
+    end
+    
+    it "shouldn't call the API" do
+      expect(Github).not_to receive_message(:new)
+      GithubPull.new(project_id: project.id).save
+    end
+  
+  end
+
+  context "when a project and its ancestors have no repositories" do
+
+    it "shouldn't change the activity count" do
+    end
+    
+    it "shouldn't call the API" do
+      expect(Github).not_to receive_message(:new)
+      GithubPull.new(project_id: child_project.id).save
+    end
   
   end
 
