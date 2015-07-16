@@ -7,11 +7,15 @@ class GithubPull < GithubCommitSaver
   end
 
   def commits
-    if github_api_interface
-      @commits ||= github_api_interface.repos.commits.all
-    else
-      []
+    if @commits.nil?
+      @commits = []
+      project.repositories.each do | repository |
+        if github_api_interface(repository.url)
+          @commits += github_api_interface(repository.url).repos.commits.all
+        end
+      end
     end
+    return @commits
   end
 
   protected
@@ -30,13 +34,10 @@ class GithubPull < GithubCommitSaver
     }
   end
 
-  def github_api_interface
+  def github_api_interface(url)
     if defined?(::API_KEYS)
       @github_api_interface ||= begin
-        # TODO
-        # This needs to be revised to include information for all
-        # project repositories instead of just the first.
-        url_parts = project.repositories.first.url.split("/")
+        url_parts = url.split("/")
         repo = url_parts.pop
         user = url_parts.pop
         Github.new(:oauth_token => ::API_KEYS[:github],
