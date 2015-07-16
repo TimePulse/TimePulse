@@ -46,7 +46,7 @@ describe GithubPull do
     end
     
     it "shouldn't call the API" do
-      expect(Github).not_to receive_message(:new)
+      Github.should_not_receive(:new)
       GithubPull.new(project_id: project.id).save
     end
   
@@ -58,7 +58,7 @@ describe GithubPull do
     end
     
     it "shouldn't call the API" do
-      expect(Github).not_to receive_message(:new)
+      Github.should_not_receive(:new)
       GithubPull.new(project_id: child_project.id).save
     end
   
