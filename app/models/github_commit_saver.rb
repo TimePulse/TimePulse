@@ -6,6 +6,11 @@ class GithubCommitSaver
   include ActiveModel::Validations
 
   def save
+    # TODO
+#     if projects
+#       commits.each do |commit|
+#         saved_commit = projects.each do |project|
+#           saved_commit = GithubCommit.new(commit_params(commit, project: project))
     if project
       commits.each do |commit|
         saved_commit = GithubCommit.new(commit_params(commit))
