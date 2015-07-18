@@ -60,7 +60,7 @@ class Project < ActiveRecord::Base
   
   # _source method taken from cascade.rb
   def repositories_source
-      if(ancestor = ancestors.reverse.find{|a| !a.repositories.blank? }).nil?
+    if(ancestor = self_and_ancestors.reverse.find{|a| !a.repositories.blank? }).nil?
         nil
       else
         ancestor
