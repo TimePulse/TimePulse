@@ -97,7 +97,11 @@ describe GithubUpdate do
       expect do
         GithubUpdate.new(params).save
       end.not_to change{Activity.count}
-
+    end
+    
+    it "logs the event" do
+      Rails.logger.should_receive(:warn)
+      GithubUpdate.new(params).save
     end
   end
   
