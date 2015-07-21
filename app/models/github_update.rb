@@ -17,16 +17,16 @@ class GithubUpdate < GithubCommitSaver
   def project
     unless @project
       url = repository[:url]
-      Repository.where(url: url).each do |repository|
-        @project = repository.project
+      Repository.where(url: url).each do |repo|
+        @project = repo.project
       end
     end
 
     #catch same URL with alternate or protocol
     unless @project
       protocol, location = url.split("://")
-      Repository.where(url: location).each do |repository|
-        @project = repository.project
+      Repository.where(url: location).each do |repo|
+        @project = repo.project
       end
     end
 
@@ -36,10 +36,14 @@ class GithubUpdate < GithubCommitSaver
       else
         new_url = "https://" + location
       end
-      
-      Repository.where(url: new_url).each do |repository|
-        @project = repository.project
+
+      Repository.where(url: new_url).each do |repo|
+        @project = repo.project
       end
+    end
+    
+    unless @project
+      Rails.logger.warn "No match for Github webhook with url #{url}"
     end
 
     @project
