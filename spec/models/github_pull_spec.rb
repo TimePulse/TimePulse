@@ -43,6 +43,36 @@ describe GithubPull do
           {"login"=>"two"}
         })
       [mash, aftermash]
+    elsif user == "Correct-User" && repo == "Repo-Two" 
+      mash = Hashie::Mash.new({
+        "sha"=>"sha3",
+        "commit"=>
+          {"author"=>
+              {"name"=>"Trip Thurd",
+                "email"=>"three@example.com",
+                "date"=>"2015-05-24T17:23:02Z"},
+            "message"=>"Commit 1"
+            },
+        "html_url"=>
+          "https://github.com/Correct-User/Repo-Two/commit/sha3",
+        "author"=>
+          {"login"=>"three"}
+        })
+      aftermash = Hashie::Mash.new({
+        "sha"=>"sha4",
+        "commit"=>
+          {"author"=>
+              {"name"=>"Cater Forth",
+                "email"=>"four@example.com",
+                "date"=>"2015-05-25T17:23:02Z"},
+            "message"=>"Commit 2"
+            },
+        "html_url"=>
+          "https://github.com/Correct-User/Repo-Two/commit/sha4",
+        "author"=>
+          {"login"=>"four"}
+        })
+      [mash, aftermash]
     else
       []
     end
@@ -147,11 +177,42 @@ describe GithubPull do
   end
   
   context "when a project has multiple repositories" do
-    
+
     context "when github returns changes on more than one" do
+      let! :repo_one do
+        FactoryGirl.create(:repository, project: project,
+          url: "https://github.com/Correct-User/Repo-One")
+      end 
+
+      let! :repo_two do
+        FactoryGirl.create(:repository, project: project,
+          url: "https://github.com/Correct-User/Repo-Two")
+      end
+
+      it "should create activities" do
+        expect do
+          GithubPull.new(project_id: project.id).save
+        end.to change{Activity.count}.by(4)
+      end
     end
     
     context "when github returns changes on none" do
+      let! :repo_one do
+        FactoryGirl.create(:repository, project: project,
+          url: "https://github.com/Incorrect-User/Repo-One")
+      end 
+
+      let! :repo_two do
+        FactoryGirl.create(:repository, project: project,
+          url: "https://github.com/Correct-User/Repo-Incorrect")
+      end
+      
+      it "should not change the Activities count" do
+        expect do
+          GithubPull.new(project_id: child_project.id).save
+        end.to_not change{Activity.count}
+      end
+      
     end
     
   end

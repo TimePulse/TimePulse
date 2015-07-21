@@ -11,7 +11,7 @@ class GithubPull < GithubCommitSaver
       @commits = []
       project.repositories.each do | repository |
         if github_api_interface(repository.url)
-          @commits += github_api_interface(repository.url).repos.commits.all
+          @commits += @github_api_interface.repos.commits.all
         end
       end
     end
@@ -36,7 +36,7 @@ class GithubPull < GithubCommitSaver
 
   def github_api_interface(url)
     if defined?(::API_KEYS)
-      @github_api_interface ||= begin
+      @github_api_interface = begin
         url_parts = url.split("/")
         repo = url_parts.pop
         user = url_parts.pop
