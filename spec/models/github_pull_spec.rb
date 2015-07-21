@@ -116,7 +116,7 @@ describe GithubPull do
         GithubPull.new(project_id: project.id).save
       end
       
-      it "shouldn't create change the activity count" do
+      it "shouldn't change the activity count" do
         expect do
           GithubPull.new(project_id: child_project.id).save
         end.to_not change{Activity.count}
@@ -127,6 +127,22 @@ describe GithubPull do
   end
   
   context "when a project has no repository, but an ancestor has one" do
+    let! :repo do
+      FactoryGirl.create(:repository, project: project,
+        url: "https://github.com/Correct-User/Repo-One")
+    end 
+    
+    it "should create activities belonging to the ancestor" do
+      expect do
+        GithubPull.new(project_id: child_project.id).save
+      end.to change{project.activities.count}.by(2)
+    end
+
+    it "should not create activities belonging to the child" do
+      expect do
+        GithubPull.new(project_id: child_project.id).save
+      end.not_to change{child_project.activities.count}
+    end
     
   end
   
