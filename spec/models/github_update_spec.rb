@@ -37,14 +37,14 @@ describe GithubUpdate do
     end 
 
     context "and all commits are new, " do
-      it "should create two activities" do
+      it "creates two activities" do
         expect do
           github_update = GithubUpdate.new(params)
           github_update.save
         end.to change{Activity.count}.by(2)
       end
 
-      it "should set the parameters properly" do
+      it "sets the parameters properly" do
         github_update = GithubUpdate.new(params)
         github_update.save
         last_activity.source.should == "github"
@@ -88,7 +88,16 @@ describe GithubUpdate do
   end
   
   context ", when push applies to no repos," do
+    let! :repo do
+      FactoryGirl.create(:repository, project: project,
+        url: "https://github.com/Inorrect-User/No-Repo")
+    end 
+
     it "creates no activities" do
+      expect do
+        GithubUpdate.new(params).save
+      end.not_to change{Activity.count}
+
     end
   end
   
