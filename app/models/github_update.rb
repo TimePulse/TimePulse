@@ -17,16 +17,17 @@ class GithubUpdate < GithubCommitSaver
   def project
     unless @project
       url = repository[:url]
-      id = Repository.where(url: url).first.project_id
-      @project = Project.find(id)
+      Repository.where(url: url).each do |repository|
+        @project = repository.project
+      end
     end
 
     #catch same URL with alternate or protocol
     unless @project
       protocol, location = url.split("://")
-      id = Repository.where(url: location).first.project_id
-      @project = Project.find(id)
-      # @project = Project.where(:github_url => location).first
+      Repository.where(url: location).each do |repository|
+        @project = repository.project
+      end
     end
 
     unless @project
@@ -35,9 +36,10 @@ class GithubUpdate < GithubCommitSaver
       else
         new_url = "https://" + location
       end
-      id = Repository.where(url: new_url).first.project_id
-      @project = Project.find(id)
-      # @project = Project.where(:github_url => new_url).first
+      
+      Repository.where(url: new_url).each do |repository|
+        @project = repository.project
+      end
     end
 
     @project
