@@ -16,7 +16,7 @@ class GithubPullController < ApplicationController
 
     respond_to do |format|
       format.json { head :ok }
-      format.html { redirect_to(project_path(@github_pull.project)) }
+      format.html { redirect_to(project_path(@github_pull.projects.first)) }
     end
   end
 end

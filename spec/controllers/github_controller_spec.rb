@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe GithubController do
+
+  # See https://developer.github.com/v3/activity/events/types/#pushevent
+  # for formatting of a github push webhook.
   let :payload_file do
     File.join(Rails.root, '/spec/support/fixtures/sample_github_payload.txt')
   end
@@ -15,11 +18,11 @@ describe GithubController do
   
   let! :repo do
     FactoryGirl.create(:repository, :project => project,
-      :url => "https://github.com/hannahhoward/activerecord-postgis-array")
+      :url => "https://github.com/Correct-User/Repo-One")
   end 
   
   let! :user do
-    FactoryGirl.create(:user, :github_user => "hannahhoward")
+    FactoryGirl.create(:user, :github_user => "one")
   end
 
   let :start_time do DateTime.parse("2013-05-23T16:48:39-07:00").advance(:minutes => -15) end
@@ -30,16 +33,16 @@ describe GithubController do
     it "should create an activity" do
       expect do
         post :create, :payload => payload_string
-      end.to change{Activity.count}.by(1)
+      end.to change{Activity.count}.by(2)
     end
 
     it "should set the parameters properly" do
       post :create, :payload => payload_string
       last_activity.source.should == "github"
       last_activity.action.should == "commit"
-      last_activity.description.should == "Update Version"
-      last_activity.time.should == "2013-05-23T16:48:39-07:00"
-      last_activity.properties['id'].should == "042ec79f159fe8f0b7a520330f05dfda8741cc75"
+      last_activity.description.should == "Message 2"
+      last_activity.time.should == "2013-05-24T16:48:39-07:00"
+      last_activity.properties['id'].should == "sha2"
       last_activity.properties['branch'].should == "master"
       last_activity.project.should == project
       last_activity.user.should == user
