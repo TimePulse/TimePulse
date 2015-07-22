@@ -96,37 +96,37 @@ describe GithubPull do
 
   end
 
-  context "when a project has one repository" do
+  context ", when a project has one repository" do
 
-    context "when github returns changes" do
+    context "and github returns changes" do
 
       let! :repo do
         FactoryGirl.create(:repository, project: project,
           url: "https://github.com/Correct-User/Repo-One")
       end 
 
-      context "that are new" do
-        it "should create activities" do
+      context "that are new," do
+        it "creates activities" do
           expect do
             GithubPull.new(project_id: project.id).save
           end.to change{Activity.count}.by(2)
         end
       end
       
-      context "that have been recorded" do
+      context "that have been recorded," do
         let! :pre_existing_activity do
           FactoryGirl.create(:activity,
                              properties: {id: "sha1", branch: "master"},
                              project: project)
         end
         
-        it "should only create new activities" do
+        it "only creates new activities" do
           expect do
             GithubPull.new(project_id: project.id).save
           end.to change{Activity.count}.by(1)
         end
         
-        it "should not modify preexisting activities" do
+        it "does not modify preexisting activities" do
           GithubPull.new(project_id: project.id).save
           pre_existing_activity.time.should_not == "2015-05-22T17:23:02Z"
         end
@@ -135,18 +135,18 @@ describe GithubPull do
 
     end
 
-    context "when github returns no changes" do
+    context "and github returns no changes," do
       let! :repo do
         FactoryGirl.create(:repository, project: project,
           url: "https://github.com/Incorrect-User/Repo-One")
       end 
       
-      it "should call the API" do
+      it "calls the API" do
         Github.should_receive(:new)
         GithubPull.new(project_id: project.id).save
       end
       
-      it "shouldn't change the activity count" do
+      it "doesn't change the activity count" do
         expect do
           GithubPull.new(project_id: child_project.id).save
         end.to_not change{Activity.count}
@@ -156,19 +156,19 @@ describe GithubPull do
 
   end
   
-  context "when a project has no repository, but an ancestor has one" do
+  context ", when a project has no repository, but an ancestor has one," do
     let! :repo do
       FactoryGirl.create(:repository, project: project,
         url: "https://github.com/Correct-User/Repo-One")
     end 
     
-    it "should create activities belonging to the ancestor" do
+    it "creates activities belonging to the ancestor" do
       expect do
         GithubPull.new(project_id: child_project.id).save
       end.to change{project.activities.count}.by(2)
     end
 
-    it "should not create activities belonging to the child" do
+    it "does not create activities belonging to the child" do
       expect do
         GithubPull.new(project_id: child_project.id).save
       end.not_to change{child_project.activities.count}
@@ -176,9 +176,9 @@ describe GithubPull do
     
   end
   
-  context "when a project has multiple repositories" do
+  context ", when a project has multiple repositories" do
 
-    context "when github returns changes on more than one" do
+    context "and github returns changes on more than one," do
       let! :repo_one do
         FactoryGirl.create(:repository, project: project,
           url: "https://github.com/Correct-User/Repo-One")
@@ -189,14 +189,14 @@ describe GithubPull do
           url: "https://github.com/Correct-User/Repo-Two")
       end
 
-      it "should create activities" do
+      it "creates activities" do
         expect do
           GithubPull.new(project_id: project.id).save
         end.to change{Activity.count}.by(4)
       end
     end
     
-    context "when github returns changes on none" do
+    context "and github returns changes on none," do
       let! :repo_one do
         FactoryGirl.create(:repository, project: project,
           url: "https://github.com/Incorrect-User/Repo-One")
@@ -207,7 +207,7 @@ describe GithubPull do
           url: "https://github.com/Correct-User/Repo-Incorrect")
       end
       
-      it "should not change the Activities count" do
+      it "does not change the Activities count" do
         expect do
           GithubPull.new(project_id: child_project.id).save
         end.to_not change{Activity.count}
@@ -217,30 +217,30 @@ describe GithubPull do
     
   end
   
-  context "when a project has no repositories" do
+  context ", when a project has no repositories," do
 
-    it "shouldn't change the activity count" do
+    it "doesn't change the activity count" do
       expect do
         GithubPull.new(project_id: project.id).save
       end.to_not change{Activity.count}
     end
     
-    it "shouldn't call the API" do
+    it "doesn't call the API" do
       Github.should_not_receive(:new)
       GithubPull.new(project_id: project.id).save
     end
   
   end
 
-  context "when a project and its ancestors have no repositories" do
+  context ", when a project and its ancestors have no repositories," do
 
-    it "shouldn't change the activity count" do
+    it "doesn't change the activity count" do
       expect do
         GithubPull.new(project_id: child_project.id).save
       end.to_not change{Activity.count}
     end
     
-    it "shouldn't call the API" do
+    it "doesn't call the API" do
       Github.should_not_receive(:new)
       GithubPull.new(project_id: child_project.id).save
     end

@@ -133,8 +133,37 @@ describe GithubUpdate do
     end
     
     context "and some commits are pre-existing," do
-      it "creates new activities, but does not create or update pre-existing ones" do
-      end 
+      let! :pre_existing_activity do
+        FactoryGirl.create(:activity,
+          properties: {id: "sha2", branch: "master"},
+          project: project)
+      end
+
+      it "creates new activities, but does not create pre-existing ones" do
+        expect do
+          expect do
+            expect do
+              GithubUpdate.new(params).save
+            end.to change {project.activities.count}.by(1)
+          end.to change {other_project.activities.count}.by(2)
+        end.to change {Activity.count}.by(3)
+      end
+      
+      it "creates new activities, but does not create pre-existing ones" do
+        expect do
+          expect do
+            expect do
+              GithubUpdate.new(params).save
+            end.to change {project.activities.count}.by(1)
+          end.to change {other_project.activities.count}.by(2)
+        end.to change {Activity.count}.by(3)
+      end
+      
+      it "does not update pre-existing commits" do
+        GithubUpdate.new(params).save
+        pre_existing_activity.time.should_not == "2013-05-24T16:48:39-07:00"
+      end
+      
     end
   end
   
