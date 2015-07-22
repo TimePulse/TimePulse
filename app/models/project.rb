@@ -15,7 +15,8 @@
 #  updated_at  :datetime
 #  billable    :boolean(1)      default(TRUE)
 #  flat_rate   :boolean(1)      default(FALSE)
-#
+#  archived    :boolean(1)      default(FALSE)
+#  pivotal_id  :integer(4)
 
 require 'cascade'
 
