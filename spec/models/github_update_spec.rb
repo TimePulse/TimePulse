@@ -90,7 +90,7 @@ describe GithubUpdate do
   context ", when push applies to no repos," do
     let! :repo do
       FactoryGirl.create(:repository, project: project,
-        url: "https://github.com/Inorrect-User/No-Repo")
+        url: "https://github.com/Incorrect-User/No-Repo")
     end 
 
     it "creates no activities" do
@@ -106,8 +106,29 @@ describe GithubUpdate do
   end
   
   context ", when push applies to multiple repos" do
+    let! :repo_one do
+      FactoryGirl.create(:repository, project: project,
+        url: "https://github.com/Correct-User/Repo-One")
+    end 
+    
+    let :other_project do
+      FactoryGirl.create(:project)
+    end
+    
+    let! :repo_two do
+      FactoryGirl.create(:repository, project: other_project,
+        url: "http://github.com/Correct-User/Repo-One")
+    end 
+
     context "and all commits are new," do
       it "creates a new activity per commit per repo" do
+        expect do
+          expect do
+            expect do
+              GithubUpdate.new(params).save
+            end.to change {project.activities.count}.by(2)
+          end.to change {other_project.activities.count}.by(2)
+        end.to change {Activity.count}.by(4)
       end
     end
     

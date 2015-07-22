@@ -2,14 +2,23 @@ class GithubPull < GithubCommitSaver
 
   attr_accessor :project_id
 
-  def project
-    @project ||= Project.find(project_id).repositories_source
+  # In GithubPull, there will always be either one or no projects.
+  # The method "projects" in this model will always be a single object.
+  def projects
+    unless @projects
+      if Project.find(project_id).repositories_source
+        @projects = [Project.find(project_id).repositories_source]
+      else
+        @projects = []
+      end
+    end
+    return @projects
   end
 
   def commits
     if @commits.nil?
       @commits = []
-      project.repositories.each do | repository |
+      projects.first.repositories.each do | repository |
         if github_api_interface(repository.url)
           @commits += @github_api_interface.repos.commits.all
         end
@@ -20,7 +29,7 @@ class GithubPull < GithubCommitSaver
 
   protected
 
-  def commit_params(commit)
+  def commit_params(commit, project)
     {
       :id => commit.sha,
       :message => commit.commit.message,
