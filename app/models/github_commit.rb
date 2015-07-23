@@ -10,10 +10,9 @@ class GithubCommit < ActivityBuilder
   def build
     # double check to make sure a commit with this sha + project_id is not
     # already in DB
-    @activity = Activity.where(project_id: project_id).
-                         where('properties @> hstore(:key, :value)',
-                                key: 'id', value: id).
-                         first
+    @activity = Activity.where(project_id: project_id,
+                               source: "github",
+                               source_id: id).first
     super
   end
 
@@ -25,8 +24,8 @@ class GithubCommit < ActivityBuilder
       :action => "commit",
       :description => message,
       :time => timestamp,
+      :source_id => id,
       :properties => {
-        id: id,
         branch: branch
       }
     })

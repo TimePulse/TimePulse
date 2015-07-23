@@ -114,10 +114,22 @@ describe GithubPull do
       end
       
       context "that have been recorded," do
-        let! :pre_existing_activity do
-          FactoryGirl.create(:activity,
-                             properties: {id: "sha1", branch: "master"},
-                             project: project)
+
+#         let! :pre_existing_activity do
+#           Unknown FactoryGirl error ("Source can't be blank")
+#           FactoryGirl.create(:activity,
+#                              source: "github",
+#                              source_id: "sha1",
+#                              properties: {branch: "master"},
+#                              project: project)
+#         end
+        before :each do
+          act = Activity.new
+          act.project = project
+          act.source = "github"
+          act.source_id = "sha2"
+          act.time = Time.now
+          act.save!
         end
         
         it "only creates new activities" do
@@ -128,7 +140,8 @@ describe GithubPull do
         
         it "does not modify preexisting activities" do
           GithubPull.new(project_id: project.id).save
-          pre_existing_activity.time.should_not == "2015-05-22T17:23:02Z"
+          Activity.where(project: project, source_id: "sha2").first.time.
+                   should_not == "2015-05-22T17:23:02Z"
         end
 
       end

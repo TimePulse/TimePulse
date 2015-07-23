@@ -78,7 +78,7 @@ describe GithubCommit do
         last_activity.action.should == "commit"
         last_activity.description.should == "Fixed some stuff"
         last_activity.time.should == timestamp
-        last_activity.properties['id'].should == "1234"
+        last_activity.source_id.should == "1234"
         last_activity.properties['branch'].should == "1234_fix_stuff"
       end
 
