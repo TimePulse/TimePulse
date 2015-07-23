@@ -115,14 +115,7 @@ describe GithubPull do
       
       context "that have been recorded," do
 
-#         let! :pre_existing_activity do
-#           Unknown FactoryGirl error ("Source can't be blank")
-#           FactoryGirl.create(:activity,
-#                              source: "github",
-#                              source_id: "sha1",
-#                              properties: {branch: "master"},
-#                              project: project)
-#         end
+        # FG having trouble building activities, creating manually instead
         before :each do
           act = Activity.new
           act.project = project

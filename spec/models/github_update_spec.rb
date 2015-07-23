@@ -59,16 +59,7 @@ describe GithubUpdate do
     end
     
     context "and some commits are old, " do
-#       Unknown FG bug
-#
-#       let! :pre_existing_activity do
-#         FactoryGirl.create(:activity,
-#                            source: "github",
-#                            source_id: "sha2",
-#                            time: Time.now,
-#                            project: project)
-#       end
-
+      # FG having trouble building activities, creating manually instead
       before :each do
         act = Activity.new
         act.project = project
@@ -146,14 +137,8 @@ describe GithubUpdate do
     end
     
     context "and some commits are pre-existing," do
-#       let! :pre_existing_activity do
-#         FactoryGirl.create(:activity,
-#                            source: "github",
-#                            source_id: "sha2",
-#                            properties: {branch: "master"},
-#                            project: project)
-#       end
 
+      # FG having trouble building activities, creating manually instead
       before :each do
         act = Activity.new
         act.project = project
