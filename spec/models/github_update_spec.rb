@@ -51,7 +51,7 @@ describe GithubUpdate do
         last_activity.action.should == "commit"
         last_activity.description.should == "Message 2"
         last_activity.time.should == "2013-05-24T16:48:39-07:00"
-        last_activity.properties['id'].should == "sha2"
+        last_activity.source_id.should == "sha2"
         last_activity.properties['branch'].should == "master"
         last_activity.project.should == project
         last_activity.user.should == user
@@ -59,12 +59,25 @@ describe GithubUpdate do
     end
     
     context "and some commits are old, " do
-      let! :pre_existing_activity do
-        FactoryGirl.create(:activity,
-          properties: {id: "sha2", branch: "master"},
-          project: project)
-      end
+#       Unknown FG bug
+#
+#       let! :pre_existing_activity do
+#         FactoryGirl.create(:activity,
+#                            source: "github",
+#                            source_id: "sha2",
+#                            time: Time.now,
+#                            project: project)
+#       end
 
+      before :each do
+        act = Activity.new
+        act.project = project
+        act.source = "github"
+        act.source_id = "sha2"
+        act.time = Time.now
+        act.save!
+      end
+      
       it "creates one activity" do
         expect do
           github_update = GithubUpdate.new(params)
@@ -79,7 +92,7 @@ describe GithubUpdate do
         last_activity.action.should == "commit"
         last_activity.description.should == "Message 1"
         last_activity.time.should == "2013-05-23T16:48:39-07:00"
-        last_activity.properties['id'].should == "sha1"
+        last_activity.source_id.should == "sha1"
         last_activity.properties['branch'].should == "master"
         last_activity.project.should == project
         last_activity.user.should == user
@@ -133,10 +146,21 @@ describe GithubUpdate do
     end
     
     context "and some commits are pre-existing," do
-      let! :pre_existing_activity do
-        FactoryGirl.create(:activity,
-          properties: {id: "sha2", branch: "master"},
-          project: project)
+#       let! :pre_existing_activity do
+#         FactoryGirl.create(:activity,
+#                            source: "github",
+#                            source_id: "sha2",
+#                            properties: {branch: "master"},
+#                            project: project)
+#       end
+
+      before :each do
+        act = Activity.new
+        act.project = project
+        act.source = "github"
+        act.source_id = "sha2"
+        act.time = Time.now
+        act.save!
       end
 
       it "creates new activities, but does not create pre-existing ones" do
@@ -148,20 +172,11 @@ describe GithubUpdate do
           end.to change {other_project.activities.count}.by(2)
         end.to change {Activity.count}.by(3)
       end
-      
-      it "creates new activities, but does not create pre-existing ones" do
-        expect do
-          expect do
-            expect do
-              GithubUpdate.new(params).save
-            end.to change {project.activities.count}.by(1)
-          end.to change {other_project.activities.count}.by(2)
-        end.to change {Activity.count}.by(3)
-      end
-      
+            
       it "does not update pre-existing commits" do
         GithubUpdate.new(params).save
-        pre_existing_activity.time.should_not == "2013-05-24T16:48:39-07:00"
+        Activity.where(project: project, source_id: "sha2").first.
+                 should_not == "2013-05-24T16:48:39-07:00"
       end
       
     end

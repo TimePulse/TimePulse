@@ -5,8 +5,7 @@ FactoryGirl.define do
     action "commit"
     description "New commit"
     properties {
-      {:id => '12345',
-      :branch => 'master'}
+      {:branch => 'master'}
     }
   end
 end

@@ -42,7 +42,7 @@ describe GithubController do
       last_activity.action.should == "commit"
       last_activity.description.should == "Message 2"
       last_activity.time.should == "2013-05-24T16:48:39-07:00"
-      last_activity.properties['id'].should == "sha2"
+      last_activity.source_id.should == "sha2"
       last_activity.properties['branch'].should == "master"
       last_activity.project.should == project
       last_activity.user.should == user
