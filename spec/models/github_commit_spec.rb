@@ -5,8 +5,20 @@ describe GithubCommit do
   let! :project do FactoryGirl.create(:project) end
   let! :user do FactoryGirl.create(:user, :email => "george@jungle.com", :github_user => "georgeofjungle") end
 
-  let! :timestamp do DateTime.parse(2.days.ago.to_s).xmlschema end
-  let! :close_time do DateTime.parse((1.day.ago.advance(:minutes => 5)).to_s).xmlschema end
+  let :timestamp do "2013-05-23T16:48:39-07:00" end
+  let :start_time do DateTime.parse(timestamp).advance(hours: -5) end
+  let :stop_time do DateTime.parse(timestamp).advance(hours: 5) end
+
+  let! :work_unit do
+    FactoryGirl.create(:work_unit,
+      start_time: start_time,
+      stop_time: stop_time,
+      hours: 8,
+      notes: "Work Unit Notes",
+      user: user,
+      project: project)
+  end
+
   let :commit_params do
     {
     :id        => "1234",
@@ -87,6 +99,14 @@ describe GithubCommit do
         github_commit.save
         last_activity.user.should == user
       end
+      
+      it "should associate a work unit" do
+        github_commit = GithubCommit.new(valid_commit_params)
+        github_commit.save
+        last_activity.work_unit.should == work_unit
+      end
+
+      
     end
 
     describe "with invalid data" do
