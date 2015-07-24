@@ -56,5 +56,8 @@ class PivotalActivity < ActivityBuilder
       @user = User.find_by_name(author)
     end
   end
+  
+  def find_work_unit
+  end
 
 end
