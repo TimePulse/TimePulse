@@ -9,16 +9,6 @@ describe GithubCommit do
   let :start_time do DateTime.parse(timestamp).advance(hours: -5) end
   let :stop_time do DateTime.parse(timestamp).advance(hours: 5) end
 
-  let! :work_unit do
-    FactoryGirl.create(:work_unit,
-      start_time: start_time,
-      stop_time: stop_time,
-      hours: 8,
-      notes: "Work Unit Notes",
-      user: user,
-      project: project)
-  end
-
   let :commit_params do
     {
     :id        => "1234",
@@ -100,13 +90,37 @@ describe GithubCommit do
         last_activity.user.should == user
       end
       
-      it "should associate a work unit" do
-        github_commit = GithubCommit.new(valid_commit_params)
-        github_commit.save
-        last_activity.work_unit.should == work_unit
+      describe "and a closed work unit" do
+        let! :work_unit do
+          FactoryGirl.create(:work_unit,
+            start_time: start_time,
+            stop_time: stop_time,
+            hours: 8,
+            notes: "Work Unit Notes",
+            user: user,
+            project: project)
+        end
+        it "should associate to the work unit" do
+          github_commit = GithubCommit.new(valid_commit_params)
+          github_commit.save
+          last_activity.work_unit.should == work_unit
+        end
       end
 
-      
+      describe "and an in-progress work unit" do
+        let! :work_unit do
+          FactoryGirl.create(:in_progress_work_unit,
+            start_time: start_time,
+            notes: "Work Unit Notes",
+            user: user,
+            project: project)
+        end
+        it "should associate to the work unit" do
+          github_commit = GithubCommit.new(valid_commit_params)
+          github_commit.save
+          last_activity.work_unit.should == work_unit
+        end
+      end      
     end
 
     describe "with invalid data" do

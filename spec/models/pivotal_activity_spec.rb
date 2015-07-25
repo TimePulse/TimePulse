@@ -43,6 +43,41 @@ describe PivotalActivity do
       last_activity.project.should == project
       last_activity.user.should == user
     end
+    
+    describe "with an closed work unit" do
+      let! :work_unit do
+        FactoryGirl.create(:work_unit,
+                           start_time: start_time,
+                           stop_time: stop_time,
+                           hours: 0.3,
+                           notes: "Work Unit Notes",
+                           user: user,
+                           project: project)
+      end
+      
+      it "should associate the activity with the work unit" do
+        pivotal_activity = PivotalActivity.new(params)
+        pivotal_activity.save
+
+        last_activity.work_unit.should == work_unit
+      end
+    end
+    
+    describe "with an in-progress work unit" do
+      let! :work_unit do
+        FactoryGirl.create(:in_progress_work_unit,
+                           start_time: start_time,
+                           notes: "Work Unit Notes",
+                           user: user,
+                           project: project)
+      end
+      it "should associate the activity with the work unit" do
+        pivotal_activity = PivotalActivity.new(params)
+        pivotal_activity.save
+
+        last_activity.work_unit.should == work_unit
+      end
+    end
 
   end
 
