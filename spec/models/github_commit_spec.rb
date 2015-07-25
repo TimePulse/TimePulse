@@ -120,7 +120,26 @@ describe GithubCommit do
           github_commit.save
           last_activity.work_unit.should == work_unit
         end
-      end      
+      end
+      
+      describe "and a inapplicable work unit" do
+        let! :work_unit do
+          FactoryGirl.create(:work_unit,
+            start_time: DateTime.parse(timestamp).advance(hours: -5),
+            stop_time: DateTime.parse(timestamp).advance(hours: -3),
+            hours: 1,
+            notes: "Work Unit Notes",
+            user: user,
+            project: project)
+        end
+        
+        it "should not associate to the work unit" do
+          github_commit = GithubCommit.new(valid_commit_params)
+          github_commit.save
+          last_activity.work_unit.should == nil
+        end
+      end
+      
     end
 
     describe "with invalid data" do
