@@ -79,6 +79,26 @@ describe PivotalActivity do
       end
     end
 
+    describe "with an inapplicable work unit" do
+      let! :work_unit do
+        FactoryGirl.create(:work_unit,
+                           start_time: DateTime.parse("Mon, 27 May 2013 06:25:17 +0000").
+                                                advance(:minutes => -45),
+                           stop_time: DateTime.parse("Mon, 27 May 2013 06:25:17 +0000").
+                                               advance(:minutes => -15),
+                           hours: 0.3,
+                           notes: "Work Unit Notes",
+                           user: user,
+                           project: project)
+      end
+      
+      it "should not associate the activity with the work unit" do
+        pivotal_activity = PivotalActivity.new(params)
+        pivotal_activity.save
+
+        last_activity.work_unit.should == nil
+      end
+    end
   end
 
 end
