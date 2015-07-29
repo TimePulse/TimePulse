@@ -1,4 +1,4 @@
-= form_for(@project) do |f|
+= form_for(@project_form, @project_form.form_options ) do |f|
   = f.error_messages
 
   %fieldset.general
@@ -22,7 +22,7 @@
     = f.labeled_input(:flat_rate){ f.check_box(:flat_rate) }
     = f.labeled_input(:archived){ f.check_box(:archived) }
 
-  - if @project.new_record? || @project.is_base_project?
+  - if @project_form.project.new_record? || @project_form.parent_id == 1
     %fieldset.rates.hide-initially
       %legend Rates
 

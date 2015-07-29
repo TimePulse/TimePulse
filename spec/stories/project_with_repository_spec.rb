@@ -20,14 +20,14 @@ steps 'create a new project with repositories', :type => :feature, :snapshots_in
   end
   
   it 'should create a new project with a repository' do
-    select client.name, from: "project[client_id]"
+    select client.name, from: "project_form[client_id]"
 
     root_project = Project.where(:name => "root").first
-    page.find(:css, "#project_parent_idSelectBoxIt").click
-    page.find(:css, "#project_parent_idSelectBoxItOptions [data-val='#{root_project.id}']").click
+    page.find(:css, "#project_form_parent_idSelectBoxIt").click
+    page.find(:css, "#project_form_parent_idSelectBoxItOptions [data-val='#{root_project.id}']").click
 
     fill_in 'Name', with: "Cool Project"
-    fill_in 'project_repositories_attributes_0_url',
+    fill_in 'project_form_repositories_attributes_0_url',
             with: "github.com/new_project"
     click_button 'Submit'
     expect(page).to have_content 'Cool Project'
@@ -36,7 +36,7 @@ steps 'create a new project with repositories', :type => :feature, :snapshots_in
   it 'should edit the project' do
     click_on 'Edit'
     click_on 'Add another repository.'
-    fill_in 'project_repositories_attributes_0_url', :with => 'github.com/feature'
+    fill_in 'project_form_repositories_attributes_0_url', :with => 'github.com/feature'
     click_on 'Submit'
   end
 
@@ -49,9 +49,9 @@ steps 'create a new project with repositories', :type => :feature, :snapshots_in
   it 'should edit the project' do
     click_on 'Edit'
     click_on 'Add another repository.'
-    fill_in 'project_repositories_attributes_1_url', :with => 'github.com/another-repository'
+    fill_in 'project_form_repositories_attributes_1_url', :with => 'github.com/another-repository'
     click_on 'Add another repository.'
-    fill_in 'project_repositories_attributes_2_url', :with => 'github.com/yet-another-repository'
+    fill_in 'project_form_repositories_attributes_2_url', :with => 'github.com/yet-another-repository'
     click_on 'Submit'
   end
 
@@ -65,7 +65,7 @@ steps 'create a new project with repositories', :type => :feature, :snapshots_in
 
   it 'should delete a repository from the project' do
     click_on 'Edit'
-    check 'project_repositories_attributes_2__destroy'
+    check 'project_form_repositories_attributes_2__destroy'
     click_on 'Submit'
   end
 
