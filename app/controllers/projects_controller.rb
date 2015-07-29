@@ -15,69 +15,53 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project = Project.new
-    @project.rates.build
-    @project.repositories.new
+    @project_form = ProjectForm.new
+    @project_form.set_defaults
+    @project_form.form_options = {url: projects_path, method: :post}
   end
 
   # GET /projects/1/edit
   def edit
-    @project = Project.find(params[:id])
-    @repos = @project.repositories
-    @project.rates.build if @project.parent == Project.root
+    @project_form = ProjectForm.find(params[:id])
+    @project_form.append_new_rate if @project_form.project.parent == Project.root
+    @project_form.form_options = {url: project_path(params[:id]), method: :put}
   end
 
   # POST /projects
   def create
-    @project = Project.new(project_params)
-    if params[:project][:repositories_attributes]
-      params[:project][:repositories_attributes].values.each do |r|
-        unless (r[:url].blank? || r[:_destroy] == '1')
-          @repo = Repository.create(url: r[:url])
-          @repo.project = @project
-          @repo.save
-        end
-      end
-    end
-    if @project.save
+    @project_form = ProjectForm.new(project_form_params)
+    if @project_form.save
       flash[:notice] = 'Project was successfully created.'
-      expire_fragment "picker_node_#{@project.id}"
+      expire_fragment "picker_node_#{@project_form.project.id}"
       expire_fragment "project_picker"
-      redirect_to(@project)
+      redirect_to(@project_form.project)
     else
-      @project.rates.build
+      @project_form.append_new_rate
+      @project_form.form_options = {url: projects_path, method: :post}
       render :action => "new"
     end
   end
 
   # PUT /projects/1
   def update
-    @project = Project.find(params[:id])
-    @project.repositories.each do |repo|
-      repo.destroy
-    end
-    if params[:project][:repositories_attributes]
-      params[:project][:repositories_attributes].values.each do |r|
-        unless (r[:url].blank? || r[:_destroy] == '1')
-          repo = Repository.create(url: r[:url])
-          repo.project = @project
-          repo.save
-        end
-      end
-    end
-    if @project.update(project_params)
-      expire_fragment "picker_node_#{@project.id}"
+    @project_form = ProjectForm.find(params[:id])
+    @project_form.attributes = project_form_params
+    if @project_form.save
+      expire_fragment "picker_node_#{@project_form.project.id}"
       expire_fragment "project_picker"
       flash[:notice] = 'Project was successfully updated.'
       redirect_to :action => "index"
     else
-      @project.rates.build
+      @project_form.append_new_rate
+      @project_form.form_options = {url: project_path(params[:id]), method: :put}
       render :action => "edit"
     end
   rescue ActiveRecord::ActiveRecordError
     flash[:error] = "Illegal self referential or circular parent assignment"
-    redirect_to(@project)
+    redirect_to(@project_form.project)
   end
+    
+    
 
   # DELETE /projects/1
   def destroy
@@ -97,9 +81,9 @@ class ProjectsController < ApplicationController
 
   private
 
-  def project_params
+  def project_form_params
     params.
-    require(:project).
+    require(:project_form).
     permit(:name,
            :account,
            :description,
