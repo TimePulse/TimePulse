@@ -11,9 +11,7 @@ describe "/projects/edit" do
     
     assign(:project_form, @project_form)
 
-#    view.stub(:project_form_options).and_return({url: project_path(@project), method: :put})
     view.stub(:action_name).and_return("edit")
-
   end
 
   it "should succeed" do
