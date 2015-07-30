@@ -4,6 +4,7 @@ class ProjectForm
   extend ActiveModel::Naming
   include ActiveModel::Conversion
   include ActiveModel::Validations
+  include ActiveModel::Callbacks
   
   attribute :parent_id, Integer
   attribute :client_id, Integer
@@ -19,8 +20,17 @@ class ProjectForm
   attribute :rates_attributes, Hash
   
   attr_accessor :project, :form_options
-#  attr_accessor :repositories, :rates #try to delete
 
+#   after_initialize :set_form_options
+
+#   def set_form_options
+#     debugger
+#     if ["new", "create"].includes? caller_locations(1,1)[0].label
+#       @form_options = {url: project_path(params[:id]), method: :put}
+#       set_defaults
+#     else
+      
+  
   def self.find(id)
     project_form = self.new
     project_form.project = Project.find(id)

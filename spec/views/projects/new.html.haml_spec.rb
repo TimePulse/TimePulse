@@ -6,8 +6,8 @@ describe "/projects/new" do
   before(:each) do
     @project_form = ProjectForm.new
     @project_form.set_defaults
-    @project_form.form_options = {url: projects_path, method: :post}
     assign(:project_form, @project_form)
+    view.stub(:action_name).and_return("new")
   end
 
   it "should succeed" do
