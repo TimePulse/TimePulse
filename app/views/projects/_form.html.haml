@@ -45,7 +45,8 @@
               %td= ff.text_field :amount, :class => 'rate-amount-field', :placeholder => 'e.g. \'100\''
               - unless action_name == 'new'
                 %td.rate-actions
-                  = ff.check_box :_destroy
-                  = ff.label :_destroy, 'Remove'
+                  - if ff.object.persisted?
+                    = ff.check_box :_destroy
+                    = ff.label :_destroy, 'Remove'
 
   = f.unlabeled_submit 'Submit'

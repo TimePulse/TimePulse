@@ -170,6 +170,7 @@ Ninja.behavior({
         var rows = tbody.find('tr');
         var rowCount = rows.size();
         var row = rows.first().clone();
+        row.find('td.rate-actions').empty(); // No remove checkbox on new rows
         var inputs = row.find('input');
         inputs.val('');
         inputs.each(function (i, input) {
