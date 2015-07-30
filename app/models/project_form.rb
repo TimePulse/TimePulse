@@ -18,93 +18,81 @@ class ProjectForm
   attribute :repositories_attributes, Hash
   attribute :rates_attributes, Hash
   
-  attr_accessor :project, :repositories, :rates, :form_options
-  
-  validates :name, presence: true
+  attr_accessor :project, :form_options
+#  attr_accessor :repositories, :rates #try to delete
 
   def self.find(id)
     project_form = self.new
-    project = Project.find(id)
-    project_form.project = project
-    project_form.attributes = project.attributes
-    if project.repositories
-      project_form.repositories = project.repositories
-    end
-    if project.rates
-      project_form.rates = project.rates
-    end
+    project_form.project = Project.find(id)
+    project_form.attributes = project_form.project.attributes
     project_form
   end
   
   def set_defaults
     @project = Project.new
+    @project.repositories.new
+    @project.rates.new
     self.attributes = project_defaults
-    @repositories = [@project.repositories.new]
-    @rates = [@project.rates.new]
   end
   
   def append_new_rate
-    if @rates
-      @rates = @rates.to_a << @project.rates.new
-    else
-      @rates = [@project.rates.new]
-    end
+    @project.rates.new
   end
   
   def save
     @project ||= Project.new
     @project.assign_attributes(project_params)
-    destroy_repositories
-    build_repositories
-    if valid?
-      @project.save
-      @repositories.each do |repo|
-        repo.save
-      end
-      update_rates
+
+    assign_repositories
+    assign_rates
+
+    @project.save
+      
+    unless project.errors.blank?
+      @errors = @project.errors
     end
 
-    unless project.errors.blank?
-      @errors = project.errors
-    end
 
     errors.blank?
   end
   
   private
-  
-  def destroy_repositories
-    @project.repositories.destroy_all
-  end
-    
-  def build_repositories
+      
+  def assign_repositories
     if @repositories_attributes
-      @repositories = []
-      @repositories_attributes.values.each do |r|
-        unless (r["url"].blank? || r["_destroy"] == '1')
-          repo = Repository.create(url: r["url"])
-          repo.project = @project
-          @repositories << repo if repo.valid?
+      @repositories_attributes.values.each do |ra|
+        if ra["id"]
+            repo = @project.repositories.find(ra["id"])
+            ind = @project.repositories.index(repo) 
+          if ra["url"].blank? || ra["_destroy"] == "1"
+            @project.repositories[ind].mark_for_destruction
+          else
+            @project.repositories[ind].url =  ra["url"]
+          end
+        else
+          unless ra["url"].blank? || ra["_destroy"] == "1"
+            @project.repositories.new(url: ra["url"])
+          end
         end
       end
     end
+    @project.repositories
   end
   
-  def update_rates
+  def assign_rates
     if @rates_attributes
-      @rates_attributes.values.each do |r|
-        if r["id"]
-          rate = Rate.find(r["id"])
-          if r["destroy"] == "1"
-            rate.destroy
+      @rates_attributes.values.each do |ra|
+        if ra["id"]
+          rate = @project.rates.find(ra["id"])
+          ind = @project.rates.index(rate)
+          if ra["_destroy"] == "1" || ( ra["name"].blank? && ra["amount"].blank? )
+            @project.rates[ind].mark_for_destruction
           else
-            rate.update(name: r["name"], amount: r["amount"])
+            @project.rates[ind].assign_attributes(name: ra["name"], amount: ra["amount"])
           end
         else
-          unless r["destroy"] == "1"
-            rate = Rate.create(name: r["name"], amount: r["amount"])
-            rate.project = @project
-            rate.save
+          unless ra["_destroy"] == "1" || ( ra["name"].blank? && ra["amount"].blank? )
+            @project.rates.new(name: ra["name"], amount: ra["amount"])
           end
         end
       end

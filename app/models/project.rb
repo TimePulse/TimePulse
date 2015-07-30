@@ -40,7 +40,7 @@ class Project < ActiveRecord::Base
   has_many :rates
   accepts_nested_attributes_for :rates,
                                 :allow_destroy => true,
-                                :reject_if => lambda { |attr| attr['name'].blank? || attr['amount'].to_i < 1  }
+                                :reject_if => lambda { |attr| attr['name'].blank? || attr['amount'].to_i < 0  }
 
   scope :archived, lambda { where( :archived => true) }
   scope :unarchived, lambda { where( :archived => false) }
