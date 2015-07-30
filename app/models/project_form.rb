@@ -62,6 +62,7 @@ class ProjectForm
       @errors = @project.errors
     end
 
+    append_new_rate
 
     errors.blank?
   end

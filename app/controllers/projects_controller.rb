@@ -34,7 +34,6 @@ class ProjectsController < ApplicationController
       expire_fragment "project_picker"
       redirect_to(@project_form.project)
     else
-      @project_form.append_new_rate
       render :action => "new"
     end
   end
@@ -49,7 +48,6 @@ class ProjectsController < ApplicationController
       flash[:notice] = 'Project was successfully updated.'
       redirect_to :action => "index"
     else
-      @project_form.append_new_rate
       render :action => "edit"
     end
   rescue ActiveRecord::ActiveRecordError
