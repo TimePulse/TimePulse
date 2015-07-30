@@ -17,14 +17,12 @@ class ProjectsController < ApplicationController
   def new
     @project_form = ProjectForm.new
     @project_form.set_defaults
-    @project_form.form_options = {url: projects_path, method: :post}
   end
 
   # GET /projects/1/edit
   def edit
     @project_form = ProjectForm.find(params[:id])
     @project_form.append_new_rate if @project_form.project.parent == Project.root
-    @project_form.form_options = {url: project_path(params[:id]), method: :put}
   end
 
   # POST /projects
@@ -37,7 +35,6 @@ class ProjectsController < ApplicationController
       redirect_to(@project_form.project)
     else
       @project_form.append_new_rate
-      @project_form.form_options = {url: projects_path, method: :post}
       render :action => "new"
     end
   end
@@ -53,7 +50,6 @@ class ProjectsController < ApplicationController
       redirect_to :action => "index"
     else
       @project_form.append_new_rate
-      @project_form.form_options = {url: project_path(params[:id]), method: :put}
       render :action => "edit"
     end
   rescue ActiveRecord::ActiveRecordError

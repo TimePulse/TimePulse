@@ -2,14 +2,18 @@ require 'spec_helper'
 
 describe "/projects/edit" do
   include ProjectsHelper
+  
 
   before(:each) do
     @project = FactoryGirl.create(:project)
     @project_form = ProjectForm.find(@project)
     @project_form.append_new_rate
-    @project_form.form_options = {url: project_path(@project), method: :put}
     
     assign(:project_form, @project_form)
+
+#    view.stub(:project_form_options).and_return({url: project_path(@project), method: :put})
+    view.stub(:action_name).and_return("edit")
+
   end
 
   it "should succeed" do
