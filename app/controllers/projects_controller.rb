@@ -22,7 +22,6 @@ class ProjectsController < ApplicationController
   # GET /projects/1/edit
   def edit
     @project_form = ProjectForm.find(params[:id])
-    @project_form.append_new_rate if @project_form.project.parent == Project.root
   end
 
   # POST /projects
@@ -40,8 +39,7 @@ class ProjectsController < ApplicationController
 
   # PUT /projects/1
   def update
-    @project_form = ProjectForm.find(params[:id])
-    @project_form.attributes = project_form_params
+    @project_form = ProjectForm.find(params[:id], project_form_params)
     if @project_form.save
       expire_fragment "picker_node_#{@project_form.project.id}"
       expire_fragment "project_picker"
