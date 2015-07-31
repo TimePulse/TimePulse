@@ -31,10 +31,17 @@ class ProjectForm
 #     else
       
   
-  def self.find(id)
-    project_form = self.new
-    project_form.project = Project.find(id)
-    project_form.attributes = project_form.project.attributes
+  def self.find(id, attribute_params = nil)
+    project = Project.find(id)
+    project_form = self.new(project.attributes)
+    project_form.project = project
+    if attribute_params
+      project_form.attributes = attribute_params
+    else
+      # attributes are passed in on "update" and not passed on "edit".
+      # The blank rate should only be added on "edit"
+      project_form.append_new_rate if project.parent == Project.root
+    end
     project_form
   end
   
@@ -57,8 +64,8 @@ class ProjectForm
     assign_rates
 
     @project.save
-      
-    unless project.errors.blank?
+    
+    unless @project.errors.blank?
       @errors = @project.errors
     end
 
