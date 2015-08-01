@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe ProjectsController do
+describe ProjectForm do
   let :project do
-    FactoryGirl.create(:project, :with_rate)
+    FactoryGirl.create(:project, :with_rate, :with_repo, {clockable: false})
   end
   
   let :client do
@@ -103,111 +103,55 @@ describe ProjectsController do
       end
     end
   end
+  
+  context ", when find is called" do
+    context "without attribute parameters," do
+      let :project_form do
+        ProjectForm.find(project.id)
+      end
+      
+      it "assigns the project to the project form" do
+        project_form.project.should == project
+      end
+      
+      it "assigns the project's attributes to the project form" do
+        project_form.name.should == project.name
+        project_form.parent_id.should == project.parent.id
+        project_form.clockable.should be_false
+        project_form.archived.should == project.archived
+        project_form.pivotal_id == project.pivotal_id
+      end
+        
+      it "builds an extra rate" do
+        expect(project_form.project.rates.length).to eq(project.rates.length + 1)
+      end
+      
+    end
+    
+    context "with attribute parameters" do
+      let :project_form do
+        ProjectForm.find(project.id, valid_parameters)
+      end
+      
+      it "assigns the project to the project form" do
+        project_form.project.should == project
+      end
+      
+      it "assigns the project's attributes to the project form" do
+        project_form.archived.should == project.archived
+        project_form.pivotal_id == project.pivotal_id
+      end
+      
+      it "overwrites the projects attributes with the attribute parameters" do
+        project_form.name.should == valid_parameters[:name]
+        project_form.parent_id.should == valid_parameters[:parent_id]
+        project_form.client_id.should == valid_parameters[:client_id]
+        project_form.clockable.should == valid_parameters[:clockable]
+      end
+      
+      it "does not build an extra rate" do
+        expect(project_form.project.rates.length).to eq(project.rates.length)
+      end
+    end
+  end
 end
-          
-
-#       end
-#   end
-
-#       it "assigns the requested project as @project" do
-#         @project.rates.clear
-#         get :edit, :id => @project.id
-#         verify_authorization_successful
-#         assigns[:project_form][:project].should ==  @project
-#         assigns[:project_form][:project].rates.size.should == 1
-#       end
-#     describe "POST create" do
-
-#       describe "with valid params" do
-#         it "assigns a newly created project as @project" do
-#           post :create, project_form: { name: 'Cool Project', parent_id: @project.id, clockable: false }
-#           verify_authorization_successful
-#           assigns[:project_form][:project].should be_a(Project)
-#           assigns[:project_form][:project].should_not be_new_record
-#           assigns[:project_form][:project].parent.should == @project
-#         end
-
-#         it "redirects to the created project" do
-#           post :create, project_form:  { name: 'Cool Project', parent_id: @project.id, clockable: false }
-#           verify_authorization_successful
-#           response.should redirect_to(project_url(assigns[:project_form][:project]))
-#         end
-#       end
-
-#       describe "with invalid params" do
-#         it "assigns a newly created but unsaved project as @project" do
-#           post :create, project_form: { name: '' }
-#           verify_authorization_successful
-#           assigns[:project_form][:project].should be_a(Project)
-#           assigns[:project_form][:project].should be_new_record
-#           assigns[:project_form][:project].rates.size.should == 1
-#         end
-
-#         it "re-renders the 'new' template" do
-#           post :create, project_form: { name: '' }
-#           verify_authorization_successful
-#           response.should render_template('new')
-#         end
-#       end
-
-#     end
-
-#     describe "PUT update" do
-
-#       describe "with valid params" do
-#         it "updates the requested project" do
-#           lambda do
-#             put :update, id: @project.id, project_form: {name: 'new name'}
-#             verify_authorization_successful
-#           end.should change{ @project.reload.name }.to('new name')
-#         end
-
-#         it "assigns the requested project as @project" do
-#           put :update, id: @project.id, project_form: {name: 'new name'}
-#           verify_authorization_successful
-#           assigns[:project_form][:project].should == @project
-#         end
-
-#         it "redirects to the project" do
-#           put :update, id: @project.id, project_form: {name: 'new name'}
-#           verify_authorization_successful
-#           response.should redirect_to(projects_url)
-#         end
-
-#         it "can set the project to archived" do
-#           put :update, id: @project.id, project_form: {archived: true}
-#           @project.reload.should be_archived
-#         end
-
-#         it "can set the project rates" do
-#           put :update, id: @project.id, project_form: {rates_attributes: {"0" => {name: "Senior Captain", amount: "175" }}}
-#           @project.reload.rates.count.should == 2
-#           @project.reload.rates[1].name.should == "Senior Captain"
-#         end
-
-#       end
-
-#       describe "with invalid params" do
-#         it "doesn't change the record" do
-#           lambda do
-#             put :update, id: @project.id, project_form: {name: nil }
-#             verify_authorization_successful
-#           end.should_not change{ @project.reload }
-#         end
-
-#         it "assigns the project as @project" do
-#           @project.rates.clear
-#           put :update, id: @project.id, project_form: {name: nil }
-#           verify_authorization_successful
-#           assigns[:project_form][:project].should == @project
-#           assigns[:project_form][:project].rates.size.should == 1
-#         end
-
-#         it "re-renders the 'edit' template" do
-#           put :update, id: @project.id, project_form: {name: nil }
-#           verify_authorization_successful
-#           response.should render_template('edit')
-#         end
-#       end
-
-#     end
