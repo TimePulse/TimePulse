@@ -15,8 +15,7 @@ class ProjectsController < ApplicationController
 
   # GET /projects/new
   def new
-    @project_form = ProjectForm.new
-    @project_form.set_defaults
+    @project_form = ProjectForm.new(nil, set_defaults: true)
   end
 
   # GET /projects/1/edit

@@ -21,15 +21,10 @@ class ProjectForm
   
   attr_accessor :project, :form_options
 
-#   after_initialize :set_form_options
-
-#   def set_form_options
-#     debugger
-#     if ["new", "create"].includes? caller_locations(1,1)[0].label
-#       @form_options = {url: project_path(params[:id]), method: :put}
-#       set_defaults
-#     else
-      
+  def initialize (attributes_params = nil, options = {set_defaults: false})
+    set_defaults if options[:set_defaults]
+    self.attributes = attributes_params if attributes_params
+  end
   
   def self.find(id, attribute_params = nil)
     project = Project.find(id)
