@@ -63,6 +63,7 @@ TimePulse was first built as an internal time-tracking application for LRD in ea
 * [Nate Berggren](http://github.com/baksmak)
 * [Scott Van Essen](http://github.com/purplebaron)
 * [Tom Jakubowski](http://github.com/tomjakubowski)
+* [Anne Vetto](http://github.com/anniee)
 
 ## LICENSE
 
