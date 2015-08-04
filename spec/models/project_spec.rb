@@ -31,6 +31,10 @@ describe Project do
     FactoryGirl.create(:project)
   end
 
+  it "should require a parent project unless root" do
+    project.parent_id.should be_valid
+  end
+
   it "should require a name" do
     FactoryGirl.build(:project, :name => nil).should_not be_valid
   end
