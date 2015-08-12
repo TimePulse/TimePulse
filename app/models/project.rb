@@ -41,7 +41,11 @@ class Project < ActiveRecord::Base
 
   before_save :no_rates_for_children, :cascade_client
 
-  validates :parent_id, presence: true
+  validates :parent_id, presence: true, unless: :name_is_root?
+  def name_is_root?
+    self.name == 'root'
+  end
+
 
   def is_base_project?
     parent == root

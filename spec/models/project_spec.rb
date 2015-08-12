@@ -31,8 +31,16 @@ describe Project do
     FactoryGirl.create(:project)
   end
 
-  it "should require a parent project unless root" do
-    project.parent_id.should be_valid
+  it "should not be valid if has no parent" do
+    FactoryGirl.build(:project, :parent_id => nil).should_not be_valid
+  end
+
+  it "should be valid if has parent" do
+    FactoryGirl.build(:project, :parent_id => 1).should be_valid
+  end
+
+  it "without parent should be valid if its name is root " do
+    FactoryGirl.build(:project, :parent_id => nil, :name => "root").should be_valid
   end
 
   it "should require a name" do
