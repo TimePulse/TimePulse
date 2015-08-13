@@ -29,7 +29,7 @@ group :assets do
   gem 'sass-rails',   '~> 4.0'
   gem 'uglifier', '>= 1.0.3'
 
-  gem 'zurb-foundation', '~> 4.0.0'
+  gem 'foundation-rails'
   gem 'quiet_assets'
   gem 'compass-rails'
 end
