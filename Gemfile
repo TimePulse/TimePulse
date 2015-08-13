@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.0.13'
+gem 'rails', '~> 4.1'
 gem 'rack'
 gem 'pg'
 
@@ -26,7 +26,7 @@ gem 'bibliotech'
 gem 'business_time'
 
 group :assets do
-  gem 'sass-rails',   '~> 4.0'
+  gem 'sass-rails'
   gem 'uglifier', '>= 1.0.3'
 
   gem 'zurb-foundation', '~> 4.0.0'
@@ -35,8 +35,8 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'rspec', "~> 2.13.0"
-  gem 'rspec-rails', "~> 2.13.0"
+  gem 'rspec', "~> 3.0.0"
+  gem 'rspec-rails', "~> 3.0.0"
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
@@ -53,7 +53,8 @@ end
 group :test do
   gem 'simplecov', '~> 0.7.1', :platform => "ruby_19"
   gem 'simplecov-vim', :platform => "ruby_19"
-  gem 'fuubar', "~> 1.2.1"
+  gem 'rspec-its'
+  gem 'fuubar'
   gem 'vcr'
   gem 'webmock'
   gem 'timecop'

@@ -105,7 +105,6 @@ describe ClockTimeController do
       end
 
       describe "with AJAX" do
-        render_views
 
         before(:each) { @request.env['HTTP_ACCEPT'] = 'application/javascript' }
         it "should respond with javascript" do
