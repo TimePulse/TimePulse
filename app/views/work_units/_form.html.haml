@@ -1,15 +1,15 @@
-/ #work_unit_form
-/   = form_for(@work_unit) do |f|
-/     = f.error_messages
-/     = f.hidden_field  :calculate, :value => true
+#work_unit_form
+  = form_for(@work_unit) do |f|
+    = f.error_messages
+    = f.hidden_field  :calculate, :value => true
 
-/     = f.labeled_input(:project_id) { project_selector(f) }
-/     = f.labeled_input(:billable) do
-/       = f.check_box(:billable)
-/     = labeled_datetimepicker_field f, :start_time
-/     = labeled_datetimepicker_field f, :stop_time
+    = f.labeled_input(:project_id) { project_selector(f) }
+    = f.labeled_input(:billable) do
+      = f.check_box(:billable)
+    = labeled_datetimepicker_field f, :start_time
+    = labeled_datetimepicker_field f, :stop_time
 
-/     = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
-/     = f.labeled_input :notes do
-/       = f.text_area :notes, :size => 30
-/     = f.unlabeled_submit "Submit"
+    = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
+    = f.labeled_input :notes do
+      = f.text_area :notes, :size => 30
+    = f.unlabeled_submit "Submit"

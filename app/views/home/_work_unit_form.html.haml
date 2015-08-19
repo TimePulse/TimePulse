@@ -1,29 +1,29 @@
-/ #work_unit_form
-/   %h3 Enter/Record Hours:
-/   - if current_project.clockable?
-/     %p
-/       Hours are not forced to the difference between start and stop: you may enter "I worked 2 hours
-/       between 9am and 1pm", for example.  If hours are left blank, they will be computed as
-/       the difference between start and stop time.
-/     = form_for(new_work_unit_for_current_project, :html => {:class => "ajax-form"}) do |f|
-/       = f.error_messages
-/       = f.hidden_field  :calculate, :value => true
+#work_unit_form
+  %h3 Enter/Record Hours:
+  - if current_project.clockable?
+    %p
+      Hours are not forced to the difference between start and stop: you may enter "I worked 2 hours
+      between 9am and 1pm", for example.  If hours are left blank, they will be computed as
+      the difference between start and stop time.
+    = form_for(new_work_unit_for_current_project, :html => {:class => "ajax-form"}) do |f|
+      = f.error_messages
+      = f.hidden_field  :calculate, :value => true
 
-/       = f.labeled_input(:billable) do
-/         - if current_project.billable?
-/           = f.check_box(:billable, :checked => true)
-/         - else
-/           = f.check_box(:billable, :checked => false)
+      = f.labeled_input(:billable) do
+        - if current_project.billable?
+          = f.check_box(:billable, :checked => true)
+        - else
+          = f.check_box(:billable, :checked => false)
 
-/       = labeled_datetimepicker_field f, :start_time
-/       = labeled_datetimepicker_field f, :stop_time
+      = labeled_datetimepicker_field f, :start_time
+      = labeled_datetimepicker_field f, :stop_time
 
-/       = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
-/       = f.labeled_input :notes do
-/         = f.text_area :notes, :size => 30
+      = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
+      = f.labeled_input :notes do
+        = f.text_area :notes, :size => 30
 
-/       = f.unlabeled_submit "Save Changes"
-/   - else
-/     %p
-/       This is not a clockable project.  To enter hours, you will need to select a
-/       different project or a clockable subproject.
+      = f.unlabeled_submit "Save Changes"
+  - else
+    %p
+      This is not a clockable project.  To enter hours, you will need to select a
+      different project or a clockable subproject.
