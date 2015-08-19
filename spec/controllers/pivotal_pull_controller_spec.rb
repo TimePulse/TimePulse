@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pivotal-tracker'
 
 describe PivotalPullController, :vcr => {} do
   before do
