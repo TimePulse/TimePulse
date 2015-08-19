@@ -24,4 +24,24 @@
         = clock_in_widget(current_user.current_project, nil, :class => :button)
       - else
         %p Please select a clockable project if you wish to clock in.
+  = link_to "(+ show manual time entry)", '#', :id => 'manual_entry_trigger'
+  %br
+  = link_to "(+ close manual time entry)", '#', :id => 'manual_entry_collapse'
+  #work_unit_form
+    = form_for(new_work_unit_for_current_project, :html => {:class => "ajax-form"}) do |f|
+      = f.error_messages
+      = f.hidden_field  :calculate, :value => true
 
+      = f.labeled_input(:billable) do
+        - if current_project.billable?
+          = f.check_box(:billable, :checked => true)
+        - else
+          = f.check_box(:billable, :checked => false)
+
+      = labeled_datetimepicker_field f, :start_time
+      = labeled_datetimepicker_field f, :stop_time
+
+      = f.labeled_input :hours, :placeholder => "Decimal or HH:MM"
+      = f.labeled_input :notes, :size => 15
+
+      = f.unlabeled_submit "Save Changes"
