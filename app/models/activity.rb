@@ -13,6 +13,8 @@ class Activity < ActiveRecord::Base
 
   scope :story_changes, lambda { where("defined(properties, ?)", "current_state") }
 
+  scope :orphan, lambda { where(:work_unit_id => nil) }
+
   #TODO Fix these - it may involve using STI so we have actual classes for each
   #activity type
   def story_id
