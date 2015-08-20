@@ -1,5 +1,9 @@
 require 'spec_helper'
 
+# TODO
+# Revise specs to test for multiple repositories
+# Possibly also need a spec for the github_pull model (none exists now)
+
 describe GithubPullController, :vcr => {} do
   before do
     @project = FactoryGirl.create(:project)
@@ -49,7 +53,7 @@ describe GithubPullController, :vcr => {} do
 
     describe "POST create" do
       let :github_project do
-        FactoryGirl.create(:project, :github_url => "http://github.com/a_project/with_commits")
+        FactoryGirl.create(:project, :with_repo)
       end
 
       let :number_of_commits_in_repository do

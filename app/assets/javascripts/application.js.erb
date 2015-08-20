@@ -11,6 +11,7 @@
 //= require moment.min
 //= require fullcalendar
 //= require_tree ./ninjascripts/
+//= require nested_form_fields
 
 $('document').ready( function(){
   startClock();
@@ -21,7 +22,7 @@ $('document').ready( function(){
   if ($('.rates-users-container').size() > 0) {
     setupRatesUsersDragDrop();
   }
-  if ($('select#project_parent_id').val() != 1) { // Not sure the best way to not hard code the ID in this app
+  if ($('select#project_form_parent_id').val() != 1) { // Not sure the best way to not hard code the ID in this app
     $('fieldset.rates').hide();
   }
 
@@ -152,7 +153,7 @@ Ninja.behavior({
         $('#timeclock #overrides').slideDown();
       }
     },
-    'select#project_parent_id': {
+    'select#project_form_parent_id': {
       change: function(evnt, elem) {
         if ($(elem).val() == 1) {
           $('fieldset.rates').show();
@@ -168,6 +169,7 @@ Ninja.behavior({
         var rows = tbody.find('tr');
         var rowCount = rows.size();
         var row = rows.first().clone();
+        row.find('td.rate-actions').empty(); // No remove checkbox on new rows
         var inputs = row.find('input');
         inputs.val('');
         inputs.each(function (i, input) {

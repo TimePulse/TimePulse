@@ -117,7 +117,10 @@ describe InvoiceReport, type: :presenter do
         params
       end
 
-      let! :valid_commit do GithubCommit.new(valid_commit_params).save; Activity.last end
+      let! :valid_commit do
+        GithubCommit.new(valid_commit_params).save
+        Activity.last
+      end
 
       let :just_out_params do
         params = commit_params
@@ -128,7 +131,10 @@ describe InvoiceReport, type: :presenter do
         params
       end
 
-      let! :just_out_commit do GithubCommit.new(just_out_params).save; Activity.last end
+      let! :just_out_commit do
+        GithubCommit.new(just_out_params).save
+        Activity.last
+      end
 
       it "should match commits" do
         @report = InvoiceReport::DateReport.new([work_unit])

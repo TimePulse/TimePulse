@@ -27,7 +27,6 @@ module ApplicationHelper
     end
   end
 
-
   def clocked_in_project?(project)
     return true if current_work_unit && current_work_unit.project == project
   end
