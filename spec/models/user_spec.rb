@@ -37,7 +37,7 @@ describe User do
   end
 
   it "should create a new instance given valid attributes" do
-    User.unsafe_create(@valid_attributes)
+    User.create(@valid_attributes)
   end
 
   it "should succeed creating a new :user from the Factory" do
