@@ -4,8 +4,10 @@ describe "/projects/new" do
   include ProjectsHelper
 
   before(:each) do
-    assign(:project, @project = FactoryGirl.build(:project))
-    @project.rates.build
+    @project_form = ProjectForm.new
+    @project_form.set_defaults
+    assign(:project_form, @project_form)
+    view.stub(:action_name).and_return("new")
   end
 
   it "should succeed" do
@@ -20,7 +22,7 @@ describe "/projects/new" do
 
   it "renders inputs for a rate" do
     render
-    rendered.should have_selector('input[name="project[rates_attributes][0][name]"]')
-    rendered.should have_selector('input[name="project[rates_attributes][0][amount]"]')
+    rendered.should have_selector('input[name="project_form[rates_attributes][0][name]"]')
+    rendered.should have_selector('input[name="project_form[rates_attributes][0][amount]"]')
   end
 end

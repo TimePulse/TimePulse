@@ -7,36 +7,42 @@ class GithubUpdate < GithubCommitSaver
 
   protected
 
-  def commit_params(commit)
+  def commit_params(commit, project)
     params = commit
     params[:project_id] = project.id
     params[:branch] = branch
     params
   end
 
-  def project
-
-    unless @project
+  def projects
+    unless @projects
+      @projects = []
       url = repository[:url]
-      @project = Project.where(:github_url => url).first
-    end
+      Repository.where(url: url).each do |repo|
+        @projects << repo.project
+      end
 
-    #catch same URL with alternate or protocol
-    unless @project
+      #catch same URL with alternate or protocol
       protocol, location = url.split("://")
-      @project = Project.where(:github_url => location).first
-    end
+      Repository.where(url: location).each do |repo|
+        @projects << repo.project
+      end
 
-    unless @project
       if (protocol == "https")
         new_url = "http://" + location
       else
         new_url = "https://" + location
       end
-      @project = Project.where(:github_url => new_url).first
+
+      Repository.where(url: new_url).each do |repo|
+        @projects << repo.project
+      end
+      if @projects.blank?
+        Rails.logger.warn "No match for Github webhook with url #{url}"
+      end
     end
 
-    @project
+    @projects
 
   end
 
