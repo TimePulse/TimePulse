@@ -32,10 +32,11 @@ class ActivityBuilder
       find_user
       find_work_unit
       @activity = Activity.new(activity_params)
-      @activity.user_id = @user ? @user.id : nil
-      @activity.project_id = @project ? @project.id : nil
-      @activity.work_unit_id = @work_unit ? @work_unit.id : nil
+      @activity.user_id = user ? user.id : nil
+      @activity.project_id = project ? project.id : nil
+      @activity.work_unit_id = work_unit ? work_unit.id : nil
     end
+
     if activity.valid?
       true
     else
