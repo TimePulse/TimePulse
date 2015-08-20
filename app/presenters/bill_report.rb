@@ -46,7 +46,7 @@ class BillReport
         clockable_projects.map do |proj|
           Project.new(
             project_name_with_client(proj),
-            ProjectWorkQuery.new(bill.work_units.billable).find_for_project(proj).sum(:hours)
+            ProjectWorkQuery.new(bill.work_units.billable).find_for_project(proj, :exclusive => true).sum(:hours)
           )
         end
       end

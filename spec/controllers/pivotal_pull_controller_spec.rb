@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pivotal-tracker'
 
 describe PivotalPullController, :vcr => {} do
   before do
@@ -43,7 +44,7 @@ describe PivotalPullController, :vcr => {} do
         end
       end
 
-      let :number_of_activities_for_project do 3 end
+      let(:number_of_activities_for_project){ 3 }
 
       before do
         unless defined?(::API_KEYS)
