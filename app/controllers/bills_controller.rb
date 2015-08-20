@@ -14,6 +14,7 @@ class BillsController < ApplicationController
 
   # GET /bills/1
   def show
+    @report = BillReport.new(@bill)
   end
 
   # GET /bills/new
