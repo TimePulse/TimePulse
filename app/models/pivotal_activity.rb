@@ -57,4 +57,12 @@ class PivotalActivity < ActivityBuilder
     end
   end
 
+  def find_work_unit
+    if @user && @project
+      WorkUnit.where(user: @user, project: @project).each do |work_unit|
+        return @work_unit = work_unit if work_unit.includes_time(@occurred_at)
+      end
+    end
+  end
+
 end
