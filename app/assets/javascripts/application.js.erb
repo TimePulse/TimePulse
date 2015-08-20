@@ -154,6 +154,7 @@ Ninja.behavior({
     },
      '#timeclock a#manual_entry_trigger': {
       click: function(evnt, elem) {
+        console.log("am i here");
         $('#timeclock #manual_entry_trigger').hide();
         $('#work_unit_form').slideDown();
         $('#timeclock #manual_entry_collapse').show();
