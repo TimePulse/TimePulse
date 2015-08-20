@@ -28,7 +28,7 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "should pre-check the billable box" do
-    click_link "manual_entry_trigger"
+    # click_link "manual_entry_trigger"
     within "#work_unit_form" do
       page.should have_checked_field( 'work_unit_billable' )
     end
