@@ -28,8 +28,8 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "should pre-check the billable box" do
-    click_button 'manual_entry_trigger'
-    within "#new_work_unit" do
+    click_link "manual_entry_trigger"
+    within "#work_unit_form" do
       page.should have_checked_field( 'work_unit_billable' )
     end
   end
@@ -82,11 +82,12 @@ steps "User manually enters work units", :type => :feature do
     end
   end
 
-  it "should pre-check the billable box for the next work unit" do
-    within "#new_work_unit" do
-      page.should have_checked_field( 'work_unit_billable' )
-    end
-  end
+  # it "should pre-check the billable box for the next work unit" do
+  #   click_link "manual_entry_trigger"
+  #   within "#work_unit_form" do
+  #     page.should have_checked_field( 'work_unit_billable' )
+  #   end
+  # end
 
   it "when I fill in valid work unit information" do
     within "#new_work_unit" do
@@ -123,13 +124,13 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "should not pre-check the billable box" do
-    within "#new_work_unit" do
+    within "#work_unit_form" do
       page.should have_unchecked_field( 'work_unit_billable' )
     end
   end
 
     it "when I fill in valid work unit information" do
-    within "#new_work_unit" do
+    within "#work_unit_form" do
       find('#work_unit_billable').set(true)
     end
     fill_in "Start time", :with => (@start_time = (Time.zone.now - 3.hours)).to_s(:short_datetime)
@@ -155,7 +156,7 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "should not pre-check the billable box" do
-    within "#new_work_unit" do
+    within "#work_unit_form" do
       page.should have_unchecked_field( 'work_unit_billable' )
     end
   end
