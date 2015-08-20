@@ -185,8 +185,8 @@ namespace :db do
       Project.where(:parent_id => Project.root.id).each do |project|
         User.where(admin: false).each_with_index do |user, i|
           Rate.create!(
-            :name => "Rate #{i}",
-            :amount => 50 * i,
+            :name => "Rate #{i += 1}",
+            :amount => (50 * i),
             :project => project,
             :users => [user]
           )
