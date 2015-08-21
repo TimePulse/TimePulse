@@ -22,6 +22,7 @@ $('document').ready( function(){
   if ($('.rates-users-container').size() > 0) {
     setupRatesUsersDragDrop();
   }
+  //id changed from #project_parent_id
   if ($('select#project_form_parent_id').val() != 1) { // Not sure the best way to not hard code the ID in this app
     $('fieldset.rates').hide();
   }
@@ -153,6 +154,21 @@ Ninja.behavior({
         $('#timeclock #overrides').slideDown();
       }
     },
+     '#timeclock a#manual_entry_trigger': {
+      click: function(evnt, elem) {
+        $('#timeclock #manual_entry_trigger').hide();
+        $('#work_unit_form').slideDown();
+        $('#timeclock #manual_entry_collapse').show();
+      }
+    },
+    '#timeclock a#manual_entry_collapse': {
+      click: function(evnt, elem) {
+        $('#timeclock #manual_entry_collapse').hide();
+        $('#work_unit_form').slideUp();
+        $('#timeclock #manual_entry_trigger').show();
+      }
+    },
+    // id changed here
     'select#project_form_parent_id': {
       change: function(evnt, elem) {
         if ($(elem).val() == 1) {
