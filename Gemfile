@@ -36,8 +36,8 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'rspec', "~> 2.13.0"
-  gem 'rspec-rails', "~> 2.13.0"
+  gem 'rspec', "< 3.2"
+  gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
@@ -55,12 +55,13 @@ end
 group :test do
   gem 'simplecov', '~> 0.7.1', :platform => "ruby_19"
   gem 'simplecov-vim', :platform => "ruby_19"
-  gem 'fuubar', "~> 1.2.1"
+  gem 'fuubar'
   gem 'vcr'
   gem 'webmock'
   gem 'timecop'
   gem "codeclimate-test-reporter", :require => nil
   gem 'json_spec'
+  gem 'rspec-steps', "= 1.0.7"
 end
 
 group :development do
