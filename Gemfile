@@ -19,7 +19,8 @@ gem 'dynamic_form'
 gem 'i18n_alchemy'
 gem 'virtus'
 gem 'github_api', "~> 0.11.1"
-gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
+gem 'rest-client'
+gem 'lrd-pivotal-tracker', "= 0.5.14"
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
 gem 'bibliotech'
