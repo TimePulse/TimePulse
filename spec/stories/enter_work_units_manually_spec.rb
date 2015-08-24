@@ -27,28 +27,16 @@ steps "User manually enters work units", :type => :feature do
     end
   end
 
-  #It seems default-hidden elements like the work unit form are visible to capybara
-  #before clicking the manual time entry link. This is the proper way to test the following
-  #when the capybara driver/hidden element visibility issue is resolved:
-    # page.should_not have_content("Enter/Record Hours")
-    # page.should_not have_content("(+ close manual time entry)")
-    # click_link "(+ show manual time entry)"
-    # page.should have_content("Enter/Record Hours")
-    # page.should_not have_content("(+ show manual time entry)")
-    # click_link "(+ close manual time entry)"
-    # page.should_not have_content("Enter/Record Hours")
-    # page.should have_content("(+ show manual time entry)")
-    # page.should_not have_content("(+ close manual time entry)")
-  #Until that is resolved, and in the interest of time and priorities, I have to test
-  #expanding/collapsing the work unit form this way, using the absence of clicked manual
-  #time entry show/close links as indicators of the form being shown or hidden to the user
-  #(since the default-hidden form and links are always initially visible to capybara)
-
   it "should open and close the manual time entry form when relevant links are clicked" do
+    page.should_not have_content("Enter/Record Hours")
+    page.should_not have_content("(+ close manual time entry)")
     click_link "(+ show manual time entry)"
+    page.should have_content("Enter/Record Hours")
     page.should_not have_content("(+ show manual time entry)")
     click_link "(+ close manual time entry)"
+    page.should_not have_content("Enter/Record Hours")
     page.should have_content("(+ show manual time entry)")
+    page.should_not have_content("(+ close manual time entry)")
   end
 
   it "should pre-check the billable box" do
