@@ -61,6 +61,8 @@ class WorkUnit < ActiveRecord::Base
   belongs_to :project
   belongs_to :invoice
   belongs_to :bill
+  has_many :work_units
+  has_many :activities
 
   validates_presence_of :project_id
   validates_presence_of :user_id
@@ -128,6 +130,10 @@ class WorkUnit < ActiveRecord::Base
   #TODO: spec this method
   def rate
     self.user.rate_for(self.project)
+  end
+
+  def includes_time(time_to_be_checked)
+    time_to_be_checked > self.start_time && (self.in_progress? || time_to_be_checked < stop_time)
   end
 
   validate :no_double_clocking

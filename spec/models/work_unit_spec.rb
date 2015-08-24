@@ -185,13 +185,15 @@ describe WorkUnit do
 
   describe "billable" do
     it "should get set to true when the project is billable" do
-      @proj = FactoryGirl.create(:project, :billable => true)
-      FactoryGirl.create(:work_unit, :project => @proj).should be_billable
+      proj = FactoryGirl.create(:project, :billable => true)
+      proj.work_units.create().should be_billable
+      FactoryGirl.create(:work_unit, :project => proj).should be_billable
     end
     it "should get set to false when the project is not billable" do
-      @proj = FactoryGirl.create(:project, :billable => false)
-      @proj.should_not be_billable
-      @proj.work_units.create().should_not be_billable
+      proj = FactoryGirl.create(:project, :billable => false)
+      proj.work_units.create().should_not be_billable
+      wu = FactoryGirl.create(:work_unit, :project => proj, :billable => nil)
+      wu.reload.should_not be_billable
     end
   end
 

@@ -51,7 +51,7 @@ class InvoiceReport
       stop_time = work_unit.stop_time.advance(:minutes => 15)
       commits = work_unit.user.git_commits_for(work_unit.project).where("time >= ? and time <= ?", start_time, stop_time)
       commits.to_a.map do |commit|
-        truncate(commit.properties['id'], :length => 10) + " \"#{commit.description}\""
+        truncate(commit.source_id, :length => 10) + " \"#{commit.description}\""
       end
     end
 

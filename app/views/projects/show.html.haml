@@ -21,9 +21,11 @@
     =h @project.description
 
   %p
-    %strong Github URL:
+    %strong Repository URLs:
     %br
-    =h @project.github_url
+    - @project.repositories.each do |repo|
+      =h repo.url
+      %br
 
   %p
     %strong Pivotal Project ID:

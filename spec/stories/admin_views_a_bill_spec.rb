@@ -8,9 +8,9 @@ steps 'Admin views a bill', :type => :feature do
 
   let! :admin do FactoryGirl.create(:admin) end
   let! :user do FactoryGirl.create(:user) end
-  let! :project do FactoryGirl.create(:project) end
-  let! :child_project do FactoryGirl.create(:project, :parent_id => project.id) end
-  let! :grandchild_project do FactoryGirl.create(:project, :parent_id => child_project.id) end
+  let! :project do FactoryGirl.create(:project, :name => "Topmost") end
+  let! :child_project do FactoryGirl.create(:project, :name => "Middle", :parent_id => project.id) end
+  let! :grandchild_project do FactoryGirl.create(:project, :name => "Bottom", :parent_id => child_project.id) end
   let! :bill do FactoryGirl.create(:bill) end
 
   2.times do |idx|
