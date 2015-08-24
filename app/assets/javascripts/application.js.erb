@@ -152,6 +152,20 @@ Ninja.behavior({
         $('#timeclock #overrides').slideDown();
       }
     },
+     '#timeclock a#manual_entry_trigger': {
+      click: function(evnt, elem) {
+        $('#timeclock #manual_entry_trigger').hide();
+        $('#work_unit_form').slideDown();
+        $('#timeclock #manual_entry_collapse').show();
+      }
+    },
+    '#timeclock a#manual_entry_collapse': {
+      click: function(evnt, elem) {
+        $('#timeclock #manual_entry_collapse').hide();
+        $('#work_unit_form').slideUp();
+        $('#timeclock #manual_entry_trigger').show();
+      }
+    },
     'select#project_parent_id': {
       change: function(evnt, elem) {
         if ($(elem).val() == 1) {
