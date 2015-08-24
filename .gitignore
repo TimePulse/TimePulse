@@ -67,3 +67,4 @@ public/test-assets/
 .idea/
 *.orig
 config/bibliotech/
+secrets.yml
