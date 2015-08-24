@@ -30,7 +30,15 @@ end
 
 
 RSpec.configure do |config|
-  config.mock_with :rspec
+
+  #fix deprecation error, enabling both 'should' and 'expect' syntax
+  config.mock_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+
+  config.expect_with :rspec do |expectations|
+    expectations.syntax = [:should, :expect]
+  end
 
   config.infer_spec_type_from_file_location!
 

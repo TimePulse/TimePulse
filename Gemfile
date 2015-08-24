@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.1'
+gem 'rails', '~> 4.1.0'
 gem 'rack'
 gem 'pg'
 
@@ -38,6 +38,7 @@ end
 group :development, :test do
   gem 'rspec', "~> 3.0.0"
   gem 'rspec-rails', "~> 3.0.0"
+  gem 'rspec-legacy_formatters'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
