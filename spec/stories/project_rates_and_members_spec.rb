@@ -50,10 +50,10 @@ steps "adding rates to a project", :type => :feature do
   end
 
   it "should have empty fields for a new rate" do
-    select_from_chosen("root", {:from =>'project_parent_id' })
+    select_from_chosen("root", {:from =>'project_form_parent_id' })
 
-    page.should have_field('project[rates_attributes][0][name]')
-    page.should have_field('project[rates_attributes][0][amount]')
+    page.should have_field('project_form[rates_attributes][0][name]')
+    page.should have_field('project_form[rates_attributes][0][amount]')
   end
 
   it "should have link to add another rate" do
@@ -63,8 +63,8 @@ steps "adding rates to a project", :type => :feature do
   it "should add another set of rate fields when 'add rate' link is clicked" do
     click_link('Add Rate')
 
-    page.should have_field('project[rates_attributes][1][name]')
-    page.should have_field('project[rates_attributes][1][amount]')
+    page.should have_field('project_form[rates_attributes][1][name]')
+    page.should have_field('project_form[rates_attributes][1][amount]')
   end
 end
 

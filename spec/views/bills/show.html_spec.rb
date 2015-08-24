@@ -4,11 +4,12 @@ describe "/bills/show" do
   include BillsHelper
 
   before(:each) do
-    assign(:bill, @bill = FactoryGirl.create(:bill))
+    @bill = FactoryGirl.create(:bill)
+    assign(:bill, @bill)
+    assign(:report, BillReport.new(@bill))
   end
 
   it "should succeed" do
     render
-
   end
 end

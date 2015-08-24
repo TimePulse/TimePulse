@@ -1,4 +1,4 @@
-= form_for(@project) do |f|
+= form_for(@project_form, project_form_options ) do |f|
   = f.error_messages
 
   %fieldset.general
@@ -7,14 +7,23 @@
     = f.labeled_input :name
     = f.labeled_input :account
     = f.labeled_input :description
-    = f.labeled_input :github_url
     = f.labeled_input :pivotal_id, :text => "Pivotal Project ID", :comment => "(number at the end of URL for project)"
+
+    = f.nested_fields_for :repositories, @project_form.project.repositories,
+                          legend: 'Repositories' do |ff|
+      -#.repository-fields
+      -#= ff.remove_nested_fields_link 'Remove this repo.', class: 'button radius'
+      = ff.labeled_input :url
+      = ff.label :_destroy, 'remove this repo'
+      = ff.check_box :_destroy
+    = f.add_nested_fields_link :repositories, 'Add another repository.', class: 'button radius'
+
     = f.labeled_input(:clockable){ f.check_box(:clockable) }
     = f.labeled_input(:billable){ f.check_box(:billable)  }
     = f.labeled_input(:flat_rate){ f.check_box(:flat_rate) }
     = f.labeled_input(:archived){ f.check_box(:archived) }
 
-  - if @project.new_record? || @project.is_base_project?
+  - if @project_form.project.new_record? || @project_form.parent_id == 1
     %fieldset.rates.hide-initially
       %legend Rates
 
@@ -24,18 +33,18 @@
             %th Name
             %th Amount
             - unless action_name == 'new'
-              %th.actions Remove
+              %th.rate-actions Remove
         %tfoot
           %tr
             %td{ :colspan => action_name == 'new' ? 2 : 3 }
               %a.add-rate{ :href => '#' } Add Rate
         %tbody
-          = f.fields_for :rates do |ff|
+          = f.fields_for :rates, @project_form.project.rates do |ff|
             %tr
               %td= ff.text_field :name, :class => 'rate-name-field', :placeholder => 'e.g. \'Engineer\''
               %td= ff.text_field :amount, :class => 'rate-amount-field', :placeholder => 'e.g. \'100\''
               - unless action_name == 'new'
-                %td.actions
+                %td.rate-actions
                   - if ff.object.persisted?
                     = ff.check_box :_destroy
                     = ff.label :_destroy, 'Remove'

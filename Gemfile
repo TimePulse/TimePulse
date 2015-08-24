@@ -19,11 +19,11 @@ gem 'dynamic_form'
 gem 'i18n_alchemy'
 gem 'virtus'
 gem 'github_api', "~> 0.11.1"
-gem 'rest-client'
 gem 'lrd-pivotal-tracker', "= 0.5.14"
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
 gem 'bibliotech'
+gem 'nested_form_fields', :git => 'https://github.com/ncri/nested_form_fields.git'
 gem 'business_time'
 
 group :assets do
@@ -41,6 +41,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
+  gem "byebug", :platforms => [:ruby_20, :ruby_21]
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
   gem 'selenium-webdriver'
@@ -69,5 +70,4 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
-  gem "byebug", :platforms => [:ruby_20, :ruby_21]
 end

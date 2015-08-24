@@ -8,10 +8,11 @@ class GithubCommit < ActivityBuilder
   attr_accessor :author
 
   def build
-    # double check to make sure a commit with this sha is not already in DB
-    @activity = Activity.where('properties @> hstore(:key, :value)',
-                                key: 'id', value: id
-    ).first
+    # double check to make sure a commit with this sha + project_id is not
+    # already in DB
+    @activity = Activity.where(project_id: project_id,
+                               source: "github",
+                               source_id: id).first
     super
   end
 
@@ -23,8 +24,8 @@ class GithubCommit < ActivityBuilder
       :action => "commit",
       :description => message,
       :time => timestamp,
+      :source_id => id,
       :properties => {
-        id: id,
         branch: branch
       }
     })
@@ -40,9 +41,17 @@ class GithubCommit < ActivityBuilder
     if author[:username]
       @user = User.find_by_github_user(author[:username])
     end
-    if !user and author[:email]
+    if !@user and author[:email]
       @user = User.find_by_email(author[:email])
     end
   end
+
+   def find_work_unit
+     if @user && @project
+       WorkUnit.where(user: @user, project: @project).each do |work_unit|
+         return @work_unit = work_unit if work_unit.includes_time(@timestamp)
+       end
+     end
+   end
 
 end

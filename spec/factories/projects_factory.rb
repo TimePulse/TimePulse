@@ -20,15 +20,18 @@ FactoryGirl.define  do
     association :client
     clockable true
     archived false
-    github_url ""
     pivotal_id 123
     parent_id { Project.root.id }
+
     trait :with_rate do
       after(:create) { |p| FactoryGirl.create(:rate, :project => p)  }
     end
+
+    trait :with_repo do
+      after(:create) { |proj| FactoryGirl.create(:repository, :project => proj) }
+    end
+
   end
-
-
 end
 
 FactoryGirl.define  do
