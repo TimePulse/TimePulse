@@ -30,7 +30,7 @@ group :assets do
   gem 'sass-rails'
   gem 'uglifier', '>= 1.0.3'
 
-  gem 'zurb-foundation', '~> 4.0.0'
+  gem 'foundation-rails'
   gem 'quiet_assets'
   gem 'compass-rails'
 end
@@ -39,12 +39,14 @@ group :development, :test do
   gem 'rspec', "~> 3.0.0"
   gem 'rspec-rails', "~> 3.0.0"
   gem 'rspec-legacy_formatters'
+  gem 'rspec-collection_matchers'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
   gem "byebug", :platforms => [:ruby_20, :ruby_21]
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
+  gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'poltergeist'
   gem 'waterpig'
