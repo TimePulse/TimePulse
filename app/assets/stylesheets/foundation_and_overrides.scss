@@ -2,7 +2,8 @@
 // foundation.zurb.com
 // Licensed under MIT Open Source
 
-//
+// Required global settings and mixins for Foundation
+@import "partials/constants";
 
 // Table of Contents
 // Foundation Settings
@@ -70,6 +71,7 @@
 
 // We use this to control whether or not CSS classes come through in the gem files.
 $include-html-classes: true;
+$include-print-styles: false;
 // $include-print-styles: true;
 $include-html-global-classes: $include-html-classes;
 
@@ -79,19 +81,23 @@ $include-html-global-classes: $include-html-classes;
 // $include-html-grid-classes: $include-html-classes;
 // $include-xl-html-grid-classes: false;
 
-// $row-width: rem-calc(1000);
+$row-width: 100%;
+//$row-width: rem-calc(1000);
 // $total-columns: 12;
+$column-gutter: 0em;
 // $column-gutter: rem-calc(30);
 
 // c. Global
 // - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // We use these to define default font stacks
+$font-family-sans-serif: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 // $font-family-sans-serif: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
 // $font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
 // $font-family-monospace: Consolas, "Liberation Mono", Courier, monospace;
 
 // We use these to define default font weights
+$font-weight-normal: 300;
 // $font-weight-normal: normal;
 // $font-weight-bold: bold;
 
@@ -1292,7 +1298,9 @@ $xxlarge-only: "#{$screen} and (min-width:#{lower-bound($xxlarge-range)}) and (m
 // $include-html-table-classes: $include-html-classes;
 
 // These control the background color for the table and even rows
+$table-bg: transparent;
 // $table-bg: $white;
+$table-even-row-bg: transparent;
 // $table-even-row-bg: $snow;
 
 // These control the table cell border style
@@ -1400,15 +1408,18 @@ $xxlarge-only: "#{$screen} and (min-width:#{lower-bound($xxlarge-range)}) and (m
 // $include-html-top-bar-classes: $include-html-classes;
 
 // Background color for the top bar
+$topbar-bg-color: $primary_dark_2;
 // $topbar-bg-color: $oil;
 // $topbar-bg: $topbar-bg-color;
 
 // Height and margin
+$topbar-height: rem-calc(47);
 // $topbar-height: rem-calc(45);
 // $topbar-margin-bottom: 0;
 
 // Controlling the styles for the title in the top bar
-// $topbar-title-weight: $font-weight-normal;
+$topbar-title-weight: bold;
+$topbar-title-font-size: rem-calc(25);
 // $topbar-title-font-size: rem-calc(17);
 
 // Set the link colors and styles for top-level nav
@@ -1416,7 +1427,8 @@ $xxlarge-only: "#{$screen} and (min-width:#{lower-bound($xxlarge-range)}) and (m
 // $topbar-link-color-hover: $white;
 // $topbar-link-color-active: $white;
 // $topbar-link-color-active-hover: $white;
-// $topbar-link-weight: $font-weight-normal;
+$topbar-link-weight: $font-weight-normal;
+$topbar-link-font-size: rem-calc(15);
 // $topbar-link-font-size: rem-calc(13);
 // $topbar-link-hover-lightness: -10%; // Darken by 10%
 // $topbar-link-bg: $topbar-bg;
@@ -1433,6 +1445,7 @@ $xxlarge-only: "#{$screen} and (min-width:#{lower-bound($xxlarge-range)}) and (m
 // $topbar-button-top: 7px;
 
 // Style the top bar dropdown elements
+$topbar-dropdown-bg: $primary_dark_2;
 // $topbar-dropdown-bg: $oil;
 // $topbar-dropdown-link-color: $white;
 // $topbar-dropdown-link-color-hover: $topbar-link-color-hover;
