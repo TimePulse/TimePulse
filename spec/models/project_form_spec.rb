@@ -50,10 +50,10 @@ describe ProjectForm do
         end
 
         it "sets default attributes" do
-          project_form.clockable.should be_false
-          project_form.billable.should be_true
-          project_form.flat_rate.should be_false
-          project_form.archived.should be_false
+          project_form.clockable.should be_falsey
+          project_form.billable.should be_truthy
+          project_form.flat_rate.should be_falsey
+          project_form.archived.should be_falsey
         end
       end
     end
@@ -82,17 +82,17 @@ describe ProjectForm do
         end
 
         it "creates a new project" do
-          expect(project_form.project.new_record?).to be_true
+          expect(project_form.project.new_record?).to be_truthy
         end
 
         it "assigns default parameters" do
-          project_form.billable.should be_true
-          project_form.flat_rate.should be_false
-          project_form.archived.should be_false
+          project_form.billable.should be_truthy
+          project_form.flat_rate.should be_falsey
+          project_form.archived.should be_falsey
         end
 
         it "overwrites default parameters" do
-          project_form.clockable.should be_true
+          project_form.clockable.should be_truthy
         end
 
         it "assigns passed-in parameters" do
@@ -117,7 +117,7 @@ describe ProjectForm do
       it "assigns the project's attributes to the project form" do
         project_form.name.should == project.name
         project_form.parent_id.should == project.parent.id
-        project_form.clockable.should be_false
+        project_form.clockable.should be_falsey
         project_form.archived.should == project.archived
         project_form.pivotal_id == project.pivotal_id
       end
