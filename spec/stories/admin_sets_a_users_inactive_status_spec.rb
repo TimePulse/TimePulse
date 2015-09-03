@@ -14,14 +14,17 @@ steps "Admin sets a user's inactive status", :type => :feature do
   end
 
   it "should login as the admin" do
-    fill_in "Login", :with => admin.login
-    fill_in "Password", :with => admin.password
+    find "input#user_login"
+    fill_in "user_login", :with => admin.login
+    find "input#user_password"
+    fill_in "user_password", :with => admin.password
     click_button 'Login'
   end
 
   it "should properly set a user as inactive" do
     visit edit_user_path(user_1.id)
-    page.should have_unchecked_field "user_inactive"
+    page.should have_unchecked_field "Inactive"
+    # page.has_field?("Inactive").should == true
     check 'user_inactive'
     click_button 'Submit'
     page.should have_content "Account updated!"
