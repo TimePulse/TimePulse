@@ -79,6 +79,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it 'should navigate to hours reports view' do
+    save_and_open_page
     current_path.should eq(hours_reports_path)
   end
 

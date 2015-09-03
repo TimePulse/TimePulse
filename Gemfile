@@ -46,7 +46,7 @@ group :development, :test do
   gem "byebug", :platforms => [:ruby_20, :ruby_21]
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
-  gem 'capybara-webkit'
+  gem 'capybara-webkit', '~> 1.7.0'
   gem 'selenium-webdriver'
   gem 'poltergeist'
   gem 'waterpig'

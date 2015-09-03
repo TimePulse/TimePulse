@@ -80,6 +80,9 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
 
   config.waterpig_truncation_types = [:feature, :task]
+  config.waterpig_driver = :selenium_chrome
+  config.waterpig_js_driver = :selenium_chrome
+
 
   config.before :all, :type => proc{ |value| config.waterpig_truncation_types.include?(value)} do
     Rails.application.config.action_dispatch.show_exceptions = true
