@@ -23,7 +23,7 @@ steps "Admin sets a user's inactive status", :type => :feature do
 
   it "should properly set a user as inactive" do
     visit edit_user_path(user_1.id)
-    page.should have_unchecked_field "Inactive"
+    page.should have_unchecked_field "user_inactive"
     # page.has_field?("Inactive").should == true
     check 'user_inactive'
     click_button 'Submit'
