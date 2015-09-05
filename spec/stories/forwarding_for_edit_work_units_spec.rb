@@ -40,6 +40,7 @@ steps "Edit a work unit from the home page", :type => :feature do
   end
 
   it "should forward back to the home page" do
+    page.should have_link("Logout")
     current_path.should eq(root_path)
   end
 end

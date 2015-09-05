@@ -12,6 +12,7 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
   let! :project_2 do
     project = FactoryGirl.build(:project)
+    project.name = "Special Project"
     project.client = client_2
     project.save
     project
@@ -65,8 +66,9 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "I change the project for the work unit" do
-    select_box_it_select project_2.name, :from => "work_unit_project_id"
+    select_box_it_select "Special Project", :from => "work_unit_project_id"
     click_button 'Submit'
+    page.should have_link("Edit")
   end
 
   it "if I visit the work_unit's page" do
