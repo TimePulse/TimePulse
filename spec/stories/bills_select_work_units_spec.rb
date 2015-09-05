@@ -44,6 +44,7 @@ shared_steps "to verify bill is visible" do
   end
 
   it "should be visible from bills index" do
+    page.should have_link("New Bill")
     all(:xpath, XPath.generate do |doc|
       doc.descendant(:tr)[doc.attr(:class) == "bill"]
     end).should have(1).rows

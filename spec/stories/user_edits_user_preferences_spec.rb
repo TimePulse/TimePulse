@@ -16,6 +16,7 @@ steps "user logs in and edits user preferences", :type => :feature do
   end
 
   it "should take me to the edit account page" do
+    page.should have_link("Logout")
     current_path.should == edit_user_path(user)
   end
 
