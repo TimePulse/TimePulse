@@ -1,5 +1,5 @@
 require 'spec_helper'
-#take pending out and fix spec where it's failing, e.g. project 2 base..
+#take pending out and fix spec where it's failing, e.g. project 2 base.. possibly try stalling
 steps "Admin archives a project", :type => :feature, :pending => "Causes a timeout" do
   let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
   let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
@@ -21,6 +21,7 @@ steps "Admin archives a project", :type => :feature, :pending => "Causes a timeo
   end
 
   it "and I expand all projects" do
+    page.should have_content('Logout')
     all(".expand-widget").each do |expand_button|
       expand_button.click
     end
@@ -55,10 +56,12 @@ steps "Admin archives a project", :type => :feature, :pending => "Causes a timeo
   end
 
   it "then when I revisit the dashboard" do
+    page.should have_content('Logout')
     visit root_path
   end
 
   it "and I expand all projects" do
+    page.should have_content('Logout')
     all(".expand-widget").each do |expand_button|
       expand_button.click
     end
