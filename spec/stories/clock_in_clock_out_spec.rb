@@ -106,12 +106,13 @@ steps "clock in and out on projects", :type => :feature do
   end
 
 
-  it "should have created an completed work unit in the DB" do
+  it "should have created a completed work unit in the DB" do
     WorkUnit.count.should == @work_unit_count + 2
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now)
     new_work_unit.project.should == project_1
     new_work_unit.notes.should == "I worked all day on this"
+    new_work_unit.hours.should == 9.0
     #new_work_unit.hours.should be_within(0.1).of(9.0)
   end
 
@@ -141,12 +142,12 @@ steps "clock in and out on projects", :type => :feature do
     page.should have_selector("#timeclock #task_elapsed")
   end
 
-  it "and I fill in nine hours and clock out" do
+  it "and I fill in a stop time of two hours ago (one hour from present, non-traveled time)" do
     within "#timeclock" do
       Timecop.travel(Time.zone.now + 3.hours)
       click_link("(+ show override tools)")
       fill_in "Stop Time", :with => (Time.zone.now - 2.hours).to_s(:short_datetime)
-      fill_in "Notes", :with => "I worked all day on this"
+      fill_in "Notes", :with => "I worked a few hours on this"
       click_button "Clock Out"
     end
   end
@@ -158,13 +159,12 @@ steps "clock in and out on projects", :type => :feature do
     end
   end
 
-
-  it "should have created an completed work unit in the DB" do
+  it "should have created another completed work unit in the DB" do
     WorkUnit.count.should == @work_unit_count + 3
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now - 2.hours)
+    new_work_unit.notes.should == "I worked a few hours on this"
     new_work_unit.project.should == project_1
-    new_work_unit.notes.should == "I worked all day on this"
     new_work_unit.hours.should be_within(0.1).of(1.0)
   end
 

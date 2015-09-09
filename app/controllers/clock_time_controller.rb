@@ -10,7 +10,6 @@ class ClockTimeController < WorkUnitBaseController
   def create
 
     clock_out_current_work_unit
-
     @project = Project.find(params[:id])
     @work_unit = WorkUnit.new(:start_time => Time.zone.now )
     @work_unit.project = @project
@@ -31,13 +30,12 @@ class ClockTimeController < WorkUnitBaseController
   end
 
   def destroy
+    @work_unit = current_user.current_work_unit
     if params[:work_unit]
-
       if (params[:work_unit][:stop_time])
         parse_date_params
       end
-
-      current_user.current_work_unit.update(clock_params)
+      @work_unit.update(clock_params)
     end
     clock_out_current_work_unit
 
@@ -49,7 +47,7 @@ class ClockTimeController < WorkUnitBaseController
   end
 
   def clock_out_current_work_unit
-    if @work_unit = current_user.current_work_unit
+    if @work_unit
       @work_unit.clock_out!
     end
   end
