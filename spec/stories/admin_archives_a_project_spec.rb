@@ -1,6 +1,5 @@
 require 'spec_helper'
-#take pending out and fix spec where it's failing, e.g. project 2 base.. possibly try stalling
-steps "Admin archives a project", :type => :feature, :pending => "Causes a timeout" do
+steps "Admin archives a project", :type => :feature do
   let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.', :abbreviation => 'FOO') end
   let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
   let! :project_2 do FactoryGirl.create(:project, :client => client_1, :name => "Project 2 base") end
@@ -12,8 +11,6 @@ steps "Admin archives a project", :type => :feature, :pending => "Causes a timeo
   let! :admin do FactoryGirl.create(:admin) end
 
   it "should login as the admin" do
-    # raise "pending requires a fail"
-    fail
     visit root_path
     fill_in "Login", :with => admin.login
     fill_in "Password", :with => admin.password

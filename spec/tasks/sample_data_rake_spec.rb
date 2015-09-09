@@ -102,7 +102,7 @@ describe 'db:sample_data namespace rake task', :type => :task do
     end
 
     xit 'should create activities' do
-
+      pending 'until activities functionality is settled'
     end
 
   end
