@@ -8,7 +8,7 @@ class ClockTimeController < WorkUnitBaseController
   before_filter :convert_hours_from_hhmm
 
   def create
-
+    @work_unit = current_user.current_work_unit
     clock_out_current_work_unit
     @project = Project.find(params[:id])
     @work_unit = WorkUnit.new(:start_time => Time.zone.now )
