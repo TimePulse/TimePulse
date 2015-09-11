@@ -112,9 +112,9 @@ describe ClockTimeController do
           response.headers['Content-Type'].should =~ /text\/javascript/
         end
 
-        it "should show the user as not clocked in" do
+        it "should render the correct template" do
           delete :destroy
-          response.body.should =~ /not clocked in/
+          response.should render_template('destroy')
         end
       end
 
