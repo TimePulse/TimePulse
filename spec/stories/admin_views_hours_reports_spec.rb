@@ -79,6 +79,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it 'should navigate to hours reports view' do
+    page.should have_content('Logout')
     current_path.should eq(hours_reports_path)
   end
 
