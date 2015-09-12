@@ -20,6 +20,7 @@ config/initializers/smtp.rb
 config/initializers/api_keys.rb
 config/initializers/devise.rb
 config/database.yml
+config/secrets.yml
 db/schema.sql
 db/schema.rb
 db/*.sqlite3*
@@ -67,4 +68,3 @@ public/test-assets/
 .idea/
 *.orig
 config/bibliotech/
-secrets.yml
