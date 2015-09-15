@@ -60,10 +60,10 @@ class PivotalPull
   protected
 
   def pivotal_api_interface
-    if defined?(::API_KEYS)
+    if Rails.application.secrets.api_keys['github'].present?
       @pivotal_api_interface ||= begin
         PivotalTracker::Client.api_version = 4
-        PivotalTracker::Client.token = ::API_KEYS[:pivotal]
+        PivotalTracker::Client.token = Rails.application.secrets.api_keys['github'].present?
         PivotalTracker::Project.find(@project.pivotal_id)
       end
     else
