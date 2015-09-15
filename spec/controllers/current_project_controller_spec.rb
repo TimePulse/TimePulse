@@ -38,7 +38,6 @@ describe CurrentProjectController do
   end
 
   describe "for javascript requests" do
-    render_views
     before(:each) { request.accept = "application/javascript" }
 
     it "should respond by replacing the contents of #project_picker" do

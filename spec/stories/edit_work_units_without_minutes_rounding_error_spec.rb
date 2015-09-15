@@ -14,6 +14,7 @@ steps "Minute truncation", :type => :feature do
     fill_in "Login", :with => user.login
     fill_in "Password", :with => user.password
     click_button 'Login'
+    page.should have_link("Logout")
 
     visit "/work_units/#{wu.id}/edit"
     click_button("Submit")
