@@ -33,12 +33,12 @@ group :assets do
 
   gem 'foundation-rails'
   gem 'quiet_assets'
-  gem 'compass-rails'
+  gem 'compass-rails', '>= 2.0.2'
 end
 
 group :development, :test do
-  gem 'rspec', "~> 3.0.0"
-  gem 'rspec-rails', "~> 3.0.0"
+  gem 'rspec', "3.0.0"
+  gem 'rspec-rails'#, "3.0.0"
   gem 'rspec-legacy_formatters'
   gem 'rspec-collection_matchers'
   gem 'factory_girl_rails'
@@ -57,8 +57,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'simplecov', '~> 0.7.1', :platform => "ruby_19"
-  gem 'simplecov-vim', :platform => "ruby_19"
+  gem 'simplecov', '~> 0.7.1'
+  gem 'simplecov-vim'
   gem 'rspec-its'
   gem 'fuubar'
   gem 'vcr'
