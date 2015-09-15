@@ -24,12 +24,12 @@ end
 Capybara.register_driver(:selenium_firefox) do |app|
   Capybara::Selenium::Driver.new(app, :browser => :firefox)
 end
-
-require 'waterpig'
-
 Capybara.register_driver :poltergeist_debug do |app|
   Capybara::Poltergeist::Driver.new(app, :timeout => 60, :inspector => true, phantomjs_logger: Waterpig::WarningSuppressor)
 end
+
+require 'waterpig'
+
 
 
 RSpec.configure do |config|
@@ -83,9 +83,8 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
 
   config.waterpig_truncation_types = [:feature, :task]
-  config.waterpig_driver = :selenium_firefox
-  config.waterpig_js_driver = :selenium_firefox
-
+  config.waterpig_driver =    ENV['CAPYBARA_DRIVER']    || :selenium_chrome
+  config.waterpig_js_driver = ENV['CAPYBARA_JS_DRIVER'] || :selenium_chrome
 
   config.before :all, :type => proc{ |value| config.waterpig_truncation_types.include?(value)} do
     Rails.application.config.action_dispatch.show_exceptions = true
