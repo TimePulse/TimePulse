@@ -15,10 +15,6 @@ doc/api
 doc/app
 doc/*.doc
 doc/*.zip
-config/initializers/secret_token.rb
-config/initializers/smtp.rb
-config/initializers/api_keys.rb
-config/initializers/devise.rb
 config/database.yml
 config/secrets.yml
 db/schema.sql
