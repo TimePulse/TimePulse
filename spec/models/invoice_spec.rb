@@ -88,7 +88,7 @@ describe Invoice do
       Invoice.paid.should_not include(@unpaid_invoice)
     end
     it "should report it has been paid" do
-      @paid_invoice.paid?.should be_true
+      @paid_invoice.paid?.should be_truthy
     end
   end
 
@@ -104,7 +104,7 @@ describe Invoice do
       Invoice.unpaid.should include(@unpaid_invoice)
     end
     it "should report it has not been paid" do
-      @unpaid_invoice.paid?.should be_false
+      @unpaid_invoice.paid?.should be_falsey
     end
   end
 

@@ -79,6 +79,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it 'should navigate to hours reports view' do
+    page.should have_content('Logout')
     current_path.should eq(hours_reports_path)
   end
 
@@ -109,7 +110,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it "should click the 'total' button" do
-    find('#total-user-hours-btn').trigger('click')
+    find('#total-user-hours-btn').click
   end
 
   it 'should show only the total number of hours for each user' do
@@ -122,7 +123,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it "should click the 'billable' button" do
-    find('#billable-user-hours-btn').trigger('click')
+    find('#billable-user-hours-btn').click
   end
 
   it 'should show only the total number of billable hours for each user' do
@@ -134,7 +135,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it "should click the 'unbillable' button" do
-    find('#unbillable-user-hours-btn').trigger('click')
+    find('#unbillable-user-hours-btn').click
   end
 
   it 'should show only the total number of unbillable hours for each user' do
@@ -148,7 +149,7 @@ steps 'Admin views the hours reports', :type => :feature do
   it 'should change the date range' do
     fill_in 'start-datepicker', :with => '02/04/2015'
     fill_in 'end-datepicker', :with => '02/18/2015'
-    find('#datepicker-submit-btn').trigger('click')
+    find('#datepicker-submit-btn').click
   end
 
   it 'should show the Sundays between the start and end dates as column headers' do
@@ -172,7 +173,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it "should click the 'total' button" do
-    find('#total-user-hours-btn').trigger('click')
+    find('#total-user-hours-btn').click
   end
 
   it 'should show only the total number of hours for each user' do
@@ -182,7 +183,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it "should click the 'billable' button" do
-    find('#billable-user-hours-btn').trigger('click')
+    find('#billable-user-hours-btn').click
   end
 
   it 'should show only the total number of billable hours for each user' do
@@ -192,7 +193,7 @@ steps 'Admin views the hours reports', :type => :feature do
   end
 
   it "should click the 'unbillable' button" do
-    find('#unbillable-user-hours-btn').trigger('click')
+    find('#unbillable-user-hours-btn').click
   end
 
   it 'should show only the total number of unbillable hours for each user' do
@@ -218,7 +219,7 @@ steps 'Admin views the hours reports', :type => :feature do
   it 'should change the date range' do
     fill_in 'start-datepicker', :with => '02/04/2015'
     fill_in 'end-datepicker', :with => '04/26/2015'
-    find('#datepicker-submit-btn').trigger('click')
+    find('#datepicker-submit-btn').click
   end
 
   it 'should show users with work units in the legend' do

@@ -44,10 +44,6 @@ describe GithubPullController, :vcr => {} do
     end
 
     before :each do
-      unless defined?(::API_KEYS)
-        ::API_KEYS = {}
-        ::API_KEYS.stub(:[]).with(:github) { 'xxxxx' }
-      end
       Github::Client.any_instance.stub_chain(:repos, :commits, :all => commits)
     end
 

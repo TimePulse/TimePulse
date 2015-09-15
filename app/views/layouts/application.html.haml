@@ -28,7 +28,7 @@
 
     = stylesheet_link_tag 'application', :media=>'all'
 
-    = javascript_include_tag "vendor/custom.modernizr"
+    / = javascript_include_tag "vendor/custom.modernizr"
     - if Rails.env.production? or Rails.env.staging?
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"

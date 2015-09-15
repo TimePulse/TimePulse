@@ -148,7 +148,7 @@ describe GithubCommit do
         expect do
           github_commit = GithubCommit.new(invalid_commit_params)
           github_commit.save
-        end.to_not change{Activity.count}.by(1)
+        end.not_to change{Activity.count}
       end
 
     end
