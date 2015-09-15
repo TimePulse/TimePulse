@@ -21,6 +21,9 @@ require 'selenium-webdriver'
 Capybara.register_driver(:selenium_chrome) do |app|
   Capybara::Selenium::Driver.new(app, :browser => :chrome)
 end
+Capybara.register_driver(:selenium_firefox) do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :firefox)
+end
 
 require 'waterpig'
 
@@ -80,8 +83,8 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
 
   config.waterpig_truncation_types = [:feature, :task]
-  config.waterpig_driver = :selenium_chrome
-  config.waterpig_js_driver = :selenium_chrome
+  config.waterpig_driver = :selenium_firefox
+  config.waterpig_js_driver = :selenium_firefox
 
 
   config.before :all, :type => proc{ |value| config.waterpig_truncation_types.include?(value)} do

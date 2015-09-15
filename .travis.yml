@@ -14,7 +14,7 @@ before_script:
 - RAILS_ENV=test bundle exec rake assets:precompile
 script:
 - CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6
-  bundle exec rspec spec
+  xvfb-run -a bundle exec rspec spec
 notifications: recipients - evan@lrdesign.com
 install: .travis-support/cached-bundle install --deployment
 env:
