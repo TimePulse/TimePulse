@@ -5,13 +5,13 @@ class ActivitiesController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    @user = current_user
-    @current_work_unit = @user.current_work_unit
+    @current_work_unit = current_user.current_work_unit
     @activity = Activity.new(activity_params)
     #check to see if the user making the request has an open work unit
-    if @current_work_unit
-      if @current_work_unit.project_id == @activity.project_id
-        @activity.work_unit_id = @current_work_unit.id
+    #
+    if @current_work_unit.present?
+      if @current_work_unit.project == @activity.project
+        @activity.work_unit = @current_work_unit
       end
     end
     if @activity.save
