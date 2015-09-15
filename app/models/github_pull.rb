@@ -44,12 +44,12 @@ class GithubPull < GithubCommitSaver
   end
 
   def github_api_interface(url)
-    if defined?(::API_KEYS)
+    if Rails.application.secrets.api_keys['github'].present?
       @github_api_interface = begin
         url_parts = url.split("/")
         repo = url_parts.pop
         user = url_parts.pop
-        Github.new(:oauth_token => ::API_KEYS[:github],
+        Github.new(:oauth_token => Rails.application.secrets.api_keys['github'],
           :auto_pagination => true,
           :user => user,
           :repo => repo)

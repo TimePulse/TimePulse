@@ -79,11 +79,6 @@ describe GithubPull do
   end
 
   before :each do
-    unless defined?(::API_KEYS)
-      ::API_KEYS = {}
-      ::API_KEYS.stub(:[]).with(:github) { 'xxxxx' }
-    end
-
     Github.stub(:new) do | args |
       gh_double = double()
       gh_double.stub(:user).and_return(args[:user])

@@ -47,10 +47,6 @@ describe PivotalPullController, :vcr => {} do
       let(:number_of_activities_for_project){ 3 }
 
       before do
-        unless defined?(::API_KEYS)
-          ::API_KEYS = {}
-          ::API_KEYS.stub(:[]).with(:pivotal) { 'xxxxx' }
-        end
         PivotalActivity.any_instance.stub(:project) { pivotal_project }
         PivotalTracker::Project.stub_chain(:find, :activities, :all => activities)
       end
