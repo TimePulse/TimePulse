@@ -25,6 +25,7 @@ gem 'active_model_serializers'
 gem 'bibliotech'
 gem 'nested_form_fields', :git => 'https://github.com/ncri/nested_form_fields.git'
 gem 'business_time'
+gem 'psych', ">= 2.0.15"
 
 group :assets do
   gem 'sass-rails'
