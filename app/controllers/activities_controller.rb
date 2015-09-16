@@ -3,7 +3,9 @@ class ActivitiesController < ApplicationController
   # include WorkUnitsHelper
   before_action :restrict_access, only: [:create]
   before_filter :authenticate_user!
+  skip_before_action :verify_authenticity_token
 
+  #POST /activities
   def create
     @current_work_unit = current_user.current_work_unit
     @activity = Activity.new(activity_params)
