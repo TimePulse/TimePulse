@@ -1,8 +1,7 @@
 TimePulse::Application.routes.draw do
 
 
-  resources :activities, :only => [:index, :create]
-  put '/activities' =>'activities#update'
+  resources :activities, :only => [:create]
   resources :invoices
   resources :bills
   resources :groups
