@@ -3,7 +3,7 @@ class ActivitiesController < ApplicationController
   # include WorkUnitsHelper
   before_action :restrict_access, only: [:create]
   before_filter :authenticate_user!
-  skip_before_action :verify_authenticity_token
+  skip_before_filter :verify_authenticity_token
 
   #POST /activities
   def create
