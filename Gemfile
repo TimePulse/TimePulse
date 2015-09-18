@@ -26,7 +26,6 @@ gem 'bibliotech'
 gem 'nested_form_fields', :git => 'https://github.com/ncri/nested_form_fields.git'
 gem 'business_time'
 gem 'psych', ">= 2.0.15"
-gem 'typhoeus', '~> 0.8.0'
 
 group :assets do
   gem 'sass-rails'
