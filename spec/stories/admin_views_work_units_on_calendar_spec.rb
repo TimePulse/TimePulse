@@ -61,6 +61,7 @@ steps "see user work units on calendar", :type => :feature do
   end
 
   it "should go to work unit show page when item is clicked" do
+    page.should have_content("Logout")
     click_on ("#{admin_work_units_in_range.project.name} - #{admin_work_units_in_range.notes}")
     page.should have_content("Editing Work Unit")
   end
