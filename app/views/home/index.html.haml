@@ -1,6 +1,7 @@
 - set_headline project_headline(current_project)
 
 = render :partial => "shared/timeclock"
+/ = render :partial => "shared/annotations"
 
 -content_for :aux do
   = render :partial => "shared/week_summary", :locals => { :this_week_units => current_user.work_units.this_week }

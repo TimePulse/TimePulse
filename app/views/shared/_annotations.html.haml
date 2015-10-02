@@ -1,0 +1,3 @@
+= page_block("Annotations", :id => "annotation_form")
+  = form_for(@annotations) do |f|
+    = f.text_area :notes, :size => 30, :placeholder => "Annotations"

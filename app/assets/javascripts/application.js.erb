@@ -129,6 +129,11 @@ Ninja.behavior({
         }
       }
     },
+    //need to work on this, what do i write after form?
+    // '#annotation form':       Ninja.submitsAsAjax({
+    //     busyElement: function(elem){return $('#recent_annotations')}
+    // }),
+    }
     '#work_unit_notes': {
       keyup: function(evnt, elem) {
         content = $(elem).val();
@@ -146,7 +151,16 @@ Ninja.behavior({
         hiddenDiv.addClass('hidden-work-unit-notes-div');
 
         $(elem).parent().append(hiddenDiv);
-      }
+      },
+      // try to make notes submit on Enter key
+      // keydown: function(form, elem) {
+      //   $('#work_unit_notes').keypress(function (e) {
+      //     if (e.which == 13) {
+      //       e.preventDefault();
+      //       $('#').submit();
+      //     }
+      //   });
+      // }
     },
     '#timeclock a#override_trigger': {
       click: function(evnt, elem) {

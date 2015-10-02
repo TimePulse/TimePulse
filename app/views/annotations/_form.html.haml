@@ -1,0 +1,5 @@
+#annotation_form
+  = form_for(@annotation) do |f|
+    = f.error_messages
+    = f.labeled_input :notes do
+      = f.text_area :notes, :size => 30
