@@ -108,6 +108,27 @@ Ninja.behavior({
     '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
         busyElement: function(elem){ return $('#timeclock')}
       }),
+    '#timeclock form#annotation_form':    Ninja.submitsAsAjax({
+        busyElement: function(elem){ return $('#timeclock')}
+      }),
+    '#annotation_input': {
+      // keyup: function(event){
+      //   event.preventDefault();
+      //   if (event.keyCode == 13 || event.keyCode == 10) {
+      //     $('#annotation_form').submit();
+      //   }else {
+      //     console.log(event.keyCode);
+      //     return true;
+      //   }
+      // },
+      keyup: function(event){
+        if (event.keyCode == 13) {
+          $('#annotation_form').submit();
+        } else {
+            return true;
+          }
+      }
+    },
     '#timeclock form.clock_in':          Ninja.submitsAsAjax({
         busyElement: function(elem){ return $('#timeclock')}
       }),
