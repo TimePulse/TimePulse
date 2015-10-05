@@ -111,24 +111,6 @@ Ninja.behavior({
     '#timeclock form#annotation_form':    Ninja.submitsAsAjax({
         busyElement: function(elem){ return $('#timeclock')}
       }),
-    '#annotation_input': {
-      // keyup: function(event){
-      //   event.preventDefault();
-      //   if (event.keyCode == 13 || event.keyCode == 10) {
-      //     $('#annotation_form').submit();
-      //   }else {
-      //     console.log(event.keyCode);
-      //     return true;
-      //   }
-      // },
-      keyup: function(event){
-        if (event.keyCode == 13) {
-          $('#annotation_form').submit();
-        } else {
-            return true;
-          }
-      }
-    },
     '#timeclock form.clock_in':          Ninja.submitsAsAjax({
         busyElement: function(elem){ return $('#timeclock')}
       }),
@@ -372,3 +354,12 @@ $(function() {
   });
 
 $(function(){ $(document).foundation(); });
+
+
+$("#annotation_input").keypress(function(event) {
+  if (event.which == 13) {
+    event.preventDefault();
+    $("#annotation_form").submit();
+    console.log("hi");
+  }
+});
