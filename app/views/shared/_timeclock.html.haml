@@ -17,6 +17,14 @@
         = f.text_field :stop_time, :size => 15, :placeholder => "Stop Time"
         = f.text_field :hours, :size => 15, :placeholder => "Hours"
       = f.button "Clock Out", :type => :submit
+    = form_for(:activities, :url => activities_path, :html => {:method => :create, :id => :annotation_form}) do |g|
+      = g.text_area :description, :placeholder => "Annotations", :id => "annotation_input"
+      = g.hidden_field :action, :value => "Annotation"
+      = g.hidden_field :source, :value => "User"
+      = g.hidden_field :user_id, :value => current_user.id
+      = g.hidden_field :work_unit_id, :value => current_work_unit.id
+      = g.hidden_field :project_id, :value => current_work_unit.project.id
+      = g.submit
   - else
     .text_content
       %h3 You are not clocked in.

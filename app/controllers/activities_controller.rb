@@ -17,6 +17,8 @@ class ActivitiesController < ApplicationController
       end
     end
     if @activity.save
+      p "***********************"
+      p @activity.errors
       render json: @activity, status: 201
     else
       render json: @activity.errors, status: 422
@@ -26,7 +28,7 @@ class ActivitiesController < ApplicationController
   private
 
   def activity_params
-    params.require(:activity).permit(:description, :work_unit_id, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
+    params.require(:activities).permit(:description, :work_unit_id, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
   end
 
   def restrict_access
