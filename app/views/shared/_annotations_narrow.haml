@@ -1,0 +1,9 @@
+- cache("annotations_narrow_#{annotations.id}", :skip_digest => true) do
+  - token = SecureRandom.hex(8)
+  = content_tag(:tr, :id => token, :class => 'annotations') do
+    %td
+      %span.work_unit_label.nobr= short_name_with_client(annotations.project)
+    %td
+      %dd= annotations.project_id
+    %td
+      %dd= annotations.description
