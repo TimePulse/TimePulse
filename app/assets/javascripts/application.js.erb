@@ -361,5 +361,6 @@ $("#annotation_input").keypress(function(event) {
     event.preventDefault();
     $("#annotation_form").submit();
     console.log("hi");
+    $("#annotation_form")[0].reset();
   }
 });

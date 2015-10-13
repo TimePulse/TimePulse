@@ -1,11 +1,3 @@
 = page_block("Recent Annotations", :id => "recent_annotations") do
-  %table.listing
-    %thead
-      %tr
-        %th Project
-        %th Project ID
-        %th Annotation
-    %tbody
-      = render :partial => "shared/annotations_narrow", :collection => current_user.reload.activities.last(10), :as => :annotations
-/ = page_block("Recent Annotations", :id => "recent_annotations") do
-/   = @user.activities.last(10)
+  %tbody
+    = render :partial => "shared/annotations_narrow", :collection => current_user.reload.activities.last(10), :as => :annotations

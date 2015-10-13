@@ -24,7 +24,6 @@
       = g.hidden_field :user_id, :value => current_user.id
       = g.hidden_field :work_unit_id, :value => current_work_unit.id
       = g.hidden_field :project_id, :value => current_work_unit.project.id
-      = g.submit
   - else
     .text_content
       %h3 You are not clocked in.
