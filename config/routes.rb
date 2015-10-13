@@ -45,6 +45,7 @@ TimePulse::Application.routes.draw do
   match '/set_current_project/:id' => 'current_project#create', :as => :set_current_project, :via => :post
   match '/clock_in_on/:id' => 'clock_time#create', :as => :clock_in, :via => :post
   match '/clock_out' => 'clock_time#destroy', :as => :clock_out, :via => :delete
+  match '/add_annotation' => 'annotations#create', :as => :add_annotation, :via => :post
 
   root :to => 'home#index'
 

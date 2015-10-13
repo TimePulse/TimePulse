@@ -5,6 +5,11 @@ class ActivitiesController < ApplicationController
   before_filter :authenticate_user!
   skip_before_filter :verify_authenticity_token
 
+  # #GET
+  # def index
+  #   @activity = current_user.reload.activities.last(10)
+  # end
+
   #POST /activities
   def create
     @current_work_unit = current_user.current_work_unit
@@ -17,11 +22,19 @@ class ActivitiesController < ApplicationController
       end
     end
     if @activity.save
-      p "***********************"
-      p @activity.errors
-      render json: @activity, status: 201
+      flash[:notice] = 'Annotation was successfully created.'
+      format.html { redirect_to(@activity) }
+      format.js {
+        @activity = Activity.new
+        @activities = current_user.completed_annotations_for(current_user.current_project).order(stop_time: :desc).paginate(:per_page => 10, :page => nil)
+      }
+
+      # p "***********************"
+      # p @activity.errors
+      format.json { render json: @activity, status: 201 }
     else
-      render json: @activity.errors, status: 422
+      format.html { render :action => "annotate" }
+      format.json { render json: @activity.errors, status: 422 }
     end
   end
 
