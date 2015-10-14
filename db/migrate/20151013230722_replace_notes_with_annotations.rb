@@ -1,8 +1,14 @@
 class ReplaceNotesWithAnnotations < ActiveRecord::Migration
+  class MigrationActivity < ActiveRecord::Base
+    self.table_name = :activities
+  end
+  class MigrationWorkUnit < ActiveRecord::Base
+    self.table_name = :work_units
+  end
 
   def change
-    WorkUnit.find_each do |wu|
-      Activity.create(
+    MigrationWorkUnit.find_each do |wu|
+      MigrationActivity.create(
         :source => 'User',
         :action => 'Annotation',
         :description => wu.notes,
