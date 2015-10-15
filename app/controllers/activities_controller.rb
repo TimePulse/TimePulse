@@ -18,23 +18,22 @@ class ActivitiesController < ApplicationController
     end
     if @activity.save
       flash[:notice] = 'Annotation was successfully created.'
-      format.html { redirect_to(@activity) }
-      format.js {
-        @activity = Activity.new
-        @activities = current_user.completed_annotations_for(current_user.current_project).order(stop_time: :desc).paginate(:per_page => 10, :page => nil)
-      }
-
-      format.json { render json: @activity, status: 201 }
+      respond_to do |format|
+        format.html { redirect_to(@activity) }
+        format.json { render json: @activity, status: 201 }
+      end
     else
-      format.html { render :action => "annotate" }
-      format.json { render json: @activity.errors, status: 422 }
+      respond_to do |format|
+        format.html { render :action => "annotate" }
+        format.json { render json: @activity.errors, status: 422 }
+      end
     end
   end
 
   private
 
   def activity_params
-    params.require(:activities).permit(:description, :work_unit_id, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
+    params.require(:activity).permit(:description, :work_unit_id, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
   end
 
   def restrict_access
