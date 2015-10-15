@@ -7,6 +7,8 @@ steps "User manually enters work units", :type => :feature do
   let! :project_nonbillable do FactoryGirl.create(:project, :client => client, :billable => false, :name => "Non-Billable Project") end
   let! :user      do FactoryGirl.create(:user, :current_project => project) end
 
+  let! :work_unit do FactoryGirl.create(:in_progress_work_unit, :user => user, :project => project) end
+
   before do
     Time.zone = 'Pacific Time (US & Canada)'
 
@@ -66,7 +68,7 @@ steps "User manually enters work units", :type => :feature do
 
     fill_in "Start time", :with => @start_time.to_s(:short_datetime)
     fill_in "Stop time", :with => @stop_time.to_s(:short_datetime)
-    fill_in "Notes", :with => "An hour of work"
+    fill_in "Annotations", :with => "An hour of work"
     # this is not a click button cause at the immediate moment poltergeist
     # interprets
     # this button as obscured by the JS datepicker. the truly proper solution would
@@ -88,12 +90,18 @@ steps "User manually enters work units", :type => :feature do
 
     @work_unit = WorkUnit.last
     @work_unit.hours.should == 1.00
-    @work_unit.notes.should == "An hour of work"
     @work_unit.start_time.to_s.should == @start_time.to_s
     @work_unit.stop_time.to_s.should == @stop_time.to_s
     @work_unit.billable?.should == true
 
   end
+
+  it "should show newly-created annotation under Recent Annotations" do
+    within '#recent_annotations' do
+      page.should have_content("An hour of work")
+    end
+  end
+
   it "should show the work unit in recent work" do
     within "#recent_work" do
       page.should have_content("1.00")
