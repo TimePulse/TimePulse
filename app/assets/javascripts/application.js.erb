@@ -171,6 +171,11 @@ Ninja.behavior({
         $('#timeclock #manual_entry_trigger').show();
       }
     },
+    'form#new_work_unit': {
+      submit: function(evnt) {
+        $("#new_work_unit")[0].reset();
+      }
+    },
     // id changed here
     'select#project_form_parent_id': {
       change: function(evnt, elem) {
