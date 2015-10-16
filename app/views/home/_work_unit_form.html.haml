@@ -20,7 +20,7 @@
 
       = f.labeled_input :hours, :placeholder => "(Decimal or HH:MM)"
       = f.fields_for :annotation do |g|
-        = g.text_area :description, :placeholder => "Annotations", :id => "manual_annotation_input"
+        = g.text_area :description, :placeholder => "Work Unit Annotations", :id => "manual_annotation_input"
         = g.hidden_field :action, :value => "Annotation"
         = g.hidden_field :source, :value => "User"
         = g.hidden_field :user_id, :value => current_user.id
