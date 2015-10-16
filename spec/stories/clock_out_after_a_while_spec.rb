@@ -37,7 +37,7 @@ steps "clock out after a while", :type => :feature do
 
   it "when I clock out with a message" do
     within "#timeclock" do
-      fill_in "Notes", :with => "Did a an hour's work on project #1"
+      fill_in "Annotations", :with => "Did a an hour's work on project #1"
       click_button "Clock Out"
     end
   end

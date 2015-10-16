@@ -34,8 +34,6 @@ class WorkUnitsController < WorkUnitBaseController
 
     if request.format.to_s == 'text/html' || request.format.to_s == 'text/javascript'
       @work_unit = WorkUnit.new(work_unit_params)
-      p work_unit_params
-      p annotation_params
       @annotation = Activity.new(annotation_params)
       @annotation.work_unit = @work_unit
 

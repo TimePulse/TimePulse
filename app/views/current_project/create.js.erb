@@ -4,7 +4,8 @@ $('#project_picker #project_<%= @current_project.id %>').addClass('current');
 <% end %>
 
 $('#current_project').replaceWith("<%= escape_javascript(render :partial => 'home/current_project_block') %>");
-// $('#headline').html("<%= escape_javascript(project_headline(current_project)) %>");
+$('#work_unit_form').replaceWith("<%= escape_javascript(render :partial => 'home/work_unit_form') %>");
+$('#headline').html("<%= escape_javascript(project_headline(current_project)) %>");
 <% unless current_user.clocked_in? %>
   $('#timeclock').replaceWith("<%= escape_javascript(render :partial => 'shared/timeclock') %>");
 <% end %>
