@@ -3,6 +3,7 @@ require 'spec_helper'
 describe WorkUnitsController do
   describe "permissions" do
     let! :work_unit do FactoryGirl.create(:work_unit) end
+    let! :annotation do FactoryGirl.create(:activity) end
 
     describe "accessed by guest" do
 
@@ -389,13 +390,13 @@ describe WorkUnitsController do
 
       describe "with valid params" do
         def valid_update_params
-          { :notes => "A comment here" }
+          { :annotation => "A comment here" }
         end
 
         it "should update the requested work_unit in the database" do
           lambda do
             put :update, :id => @work_unit.id, :work_unit => valid_update_params
-          end.should change{ @work_unit.reload.notes }.to("A comment here")
+          end.should change{ @work_unit.reload.annotation }.to("A comment here")
         end
 
         it "should expose the requested work_unit as @work_unit" do

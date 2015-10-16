@@ -60,7 +60,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "should clock out with a message" do
     within "#timeclock" do
-      fill_in "Notes", :with => "Did a little work on project #1"
+      fill_in "Annotations", :with => "Did a little work on project #1"
       click_button "Clock Out"
     end
   end
@@ -93,7 +93,7 @@ steps "clock in and out on projects", :type => :feature do
       Timecop.travel(Time.zone.now + 10.hours)
       click_link("(+ show override tools)")
       fill_in "Hours", :with => '9.0'
-      fill_in "Notes", :with => "I worked all day on this"
+      fill_in "Annotations", :with => "I worked all day on this"
       click_button "Clock Out"
     end
   end
@@ -111,7 +111,6 @@ steps "clock in and out on projects", :type => :feature do
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now)
     new_work_unit.project.should == project_1
-    new_work_unit.notes.should == "I worked all day on this"
     new_work_unit.hours.should == 9.0
     #new_work_unit.hours.should be_within(0.1).of(9.0)
   end
@@ -147,7 +146,7 @@ steps "clock in and out on projects", :type => :feature do
       Timecop.travel(Time.zone.now + 3.hours)
       click_link("(+ show override tools)")
       fill_in "Stop Time", :with => (Time.zone.now - 2.hours).to_s(:short_datetime)
-      fill_in "Notes", :with => "I worked a few hours on this"
+      fill_in "Annotations", :with => "I worked a few hours on this"
       click_button "Clock Out"
     end
   end
@@ -163,7 +162,6 @@ steps "clock in and out on projects", :type => :feature do
     WorkUnit.count.should == @work_unit_count + 3
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now - 2.hours)
-    new_work_unit.notes.should == "I worked a few hours on this"
     new_work_unit.project.should == project_1
     new_work_unit.hours.should be_within(0.1).of(1.0)
   end
