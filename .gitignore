@@ -64,3 +64,4 @@ public/test-assets/
 .idea/
 *.orig
 config/bibliotech/
+.envrc

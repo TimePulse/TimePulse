@@ -388,15 +388,22 @@ describe WorkUnitsController do
         end
       end
 
+      describe "for a work unit with annotations" do
+        it "should have tests do deal with this case" do
+          pending "NEED TO UNDERSTAND WORKFLOW FOR UPDATING WORK UNIT"
+          expect(false).to be_true
+        end
+      end
+
       describe "with valid params" do
         def valid_update_params
-          { :annotation => "A comment here" }
+          { billable: false }
         end
 
         it "should update the requested work_unit in the database" do
           lambda do
             put :update, :id => @work_unit.id, :work_unit => valid_update_params
-          end.should change{ @work_unit.reload.annotation }.to("A comment here")
+          end.should change{ @work_unit.reload.billable }.to(false)
         end
 
         it "should expose the requested work_unit as @work_unit" do
@@ -411,7 +418,6 @@ describe WorkUnitsController do
             end.should change{ @work_unit.reload.hours }.to(3.75)
           end
         end
-
       end
 
       describe "with invalid params" do
