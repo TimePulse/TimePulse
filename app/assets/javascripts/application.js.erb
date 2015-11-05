@@ -171,6 +171,12 @@ Ninja.behavior({
         $('#timeclock #manual_entry_trigger').show();
       }
     },
+    '#timeclock button#clock_out_button': {
+      click: function(evnt) {
+        $('#timeclock form.edit_work_unit').submit();
+        $('#timeclock form#annotation_form').submit();
+      }
+    },
     'form#new_work_unit': {
       submit: function(evnt) {
         $("#new_work_unit")[0].reset();
