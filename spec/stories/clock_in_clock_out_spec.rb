@@ -34,8 +34,10 @@ steps "clock in and out on projects", :type => :feature do
     within "#timeclock" do
       page.should have_content("You are not clocked in")
       page.should_not have_selector("#timeclock #task_elapsed")
+      page.should_not have_selector("#annotation_input")
     end
   end
+
 
   it "user clicks on the clock in link in the timeclock" do
     within "#timeclock" do
@@ -49,6 +51,7 @@ steps "clock in and out on projects", :type => :feature do
     page.should have_title(/clocked in/i)
     page.should have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
     page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false
+    page.should have_selector("#annotation_input")
   end
 
   it "should have created an unfinished work unit in the DB" do
@@ -62,6 +65,12 @@ steps "clock in and out on projects", :type => :feature do
     within "#timeclock" do
       fill_in "Annotations", :with => "Did a little work on project #1"
       click_button "Clock Out"
+    end
+  end
+
+  it "should show newly-created annotation under Recent Annotations" do
+    within("#recent_annotations") do
+      page.should have_content("Did a little work on project #1")
     end
   end
 
@@ -112,12 +121,20 @@ steps "clock in and out on projects", :type => :feature do
     new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now)
     new_work_unit.project.should == project_1
     new_work_unit.hours.should == 9.0
+    new_work_unit.activities.count.should == 1
+    new_work_unit.activities.last.description.should == "I worked all day on this"
     #new_work_unit.hours.should be_within(0.1).of(9.0)
   end
 
   it "should show the created work unit in 'Recent Work'" do
     within "#recent_work" do
       page.should have_content("9.00")
+    end
+  end
+
+  it "should show newly-created annotation under Recent Annotations" do
+    within("#recent_annotations") do
+      page.should have_content("I worked all day on this")
     end
   end
 
@@ -141,7 +158,7 @@ steps "clock in and out on projects", :type => :feature do
     page.should have_selector("#timeclock #task_elapsed")
   end
 
-  it "and I fill in a stop time of two hours ago (one hour from present, non-traveled time)" do
+  it "and I fill in a stop time of two hours ago (one hour from original, non-traveled time)" do
     within "#timeclock" do
       Timecop.travel(Time.zone.now + 3.hours)
       click_link("(+ show override tools)")
