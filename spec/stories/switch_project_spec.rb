@@ -26,6 +26,10 @@ steps "log in and switch projects", :type => :feature do
     page.should have_link("Logout")
   end
 
+  it "should expand the manual time entry work unit form" do
+    click_link "(+ show manual time entry)"
+  end
+
   it "should have a work unit form (XPath Gem format)" do
     page.should have_xpath(XPath.generate do |doc|
        doc.descendant(:form)[doc.attr(:id) == "new_work_unit"][doc.attr(:action) == '/work_units']
@@ -42,8 +46,10 @@ steps "log in and switch projects", :type => :feature do
 
 
   it "should have the name of the project" do
-    within "h1#headline" do
-      page.should have_content(project_1.name)
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_1.name.upcase)
+      end
     end
   end
 
@@ -87,8 +93,10 @@ steps "log in and switch projects", :type => :feature do
   end
 
   it "should have the name of project 2" do
-    within "h1#headline" do
-      page.should have_content(project_2.name)
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_2.name.upcase)
+      end
     end
   end
 
@@ -100,6 +108,7 @@ steps "log in and switch projects", :type => :feature do
 
   it "when the page is reloaded" do
     visit(current_path)
+    click_link "(+ show manual time entry)"
   end
 
   it "project 2 should have css class 'current'" do
@@ -111,8 +120,10 @@ steps "log in and switch projects", :type => :feature do
   end
 
   it "should have the name of project 2" do
-    within "h1#headline" do
-      page.should have_content(project_2.name)
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_2.name.upcase)
+      end
     end
   end
 
