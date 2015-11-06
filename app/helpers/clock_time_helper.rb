@@ -1,2 +1,2 @@
-module ClockTimeHelper          
+module ClockTimeHelper
 end

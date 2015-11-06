@@ -1,4 +1,4 @@
-= page_block("Timeclock", :id => "timeclock") do
+= page_block(nil, :id => "timeclock") do
   - if clocked_in?
     %span#tasktime{ :style => 'display:none;' }= current_work_unit.start_time.strftime('%s')
     = form_for(current_work_unit, :url => clock_out_path, :html => {:method => :delete, :class => :edit_work_unit}) do |f|
