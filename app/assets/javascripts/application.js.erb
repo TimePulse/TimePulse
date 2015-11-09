@@ -151,6 +151,18 @@ Ninja.behavior({
         $(elem).parent().append(hiddenDiv);
       }
     },
+    //keydown overrides every key's functionality, not just Enter, so we used transform instead
+    '#annotation_input': {
+      transform: function(elem) {
+        $(elem).keydown(function(event) {
+          if (event.which == 13) {
+            event.preventDefault();
+            $("#annotation_form").submit();
+            $("#annotation_form")[0].reset();
+          }
+        });
+      }
+    },
     '#timeclock a#override_trigger': {
       click: function(evnt, elem) {
         $('#timeclock #override_trigger').hide();
@@ -177,6 +189,7 @@ Ninja.behavior({
         $('#timeclock form#annotation_form').submit();
       }
     },
+
     'form#new_work_unit': {
       submit: function(evnt) {
         $("#new_work_unit")[0].reset();
@@ -365,12 +378,3 @@ $(function() {
   });
 
 $(function(){ $(document).foundation(); });
-
-
-$("#annotation_input").keypress(function(event) {
-  if (event.which == 13) {
-    event.preventDefault();
-    $("#annotation_form").submit();
-    $("#annotation_form")[0].reset();
-  }
-});
