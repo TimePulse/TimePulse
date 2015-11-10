@@ -6,7 +6,6 @@ steps "Admin edits a work unit", :type => :feature do
   let! :user      do FactoryGirl.create(:user, :current_project => project) end
 
   let! :wu     do FactoryGirl.create(:work_unit, {:project => project, :user => user} ) end
-
   let! :admin do FactoryGirl.create(:admin) end
 
   it "should login as the admin" do
@@ -33,7 +32,7 @@ steps "Admin edits a work unit", :type => :feature do
     end
   end
 
-  it "Edit a work unit" do
+  it "Edit a Project" do
     page.should have_content("Editing Project")
   end
 
