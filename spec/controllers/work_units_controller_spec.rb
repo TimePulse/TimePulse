@@ -216,8 +216,16 @@ describe WorkUnitsController do
           @valid_create_params = {
             :project_id => project.id,
             :start_time => @local_tz.now.to_s,
-            :time_zone => (@local_tz.utc_offset / 3600)
+            :time_zone => (@local_tz.utc_offset / 3600),
+            :annotation => {
+              :description => "An annotation.",
+              :action => "Annotation",
+              :source => "User",
+              :user_id => @user.id,
+              :project_id => project.id
+            }
           }
+
         end
 
         context "with html or js request content type" do
@@ -226,6 +234,17 @@ describe WorkUnitsController do
             lambda do
               post :create, :work_unit => @valid_create_params
             end.should change(WorkUnit, :count).by(1)
+          end
+
+          it "should create a new annotation in the database" do
+            lambda do
+              post :create, :work_unit => @valid_create_params
+            end.should change(Activity, :count).by(1)
+          end
+
+          it "should save the correct values of the annotation" do
+            post :create, :work_unit => @valid_create_params
+            expect(Activity.last.description).to eql("An annotation.")
           end
 
           it "should expose a saved work_unit as @work_unit" do
@@ -385,13 +404,6 @@ describe WorkUnitsController do
 
         it "should create a work unit with hours" do
           assigns[:work_unit].hours.should be_within(0.001).of(1.5)
-        end
-      end
-
-      describe "for a work unit with annotations" do
-        it "should have tests do deal with this case" do
-          pending "NEED TO UNDERSTAND WORKFLOW FOR UPDATING WORK UNIT"
-          expect(false).to be_true
         end
       end
 
