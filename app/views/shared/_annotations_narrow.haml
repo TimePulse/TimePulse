@@ -2,5 +2,5 @@
   - token = SecureRandom.hex(8)
   = content_tag(:tr, :id => token, :class => 'annotations') do
     %ul
-      %li= annotations.created_at
+      %li= annotations.time
       %li= annotations.description

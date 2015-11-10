@@ -9,12 +9,18 @@ steps "log in and switch projects", :type => :feature do
   let! :user      do FactoryGirl.create(:user, :current_project => project_1) end
 
   let! :work_units do
-    [ FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user)
+    [ FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 1"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 2"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 3"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 4"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 5"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 6")
     ]
   end
 

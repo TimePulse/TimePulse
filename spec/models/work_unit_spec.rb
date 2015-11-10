@@ -330,8 +330,14 @@ describe WorkUnit do
       work_unit = FactoryGirl.create(:work_unit,
                                      :start_time => start_time,
                                      :stop_time => start_time + 12.minutes,
-                                     :hours => 0.20,
-                                     :notes => "Work unit task")
+                                     :hours => 0.20)
+      FactoryGirl.create(:activity,
+                         work_unit: work_unit,
+                         project: work_unit.project,
+                         user: work_unit.user,
+                         action: "Annotation",
+                         description: "Little")
+
       work_unit.sufficiently_annotated?.should be(true)
     end
 
@@ -340,9 +346,71 @@ describe WorkUnit do
       work_unit = FactoryGirl.create(:work_unit,
                                      :start_time => start_time,
                                      :stop_time => start_time + 12.minutes,
-                                     :hours => 0.10,
-                                     :notes => "Work unit task")
+                                     :hours => 0.10)
+      FactoryGirl.create(:activity,
+                         work_unit: work_unit,
+                         project: work_unit.project,
+                         user: work_unit.user,
+                         action: "Annotation",
+                         description: "Little")
+
       work_unit.sufficiently_annotated?.should be(true)
+    end
+  end
+
+  describe "#notes" do
+    context "when there are no annotations" do
+      it "returns an empty string" do
+        expect(@work_unit.notes).to eq("")
+      end
+    end
+
+    context "when there is a single annotation" do
+      before :each do
+        FactoryGirl.create(
+          :activity,
+          work_unit: @work_unit,
+          project: @work_unit.project,
+          user: @work_unit.user,
+          action: "Annotation",
+          description: "Little")
+      end
+
+      it "returns the text of the annotation's description" do
+        expect(@work_unit.notes).to eq("Little")
+      end
+    end
+
+    context "when there are multiple annotations" do
+      before :each do
+        FactoryGirl.create(
+          :activity,
+          work_unit: @work_unit,
+          project: @work_unit.project,
+          user: @work_unit.user,
+          action: "Annotation",
+          description: "Little",
+          time: 3.days.ago)
+        FactoryGirl.create(
+          :activity,
+          work_unit: @work_unit,
+          project: @work_unit.project,
+          user: @work_unit.user,
+          action: "Annotation",
+          description: "Orphan",
+          time: 2.days.ago)
+        FactoryGirl.create(
+          :activity,
+          work_unit: @work_unit,
+          project: @work_unit.project,
+          user: @work_unit.user,
+          action: "Annotation",
+          description: "Annie",
+          time: 1.day.ago)
+      end
+      it "returns the descriptions in ascending chronological order delimited by semicolons" do
+        expect(@work_unit.notes).to eq("Little; Orphan; Annie")
+      end
     end
   end
 end

@@ -6,6 +6,7 @@ class AnnotationsController < ApplicationController
 
     @current_work_unit = current_user.current_work_unit
     @activity = Activity.new(activity_params)
+    @activity.time = Time.now.utc
     #check to see if the user making the request has an open work unit
     #
     if @current_work_unit.present?
