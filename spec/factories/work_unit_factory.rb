@@ -8,6 +8,22 @@ FactoryGirl.define  do
     association :user
     association :project
     billable  true
+
+    factory :work_unit_with_annotation do
+      transient do
+        description "Annotation"
+      end
+
+      after(:create) do |work_unit, evaluator|
+        FactoryGirl.create(:activity,
+                   work_unit: work_unit,
+                   project: work_unit.project,
+                   user: work_unit.user,
+                   action: "Annotation",
+                   description: evaluator.description)
+      end
+    end
+
   end
 end
 
