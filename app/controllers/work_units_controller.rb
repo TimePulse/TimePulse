@@ -109,8 +109,12 @@ class WorkUnitsController < WorkUnitBaseController
   end
 
   def redirect_back
-    redirect_to(session[:return_to])
-    session.delete(:return_to)
+    if session[:return_to]
+      redirect_to(session[:return_to])
+      session.delete(:return_to)
+    else
+      redirect_to root_path
+    end
   end
 
   def store_location
