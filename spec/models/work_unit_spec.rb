@@ -310,8 +310,7 @@ describe WorkUnit do
       work_unit = FactoryGirl.create(:work_unit,
                                      :start_time => start_time,
                                      :stop_time => start_time + 6.minutes,
-                                     :hours => 0.09,
-                                     :notes => "")
+                                     :hours => 0.09)
       work_unit.sufficiently_annotated?.should be(true)
     end
 
@@ -320,40 +319,27 @@ describe WorkUnit do
       work_unit = FactoryGirl.create(:work_unit,
                                      :start_time => start_time,
                                      :stop_time => start_time + 12.minutes,
-                                     :hours => 0.20,
-                                     :notes => "")
+                                     :hours => 0.20)
       work_unit.sufficiently_annotated?.should be(false)
     end
 
     it "should be sufficiently_annotated if the elapsed time > 0.10 hour and the note is not blank" do
       start_time = Time.now - 1.day
-      work_unit = FactoryGirl.create(:work_unit,
+      work_unit = FactoryGirl.create(:work_unit_with_annotation,
                                      :start_time => start_time,
                                      :stop_time => start_time + 12.minutes,
-                                     :hours => 0.20)
-      FactoryGirl.create(:activity,
-                         work_unit: work_unit,
-                         project: work_unit.project,
-                         user: work_unit.user,
-                         action: "Annotation",
-                         description: "Little")
-
+                                     :hours => 0.20,
+                                     :description => "A little annotation.")
       work_unit.sufficiently_annotated?.should be(true)
     end
 
     it "should be sufficiently_annotated if the elapsed time <= 0.10 hour and the note is not blank" do
       start_time = Time.now - 1.day
-      work_unit = FactoryGirl.create(:work_unit,
+      work_unit = FactoryGirl.create(:work_unit_with_annotation,
                                      :start_time => start_time,
                                      :stop_time => start_time + 12.minutes,
-                                     :hours => 0.10)
-      FactoryGirl.create(:activity,
-                         work_unit: work_unit,
-                         project: work_unit.project,
-                         user: work_unit.user,
-                         action: "Annotation",
-                         description: "Little")
-
+                                     :hours => 0.10,
+                                     :description => "A little orphan annotation.")
       work_unit.sufficiently_annotated?.should be(true)
     end
   end

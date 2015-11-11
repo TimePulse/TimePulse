@@ -14,7 +14,8 @@ class ReplaceNotesWithAnnotations < ActiveRecord::Migration
         :description => wu.notes,
         :user_id => wu.user_id,
         :project_id => wu.project_id,
-        :work_unit_id => wu.id
+        :work_unit_id => wu.id,
+        :time => wu.start_time
       )
     end
   end
