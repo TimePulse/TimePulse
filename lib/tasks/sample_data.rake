@@ -169,13 +169,22 @@ namespace :db do
           end
           hours = rand() * 3  # work units from 0 to 3 hours
           e_t = s_t + hours.hours
-          user.work_units.create(
+          wu = user.work_units.create(
             :project => pick_from(projects),
             :start_time => s_t,
             :stop_time => e_t,
             :hours     => hours,
-            :notes     => Populator.words(0..6)
           )
+          if wu.persisted?
+            wu.activities.create(
+              :project => wu.project,
+              :user => user,
+              :source => "User",
+              :action => "Annotation",
+              :description => Populator.words(0..6),
+              :time => wu.stop_time
+              )
+          end
           start = e_t
         end
       end

@@ -50,7 +50,6 @@ describe PivotalActivity do
                            start_time: start_time,
                            stop_time: stop_time,
                            hours: 0.3,
-                           notes: "Work Unit Notes",
                            user: user,
                            project: project)
       end
@@ -67,7 +66,6 @@ describe PivotalActivity do
       let! :work_unit do
         FactoryGirl.create(:in_progress_work_unit,
                            start_time: start_time,
-                           notes: "Work Unit Notes",
                            user: user,
                            project: project)
       end
@@ -87,7 +85,6 @@ describe PivotalActivity do
                            stop_time: DateTime.parse("Mon, 27 May 2013 06:25:17 +0000").
                                                advance(:minutes => -15),
                            hours: 0.3,
-                           notes: "Work Unit Notes",
                            user: user,
                            project: project)
       end

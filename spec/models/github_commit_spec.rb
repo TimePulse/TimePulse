@@ -96,7 +96,6 @@ describe GithubCommit do
             start_time: start_time,
             stop_time: stop_time,
             hours: 8,
-            notes: "Work Unit Notes",
             user: user,
             project: project)
         end
@@ -111,7 +110,6 @@ describe GithubCommit do
         let! :work_unit do
           FactoryGirl.create(:in_progress_work_unit,
             start_time: start_time,
-            notes: "Work Unit Notes",
             user: user,
             project: project)
         end
@@ -128,7 +126,6 @@ describe GithubCommit do
             start_time: DateTime.parse(timestamp).advance(hours: -5),
             stop_time: DateTime.parse(timestamp).advance(hours: -3),
             hours: 1,
-            notes: "Work Unit Notes",
             user: user,
             project: project)
         end
