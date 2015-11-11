@@ -3,15 +3,27 @@ class AnnotationsController < ApplicationController
 
   #POST
   def create
+    if params[:activities][:work_unit_id].blank?
+      @work_unit = current_user.current_work_unit
+    else
+      @work_unit = WorkUnit.find(params[:activities][:work_unit_id])
+    end
 
-    @current_work_unit = current_user.current_work_unit
     @activity = Activity.new(activity_params)
-    @activity.time = Time.now.utc
+
     #check to see if the user making the request has an open work unit
     #
-    if @current_work_unit.present?
-      if @current_work_unit.project == @activity.project
-        @activity.work_unit = @current_work_unit
+    if @work_unit.present?
+      if @work_unit.project == @activity.project
+        @activity.work_unit = @work_unit
+      end
+
+      if @activity.time.blank?
+        if @work_unit.in_progress?
+          @activity.time = Time.now.utc
+        else
+          @activity.time = @work_unit.stop_time
+        end
       end
     end
 

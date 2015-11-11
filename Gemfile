@@ -44,7 +44,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
-  gem "byebug", :platforms => [:ruby_20, :ruby_21]
+  gem "byebug", :platforms => [:ruby_20, :ruby_21, :ruby_22]
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
   gem 'capybara-webkit', '~> 1.7.0'

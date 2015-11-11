@@ -34,8 +34,10 @@ class WorkUnitsController < WorkUnitBaseController
 
     if request.format.to_s == 'text/html' || request.format.to_s == 'text/javascript'
       @work_unit = WorkUnit.new(work_unit_params)
-      @annotation = Activity.new(annotation_params)
-      @annotation.work_unit = @work_unit
+      if annotation_params && annotation_params[:description].present?
+        @annotation = Activity.new(annotation_params)
+        @annotation.work_unit = @work_unit
+      end
 
     elsif request.format.to_s == 'application/json'
       mapper = WorkUnitMapper.new(request.body.read)
@@ -44,6 +46,8 @@ class WorkUnitsController < WorkUnitBaseController
 
     @work_unit.user = current_user
     compute_some_fields
+
+    @annotation.time = @work_unit.stop_time if @annotation
 
     @work_unit.project ||= current_user.current_project
 
