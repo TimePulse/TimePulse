@@ -61,6 +61,16 @@ steps "clock in and out on projects", :type => :feature do
     new_work_unit.project.should == project_1
   end
 
+  it "should create annotation on enter" do
+    fill_in "annotation_input", :with => "Starting work on project #1!\n"
+  end
+
+  it "should show newly-created annotation under Recent Annotations" do
+    within("#recent_annotations") do
+      page.should have_content("Starting work on project #1!")
+    end
+  end
+
   it "should clock out with a message" do
     within "#timeclock" do
       fill_in "Annotations", :with => "Did a little work on project #1"
