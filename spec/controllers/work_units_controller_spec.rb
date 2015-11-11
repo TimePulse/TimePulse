@@ -212,6 +212,10 @@ describe WorkUnitsController do
       end
 
       describe "with valid params" do
+        let :start_time do
+          @local_tz.now.to_s
+        end
+
         before do
           @valid_create_params = {
             :project_id => project.id,
@@ -268,8 +272,34 @@ describe WorkUnitsController do
             assigns[:work_unit].user.should == @user
           end
 
+          it "should set the annotation's time to the work unit's stop time" do
+            post :create, :work_unit => @valid_create_params
+            new_work_unit = assigns[:work_unit]
+            expect(Activity.last.time).to eq(new_work_unit.stop_time)
+          end
+
+          describe "and a blank annotation description" do
+
+            before :each do
+              @valid_create_params.deep_merge!(annotation: {description: ""} )
+            end
+
+            it "should create a new work_unit in the database" do
+              lambda do
+                post :create, :work_unit => @valid_create_params
+              end.should change(WorkUnit, :count).by(1)
+            end
+
+            it "should not create a new annotation in the database" do
+              lambda do
+                post :create, :work_unit => @valid_create_params
+              end.should_not change(Activity, :count)
+            end
+          end
+
+
           describe "and hours in HH:MM format" do
-            it "should set the hours correctli" do
+            it "should set the hours correctly" do
               post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")
               assigns[:work_unit].hours.should == 4.25
             end
