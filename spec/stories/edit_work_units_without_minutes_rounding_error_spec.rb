@@ -34,6 +34,11 @@ steps "Minute truncation", :type => :feature do
     page.should have_content("This is an annotation.")
   end
 
+  it "should allow addition of annotations and list them" do
+    fill_in "wu_annotation_input", :with => "This is another annotation!\n"
+    page.should have_content("This is another annotation!")
+  end
+
   it "should not cause errors in the edit view" do
     click_button("Submit")
     page.should_not have_content("Hours must not be greater than the difference between start and stop times")

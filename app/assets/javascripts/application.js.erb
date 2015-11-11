@@ -105,6 +105,9 @@ Ninja.behavior({
         $details.toggle();
       }
     },
+    'form#wu_annotation_form':    Ninja.submitsAsAjax({
+        busyElement: function(elem){ return $('#wu_annotations')}
+      }),
     '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
         busyElement: function(elem){ return $('#timeclock')}
       }),
@@ -159,6 +162,17 @@ Ninja.behavior({
             event.preventDefault();
             $("#annotation_form").submit();
             $("#annotation_form")[0].reset();
+          }
+        });
+      }
+    },
+    '#wu_annotation_form #wu_annotation_input': {
+      transform: function(elem) {
+        $(elem).keydown(function(event) {
+          if (event.which == 13) {
+            event.preventDefault();
+            $("#wu_annotation_form").submit();
+            $("#wu_annotation_form")[0].reset();
           }
         });
       }
