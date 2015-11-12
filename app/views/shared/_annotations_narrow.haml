@@ -2,5 +2,7 @@
   - token = SecureRandom.hex(8)
   = content_tag(:tr, :id => token, :class => 'annotations') do
     %ul
-      %li= annotations.time
+      %li
+        = annotations.time
+        = link_to 'Delete', annotation_path(annotations, :delete_id => token), :method => :delete, data: { confirm: "Are you sure?" }, class: 'actions delete'
       %li= annotations.description

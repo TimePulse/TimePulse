@@ -17,7 +17,7 @@
         = f.text_field :hours, :size => 15, :placeholder => "Hours"
       = f.button "Clock Out", :type => :submit, :id => 'clock_out_button'
 
-    = form_for(:activities, :url => add_annotation_path, :html => {:method => :create, :id => :annotation_form}) do |g|
+    = form_for(:activities, :url => annotations_path, :html => {:method => :create, :id => :annotation_form}) do |g|
       = g.text_area :description, :placeholder => "Annotations", :id => "annotation_input"
       = g.hidden_field :action, :value => "Annotation"
       = g.hidden_field :source, :value => "User"

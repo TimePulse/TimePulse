@@ -39,6 +39,13 @@ steps "Minute truncation", :type => :feature do
     page.should have_content("This is another annotation!")
   end
 
+  it "should allow deletion of annotations" do
+    expect do
+      click_link("Delete", match: :first)
+      page.should_not have_content("This is another annotation!")
+    end.to change(Activity, :count).by(-1)
+  end
+
   it "should not cause errors in the edit view" do
     click_button("Submit")
     page.should_not have_content("Hours must not be greater than the difference between start and stop times")
