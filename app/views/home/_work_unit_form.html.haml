@@ -1,6 +1,6 @@
-#work_unit_form
+= page_block(project_headline(current_project), id: "work_unit_form") do
   %h3 Enter/Record Hours:
-  - if current_project.clockable?
+  - if current_project && current_project.clockable?
     %p
       Hours are not forced to the difference between start and stop: you may enter "I worked 2 hours
       between 9am and 1pm", for example.  If hours are left blank, they will be computed as
@@ -19,9 +19,12 @@
       = labeled_datetimepicker_field f, :stop_time
 
       = f.labeled_input :hours, :placeholder => "(Decimal or HH:MM)"
-      = f.labeled_input :notes do
-        = f.text_area :notes, :size => 30
-
+      = f.fields_for :annotation do |g|
+        = g.text_area :description, :placeholder => "Work Unit Annotations", :id => "manual_annotation_input"
+        = g.hidden_field :action, :value => "Annotation"
+        = g.hidden_field :source, :value => "User"
+        = g.hidden_field :user_id, :value => current_user.id
+        = g.hidden_field :project_id, :value => current_project.id
       = f.unlabeled_submit "Save Changes"
   - else
     %p

@@ -13,18 +13,18 @@ describe ActivitiesController do
     @project_different = FactoryGirl.create(:project)
     #create activity and work_unit that both have the same project associated
 
-    @current_work_unit = FactoryGirl.create(:work_unit, :project => @project,
+    @current_work_unit = FactoryGirl.create(:work_unit_with_annotation, :project => @project,
                                             :start_time => @base_time, :stop_time => nil, :user => @user, :hours => nil,
-                                            :notes => "Work Unit, Clocked in")
+                                            :description => "Work Unit, Clocked in")
 
-    @non_current_work_unit = FactoryGirl.create(:work_unit, :project => @project,
+    @non_current_work_unit = FactoryGirl.create(:work_unit_with_annotation, :project => @project,
                                                 :start_time => @base_time, :stop_time => @base_time+1.hours, :hours => 1,
-                                                :user => @user, :notes => "Work Unit, Not Clocked in")
+                                                :user => @user, :description => "Work Unit, Not Clocked in")
 
     #work unit for a user who is not clocked in
-    @closed_work_unit = FactoryGirl.create(:work_unit, :project => @project,
+    @closed_work_unit = FactoryGirl.create(:work_unit_with_annotation, :project => @project,
                                            :start_time => @base_time, :stop_time => @base_time+1.hours, :hours => 1,
-                                           :user => @user2, :notes => "Work Unit, Not Clocked in")
+                                           :user => @user2, :description => "Work Unit, Not Clocked in")
 
     #create activity and work_unit with different projects associated
     activity_different_attrs = FactoryGirl.attributes_for(:activity, :project =>

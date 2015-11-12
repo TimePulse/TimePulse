@@ -3,6 +3,7 @@ require 'spec_helper'
 describe WorkUnitsController do
   describe "permissions" do
     let! :work_unit do FactoryGirl.create(:work_unit) end
+    let! :annotation do FactoryGirl.create(:activity) end
 
     describe "accessed by guest" do
 
@@ -211,12 +212,24 @@ describe WorkUnitsController do
       end
 
       describe "with valid params" do
+        let :start_time do
+          @local_tz.now.to_s
+        end
+
         before do
           @valid_create_params = {
             :project_id => project.id,
             :start_time => @local_tz.now.to_s,
-            :time_zone => (@local_tz.utc_offset / 3600)
+            :time_zone => (@local_tz.utc_offset / 3600),
+            :annotation => {
+              :description => "An annotation.",
+              :action => "Annotation",
+              :source => "User",
+              :user_id => @user.id,
+              :project_id => project.id
+            }
           }
+
         end
 
         context "with html or js request content type" do
@@ -225,6 +238,17 @@ describe WorkUnitsController do
             lambda do
               post :create, :work_unit => @valid_create_params
             end.should change(WorkUnit, :count).by(1)
+          end
+
+          it "should create a new annotation in the database" do
+            lambda do
+              post :create, :work_unit => @valid_create_params
+            end.should change(Activity, :count).by(1)
+          end
+
+          it "should save the correct values of the annotation" do
+            post :create, :work_unit => @valid_create_params
+            expect(Activity.last.description).to eql("An annotation.")
           end
 
           it "should expose a saved work_unit as @work_unit" do
@@ -248,8 +272,34 @@ describe WorkUnitsController do
             assigns[:work_unit].user.should == @user
           end
 
+          it "should set the annotation's time to the work unit's stop time" do
+            post :create, :work_unit => @valid_create_params
+            new_work_unit = assigns[:work_unit]
+            expect(Activity.last.time).to eq(new_work_unit.stop_time)
+          end
+
+          describe "and a blank annotation description" do
+
+            before :each do
+              @valid_create_params.deep_merge!(annotation: {description: ""} )
+            end
+
+            it "should create a new work_unit in the database" do
+              lambda do
+                post :create, :work_unit => @valid_create_params
+              end.should change(WorkUnit, :count).by(1)
+            end
+
+            it "should not create a new annotation in the database" do
+              lambda do
+                post :create, :work_unit => @valid_create_params
+              end.should_not change(Activity, :count)
+            end
+          end
+
+
           describe "and hours in HH:MM format" do
-            it "should set the hours correctli" do
+            it "should set the hours correctly" do
               post :create, :work_unit => @valid_create_params.merge!(:hours => "4:15")
               assigns[:work_unit].hours.should == 4.25
             end
@@ -389,13 +439,13 @@ describe WorkUnitsController do
 
       describe "with valid params" do
         def valid_update_params
-          { :notes => "A comment here" }
+          { billable: false }
         end
 
         it "should update the requested work_unit in the database" do
           lambda do
             put :update, :id => @work_unit.id, :work_unit => valid_update_params
-          end.should change{ @work_unit.reload.notes }.to("A comment here")
+          end.should change{ @work_unit.reload.billable }.to(false)
         end
 
         it "should expose the requested work_unit as @work_unit" do
@@ -410,7 +460,6 @@ describe WorkUnitsController do
             end.should change{ @work_unit.reload.hours }.to(3.75)
           end
         end
-
       end
 
       describe "with invalid params" do

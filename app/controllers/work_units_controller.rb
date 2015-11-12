@@ -34,6 +34,11 @@ class WorkUnitsController < WorkUnitBaseController
 
     if request.format.to_s == 'text/html' || request.format.to_s == 'text/javascript'
       @work_unit = WorkUnit.new(work_unit_params)
+      if annotation_params && annotation_params[:description].present?
+        @annotation = Activity.new(annotation_params)
+        @annotation.work_unit = @work_unit
+      end
+
     elsif request.format.to_s == 'application/json'
       mapper = WorkUnitMapper.new(request.body.read)
       @work_unit = mapper.save
@@ -42,11 +47,14 @@ class WorkUnitsController < WorkUnitBaseController
     @work_unit.user = current_user
     compute_some_fields
 
+    @annotation.time = @work_unit.stop_time if @annotation
+
     @work_unit.project ||= current_user.current_project
 
 
     respond_to do |format|
       if @work_unit.save
+        @annotation.save if @annotation
         flash[:notice] = 'WorkUnit was successfully created.'
         format.html { redirect_to(@work_unit) }
         format.js {
@@ -112,12 +120,17 @@ class WorkUnitsController < WorkUnitBaseController
   def work_unit_params
     params.
     require(:work_unit).
-    permit(:notes,
-      :start_time,
+    permit(:start_time,
       :stop_time,
       :hours,
       :billable,
       :project_id)
+  end
+
+  def annotation_params
+    if params[:work_unit][:annotation]
+      params.require(:work_unit).require(:annotation).permit(:description, :action, :source, :user_id, :project_id)
+    end
   end
 
 end

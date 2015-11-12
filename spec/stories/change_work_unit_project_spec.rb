@@ -25,7 +25,7 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   let! :work_unit do
-    wu = FactoryGirl.build(:work_unit)
+    wu = FactoryGirl.create(:work_unit_with_annotation)
     wu.project = project_1
     wu.user = user
     wu.save
