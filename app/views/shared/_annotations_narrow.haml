@@ -1,0 +1,6 @@
+- cache("annotations_narrow_#{annotations.id}", :skip_digest => true) do
+  - token = SecureRandom.hex(8)
+  = content_tag(:tr, :id => token, :class => 'annotations') do
+    %ul
+      %li= annotations.time
+      %li= annotations.description

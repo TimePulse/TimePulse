@@ -105,8 +105,14 @@ Ninja.behavior({
         $details.toggle();
       }
     },
+    'form#wu_annotation_form':    Ninja.submitsAsAjax({
+        busyElement: function(elem){ return $('#wu_annotations')}
+      }),
     '#timeclock form.edit_work_unit':    Ninja.submitsAsAjax({
         busyElement: function(elem){ return $('#timeclock')}
+      }),
+    '#timeclock form#annotation_form':    Ninja.submitsAsAjax({
+        busyElement: function(elem){ return $('#recent_annotations')}
       }),
     '#timeclock form.clock_in':          Ninja.submitsAsAjax({
         busyElement: function(elem){ return $('#timeclock')}
@@ -148,6 +154,29 @@ Ninja.behavior({
         $(elem).parent().append(hiddenDiv);
       }
     },
+    //keydown overrides every key's functionality, not just Enter, so we used transform instead
+    '#annotation_input': {
+      transform: function(elem) {
+        $(elem).keydown(function(event) {
+          if (event.which == 13) {
+            event.preventDefault();
+            $("#annotation_form").submit();
+            $("#annotation_form")[0].reset();
+          }
+        });
+      }
+    },
+    '#wu_annotation_form #wu_annotation_input': {
+      transform: function(elem) {
+        $(elem).keydown(function(event) {
+          if (event.which == 13) {
+            event.preventDefault();
+            $("#wu_annotation_form").submit();
+            $("#wu_annotation_form")[0].reset();
+          }
+        });
+      }
+    },
     '#timeclock a#override_trigger': {
       click: function(evnt, elem) {
         $('#timeclock #override_trigger').hide();
@@ -166,6 +195,18 @@ Ninja.behavior({
         $('#timeclock #manual_entry_collapse').hide();
         $('#work_unit_form').slideUp();
         $('#timeclock #manual_entry_trigger').show();
+      }
+    },
+    '#timeclock button#clock_out_button': {
+      click: function(evnt) {
+        $('#timeclock form.edit_work_unit').submit();
+        $('#timeclock form#annotation_form').submit();
+      }
+    },
+
+    'form#new_work_unit': {
+      submit: function(evnt) {
+        $("#new_work_unit")[0].reset();
       }
     },
     // id changed here

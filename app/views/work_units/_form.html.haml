@@ -10,6 +10,6 @@
     = labeled_datetimepicker_field f, :stop_time
 
     = f.labeled_input :hours, :comment => "(Decimal or HH:MM)"
-    = f.labeled_input :notes do
-      = f.text_area :notes, :size => 30
+    / = f.fields_for :annotation do |g|
+    /   = g.text_area :description, :placeholder => "Work Unit Annotations", :id => "manual_annotation_input"
     = f.unlabeled_submit "Submit"

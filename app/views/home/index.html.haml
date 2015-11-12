@@ -1,6 +1,9 @@
-- set_headline project_headline(current_project)
-
+- set_headline "TIMECLOCK"
 = render :partial => "shared/timeclock"
+= render :partial => 'home/work_unit_form'
+= render :partial => "shared/recent_annotations"
+= render :partial => 'home/current_project_block'
+
 
 -content_for :aux do
   = render :partial => "shared/week_summary", :locals => { :this_week_units => current_user.work_units.this_week }
@@ -11,5 +14,3 @@
 -content_for :picker do
   = render :partial => "shared/recent_projects"
   = render :partial => "shared/project_picker"
-
-= render :partial => 'home/current_project_block'

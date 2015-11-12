@@ -59,6 +59,12 @@ describe 'db:sample_data namespace rake task', :type => :task do
       end
     end
 
+    it 'should create activites for all work units' do
+      WorkUnit.all.each do |wu|
+        wu.notes.present?
+      end
+    end
+
     it 'should create rates' do
       User.where(admin: false).each do |user|
         user.rates.should_not be_empty

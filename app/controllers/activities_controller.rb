@@ -17,9 +17,16 @@ class ActivitiesController < ApplicationController
       end
     end
     if @activity.save
-      render json: @activity, status: 201
+      flash[:notice] = 'Annotation was successfully created.'
+      respond_to do |format|
+        format.html { redirect_to(@activity) }
+        format.json { render json: @activity, status: 201 }
+      end
     else
-      render json: @activity.errors, status: 422
+      respond_to do |format|
+        format.html { render :action => "annotate" }
+        format.json { render json: @activity.errors, status: 422 }
+      end
     end
   end
 
