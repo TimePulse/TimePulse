@@ -35,6 +35,18 @@ class AnnotationsController < ApplicationController
     end
   end
 
+  #DELETE
+  def destroy
+    @annotation = Activity.find(params[:id])
+    if @annotation.work_unit
+      @work_unit = @annotation.work_unit
+    end
+    @annotation.destroy
+    respond_to do |format|
+      format.js
+    end
+  end
+
   private
 
   def activity_params
