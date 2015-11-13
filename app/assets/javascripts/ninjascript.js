@@ -1738,4 +1738,3 @@ ninjascript.tools.AjaxSubmitter = function() {
 })();
 ninjascript.tools.all = {};
 ninjascript.loaded = {};
-
