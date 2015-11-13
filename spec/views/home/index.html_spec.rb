@@ -141,8 +141,7 @@ describe "/home/index" do
                            :user => current_user,
                            :project => project_1,
                            :start_time => Time.now - 2.hours,
-                           :hours => 1.9,
-                           :notes => nil
+                           :hours => 1.9
                           )
       end
 
@@ -155,12 +154,12 @@ describe "/home/index" do
     describe "without an unannotated work unit" do
       let! :wu_1 do
         start_time = Time.now - 2.hours
-        FactoryGirl.create(:work_unit,
+        FactoryGirl.create(:work_unit_with_annotation,
                            :user => current_user,
                            :project => project_1,
                            :start_time => Time.now - 2.hours,
                            :hours => 1.9,
-                           :notes => "I have dutifully annotated this Work Unit")
+                           :description => "I have dutifully annotated this Work Unit")
       end
 
       it "should render work units noting unannotated" do

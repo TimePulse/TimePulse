@@ -9,12 +9,18 @@ steps "log in and switch projects", :type => :feature do
   let! :user      do FactoryGirl.create(:user, :current_project => project_1) end
 
   let! :work_units do
-    [ FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user)
+    [ FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 1"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 2"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 3"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 4"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 5"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 6")
     ]
   end
 
@@ -24,6 +30,10 @@ steps "log in and switch projects", :type => :feature do
     fill_in "Password", :with => user.password
     click_button 'Login'
     page.should have_link("Logout")
+  end
+
+  it "should expand the manual time entry work unit form" do
+    click_link "(+ show manual time entry)"
   end
 
   it "should have a work unit form (XPath Gem format)" do
@@ -42,8 +52,10 @@ steps "log in and switch projects", :type => :feature do
 
 
   it "should have the name of the project" do
-    within "h1#headline" do
-      page.should have_content(project_1.name)
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_1.name.upcase)
+      end
     end
   end
 
@@ -87,8 +99,10 @@ steps "log in and switch projects", :type => :feature do
   end
 
   it "should have the name of project 2" do
-    within "h1#headline" do
-      page.should have_content(project_2.name)
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_2.name.upcase)
+      end
     end
   end
 
@@ -100,6 +114,7 @@ steps "log in and switch projects", :type => :feature do
 
   it "when the page is reloaded" do
     visit(current_path)
+    click_link "(+ show manual time entry)"
   end
 
   it "project 2 should have css class 'current'" do
@@ -111,8 +126,10 @@ steps "log in and switch projects", :type => :feature do
   end
 
   it "should have the name of project 2" do
-    within "h1#headline" do
-      page.should have_content(project_2.name)
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_2.name.upcase)
+      end
     end
   end
 

@@ -1,4 +1,0 @@
-API_KEYS = {
-  :github => 'xxxx',
-  :pivotal => 'xxxx'
-}

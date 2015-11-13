@@ -5,3 +5,12 @@
 
 = render :partial => "form"
 
+= render :partial => "shared/wu_annotations"
+
+= form_for(:activities, :url => annotations_path, :html => {:method => :create, :id => :wu_annotation_form}) do |g|
+  = g.text_area :description, :placeholder => "Annotations", :id => "wu_annotation_input"
+  = g.hidden_field :action, :value => "Annotation"
+  = g.hidden_field :source, :value => "User"
+  = g.hidden_field :user_id, :value => current_user.id
+  = g.hidden_field :work_unit_id, :value => @work_unit.id
+  = g.hidden_field :project_id, :value => @work_unit.project.id

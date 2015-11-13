@@ -2,6 +2,30 @@
 $labelwidth: 10em
 $ddmargins: 0.5em
 
+.home.index
+  #work_unit_form
+    display: none
+    :margin-top 1em
+    h2
+      :padding .25em .3em
+      :margin 0
+      :color $title_text_color
+      +block_title
+
+  #recent_annotations
+    :margin-top 1em
+    h2
+      :padding .25em .3em
+      :margin 0
+      :color $title_text_color
+      +block_title
+
+#manual_entry_trigger
+  :padding 10px
+#manual_entry_collapse
+  :padding 10px
+  display: none
+
 #timeclock.block
   :background $secondary_light_1
 
@@ -61,6 +85,7 @@ $ddmargins: 0.5em
       :color black
       :width auto
   .text_content
+    :text-align center
     :padding 0.5em 1em
 
   #description

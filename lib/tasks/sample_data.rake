@@ -11,7 +11,6 @@
 # Once the client has real data ... i.e. an initial set of pages and/or
 # a menu/location tree, those should replace the lorem data.
 
-require 'unsafe_mass_assignment'
 
 def sometimes(prob = 0.5)
   if rand(1.0 < prob)
@@ -76,7 +75,7 @@ namespace :db do
 
     task :create_admin => :environment do
       if User.where(admin: true).empty?
-        admin = User.unsafe_create!(
+        admin = User.create!(
           :login                 => 'admin',
           :name                  => "Admin",
           :email                 => "admin@timepulse.io",
@@ -91,7 +90,7 @@ namespace :db do
 
     task :create_root_project => :environment do
       unless Project.root
-        Project.unsafe_create!(:name => 'root', :client => nil)
+        Project.create!(:name => 'root', :client => nil)
       end
     end
 
@@ -105,7 +104,7 @@ namespace :db do
           login = Faker::Internet.user_name(name)
         end
 
-        user = User.unsafe_create!(
+        user = User.create!(
           :name                  => name,
           :login                 => login,
           :email                 => Faker::Internet.safe_email(name),
@@ -127,7 +126,7 @@ namespace :db do
     task :populate_clients => :environment do
       5.times do |i|
         name = Faker::Company.name
-        Client.unsafe_create!(
+        Client.create!(
           :name          => name,
           :abbreviation  => "CL#{i}",
           :billing_email => Faker::Internet.safe_email(name)
@@ -137,7 +136,7 @@ namespace :db do
 
     task :populate_projects => :environment do
       Client.all.each do |client|
-        proj = Project.unsafe_create!(
+        proj = Project.create!(
           :client    => client,
           :name      => client.name,
           :clockable => false,
@@ -145,9 +144,9 @@ namespace :db do
           :parent    => Project.root
         )
 
-        Project.unsafe_create!(:client => client, :name => 'Planning',    :clockable => true, :billable => true, :parent => proj)
-        Project.unsafe_create!(:client => client, :name => 'Development', :clockable => true, :billable => true, :parent => proj)
-        Project.unsafe_create!(:client => client, :name => 'Deployment',  :clockable => true, :billable => true, :parent => proj)
+        Project.create!(:client => client, :name => 'Planning',    :clockable => true, :billable => true, :parent => proj)
+        Project.create!(:client => client, :name => 'Development', :clockable => true, :billable => true, :parent => proj)
+        Project.create!(:client => client, :name => 'Deployment',  :clockable => true, :billable => true, :parent => proj)
       end
     end
 
@@ -170,13 +169,22 @@ namespace :db do
           end
           hours = rand() * 3  # work units from 0 to 3 hours
           e_t = s_t + hours.hours
-          user.work_units.create(
+          wu = user.work_units.create(
             :project => pick_from(projects),
             :start_time => s_t,
             :stop_time => e_t,
             :hours     => hours,
-            :notes     => Populator.words(0..6)
           )
+          if wu.persisted?
+            wu.activities.create(
+              :project => wu.project,
+              :user => user,
+              :source => "User",
+              :action => "Annotation",
+              :description => Populator.words(0..6),
+              :time => wu.stop_time
+              )
+          end
           start = e_t
         end
       end
@@ -185,9 +193,9 @@ namespace :db do
     task :populate_rates do
       Project.where(:parent_id => Project.root.id).each do |project|
         User.where(admin: false).each_with_index do |user, i|
-          Rate.unsafe_create!(
-            :name => "Rate #{i}",
-            :amount => 50 * i,
+          Rate.create!(
+            :name => "Rate #{i += 1}",
+            :amount => (50 * i),
             :project => project,
             :users => [user]
           )
@@ -197,7 +205,7 @@ namespace :db do
 
     task :populate_bills do
       User.where(admin: false).each do |user|
-        Bill.unsafe_create!(
+        Bill.create!(
           user: user,
           work_units: user.work_units.take(5)
         )
@@ -209,7 +217,7 @@ namespace :db do
         wus_by_month = WorkUnit.for_client(client).order("start_time ASC").group_by{ |wu| wu.start_time.strftime("%Y%B") }
 
         wus_by_month.each do |month, work_units|
-          Invoice.unsafe_create!(
+          Invoice.create!(
             client: client,
             work_units: work_units
           )

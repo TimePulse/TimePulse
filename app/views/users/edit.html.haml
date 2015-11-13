@@ -5,3 +5,5 @@
   - if @user.user_preferences
     = tp.add_tab("Preferences") do
       = render :partial => 'preferences_form'
+  = tp.add_tab("API Token") do
+    = render :partial => 'api_form'

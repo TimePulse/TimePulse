@@ -4,10 +4,25 @@ FactoryGirl.define  do
     start_time {(Time.now - 20.hours).utc}
     stop_time {(Time.now).utc}
     hours 9.50
-    sequence(:notes){ |n| "Work Unit Notes #{n}" }
     association :user
     association :project
     billable  true
+
+    factory :work_unit_with_annotation do
+      transient do
+        sequence(:description) { |n| "Work Unit Annotation #{n}" }
+      end
+
+      after(:create) do |work_unit, evaluator|
+        FactoryGirl.create(:activity,
+                   work_unit: work_unit,
+                   project: work_unit.project,
+                   user: work_unit.user,
+                   action: "Annotation",
+                   description: evaluator.description)
+      end
+    end
+
   end
 end
 

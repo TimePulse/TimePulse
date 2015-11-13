@@ -22,13 +22,25 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Project do
 
-  let :github_url do "https://github.com/Awesome/McAwesome" end
+  # let :repository do "https://github.com/Awesome/McAwesome" end
   let :pivotal_id do 12345 end
 
   let :root_project do Project.root end
 
   it "should create a new instance given valid attributes" do
     FactoryGirl.create(:project)
+  end
+
+  it "should not be valid if has no parent" do
+    FactoryGirl.build(:project, :parent_id => nil).should_not be_valid
+  end
+
+  it "should be valid if has parent" do
+    FactoryGirl.build(:project, :parent_id => 1).should be_valid
+  end
+
+  it "without parent should be valid if its name is root " do
+    FactoryGirl.build(:project, :parent_id => nil, :name => "root").should be_valid
   end
 
   it "should require a name" do
@@ -75,6 +87,33 @@ describe Project do
       end
     end
   end
+
+  describe "repositories_source" do
+    it "should return a project's parent if the project has no repositories" do
+      @parent = FactoryGirl.create(:project, :with_repo)
+      expect(FactoryGirl.create(:project, :parent => @parent).repositories_source).to eq(@parent)
+    end
+    it "should return a project's grandparent's if the project and parent have no repositories" do
+      @grandparent = FactoryGirl.create(:project, :with_repo, :name => 'GP')
+      @parent = FactoryGirl.create(:project, :parent => @grandparent, :name => "P")
+      @project = FactoryGirl.create(:project, :parent => @parent)
+      @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+      @project.repositories_source.should == @grandparent
+    end
+    it "should return a project's parent if the project has no repositories and the grandparent has different repositories" do
+      @grandparent = FactoryGirl.create(:project)
+      @gp_repo = FactoryGirl.create(:repository, project: @grandparent, url: "https://github.com/Awesome/NotAwesome")
+      @parent = FactoryGirl.create(:project, :with_repo, :parent => @grandparent)
+      @project = FactoryGirl.create(:project, :parent => @parent)
+      @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
+      @project.repositories_source.should == @parent
+
+      @grandparent.reload.descendants.should include(@parent)
+      @grandparent.reload.descendants.should include(@project)
+    end
+  end
+
+
   describe "cascades" do
     describe "account" do
       it "should return a project's client" do
@@ -102,48 +141,23 @@ describe Project do
         @grandparent.reload.descendants.should include(@project)
       end
     end
-    describe "github_url" do
-      it "should return a project's github URL" do
-        FactoryGirl.create(:project, :github_url => github_url ).github_url.should == github_url
-      end
-      it "should return a project's parent's github URL if the project has no github URL" do
-        @parent = FactoryGirl.create(:project, :github_url => github_url )
-        FactoryGirl.create(:project, :github_url => nil , :parent => @parent).github_url.should == github_url
-      end
-      it "should return a project's grandparent's github URL if the project and parent have no github URL" do
-        @grandparent = FactoryGirl.create(:project, :github_url => github_url, :name => 'GP')
-        @parent = FactoryGirl.create(:project, :parent => @grandparent, :github_url => nil, :name => "P")
-        @project = FactoryGirl.create(:project, :github_url => nil, :parent => @parent)
-        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
-        @project.github_url.should == github_url
-      end
-      it "should return a project's parent's github URL if the project has no github URL  and the grandparent has a different github URL" do
-        @grandparent = FactoryGirl.create(:project, :github_url => "https://github.com/Awesome/NotAwesome")
-        @parent = FactoryGirl.create(:project, :parent => @grandparent, :github_url => github_url)
-        @project = FactoryGirl.create(:project, :github_url => nil, :parent => @parent)
-        @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
-        @project.github_url.should == github_url
 
-        @grandparent.reload.descendants.should include(@parent)
-        @grandparent.reload.descendants.should include(@project)
-      end
-    end
     describe "pivotal_id" do
-      it "should return a project's github URL" do
+      it "should return a project's pivotal ID" do
         FactoryGirl.create(:project, :pivotal_id => pivotal_id ).pivotal_id.should == pivotal_id
       end
-      it "should return a project's parent's github URL if the project has no github URL" do
+      it "should return a project's parent's pivotal ID if the project has no pivotal ID" do
         @parent = FactoryGirl.create(:project, :pivotal_id => pivotal_id )
         FactoryGirl.create(:project, :pivotal_id => nil , :parent => @parent).pivotal_id.should == pivotal_id
       end
-      it "should return a project's grandparent's github URL if the project and parent have no github URL" do
+      it "should return a project's grandparent's pivotal ID if the project and parent have no pivotal ID" do
         @grandparent = FactoryGirl.create(:project, :pivotal_id => pivotal_id, :name => 'GP')
         @parent = FactoryGirl.create(:project, :parent => @grandparent, :pivotal_id => nil, :name => "P")
         @project = FactoryGirl.create(:project, :pivotal_id => nil, :parent => @parent)
         @project.ancestors.reverse.should == [ @parent, @grandparent, root_project ]
         @project.pivotal_id.should == pivotal_id
       end
-      it "should return a project's parent's github URL if the project has no github URL  and the grandparent has a different github URL" do
+      it "should return a project's parent's pivotal ID if the project has no pivotal ID  and the grandparent has a different pivotal ID" do
         @grandparent = FactoryGirl.create(:project, :pivotal_id => 54321)
         @parent = FactoryGirl.create(:project, :parent => @grandparent, :pivotal_id => pivotal_id)
         @project = FactoryGirl.create(:project, :pivotal_id => nil, :parent => @parent)

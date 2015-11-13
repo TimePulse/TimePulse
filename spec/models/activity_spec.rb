@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Activity do
   let :project do FactoryGirl.create(:project) end
-  let :activity do FactoryGirl.build(:activity) end
+  let :activity do FactoryGirl.build(:activity, :project => nil) end
 
-  it "should requrie a project" do
+  it "should require a project" do
     activity.should_not be_valid
     activity.project = project
     activity.should be_valid

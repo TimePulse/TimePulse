@@ -1,3 +1,4 @@
+sudo: false
 language: ruby
 rvm:
 - 1.9.3
@@ -6,21 +7,20 @@ rvm:
 bundler_args: --without development
 before_script:
 - cp config/database.travis.yml config/database.yml
-- cp config/initializers/devise.rb.example config/initializers/devise.rb
-- cp config/initializers/smtp.rb.example config/initializers/smtp.rb
-- cp config/initializers/secret_token.rb.example config/initializers/secret_token.rb
-- cp config/initializers/api_keys.rb.example config/initializers/api_keys.rb
+- cp config/secrets.travis.yml config/secrets.yml
 - psql -c 'create database timepulse_test;' -U postgres
 - RAILS_ENV=test bundle exec rake db:migrate --trace
 - bundle exec rake db:test:prepare
 - RAILS_ENV=test bundle exec rake assets:precompile
 script:
 - CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6
-  bundle exec rspec spec
+  xvfb-run -a bundle exec rspec spec
 notifications: recipients - evan@lrdesign.com
 install: .travis-support/cached-bundle install --deployment
 env:
   global:
+  - CAPYBARA_DRIVER=selenium_firefox
+  - CAPYBARA_JS_DRIVER=selenium_firefox
   - AMAZON_S3_BUCKET=lrd-travis-caching
   - secure: kc7LwLqkUhq8PJScY/pNhzT8GzRolGZ33Jkxvo2Xr/uM1j7N58xFBMdzRXgUS6/1LrvnHZd2z6n4+N0c14778oJQ5Apnq+ldIWhk2lSxy2pLMRoOPxWl4OH6rAU5zZYX/YnPAgsDjAnXTT+uudodYjuszALPp1GCuGrxUuk6uGo=
   - secure: qf0OQQ6hD1ME50OYTDUhSgwiszzNB4XMSqpyIbBfKLdE0+7KAZ3k8gjGSaJKvbirkXaUlDbIePh7eoKVZ2yJ6SL/mgwgFMifvnBdJQNlLxx69i0aE7QyA0nL2cf9xm8ZZFEMQ+ey+NY9LM9jC5MJfF+7KESIXDjecN1Nxteaz1E=

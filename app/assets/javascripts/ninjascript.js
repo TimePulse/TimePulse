@@ -1706,6 +1706,8 @@ ninjascript.tools.AjaxSubmitter = function() {
   f.onSuccess = function(a, b, d) {
   };
   f.onError = function(c, b, d) {
+    console.log(c);
+    console.log(a);
     a.error(c.responseText);
     Ninja.tools.message("Server prototype.error = " + c.statusText, "error")
   };

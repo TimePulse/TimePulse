@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.0.13'
+gem 'rails', '~> 4.1.0'
 gem 'rack'
 gem 'pg'
 
@@ -19,30 +19,36 @@ gem 'dynamic_form'
 gem 'i18n_alchemy'
 gem 'virtus'
 gem 'github_api', "~> 0.11.1"
-gem 'pivotal-tracker', "= 0.5.14", :git => 'https://github.com/hannahhoward/pivotal-tracker'
+gem 'lrd-pivotal-tracker', "= 0.5.14"
 gem 'newrelic_rpm'
 gem 'active_model_serializers'
 gem 'bibliotech'
+gem 'nested_form_fields', :git => 'https://github.com/ncri/nested_form_fields.git'
 gem 'business_time'
+gem 'psych', ">= 2.0.15"
 gem 'airbrake'
 
 group :assets do
-  gem 'sass-rails',   '~> 4.0'
+  gem 'sass-rails'
   gem 'uglifier', '>= 1.0.3'
 
-  gem 'zurb-foundation', '~> 4.0.0'
+  gem 'foundation-rails'
   gem 'quiet_assets'
-  gem 'compass-rails'
+  gem 'compass-rails', '>= 2.0.2'
 end
 
 group :development, :test do
-  gem 'rspec', "~> 2.13.0"
-  gem 'rspec-rails', "~> 2.13.0"
+  gem 'rspec', "3.0.0"
+  gem 'rspec-rails'#, "3.0.0"
+  gem 'rspec-legacy_formatters'
+  gem 'rspec-collection_matchers'
   gem 'factory_girl_rails'
   gem 'launchy'
   gem 'thin'
+  gem "byebug", :platforms => [:ruby_20, :ruby_21, :ruby_22]
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
+  gem 'capybara-webkit', '~> 1.7.0'
   gem 'selenium-webdriver'
   gem 'poltergeist'
   gem 'waterpig'
@@ -52,9 +58,10 @@ group :development, :test do
 end
 
 group :test do
-  gem 'simplecov', '~> 0.7.1', :platform => "ruby_19"
-  gem 'simplecov-vim', :platform => "ruby_19"
-  gem 'fuubar', "~> 1.2.1"
+  gem 'simplecov', '~> 0.7.1'
+  gem 'simplecov-vim'
+  gem 'rspec-its'
+  gem 'fuubar'
   gem 'vcr'
   gem 'webmock'
   gem 'timecop'
@@ -68,5 +75,4 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
-  gem "byebug", :platforms => [:ruby_20, :ruby_21]
 end

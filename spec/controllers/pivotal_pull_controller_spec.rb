@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pivotal-tracker'
 
 describe PivotalPullController, :vcr => {} do
   before do
@@ -36,19 +37,16 @@ describe PivotalPullController, :vcr => {} do
         (1..3).map do |n|
           double(:activity).as_null_object.tap do |activity|
             activity.stub(:stories => [])
+            activity.stub(:project_id => pivotal_project.id)
             activity.stub(:id) { n }
             activity.stub(:occurred_at) { Time.now.utc }
           end
         end
       end
 
-      let :number_of_activities_for_project do 3 end
+      let(:number_of_activities_for_project){ 3 }
 
       before do
-        unless defined?(::API_KEYS)
-          ::API_KEYS = {}
-          ::API_KEYS.stub(:[]).with(:pivotal) { 'xxxxx' }
-        end
         PivotalActivity.any_instance.stub(:project) { pivotal_project }
         PivotalTracker::Project.stub_chain(:find, :activities, :all => activities)
       end
