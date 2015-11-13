@@ -11,9 +11,9 @@ class PivotalActivity < ActivityBuilder
 
   def build
     # double check to make sure a commit with this sha is not already in DB
-    @activity = Activity.where('properties @> hstore(:key, :value)',
-                                           key: 'id', value: id.to_s
-    ).first
+    @activity = Activity.where(project_id: project_id,
+                               source: "pivotal",
+                               source_id: id.to_s).first
     super
   end
 
@@ -34,10 +34,10 @@ class PivotalActivity < ActivityBuilder
       :action => event_type,
       :description => description,
       :time => occurred_at,
+      :source_id => id.to_s,
       :properties => {
         story_id: story_id,
         current_state: current_state,
-        id: id.to_s
       }
     })
   end
@@ -54,6 +54,14 @@ class PivotalActivity < ActivityBuilder
     end
     if !user and author
       @user = User.find_by_name(author)
+    end
+  end
+
+  def find_work_unit
+    if @user && @project
+      WorkUnit.where(user: @user, project: @project).each do |work_unit|
+        return @work_unit = work_unit if work_unit.includes_time(@occurred_at)
+      end
     end
   end
 

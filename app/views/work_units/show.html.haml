@@ -24,10 +24,6 @@
   =h @work_unit.hours
 
 %p
-  %b Notes:
-  =h @work_unit.notes
-
-%p
   %b Invoiced:
   =h @work_unit.invoiced?
 
@@ -35,4 +31,6 @@
   %b Billed:
   =h @work_unit.billed?
 
-
+= page_block("Annotations", :id => "wu_annotations") do
+  %tbody
+    = render :partial => "shared/annotations_narrow", :collection => @work_unit.activities, :as => :annotations

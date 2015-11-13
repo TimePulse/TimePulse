@@ -15,14 +15,8 @@ end
 module TimePulse
   class Application < Rails::Application
     config.generators do |g|
-    g.template_engine     'mizugumo:haml'
-    g.scaffold_controller 'mizugumo:scaffold_controller'
-    g.test_framework      :lrdspec, :fixture => true
-    g.fixture_replacement 'lrdspec:factory'
-
-    g.fallbacks['mizugumo:haml']  = :haml
-    g.fallbacks[:lrdspec] = :rspec
-  end
+      g.javascript_engine :js
+    end
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers

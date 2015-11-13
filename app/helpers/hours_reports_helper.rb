@@ -13,7 +13,7 @@ module HoursReportsHelper
   def check_for_missing_weeks(query,sundays)
     query_sundays = []
     (0..query.length-1).each do |i|
-      query_sundays << query[i][:sunday].to_datetime # datetime objects
+      query_sundays << query[i][:sunday].to_datetime
     end
     missing_sundays = dates_to_strings(sundays) - dates_to_strings(query_sundays.sort)
     (0..missing_sundays.length-1).each do |j|

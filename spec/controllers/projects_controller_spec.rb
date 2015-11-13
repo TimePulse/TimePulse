@@ -78,9 +78,9 @@ describe ProjectsController do
       it "assigns a new project as @project" do
         get :new
         verify_authorization_successful
-        assigns[:project].should be_a(Project)
-        assigns[:project].should be_new_record
-        assigns[:project].rates.size.should == 1
+        assigns[:project_form][:project].should be_a(Project)
+        assigns[:project_form][:project].should be_new_record
+        assigns[:project_form][:project].rates.size.should == 1
       end
     end
 
@@ -89,8 +89,8 @@ describe ProjectsController do
         @project.rates.clear
         get :edit, :id => @project.id
         verify_authorization_successful
-        assigns[:project].should ==  @project
-        assigns[:project].rates.size.should == 1
+        assigns[:project_form][:project].should ==  @project
+        assigns[:project_form][:project].rates.size.should == 1
       end
     end
 
@@ -98,31 +98,31 @@ describe ProjectsController do
 
       describe "with valid params" do
         it "assigns a newly created project as @project" do
-          post :create, :project => { :name => 'Cool Project', :parent_id => @project.id }
+          post :create, project_form: { name: 'Cool Project', parent_id: @project.id, clockable: false }
           verify_authorization_successful
-          assigns[:project].should be_a(Project)
-          assigns[:project].should_not be_new_record
-          assigns[:project].parent.should == @project
+          assigns[:project_form][:project].should be_a(Project)
+          assigns[:project_form][:project].should_not be_new_record
+          assigns[:project_form][:project].parent.should == @project
         end
 
         it "redirects to the created project" do
-          post :create, :project => { :name => 'Cool Project', :parent_id => @project.id }
+          post :create, project_form:  { name: 'Cool Project', parent_id: @project.id, clockable: false }
           verify_authorization_successful
-          response.should redirect_to(project_url(assigns[:project]))
+          response.should redirect_to(project_url(assigns[:project_form][:project]))
         end
       end
 
       describe "with invalid params" do
         it "assigns a newly created but unsaved project as @project" do
-          post :create, :project => { :name => '' }
+          post :create, project_form: { name: '' }
           verify_authorization_successful
-          assigns[:project].should be_a(Project)
-          assigns[:project].should be_new_record
-          assigns[:project].rates.size.should == 1
+          assigns[:project_form][:project].should be_a(Project)
+          assigns[:project_form][:project].should be_new_record
+          assigns[:project_form][:project].rates.size.should == 1
         end
 
         it "re-renders the 'new' template" do
-          post :create, :project => { :name => '' }
+          post :create, project_form: { name: '' }
           verify_authorization_successful
           response.should render_template('new')
         end
@@ -135,30 +135,30 @@ describe ProjectsController do
       describe "with valid params" do
         it "updates the requested project" do
           lambda do
-            put :update, :id => @project.id, :project => {:name => 'new name'}
+            put :update, id: @project.id, project_form: {name: 'new name'}
             verify_authorization_successful
           end.should change{ @project.reload.name }.to('new name')
         end
 
         it "assigns the requested project as @project" do
-          put :update, :id => @project.id, :project => {:name => 'new name'}
+          put :update, id: @project.id, project_form: {name: 'new name'}
           verify_authorization_successful
-          assigns[:project].should == @project
+          assigns[:project_form][:project].should == @project
         end
 
         it "redirects to the project" do
-          put :update, :id => @project.id, :project => {:name => 'new name'}
+          put :update, id: @project.id, project_form: {name: 'new name'}
           verify_authorization_successful
           response.should redirect_to(projects_url)
         end
 
         it "can set the project to archived" do
-          put :update, :id => @project.id, :project => {:archived => true}
+          put :update, id: @project.id, project_form: {archived: true}
           @project.reload.should be_archived
         end
 
         it "can set the project rates" do
-          put :update, :id => @project.id, :project => {:rates_attributes => [{:name => "Senior Captain", :amount => "175" }]}
+          put :update, id: @project.id, project_form: {rates_attributes: {"0" => {name: "Senior Captain", amount: "175" }}}
           @project.reload.rates.count.should == 2
           @project.reload.rates[1].name.should == "Senior Captain"
         end
@@ -168,21 +168,21 @@ describe ProjectsController do
       describe "with invalid params" do
         it "doesn't change the record" do
           lambda do
-            put :update, :id => @project.id, :project => {:name => nil }
+            put :update, id: @project.id, project_form: {name: nil }
             verify_authorization_successful
           end.should_not change{ @project.reload }
         end
 
         it "assigns the project as @project" do
           @project.rates.clear
-          put :update, :id => @project.id, :project => {:name => nil }
+          put :update, id: @project.id, project_form: {name: nil }
           verify_authorization_successful
-          assigns[:project].should == @project
-          assigns[:project].rates.size.should == 1
+          assigns[:project_form][:project].should == @project
+          assigns[:project_form][:project].rates.size.should == 1
         end
 
         it "re-renders the 'edit' template" do
-          put :update, :id => @project.id, :project => {:name => nil }
+          put :update, id: @project.id, project_form: {name: nil }
           verify_authorization_successful
           response.should render_template('edit')
         end
