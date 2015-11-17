@@ -20,7 +20,7 @@ class ActivitiesController < ApplicationController
       flash[:notice] = 'Annotation was successfully created.'
       respond_to do |format|
         format.html { redirect_to(@activity) }
-        format.json { render json: @activity, status: 201 }
+        format.json { render json: @activity.as_json, status: 201 }
       end
     else
       respond_to do |format|
@@ -33,6 +33,7 @@ class ActivitiesController < ApplicationController
   private
 
   def activity_params
+    params = ActionController::Parameters.new(JSON.parse(request.body.read))
     params.require(:activity).permit(:description, :work_unit_id, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
   end
 
