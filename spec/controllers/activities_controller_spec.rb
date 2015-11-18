@@ -60,12 +60,10 @@ describe ActivitiesController do
         request.headers["Authorization"] = 'AEsXr_Ec6R_trmAoLd5S'
         post :create, @activity_request
       end.to change{
-        Activity.where(description: activity_attrs[:description]).count
+        Activity.where(description: activity_attrs[:description], user_id: @user.id).count
       }.from(0).to(1)
     end
   end
-
-  #all above tests are passing and working as expected.
 
   describe "make a new activity and associate it with the current work unit, if clocked_in" do
     before(:each) do

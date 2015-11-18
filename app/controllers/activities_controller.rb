@@ -2,15 +2,15 @@ require 'bcrypt'
 class ActivitiesController < ApplicationController
   # include WorkUnitsHelper
   before_action :restrict_access, only: [:create]
-  before_filter :authenticate_user!
-  skip_before_filter :verify_authenticity_token
+  # before_filter :authenticate_user!
+  # skip_before_filter :verify_authenticity_token
 
   #POST /activities
   def create
     @current_work_unit = current_user.current_work_unit
-    @activity = Activity.new(activity_params)
+    @activity = current_user.activities.new(activity_params)
     #check to see if the user making the request has an open work unit
-    #
+
     if @current_work_unit.present?
       if @current_work_unit.project == @activity.project
         @activity.work_unit = @current_work_unit
@@ -20,7 +20,7 @@ class ActivitiesController < ApplicationController
       flash[:notice] = 'Annotation was successfully created.'
       respond_to do |format|
         format.html { redirect_to(@activity) }
-        format.json { render json: @activity.as_json, status: 201 }
+        format.json { render json: @activity, status: 201 }
       end
     else
       respond_to do |format|
@@ -33,13 +33,13 @@ class ActivitiesController < ApplicationController
   private
 
   def activity_params
-    params = ActionController::Parameters.new(JSON.parse(request.body.read))
     params.require(:activity).permit(:description, :work_unit_id, :project_id, :source, :time, :action, :user_id, properties: [:story_id])
   end
 
   def restrict_access
     user_email = request.headers["login"].presence
     user       = user_email && User.find_by(:login => user_email)
+
     if user
       stored_token = user.encrypted_token
       stored_password = BCrypt::Password.new(stored_token)
