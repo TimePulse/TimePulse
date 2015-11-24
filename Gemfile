@@ -75,6 +75,6 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
-  gem "byebug", :platforms => [:ruby_20, :ruby_21, :ruby_22]
+  gem "byebug"
   gem 'launchy'
 end
