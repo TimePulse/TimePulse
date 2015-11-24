@@ -26,7 +26,7 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "should have the name of the project" do
-    within "h1#headline" do
+    within "#timeclock" do
       page.should have_content("TIMECLOCK")
     end
   end
