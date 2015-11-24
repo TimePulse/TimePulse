@@ -75,6 +75,9 @@ group :development do
   gem 'annotate'
   gem 'unicorn-rails'
   gem 'pivotal-github'
-  gem "byebug"
   gem 'launchy'
+end
+
+group :debug do
+  gem "byebug"
 end
