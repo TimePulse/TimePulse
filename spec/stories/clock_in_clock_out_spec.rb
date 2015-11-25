@@ -67,7 +67,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "should show newly-created annotation under Recent Annotations" do
     within("#recent_annotations") do
-      page.should have_content("Starting work on project #1!")
+      page.should have_content("Starting work on project")
     end
   end
 
@@ -80,7 +80,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "should show newly-created annotation under Recent Annotations" do
     within("#recent_annotations") do
-      page.should have_content("Did a little work on project #1")
+      page.should have_content("Did a little work")
     end
   end
 
@@ -144,7 +144,7 @@ steps "clock in and out on projects", :type => :feature do
 
   it "should show newly-created annotation under Recent Annotations" do
     within("#recent_annotations") do
-      page.should have_content("I worked all day on this")
+      page.should have_content("I worked all day")
     end
   end
 

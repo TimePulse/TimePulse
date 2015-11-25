@@ -234,7 +234,7 @@ GEM
     net-ssh-gateway (1.2.0)
       net-ssh (>= 2.6.5)
     newrelic_rpm (3.13.0.299)
-    nokogiri (1.6.6.2)
+    nokogiri (1.6.6.4)
       mini_portile (~> 0.6.0)
     nokogiri-happymapper (0.5.9)
       nokogiri (~> 1.5)
