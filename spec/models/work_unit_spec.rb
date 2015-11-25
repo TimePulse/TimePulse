@@ -67,6 +67,14 @@ describe WorkUnit do
     it "should be invalid if no project associated" do
       FactoryGirl.build(:work_unit, :project => nil).should_not be_valid
     end
+
+    it "should be invalid if the project is not clockable" do
+      project = FactoryGirl.build_stubbed(:project, clockable: false)
+
+      work_unit = FactoryGirl.build(:work_unit, project: project)
+
+      expect(work_unit).not_to be_valid
+    end
   end
 
   describe "in_progress" do

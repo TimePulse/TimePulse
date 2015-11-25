@@ -10,16 +10,12 @@ describe BillReport, :type => :presenter do
       FactoryGirl.create_list(:project, 3, :billable => false)
     end
 
-    let :unclockable_projects do
-      FactoryGirl.create_list(:project, 2, :billable => false, :clockable => false)
-    end
-
     let :clockable_projects do
       billable_projects + unbillable_projects
     end
 
     let :projects do
-      (clockable_projects + unclockable_projects).shuffle
+      clockable_projects.shuffle
     end
 
     let :bill do

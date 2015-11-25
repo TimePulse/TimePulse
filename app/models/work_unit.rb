@@ -74,6 +74,8 @@ class WorkUnit < ActiveRecord::Base
   # can't have negative hours
   validates_numericality_of :hours, :greater_than_or_equal_to => 0, :if => Proc.new{ |wu| wu.hours }
 
+  validate :project_is_clockable
+
   # A work unit is in progress if it has been started
   # but does not have hours yet.
   def in_progress?
@@ -173,6 +175,12 @@ class WorkUnit < ActiveRecord::Base
 
   def set_defaults
     self.billable = project.billable if project && self.billable.nil?
+  end
+
+  def project_is_clockable
+    if project
+      errors.add(:project, "must be clockable") unless project.clockable
+    end
   end
 
 end
