@@ -27,21 +27,14 @@ steps "User manually enters work units", :type => :feature do
 
   it "should have the name of the project" do
     within "h1#headline" do
-      page.should have_content("TIMECLOCK")
+      page.should have_content("WORK UNIT ENTRY")
     end
   end
 
-  it "should open and close the manual time entry form when relevant links are clicked" do
-    page.should_not have_content("Enter/Record Hours")
-    page.should_not have_content("(+ close manual time entry)")
-    click_link "(+ show manual time entry)"
-    page.should have_content("Enter/Record Hours")
-    page.should_not have_content("(+ show manual time entry)")
-    click_link "(+ close manual time entry)"
-    page.should_not have_content("Enter/Record Hours")
-    page.should have_content("(+ show manual time entry)")
-    page.should_not have_content("(+ close manual time entry)")
-    click_link "(+ show manual time entry)"
+  it "should switch to manual time entry when tab is clicked" do
+    within "#work_unit_entry" do
+      page.should have_content("Manual Time Entry")
+    end
   end
 
   it "should have the name of the project in manual time entry" do
