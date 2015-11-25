@@ -26,6 +26,9 @@
         = g.hidden_field :user_id, :value => current_user.id
         = g.hidden_field :project_id, :value => current_project.id
       = f.unlabeled_submit "Save Changes"
+    = render :partial => 'home/project_hours_report'
+    = render :partial => 'home/work_report'
+
   - else
     %p
       This is not a clockable project.  To enter hours, you will need to select a

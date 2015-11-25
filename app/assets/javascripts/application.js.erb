@@ -186,14 +186,14 @@ Ninja.behavior({
      '#timeclock a#manual_entry_trigger': {
       click: function(evnt, elem) {
         $('#timeclock #manual_entry_trigger').hide();
-        $('#work_unit_form').slideDown();
+        $('#current_project').slideDown();
         $('#timeclock #manual_entry_collapse').show();
       }
     },
     '#timeclock a#manual_entry_collapse': {
       click: function(evnt, elem) {
         $('#timeclock #manual_entry_collapse').hide();
-        $('#work_unit_form').slideUp();
+        $('#current_project').slideUp();
         $('#timeclock #manual_entry_trigger').show();
       }
     },
