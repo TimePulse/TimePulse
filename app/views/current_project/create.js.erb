@@ -5,9 +5,6 @@ $('#project_picker #project_<%= @current_project.id %>').addClass('current');
 
 $('#current_project').replaceWith("<%= escape_javascript(render :partial => 'home/current_project_block') %>");
 $('#work_unit_form').replaceWith("<%= escape_javascript(render :partial => 'home/work_unit_form') %>");
-$('#work_unit_form').show();
-$('#timeclock #manual_entry_trigger').hide();
-$('#timeclock #manual_entry_collapse').show();
 $('#work_unit_form.toggler').html("<%= escape_javascript(project_headline(current_project)) %>");
 <% unless current_user.clocked_in? %>
   $('#timeclock').replaceWith("<%= escape_javascript(render :partial => 'shared/timeclock') %>");
