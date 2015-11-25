@@ -34,6 +34,7 @@ steps "User manually enters work units", :type => :feature do
   it "should switch to manual time entry when tab is clicked" do
     within "#work_unit_entry" do
       page.should have_content("Manual Time Entry")
+      find('#work_unit_entry_tp_manual_time_entry_tab').click
     end
   end
 
@@ -46,8 +47,6 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "should pre-check the billable box" do
-    page.should_not have_content("(+ show manual time entry)")
-    page.should have_content("(+ close manual time entry)")
     within "#work_unit_form" do
       page.should have_checked_field( 'work_unit_billable' )
     end
@@ -143,8 +142,7 @@ steps "User manually enters work units", :type => :feature do
   end
 
   it "should display the manual time entry work unit form" do
-    page.should_not have_content("(+ show manual time entry)")
-    page.should have_content("(+ close manual time entry)")
+    page.should have_content("Enter/Record Hours:")
   end
 
   it "should not pre-check the billable box" do
