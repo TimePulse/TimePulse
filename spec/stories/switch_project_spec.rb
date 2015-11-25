@@ -33,7 +33,7 @@ steps "log in and switch projects", :type => :feature do
   end
 
   it "should expand the manual time entry work unit form" do
-    click_link "(+ show manual time entry)"
+    #PENDING click tab for manual time entry
   end
 
   it "should have a work unit form (XPath Gem format)" do
