@@ -43,6 +43,11 @@ steps "edit a work unit to move it from one project to another", :type => :featu
     page.should have_selector("#project_#{project_1.id}.current")
   end
 
+  it "I show the manual entry form" do
+    click_link "(+ show manual time entry)"
+    expect(page).to have_content("MANUAL TIME ENTRY")
+  end
+
   it "should show the work unit in the dashboard" do
     within "#current_project" do
       page.should have_content(work_unit.notes)
@@ -85,6 +90,11 @@ steps "edit a work unit to move it from one project to another", :type => :featu
 
   it "should show Project 1 selected in the project picker" do
     page.should have_selector("#project_#{project_1.id}.current")
+  end
+
+  it "I show the manual entry form" do
+    click_link "(+ show manual time entry)"
+    expect(page).to have_content("MANUAL TIME ENTRY")
   end
 
   it "should not show the work unit in the dashboard" do

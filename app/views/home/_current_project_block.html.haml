@@ -3,11 +3,7 @@
     - if current_project.description
       %p= current_project.description
 
-    = render :partial => 'home/project_hours_report'
-    = render :partial => 'home/work_report'
+    = render :partial => 'home/work_unit_form'
 
   - else
     %p No project selected.
-
-
-
