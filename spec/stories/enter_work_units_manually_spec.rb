@@ -59,6 +59,7 @@ steps "User manually enters work units", :type => :feature do
     fill_in "Start time", :with => @start_time.to_s(:short_datetime)
     fill_in "Stop time", :with => @stop_time.to_s(:short_datetime)
     fill_in "Work Unit Annotations", :with => "An hour of work"
+    first(:xpath, '//button[contains("Done",text())]').try(:click)
     find_button("Save Changes").click
 
   end
@@ -113,6 +114,7 @@ steps "User manually enters work units", :type => :feature do
     fill_in "Start time", :with => (@start_time = (Time.zone.now - 2.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.zone.now).to_s(:short_datetime)
     fill_in "Work Unit Annotations", :with => "Two hours of unbillable work"
+    first(:xpath, '//button[contains("Done",text())]').try(:click)
     find_button("Save Changes").click
   end
 
@@ -158,6 +160,7 @@ steps "User manually enters work units", :type => :feature do
     fill_in "Start time", :with => (@start_time = (Time.zone.now - 3.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.zone.now).to_s(:short_datetime)
     fill_in "Work Unit Annotations", :with => "Three hours of billable work"
+    first(:xpath, '//button[contains("Done",text())]').try(:click)
     find_button("Save Changes").click
   end
 
