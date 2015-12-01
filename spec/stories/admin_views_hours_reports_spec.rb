@@ -1,70 +1,53 @@
 require 'spec_helper'
 
 steps 'Admin views the hours reports', :type => :feature do
-
-  before do
-    Timecop.travel(Time.local(2015, 4, 28, 10, 0, 0)) # Thursday Apr 28 15
+  after do
+    Timecop.return
   end
 
   let! :user_1 do FactoryGirl.create(:user, :name => 'Foo Bar 1') end
   let! :user_2 do FactoryGirl.create(:user, :name => 'Foo Bar 2') end
   let! :project_1 do FactoryGirl.create(:project) end
   let! :project_2 do FactoryGirl.create(:project) end
-  let! :work_unit_0 do
+  let! :admin do FactoryGirl.create(:admin) end
+
+  it 'should travel to Thursday, April 28, 2015 and build work units' do
+    Timecop.travel(Time.local(2015, 4, 28, 10, 0, 0)) # Thursday Apr 28 15
     FactoryGirl.create(:work_unit, :hours => 10, :user => user_2, :project => project_2,
                        :start_time => 12.weeks.ago, :stop_time => 12.weeks.ago + 10.hours,
                        :billable => false)
                        # Feb 03 15
-  end
-  let! :work_unit_1 do
     FactoryGirl.create(:work_unit, :hours => 9, :user => user_2, :project => project_2,
                        :start_time => 11.weeks.ago, :stop_time => 11.weeks.ago + 10.hours)
                        # Feb 10 15
-  end
-  let! :work_unit_2 do
     FactoryGirl.create(:work_unit, :hours => 1, :user => user_2, :project => project_2,
                        :start_time => 12.weeks.ago, :stop_time => 12.weeks.ago + 10.hours)
                        # Feb 03 15
-  end
-  let! :work_unit_3 do
     FactoryGirl.create(:work_unit, :hours => 7, :user => user_1, :project => project_2,
                        :start_time => 6.weeks.ago, :stop_time => 6.weeks.ago + 10.hours)
                        # Mar 17 15
-  end
-  let! :work_unit_4 do
     FactoryGirl.create(:work_unit, :hours => 6, :user => user_1, :project => project_1,
                        :start_time => 5.weeks.ago, :stop_time => 5.weeks.ago + 10.hours)
                        # Mar 24 15
-  end
-  let! :work_unit_5 do
     FactoryGirl.create(:work_unit, :hours => 5, :user => user_1, :project => project_1,
                        :start_time => 4.weeks.ago, :stop_time => 4.weeks.ago + 10.hours,
                        :billable => false)
                        # Mar 31 15
-  end
-  let! :work_unit_6 do
     FactoryGirl.create(:work_unit, :hours => 4, :user => user_1, :project => project_1,
                        :start_time => 3.weeks.ago, :stop_time => 3.weeks.ago + 10.hours,
                        :billable => false)
                        # Apr 07 15
-  end
-  let! :work_unit_7 do
     FactoryGirl.create(:work_unit, :hours => 3, :user => user_1, :project => project_1,
                        :start_time => 2.weeks.ago, :stop_time => 2.weeks.ago + 10.hours)
                        # Apr 14 15
-  end
-  let! :work_unit_8 do
     FactoryGirl.create(:work_unit, :hours => 2, :user => user_1, :project => project_1,
                        :start_time => 1.week.ago, :stop_time => 1.week.ago + 10.hours)
                        # Apr 21 15
-  end
-  let! :work_unit_9 do
     FactoryGirl.create(:work_unit, :hours => 10, :user => user_1, :project => project_1,
                        :start_time => 4.days.ago, :stop_time => 4.days.ago + 10.hours,
                        :billable => false)
                        # Apr 24 15
   end
-  let! :admin do FactoryGirl.create(:admin) end
 
   it 'should login as the admin' do
     visit root_path
@@ -240,9 +223,5 @@ steps 'Admin views the hours reports', :type => :feature do
     expect(page).to have_content('Apr 12 15')
     expect(page).to have_content('Apr 19 15')
     expect(page).to have_content('Apr 26 15')
-  end
-
-  after do
-    Timecop.return
   end
 end
