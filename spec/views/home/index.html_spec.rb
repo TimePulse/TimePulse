@@ -24,7 +24,7 @@ describe "/home/index" do
     end
     it "should have a work unit form" do
       render
-      rendered.should have_selector("form#new_work_unit[action='/work_units']")
+      rendered.should have_selector("form#manual_new_work_unit[action='/work_units']")
     end
     it "should have a 'Save Changes' submit button" do
       render

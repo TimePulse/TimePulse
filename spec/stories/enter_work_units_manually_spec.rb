@@ -48,7 +48,7 @@ steps "User manually enters work units", :type => :feature do
 
   it "should pre-check the billable box" do
     within "#work_unit_form" do
-      page.should have_checked_field( 'work_unit_billable' )
+      page.should have_checked_field( 'manual_work_unit_billable' )
     end
   end
 
@@ -103,13 +103,13 @@ steps "User manually enters work units", :type => :feature do
 
   it "should pre-check the billable box for the next work unit" do
     within "#work_unit_form" do
-      page.should have_checked_field( 'work_unit_billable' )
+      page.should have_checked_field( 'manual_work_unit_billable' )
     end
   end
 
   it "when I fill in valid work unit information" do
-    within "#new_work_unit" do
-      find('#work_unit_billable').set(false)
+    within "#manual_new_work_unit" do
+      find('#manual_work_unit_billable').set(false)
     end
     fill_in "Start time", :with => (@start_time = (Time.zone.now - 2.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.zone.now).to_s(:short_datetime)
@@ -149,13 +149,13 @@ steps "User manually enters work units", :type => :feature do
 
   it "should not pre-check the billable box" do
     within "#work_unit_form" do
-      page.should_not have_checked_field('#work_unit_billable')
+      page.should_not have_checked_field('#manual_work_unit_billable')
     end
   end
 
   it "when I fill in valid work unit information" do
     within "#work_unit_form" do
-      find('#work_unit_billable').set(true)
+      find('#manual_work_unit_billable').set(true)
     end
     fill_in "Start time", :with => (@start_time = (Time.zone.now - 3.hours)).to_s(:short_datetime)
     fill_in "Stop time", :with => (@stop_time = Time.zone.now).to_s(:short_datetime)
@@ -175,7 +175,7 @@ steps "User manually enters work units", :type => :feature do
 
   it "should not pre-check the billable box" do
     within "#work_unit_form" do
-      page.should have_unchecked_field( 'work_unit_billable' )
+      page.should have_unchecked_field( 'manual_work_unit_billable' )
     end
   end
 
@@ -208,7 +208,7 @@ steps "User manually enters work units", :type => :feature do
 
   it "should not display input fields in manual time entry for non-clockable project" do
     page.should have_content("This is not a clockable project.")
-    page.should_not have_field('work_unit_start_time')
+    page.should_not have_field('manual_work_unit_start_time')
   end
 
 end
