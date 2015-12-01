@@ -42,17 +42,17 @@ steps "log in and switch projects", :type => :feature do
   it "should have a work unit form (XPath Gem format)" do
     within "#work_unit_form" do
       page.should have_xpath(XPath.generate do |doc|
-         doc.descendant(:form)[doc.attr(:id) == "new_work_unit"][doc.attr(:action) == '/work_units']
+         doc.descendant(:form)[doc.attr(:id) == "manual_new_work_unit"][doc.attr(:action) == '/work_units']
       end)
     end
   end
 
   it "should have a work unit form (Plain XPath format)" do
-    page.should have_xpath("//form[@id='new_work_unit'][@action='/work_units']")
+    page.should have_xpath("//form[@id='manual_new_work_unit'][@action='/work_units']")
   end
 
   it "should have a work unit form (have_selector format)" do
-    page.should have_selector("form#new_work_unit[action='/work_units']")
+    page.should have_selector("form#manual_new_work_unit[action='/work_units']")
   end
 
 

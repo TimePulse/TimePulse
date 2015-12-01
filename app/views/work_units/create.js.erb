@@ -1,4 +1,5 @@
 $('#current_project').replaceWith("<%= escape_javascript(render :partial => 'home/current_project_block')  %>")
+$('#work_unit_form').replaceWith("<%= escape_javascript(render :partial => 'home/work_unit_form')  %>")
 $('#recent_work').replaceWith("<%= escape_javascript(render :partial => 'shared/recent_work') %>")
 $('#this_week').replaceWith("<%= escape_javascript(render :partial => 'shared/week_summary', :locals => { :this_week_units => current_user.work_units.this_week }) %>")
 $('#recent_annotations').replaceWith("<%= escape_javascript(render :partial => 'shared/recent_annotations') %>")
