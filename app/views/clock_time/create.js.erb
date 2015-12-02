@@ -1,9 +1,6 @@
 $('#timeclock').replaceWith("<%= escape_javascript(render :partial => 'shared/timeclock') %>");
 $('#work_unit_form.toggler').html("<%= escape_javascript(project_headline(current_project)) %>");
 $('#project_picker #project_<%= @project.id %>').addClass('current');
-$('#timeclock #manual_entry_collapse').hide();
-$('#current_project').slideUp();
-$('#timeclock #manual_entry_trigger').show();
 <% if @prior_project%>
   $('#project_picker #project_<%= @prior_project.id %>').removeClass('current');
 <% end %>

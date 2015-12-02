@@ -1,9 +1,8 @@
 require 'spec_helper'
 
 steps 'Admin views a bill', :type => :feature do
-
-  before do
-    Timecop.travel(Time.local(2015, 4, 28, 10, 0, 0)) # Thursday Apr 28 15
+  after do
+    Timecop.return
   end
 
   let! :admin do FactoryGirl.create(:admin) end
@@ -23,6 +22,10 @@ steps 'Admin views a bill', :type => :feature do
     let! "grandchild_project_work_unit_#{idx}" do
       FactoryGirl.create(:work_unit, :project => grandchild_project, :user => user, :hours => 6, :bill => bill)
     end
+  end
+
+  it 'should travel to Thursday, April 28 2015' do
+    Timecop.travel(Time.local(2015, 4, 28, 10, 0, 0)) # Thursday Apr 28 15
   end
 
   it 'should log in as an admin' do
