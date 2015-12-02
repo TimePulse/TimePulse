@@ -1,3 +1,9 @@
 = page_block("Recent Annotations", :id => "recent_annotations") do
-  %tbody
-    = render :partial => "shared/annotations_narrow", :collection => current_user.reload.activities.last(10), :as => :annotations
+  %table.listing
+    %thead
+      %tr
+        %th Annotation
+        %th Time
+        %th
+    %tbody
+      = render :partial => "shared/annotations_narrow", :collection => current_user.reload.recent_activities, :as => :annotations
