@@ -3,21 +3,24 @@ $labelwidth: 10em
 $ddmargins: 0.5em
 
 .home.index
+  #content-body
+    display: block
   #work_unit_form
-    :margin-top 1em
     h2
       :padding .25em .3em
       :margin 0
       :color $title_text_color
       +block_title
+    .toggle-target
+      display: block
 
-  #recent_annotations
-    :margin-top 1em
-    h2
-      :padding .25em .3em
-      :margin 0
-      :color $title_text_color
-      +block_title
+  // #recent_annotations
+  //   :margin-top 1em
+  //   h2
+  //     :padding .25em .3em
+  //     :margin 0
+  //     :color $title_text_color
+  //     +block_title
 
 #timeclock.block
   :background $secondary_light_1
