@@ -194,20 +194,6 @@ Ninja.behavior({
         $('#timeclock #overrides').slideDown();
       }
     },
-     '#timeclock a#manual_entry_trigger': {
-      click: function(evnt, elem) {
-        $('#timeclock #manual_entry_trigger').hide();
-        $('#current_project').slideDown();
-        $('#timeclock #manual_entry_collapse').show();
-      }
-    },
-    '#timeclock a#manual_entry_collapse': {
-      click: function(evnt, elem) {
-        $('#timeclock #manual_entry_collapse').hide();
-        $('#current_project').slideUp();
-        $('#timeclock #manual_entry_trigger').show();
-      }
-    },
     '#timeclock button#clock_out_button': {
       click: function(evnt) {
         $('#timeclock form.edit_work_unit').submit();
