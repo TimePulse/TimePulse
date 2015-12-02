@@ -65,3 +65,4 @@ public/test-assets/
 *.orig
 config/bibliotech/
 .envrc
+config/initializers/secret_token.rb
