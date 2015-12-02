@@ -44,18 +44,22 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "I show the manual entry form" do
-    click_link "(+ show manual time entry)"
-    expect(page).to have_content("MANUAL TIME ENTRY")
+    find('#work_unit_entry_tp_manual_time_entry_tab').click
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_1.name.upcase)
+      end
+    end
   end
 
   it "should show the work unit in the dashboard" do
-    within "#current_project" do
+    within "#work_report_tp_work_units_pane" do
       page.should have_content(work_unit.notes)
     end
   end
 
   it "I click the 'Edit' link for that work unit" do
-    within "#current_project" do
+    within "#work_report_tp_work_units_pane" do
       page.find("a[href='/work_units/#{work_unit.id}/edit']").click
     end
   end
@@ -92,13 +96,13 @@ steps "edit a work unit to move it from one project to another", :type => :featu
     page.should have_selector("#project_#{project_1.id}.current")
   end
 
-  it "I show the manual entry form" do
-    click_link "(+ show manual time entry)"
-    expect(page).to have_content("MANUAL TIME ENTRY")
-  end
+  # it "I show the manual entry form" do
+  #   click_link "(+ show manual time entry)"
+  #   expect(page).to have_content("MANUAL TIME ENTRY")
+  # end
 
   it "should not show the work unit in the dashboard" do
-    within "#current_project" do
+    within "#work_report_tp_work_units_pane" do
       page.should_not have_content(work_unit.notes)
     end
   end
@@ -108,7 +112,7 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "should show the work unit in the dashboard" do
-    within "#current_project" do
+    within "#work_report_tp_work_units_pane" do
       page.should have_content(work_unit.notes)
     end
   end
