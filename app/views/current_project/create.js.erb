@@ -3,8 +3,6 @@ $('#project_picker #project_<%= @current_project.id %>').addClass('current');
   $('#project_picker #project_<%= @prior_project.id %>').removeClass('current');
 <% end %>
 
-$('#current_project').replaceWith("<%= escape_javascript(render :partial => 'home/current_project_block') %>");
-$('#current_project').show();
 $('#work_unit_form').replaceWith("<%= escape_javascript(render :partial => 'home/work_unit_form') %>");
 $('#work_unit_form.toggler').html("<%= escape_javascript(project_headline(current_project)) %>");
 <% unless current_user.clocked_in? %>
