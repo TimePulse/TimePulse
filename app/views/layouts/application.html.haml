@@ -52,7 +52,6 @@
           = render :partial => 'layouts/nav'
 
         #content-wrap
-          = render :partial => 'layouts/aux'
 
           - klass = (content_for?(:picker) ? "with_picker" : "without_picker") + " " + (content_for?(:aux) ? "with_aux" : "without_aux")
           #content-column{ :class => klass }
@@ -62,6 +61,7 @@
               #content-body
                 = render :partial => 'layouts/flash' , :locals => { :flash => flash }
                 = yield
+          = render :partial => 'layouts/aux'
     #reference_times{ :style => 'display: none;' }
       %h3 Server time at page render (sec):
       %span#servertime= @server_time_now.strftime('%s')

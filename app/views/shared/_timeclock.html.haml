@@ -1,4 +1,4 @@
-= page_block(nil, :id => "timeclock") do
+= page_block("Timeclock", :id => "timeclock") do
   - if clocked_in?
     %span#tasktime{ :style => 'display:none;' }= current_work_unit.start_time.strftime('%s')
     = form_for(current_work_unit, :url => clock_out_path, :html => {:method => :delete, :class => :edit_work_unit}) do |f|
@@ -32,7 +32,3 @@
         = clock_in_widget(current_user.current_project, nil, :class => :button)
       - else
         %p Please select a clockable project if you wish to clock in.
-
-  = link_to "(+ show manual time entry)", '#', :id => 'manual_entry_trigger'
-  %br
-  = link_to "(+ close manual time entry)", '#', :id => 'manual_entry_collapse'

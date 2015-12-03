@@ -1,3 +1,9 @@
 = page_block("Annotations", :id => "wu_annotations") do
-  %tbody
-    = render :partial => "shared/annotations_narrow", :collection => @work_unit.activities, :as => :annotations
+  %table.listing
+    %thead
+      %tr
+        %th Annotation
+        %th Time
+        %th
+    %tbody
+      = render :partial => "shared/wu_annotations_edit_narrow", :collection => @work_unit.activities, :as => :annotations

@@ -162,30 +162,29 @@ namespace :db do
         this_morning = Time.now.beginning_of_day
 
         until (start > this_morning) do
-          s_t = start + rand(5).minutes
-          if Time.after_business_hours?(s_t)
+          start_time = start + rand(5).minutes
+          if Time.after_business_hours?(start_time)
             start = Time.roll_forward(start) # go to the next business_day
             next
           end
           hours = rand() * 3  # work units from 0 to 3 hours
-          e_t = s_t + hours.hours
-          wu = user.work_units.create(
+          hours.round(2)
+          end_time = start_time + hours.hours
+          wu = user.work_units.create!(
             :project => pick_from(projects),
-            :start_time => s_t,
-            :stop_time => e_t,
-            :hours     => hours,
+            :start_time => start_time,
+            :stop_time => end_time,
+            :hours     => hours.round(2).to_s
           )
-          if wu.persisted?
-            wu.activities.create(
-              :project => wu.project,
-              :user => user,
-              :source => "User",
-              :action => "Annotation",
-              :description => Populator.words(0..6),
-              :time => wu.stop_time
-              )
-          end
-          start = e_t
+          wu.activities.create(
+            :project => wu.project,
+            :user => user,
+            :source => "User",
+            :action => "Annotation",
+            :description => Populator.words(0..6),
+            :time => wu.stop_time
+            )
+          start = end_time
         end
       end
     end
