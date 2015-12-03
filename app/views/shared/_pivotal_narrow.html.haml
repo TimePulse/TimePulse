@@ -4,6 +4,9 @@
     %td
       %span.nobr= short_name_with_client(pivotal.project)
     %td
-      = truncate(pivotal.story_id, :length => 10)
+      - Rails.logger.fatal( method(:truncate).source_location )
+      - Rails.logger.fatal( method(:truncate).arity )
+      - Rails.logger.fatal( pivotal.story_id )
+      = truncate(pivotal.story_id.to_s, :length => 10)
     %td.tools.nobr
       = truncate(pivotal.current_state, :length => 15)
