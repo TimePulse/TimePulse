@@ -1,5 +1,7 @@
 - set_headline ""
 
+/ headline, e.g. 'Showing Work Unit Details', obscures Capybara clicking on Edit button
+
 .button-wrap
   = link_to 'Edit', edit_work_unit_path(@work_unit), class: 'button radius'
 
@@ -31,6 +33,13 @@
   %b Billed:
   =h @work_unit.billed?
 
+
 = page_block("Annotations", :id => "wu_annotations") do
-  %tbody
-    = render :partial => "shared/annotations_narrow", :collection => @work_unit.activities, :as => :annotations
+  %table.listing
+    %thead
+      %tr
+        %th Annotation
+        %th Time
+        %th Project
+    %tbody
+      = render :partial => "shared/wu_annotations_narrow", :collection => @work_unit.activities, :as => :annotations

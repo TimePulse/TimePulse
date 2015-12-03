@@ -49,6 +49,6 @@ steps "Minute truncation", :type => :feature do
   it "should not cause errors in the edit view" do
     click_button("Submit")
     page.should_not have_content("Hours must not be greater than the difference between start and stop times")
-    page.should have_content("TIMECLOCK")
+    page.should have_content("WORK UNIT ENTRY")
   end
 end
