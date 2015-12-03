@@ -53,11 +53,7 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :helper
 
   config.before(:suite) do
-    app = Rails.application
-    index = Sprockets::Environment.new.index
-    output = File.join(app.root, 'public', app.config.assets.prefix)
-    assets = app.config.assets.precompile
-    Sprockets::Manifest.new(index, output).compile(assets)
+    %x{rake assets:precompile}
   end
 
   config.after(:each, :type => :view)  do
