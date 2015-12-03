@@ -64,6 +64,19 @@ steps "log in and switch projects", :type => :feature do
     end
   end
 
+  it "should list project 1's work units " do
+    project_1.work_units.each do |work_unit|
+      xp = "//*[@id='work_report_tp_work_units_pane']//td[contains(.,'#{work_unit.notes}')]"
+      page.should have_xpath(xp)
+    end
+  end
+
+  it "should not list project 2's work units" do
+    project_2.work_units.each do |work_unit|
+      page.should_not have_xpath("//*[@id='work_report_tp_work_units_pane']//td[contains(.,'#{work_unit.notes}')]")
+    end
+  end
+
   it "should have a timeclock with the name of the project" do
     find('#work_unit_entry_tp_timeclock_tab').click
     within "#timeclock" do
@@ -71,18 +84,6 @@ steps "log in and switch projects", :type => :feature do
     end
   end
 
-  it "should list project 1's work units " do
-    project_1.work_units.each do |work_unit|
-      xp = "//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]"
-      page.should have_xpath(xp)
-    end
-  end
-
-  it "should not list project 2's work units" do
-    project_2.work_units.each do |work_unit|
-      page.should_not have_xpath("//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]")
-    end
-  end
 
   it "project 1 should have css class 'current'" do
     page.should have_selector("#project_picker #project_#{project_1.id}.current")
