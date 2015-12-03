@@ -174,7 +174,7 @@ namespace :db do
             :project => pick_from(projects),
             :start_time => start_time,
             :stop_time => end_time,
-            :hours     => hours.round(2)
+            :hours     => hours.round(2).to_s
           )
           wu.activities.create(
             :project => wu.project,
