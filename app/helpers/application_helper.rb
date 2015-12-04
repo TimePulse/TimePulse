@@ -98,7 +98,6 @@ module ApplicationHelper
   def project_options(include_archived = false,
                       disable_unclockable = false)
     projects = []
-
     if include_archived
       projects = Project.all
     else
@@ -113,7 +112,7 @@ module ApplicationHelper
     end
     sorted_projects = projects.sort_by(&:lft)
 
-    sorted_projects = sorted_projects.collect do |p|
+    sorted_projects.collect do |p|
       attributes = {}
       attributes['class'] = "indention_level_#{p.level}"
       if p.level > 1
@@ -124,8 +123,6 @@ module ApplicationHelper
       end
       [p.name, p.id, attributes]
     end
-
-    sorted_projects
   end
 
 end
