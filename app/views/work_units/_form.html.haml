@@ -3,7 +3,7 @@
     = f.error_messages
     = f.hidden_field  :calculate, :value => true
 
-    = f.labeled_input(:project_id) { project_selector(f) }
+    = f.labeled_input(:project_id) { project_selector(f, true) }
     = f.labeled_input(:billable) do
       = f.check_box(:billable)
     = labeled_datetimepicker_field f, :start_time

@@ -3,10 +3,17 @@ require 'spec_helper'
 steps "Minute truncation", :type => :feature do
   let! :client do FactoryGirl.create(:client, :name => 'Foo, Inc.') end
   let! :project do FactoryGirl.create(:project, :client => client) end
-  let! :user      do FactoryGirl.create(:user, :current_project => project) end
-  let! :wu     do FactoryGirl.create(:work_unit, {:start_time => Time.new(2013,8,1,14,54,00),
-                                       :stop_time  => Time.new(2013,8,1,18,18,45),
-                                       :hours      => 3.41, :project => project, :user => user} ) end
+  let! :unclockable_project do
+    FactoryGirl.create(:project, client: client, clockable: false,
+                       name: "Don't Clock Me")
+  end
+  let! :user do FactoryGirl.create(:user, :current_project => project) end
+  let! :wu do
+    FactoryGirl.create(:work_unit, {:start_time => Time.new(2013,8,1,14,54,00),
+                                    :stop_time  => Time.new(2013,8,1,18,18,45),
+                                    :hours      => 3.41, :project => project,
+                                    :user => user} )
+  end
   let! :annotation do FactoryGirl.create(:activity, :work_unit => wu, :project => project, :description => "This is an annotation.") end
 
   it "should login as User" do
@@ -44,6 +51,15 @@ steps "Minute truncation", :type => :feature do
       click_link("Delete", match: :first)
       page.should_not have_content("This is another annotation!")
     end.to change(Activity, :count).by(-1)
+  end
+
+  it "should not allow unclockable projects to be selected" do
+    # Check the underlying HTML used to build the project picker
+    page.should have_xpath("//option[@disabled='disabled'][@value='#{unclockable_project.id}']", visible: false)
+
+    # Open the project picker, and look for the disabled option
+    page.find(:css, "#work_unit_project_idSelectBoxIt").click
+    page.should have_xpath("//li[@data-disabled='true'][@data-val='#{unclockable_project.id}']")
   end
 
   it "should not cause errors in the edit view" do

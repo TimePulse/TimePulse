@@ -14,8 +14,9 @@ module WorkUnitsHelper
     link_to('Delete', work_unit_path(work_unit), {:method => :delete, data: { confirm: "Are you sure?"} })
   end
 
-  def project_selector(form)
-    form.select(:project_id, project_options, {}, { :class => "project_selector"})
+  def project_selector(form, disable_unclockable = false)
+    form.select(:project_id, project_options(false, disable_unclockable),
+                {}, { :class => "project_selector"})
   end
 
   def work_unit_row_tag(work_unit, token = nil, cssclass = nil, &block)
