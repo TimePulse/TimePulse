@@ -2,7 +2,7 @@
   - token = SecureRandom.hex(8)
   = recent_annotation_row_tag(annotations, token, :narrow) do
     %td
-      %span.recent_annotation_label.nobr= (((annotations.description).split(' '))[0, 4]).join(' ')
+      %span.recent_annotation_label.nobr= (((annotations.description||"").split(' '))[0, 4]).join(' ')
     %td
       = annotations.time.strftime("%m/%d/%Y %H:%M") if annotations.time
     %td.tools.nobr
