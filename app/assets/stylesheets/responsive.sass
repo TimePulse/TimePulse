@@ -1,10 +1,16 @@
 @import 'partials/constants'
 @import 'foundation_and_overrides'
 
-@media only screen and (min-width: #{$small-screen})
+@media #{$medium-up}
   nav.top-bar
     ul.title-area
       :margin-left 1em
+
+  #debug
+    .version
+      :float right
+    .name
+      :float left
 
   #admin_nav
     span.toggler
@@ -14,12 +20,12 @@
 
   #aux
     margin-top: 2em
-    @include grid-column(3, $push: 9)
+    @include grid-column(3, $push: 3)
 
   #picker
     :margin-top 2em
     :padding 0
-    @include grid-column(3, $pull: 3)
+    @include grid-column(3, $pull: 9)
   #aux .block, #picker .block
     :margin-bottom 0.5em
 
@@ -29,7 +35,7 @@
     h1
       :margin-top 0
     &.with_picker
-      @include grid-column(6, $pull: 3)
+      @include grid-column(6, $push: 3)
       padding-right: 40px
       padding-left: 40px
 
@@ -39,7 +45,7 @@
         @include grid-column(9, $center: true)
 
       &.with_aux
-        @include grid-column(9, $pull: 3)
+        @include grid-column(9)
         padding-right: 40px
 
   table.listing

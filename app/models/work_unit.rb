@@ -61,6 +61,8 @@ class WorkUnit < ActiveRecord::Base
   belongs_to :project
   belongs_to :invoice
   belongs_to :bill
+  has_many :work_units
+  has_many :activities
 
   validates_presence_of :project_id
   validates_presence_of :user_id
@@ -130,6 +132,14 @@ class WorkUnit < ActiveRecord::Base
     self.user.rate_for(self.project)
   end
 
+  def includes_time(time_to_be_checked)
+    time_to_be_checked > self.start_time && (self.in_progress? || time_to_be_checked < stop_time)
+  end
+
+  def notes
+    self.activities.order(time: :asc).pluck(:description).join('; ')
+  end
+
   validate :no_double_clocking
   validate :hours_within_time_range
   validate :not_in_the_future
@@ -164,4 +174,5 @@ class WorkUnit < ActiveRecord::Base
   def set_defaults
     self.billable = project.billable if project && self.billable.nil?
   end
+
 end

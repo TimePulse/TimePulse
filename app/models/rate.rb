@@ -18,6 +18,7 @@ class Rate < ActiveRecord::Base
   has_many :users, :through => :rates_users
 
   validates_presence_of :name, :amount
+  validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
   before_destroy :clear_users
 

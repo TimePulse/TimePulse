@@ -1,0 +1,17 @@
+- cache("annotations_narrow_#{annotations.id}", :skip_digest => true) do
+  - token = SecureRandom.hex(8)
+  = recent_annotation_row_tag(annotations, token, :narrow) do
+    %td
+      %span.recent_annotation_label.nobr= (((annotations.description||"").split(' '))[0, 4]).join(' ')
+    %td
+      = annotations.time.strftime("%m/%d/%Y %H:%M") if annotations.time
+    %td.tools.nobr
+      = link_to 'Delete', annotation_path(annotations, :delete_id => token), :method => :delete, data: { confirm: "Are you sure?" }, class: 'actions delete'
+  = recent_annotation_details_row_tag(token, :hidden) do
+    %td{ colspan: 3 }
+      %dl
+        %dt Annotation:
+        %dd= annotations.description
+
+        %dt Project:
+        %dd= annotations.project.client.name + '- ' + annotations.project.name

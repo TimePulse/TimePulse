@@ -65,7 +65,12 @@ class User < ActiveRecord::Base
     work_units.completed.recent.includes(:project => :client)
   end
 
+  def recent_activities
+    activities.recent.includes(:project => :client)
+  end
+
   def recent_commits
+
     activities.git_commits.recent.includes(:project => :client)
   end
 
@@ -90,8 +95,9 @@ class User < ActiveRecord::Base
   end
 
   def git_commits_for(project)
-    source = project.github_url_source
+    source = project.repositories_source
     source ||= project
+
     activity_for(source).git_commits
   end
 

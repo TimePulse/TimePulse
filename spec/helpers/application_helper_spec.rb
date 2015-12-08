@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ApplicationHelper do
 
-  describe :project_options do
+  describe "project_options" do
 
     let! :unarchived_parent_1 do
       FactoryGirl.create(:project, archived: false)

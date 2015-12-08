@@ -8,7 +8,6 @@
           = f.label :billable
           = f.check_box(:billable)
       #task_elapsed -:--:--
-      = f.text_area :notes, :size => 30, :placeholder => "Notes"
       = link_to "(+ show override tools)", '#', :id => 'override_trigger'
       %br
       #overrides
@@ -16,7 +15,16 @@
         = current_work_unit.start_time.to_s(:short_datetime)
         = f.text_field :stop_time, :size => 15, :placeholder => "Stop Time"
         = f.text_field :hours, :size => 15, :placeholder => "Hours"
-      = f.button "Clock Out", :type => :submit
+      = f.button "Clock Out", :type => :submit, :id => 'clock_out_button'
+
+    = form_for(:activities, :url => annotations_path, :html => {:method => :create, :id => :annotation_form}) do |g|
+      = g.text_area :description, :placeholder => "Annotations", :id => "annotation_input"
+      = g.hidden_field :action, :value => "Annotation"
+      = g.hidden_field :source, :value => "User"
+      = g.hidden_field :user_id, :value => current_user.id
+      = g.hidden_field :work_unit_id, :value => current_work_unit.id
+      = g.hidden_field :project_id, :value => current_work_unit.project.id
+
   - else
     .text_content
       %h3 You are not clocked in.
@@ -24,4 +32,3 @@
         = clock_in_widget(current_user.current_project, nil, :class => :button)
       - else
         %p Please select a clockable project if you wish to clock in.
-

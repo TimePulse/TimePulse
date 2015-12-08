@@ -34,8 +34,10 @@ steps "clock in and out on projects", :type => :feature do
     within "#timeclock" do
       page.should have_content("You are not clocked in")
       page.should_not have_selector("#timeclock #task_elapsed")
+      page.should_not have_selector("#annotation_input")
     end
   end
+
 
   it "user clicks on the clock in link in the timeclock" do
     within "#timeclock" do
@@ -49,6 +51,7 @@ steps "clock in and out on projects", :type => :feature do
     page.should have_title(/clocked in/i)
     page.should have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-in')]", :visible => false
     page.should_not have_xpath "/html/head/link[contains(@rel,'icon')][contains(@href,'clocked-out')]", :visible => false
+    page.should have_selector("#annotation_input")
   end
 
   it "should have created an unfinished work unit in the DB" do
@@ -58,10 +61,26 @@ steps "clock in and out on projects", :type => :feature do
     new_work_unit.project.should == project_1
   end
 
+  it "should create annotation on enter" do
+    fill_in "annotation_input", :with => "Starting work on project #1!\n"
+  end
+
+  it "should show newly-created annotation under Recent Annotations" do
+    within("#recent_annotations") do
+      page.should have_content("Starting work on project")
+    end
+  end
+
   it "should clock out with a message" do
     within "#timeclock" do
-      fill_in "Notes", :with => "Did a little work on project #1"
+      fill_in "Annotations", :with => "Did a little work on project #1"
       click_button "Clock Out"
+    end
+  end
+
+  it "should show newly-created annotation under Recent Annotations" do
+    within("#recent_annotations") do
+      page.should have_content("Did a little work")
     end
   end
 
@@ -93,7 +112,7 @@ steps "clock in and out on projects", :type => :feature do
       Timecop.travel(Time.zone.now + 10.hours)
       click_link("(+ show override tools)")
       fill_in "Hours", :with => '9.0'
-      fill_in "Notes", :with => "I worked all day on this"
+      fill_in "Annotations", :with => "I worked all day on this"
       click_button "Clock Out"
     end
   end
@@ -106,18 +125,26 @@ steps "clock in and out on projects", :type => :feature do
   end
 
 
-  it "should have created an completed work unit in the DB" do
+  it "should have created a completed work unit in the DB" do
     WorkUnit.count.should == @work_unit_count + 2
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now)
     new_work_unit.project.should == project_1
-    new_work_unit.notes.should == "I worked all day on this"
+    new_work_unit.hours.should == 9.0
+    new_work_unit.activities.count.should == 1
+    new_work_unit.activities.last.description.should == "I worked all day on this"
     #new_work_unit.hours.should be_within(0.1).of(9.0)
   end
 
   it "should show the created work unit in 'Recent Work'" do
     within "#recent_work" do
       page.should have_content("9.00")
+    end
+  end
+
+  it "should show newly-created annotation under Recent Annotations" do
+    within("#recent_annotations") do
+      page.should have_content("I worked all day")
     end
   end
 
@@ -141,12 +168,12 @@ steps "clock in and out on projects", :type => :feature do
     page.should have_selector("#timeclock #task_elapsed")
   end
 
-  it "and I fill in nine hours and clock out" do
+  it "and I fill in a stop time of two hours ago (one hour from original, non-traveled time)" do
     within "#timeclock" do
       Timecop.travel(Time.zone.now + 3.hours)
       click_link("(+ show override tools)")
       fill_in "Stop Time", :with => (Time.zone.now - 2.hours).to_s(:short_datetime)
-      fill_in "Notes", :with => "I worked all day on this"
+      fill_in "Annotations", :with => "I worked a few hours on this"
       click_button "Clock Out"
     end
   end
@@ -158,13 +185,11 @@ steps "clock in and out on projects", :type => :feature do
     end
   end
 
-
-  it "should have created an completed work unit in the DB" do
+  it "should have created another completed work unit in the DB" do
     WorkUnit.count.should == @work_unit_count + 3
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now - 2.hours)
     new_work_unit.project.should == project_1
-    new_work_unit.notes.should == "I worked all day on this"
     new_work_unit.hours.should be_within(0.1).of(1.0)
   end
 

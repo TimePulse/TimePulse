@@ -12,6 +12,7 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
   let! :project_2 do
     project = FactoryGirl.build(:project)
+    project.name = "Special Project"
     project.client = client_2
     project.save
     project
@@ -24,7 +25,7 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   let! :work_unit do
-    wu = FactoryGirl.build(:work_unit)
+    wu = FactoryGirl.create(:work_unit_with_annotation)
     wu.project = project_1
     wu.user = user
     wu.save
@@ -42,14 +43,23 @@ steps "edit a work unit to move it from one project to another", :type => :featu
     page.should have_selector("#project_#{project_1.id}.current")
   end
 
+  it "I show the manual entry form" do
+    find('#work_unit_entry_tp_manual_time_entry_tab').click
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_1.name.upcase)
+      end
+    end
+  end
+
   it "should show the work unit in the dashboard" do
-    within "#current_project" do
+    within "#work_report_tp_work_units_pane" do
       page.should have_content(work_unit.notes)
     end
   end
 
   it "I click the 'Edit' link for that work unit" do
-    within "#current_project" do
+    within "#work_report_tp_work_units_pane" do
       page.find("a[href='/work_units/#{work_unit.id}/edit']").click
     end
   end
@@ -65,8 +75,9 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "I change the project for the work unit" do
-    select_box_it_select project_2.name, :from => "work_unit_project_id"
+    select_box_it_select "Special Project", :from => "work_unit_project_id"
     click_button 'Submit'
+    page.should have_link("Edit")
   end
 
   it "if I visit the work_unit's page" do
@@ -85,8 +96,13 @@ steps "edit a work unit to move it from one project to another", :type => :featu
     page.should have_selector("#project_#{project_1.id}.current")
   end
 
+  # it "I show the manual entry form" do
+  #   click_link "(+ show manual time entry)"
+  #   expect(page).to have_content("MANUAL TIME ENTRY")
+  # end
+
   it "should not show the work unit in the dashboard" do
-    within "#current_project" do
+    within "#work_report_tp_work_units_pane" do
       page.should_not have_content(work_unit.notes)
     end
   end
@@ -96,7 +112,7 @@ steps "edit a work unit to move it from one project to another", :type => :featu
   end
 
   it "should show the work unit in the dashboard" do
-    within "#current_project" do
+    within "#work_report_tp_work_units_pane" do
       page.should have_content(work_unit.notes)
     end
   end

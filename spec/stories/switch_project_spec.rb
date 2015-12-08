@@ -9,12 +9,18 @@ steps "log in and switch projects", :type => :feature do
   let! :user      do FactoryGirl.create(:user, :current_project => project_1) end
 
   let! :work_units do
-    [ FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_1, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user),
-      FactoryGirl.create(:work_unit, :project => project_2, :user => user)
+    [ FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 1"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 2"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_1,
+                         :user => user, :description => "Note 3"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 4"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 5"),
+      FactoryGirl.create(:work_unit_with_annotation, :project => project_2,
+                         :user => user, :description => "Note 6")
     ]
   end
 
@@ -26,45 +32,58 @@ steps "log in and switch projects", :type => :feature do
     page.should have_link("Logout")
   end
 
+  it "should switch to manual time entry when tab is clicked" do
+    within "#work_unit_entry" do
+      page.should have_content("Manual Time Entry")
+      find('#work_unit_entry_tp_manual_time_entry_tab').click
+    end
+  end
+
   it "should have a work unit form (XPath Gem format)" do
-    page.should have_xpath(XPath.generate do |doc|
-       doc.descendant(:form)[doc.attr(:id) == "new_work_unit"][doc.attr(:action) == '/work_units']
-    end)
+    within "#work_unit_form" do
+      page.should have_xpath(XPath.generate do |doc|
+         doc.descendant(:form)[doc.attr(:id) == "manual_new_work_unit"][doc.attr(:action) == '/work_units']
+      end)
+    end
   end
 
   it "should have a work unit form (Plain XPath format)" do
-    page.should have_xpath("//form[@id='new_work_unit'][@action='/work_units']")
+    page.should have_xpath("//form[@id='manual_new_work_unit'][@action='/work_units']")
   end
 
   it "should have a work unit form (have_selector format)" do
-    page.should have_selector("form#new_work_unit[action='/work_units']")
+    page.should have_selector("form#manual_new_work_unit[action='/work_units']")
   end
 
 
   it "should have the name of the project" do
-    within "h1#headline" do
-      page.should have_content(project_1.name)
-    end
-  end
-
-  it "should have a timeclock with the name of the project" do
-    within "#timeclock" do
-      page.should have_content(project_1.name)
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_1.name.upcase)
+      end
     end
   end
 
   it "should list project 1's work units " do
     project_1.work_units.each do |work_unit|
-      xp = "//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]"
+      xp = "//*[@id='work_report_tp_work_units_pane']//td[contains(.,'#{work_unit.notes}')]"
       page.should have_xpath(xp)
     end
   end
 
   it "should not list project 2's work units" do
     project_2.work_units.each do |work_unit|
-      page.should_not have_xpath("//*[@id='current_project']//td[contains(.,'#{work_unit.notes}')]")
+      page.should_not have_xpath("//*[@id='work_report_tp_work_units_pane']//td[contains(.,'#{work_unit.notes}')]")
     end
   end
+
+  it "should have a timeclock with the name of the project" do
+    find('#work_unit_entry_tp_timeclock_tab').click
+    within "#timeclock" do
+      page.should have_content(project_1.name)
+    end
+  end
+
 
   it "project 1 should have css class 'current'" do
     page.should have_selector("#project_picker #project_#{project_1.id}.current")
@@ -87,12 +106,16 @@ steps "log in and switch projects", :type => :feature do
   end
 
   it "should have the name of project 2" do
-    within "h1#headline" do
-      page.should have_content(project_2.name)
+    find('#work_unit_entry_tp_manual_time_entry_tab').click
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_2.name.upcase)
+      end
     end
   end
 
   it "should have a timeclock with the name of the project" do
+    find('#work_unit_entry_tp_timeclock_tab').click
     within "div#timeclock" do
       page.should have_content(project_2.name)
     end
@@ -100,6 +123,7 @@ steps "log in and switch projects", :type => :feature do
 
   it "when the page is reloaded" do
     visit(current_path)
+    find('#work_unit_entry_tp_manual_time_entry_tab').click
   end
 
   it "project 2 should have css class 'current'" do
@@ -111,15 +135,17 @@ steps "log in and switch projects", :type => :feature do
   end
 
   it "should have the name of project 2" do
-    within "h1#headline" do
-      page.should have_content(project_2.name)
+    within "#work_unit_form" do
+      within "h2.toggler" do
+        page.should have_content(project_2.name.upcase)
+      end
     end
   end
 
   it "should have a timeclock with the name of the project" do
+    find('#work_unit_entry_tp_timeclock_tab').click
     within "div#timeclock" do
       page.should have_content(project_2.name)
     end
   end
-
 end

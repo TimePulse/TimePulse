@@ -59,9 +59,27 @@ describe 'db:sample_data namespace rake task', :type => :task do
       end
     end
 
+    it 'should create activites for all work units' do
+      WorkUnit.all.each do |wu|
+        wu.notes.present?
+      end
+    end
+
     it 'should create rates' do
       User.where(admin: false).each do |user|
         user.rates.should_not be_empty
+      end
+    end
+
+    it 'should not have a zero value for rate name' do
+      User.where(admin: false).each do |user|
+        user.rates[0].name.should_not == "Rate 0"
+      end
+    end
+
+    it 'should have fifty for first rate amount' do
+      User.where(admin: false).each_with_index do |user, i|
+        user.rates.first.amount.to_i.should == 50 * (i + 1)
       end
     end
 
@@ -89,7 +107,7 @@ describe 'db:sample_data namespace rake task', :type => :task do
       end
     end
 
-    it 'should create activities' do
+    xit 'should create activities' do
       pending 'until activities functionality is settled'
     end
 

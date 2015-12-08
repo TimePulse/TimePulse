@@ -5,6 +5,7 @@ describe "/work_units/edit" do
 
   before(:each) do
     assign(:work_unit, @work_unit = FactoryGirl.create(:work_unit))
+    allow(view).to receive(:current_user).and_return(@work_unit.user)
   end
 
   it "should succeed" do

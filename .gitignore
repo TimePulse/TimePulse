@@ -68,3 +68,5 @@ public/test-assets/
 *.orig
 config/bibliotech/
 config/secrets.yml
+.envrc
+config/initializers/secret_token.rb

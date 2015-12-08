@@ -28,7 +28,7 @@
 
     = stylesheet_link_tag 'application', :media=>'all'
 
-    = javascript_include_tag "vendor/custom.modernizr"
+    / = javascript_include_tag "vendor/custom.modernizr"
     - if Rails.env.production? or Rails.env.staging?
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
       = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"
@@ -52,7 +52,6 @@
           = render :partial => 'layouts/nav'
 
         #content-wrap
-          = render :partial => 'layouts/aux'
 
           - klass = (content_for?(:picker) ? "with_picker" : "without_picker") + " " + (content_for?(:aux) ? "with_aux" : "without_aux")
           #content-column{ :class => klass }
@@ -62,6 +61,7 @@
               #content-body
                 = render :partial => 'layouts/flash' , :locals => { :flash => flash }
                 = yield
+          = render :partial => 'layouts/aux'
     #reference_times{ :style => 'display: none;' }
       %h3 Server time at page render (sec):
       %span#servertime= @server_time_now.strftime('%s')

@@ -1,0 +1,6 @@
+= tabbed_panel(:base_id => "work_unit_entry") do |tp|
+  = tp.add_tab("Timeclock") do
+    = render :partial => 'shared/timeclock'
+
+  = tp.add_tab("Manual Time Entry") do
+    = render :partial => 'home/work_unit_form'

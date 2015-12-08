@@ -60,4 +60,14 @@ module ProjectsHelper
       images
     end
   end
+
+  def project_form_options
+    case action_name
+    when "new", "create"
+      {url: projects_path, method: :post}
+    when "edit", "update"
+      {url: project_path(@project_form.project), method: :put}
+    end
+  end
+
 end

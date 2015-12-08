@@ -1,0 +1,6 @@
+- cache("annotations_narrow_#{annotations.id}", :skip_digest => true) do
+  - token = SecureRandom.hex(8)
+  = recent_annotation_row_tag(annotations, token, :narrow) do
+    %td= annotations.description
+    %td= ((annotations.time).to_s)[0, 19]
+    %td= annotations.project.client.name + ': ' + annotations.project.name

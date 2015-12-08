@@ -6,6 +6,7 @@ if ENV["CODECLIMATE_REPO_TOKEN"]
   CodeClimate::TestReporter.start
 end
 
+require 'byebug'
 require 'simplecov'
 SimpleCov.start 'rails'
 
@@ -17,15 +18,33 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-require 'waterpig'
-
+require 'selenium-webdriver'
+Capybara.register_driver(:selenium_chrome) do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
+Capybara.register_driver(:selenium_firefox) do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :firefox)
+end
 Capybara.register_driver :poltergeist_debug do |app|
   Capybara::Poltergeist::Driver.new(app, :timeout => 60, :inspector => true, phantomjs_logger: Waterpig::WarningSuppressor)
 end
 
+require 'waterpig'
+
+
 
 RSpec.configure do |config|
-  config.mock_with :rspec
+
+  #fix deprecation error, enabling both 'should' and 'expect' syntax
+  config.mock_with :rspec do |c|
+    c.syntax = [:should, :expect]
+  end
+
+  config.expect_with :rspec do |expectations|
+    expectations.syntax = [:should, :expect]
+  end
+
+  config.infer_spec_type_from_file_location!
 
   #config.backtrace_clean_patterns = {}
 
@@ -34,11 +53,7 @@ RSpec.configure do |config|
   config.include Devise::TestHelpers, :type => :helper
 
   config.before(:suite) do
-    app = Rails.application
-    index = Sprockets::Environment.new.index
-    output = File.join(app.root, 'public', app.config.assets.prefix)
-    assets = app.config.assets.precompile
-    Sprockets::Manifest.new(index, output).compile(assets)
+    %x{rake assets:precompile}
   end
 
   config.after(:each, :type => :view)  do
@@ -65,6 +80,8 @@ RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
 
   config.waterpig_truncation_types = [:feature, :task]
+  config.waterpig_driver =    ENV['CAPYBARA_DRIVER']    || :selenium_chrome
+  config.waterpig_js_driver = ENV['CAPYBARA_JS_DRIVER'] || :selenium_chrome
 
   config.before :all, :type => proc{ |value| config.waterpig_truncation_types.include?(value)} do
     Rails.application.config.action_dispatch.show_exceptions = true
