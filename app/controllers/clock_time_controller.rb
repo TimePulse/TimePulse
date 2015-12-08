@@ -38,6 +38,8 @@ class ClockTimeController < WorkUnitBaseController
       @work_unit.update(clock_params)
     end
     clock_out_current_work_unit
+    expire_fragment("work_unit_narrow_#{@work_unit.id}")
+
 
     current_user.reload
     respond_to do |format|

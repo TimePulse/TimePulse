@@ -24,7 +24,8 @@ class AnnotationsController < ApplicationController
         else
           @activity.time = @work_unit.stop_time
         end
-      end
+     end
+     expire_fragment("work_unit_narrow_#{@work_unit.id}")
     end
 
     respond_to do |format|
