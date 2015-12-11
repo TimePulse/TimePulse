@@ -1,8 +1,6 @@
 require 'spec_helper'
 
-shared_steps "for an invoicing task" do |opt_hash|
-  opt_hash ||= {}
-
+shared_steps "for an invoicing task" do
   let :admin do
     FactoryGirl.create(:admin)
   end
@@ -27,20 +25,12 @@ shared_steps "for an invoicing task" do |opt_hash|
 
   let! :rates_senior_dev do FactoryGirl.create(:rates_user, :rate => senior_rate, :user => senior_dev) end
 
-  (opt_hash[:wu_count] || 3).times do |idx|
-    let! "junior_work_unit_#{idx}" do
-      FactoryGirl.create(:work_unit, :hours => 5, :user => junior_dev, :project => project)
-    end
+  let! "junior_work_units" do
+    FactoryGirl.create_list(:work_unit, wu_count, :hours => 5, :user => junior_dev, :project => project)
   end
 
-  (opt_hash[:wu_count] || 3).times do |idx|
-    let! "senior_work_unit_#{idx}" do
-      FactoryGirl.create(:work_unit, :hours => 5, :user => senior_dev, :project => project)
-    end
-  end
-
-  def click_checkbox(id)
-    check(id)
+  let! "senior_work_units" do
+    FactoryGirl.create_list(:work_unit, wu_count, :hours => 5, :user => senior_dev, :project => project)
   end
 
   it "should login as an admin" do
@@ -65,6 +55,10 @@ end
 
 
 steps "Selects all boxes", :type => :feature do
+  let :wu_count do
+    3
+  end
+
   perform_steps "for an invoicing task"
 
   it "should select all work units" do
@@ -91,12 +85,16 @@ steps "Selects all boxes", :type => :feature do
 end
 
 steps "Select a few work units", :type => :feature do
-  perform_steps "for an invoicing task", :wu_count => 5
+  let :wu_count do
+    5
+  end
+
+  perform_steps "for an invoicing task"
 
   it "should select 3 work units" do
-    click_checkbox("invoice_work_unit_ids_1")
-    click_checkbox("invoice_work_unit_ids_2")
-    click_checkbox("invoice_work_unit_ids_3")
+    check("invoice_work_unit_ids_1")
+    check("invoice_work_unit_ids_2")
+    check("invoice_work_unit_ids_3")
   end
 
   it "should create the invoice" do
@@ -120,24 +118,28 @@ steps "Select a few work units", :type => :feature do
 end
 
 steps "invoice totals", :type => :feature do
-  perform_steps "for an invoicing task", :wu_count => 5
+  let :wu_count do
+    5
+  end
+
+  perform_steps "for an invoicing task"
 
   let :senior_dev_wu_id do
-    "invoice_work_unit_ids_#{senior_work_unit_1.id}"
+    "invoice_work_unit_ids_#{senior_work_units[1].id}"
   end
 
   let :junior_dev_wu_id_1 do
-    "invoice_work_unit_ids_#{junior_work_unit_1.id}"
+    "invoice_work_unit_ids_#{junior_work_units[1].id}"
   end
 
   let :junior_dev_wu_id_2 do
-    "invoice_work_unit_ids_#{junior_work_unit_2.id}"
+    "invoice_work_unit_ids_#{junior_work_units[2].id}"
   end
 
   it "should select 3 work units" do
-    click_checkbox(senior_dev_wu_id)
-    click_checkbox(junior_dev_wu_id_1)
-    click_checkbox(junior_dev_wu_id_2)
+    check(senior_dev_wu_id)
+    check(junior_dev_wu_id_1)
+    check(junior_dev_wu_id_2)
   end
 
   it "should have a totals table" do
