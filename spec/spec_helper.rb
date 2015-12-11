@@ -1,18 +1,19 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+#
+# NB: I had to *remove* byebug from this file. Please require it as needed: it
+# breaks CI as currently configured
 ENV["RAILS_ENV"] ||= 'test'
+
+require 'simplecov'
+SimpleCov.start 'rails'
 
 if ENV["CODECLIMATE_REPO_TOKEN"]
   require "codeclimate-test-reporter"
   CodeClimate::TestReporter.start
 end
 
-require 'byebug'
-require 'simplecov'
-SimpleCov.start 'rails'
-
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-
 
 require 'rspec-steps/monkeypatching'
 # Requires supporting ruby files with custom matchers and macros, etc,
