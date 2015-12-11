@@ -85,6 +85,8 @@ RSpec.configure do |config|
   config.waterpig_driver =    ENV['CAPYBARA_DRIVER']    || :selenium_chrome
   config.waterpig_js_driver = ENV['CAPYBARA_JS_DRIVER'] || :selenium_chrome
 
+  puts "Capybara driver: #{config.waterpig_driver}"
+
   config.before :all, :type => proc{ |value| config.waterpig_truncation_types.include?(value)} do
     Rails.application.config.action_dispatch.show_exceptions = true
   end
