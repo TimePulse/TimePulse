@@ -19,3 +19,7 @@ before_script:
 script:
 - CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6 bundle exec rspec spec
 notifications: recipients - evan@lrdesign.com
+env:
+  global:
+  - CAPYBARA_DRIVER=selenium_firefox
+  - CAPYBARA_JS_DRIVER=selenium_firefox

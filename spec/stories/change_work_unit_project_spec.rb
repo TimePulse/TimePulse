@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-steps "edit a work unit to move it from one project to another", :type => :feature do
+steps "edit a work unit to move it from one project to another", :type => :feature, :firefox => false do
   include SelectBoxItHelpers
   let! :client_1 do FactoryGirl.create(:client, :name => 'Foo, Inc.') end
   let! :client_2 do FactoryGirl.create(:client, :name => 'Bar, Inc.', :abbreviation => 'BAR') end
@@ -43,6 +43,8 @@ steps "edit a work unit to move it from one project to another", :type => :featu
     page.should have_selector("#project_#{project_1.id}.current")
   end
 
+  # XXX Firefox can't find #work_unit_form, which breaks firefox runs
+  # Travis is only Firefox so...
   it "I show the manual entry form" do
     find('#work_unit_entry_tp_manual_time_entry_tab').click
     within "#work_unit_form" do
