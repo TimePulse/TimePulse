@@ -1,4 +1,5 @@
 require 'cadre/simplecov'
+require 'code_climate/test_reporter/formatter'
 
 SimpleCov.start 'rails' do
   formatter SimpleCov::Formatter::MultiFormatter[
