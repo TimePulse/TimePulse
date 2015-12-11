@@ -87,6 +87,11 @@ RSpec.configure do |config|
 
   puts "Capybara driver: #{config.waterpig_driver}"
 
+  if config.waterpig_driver.to_s == "selenium_firefox"
+    config.filter_run_excluding :firefox => false
+  end
+
+
   config.before :all, :type => proc{ |value| config.waterpig_truncation_types.include?(value)} do
     Rails.application.config.action_dispatch.show_exceptions = true
   end
