@@ -46,6 +46,9 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.8)
+    airbrake (4.3.4)
+      builder
+      multi_json
     annotate (2.6.10)
       activerecord (>= 3.2, <= 4.3)
       rake (~> 10.4)
@@ -403,6 +406,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   activerecord
+  airbrake
   annotate
   awesome_nested_set!
   bibliotech
