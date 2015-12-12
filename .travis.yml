@@ -1,9 +1,10 @@
 sudo: false
 language: ruby
+cache: bundler
 rvm:
-- 1.9.3
 - 2.0.0
 - 2.1.0
+- 2.2.0
 bundler_args: --without development production debug
 before_script:
 - cp config/database.travis.yml config/database.yml
@@ -12,15 +13,13 @@ before_script:
 - RAILS_ENV=test bundle exec rake db:migrate --trace
 - bundle exec rake db:test:prepare
 - RAILS_ENV=test bundle exec rake assets:precompile
+- "export DISPLAY=:99.0"
+- "sh -e /etc/init.d/xvfb start"
+- sleep 3
 script:
-- CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6
-  xvfb-run -a bundle exec rspec spec
+- CODECLIMATE_REPO_TOKEN=07a14357b7a81d09cf940fb13972850830b34eb82569620c7c8a967475f1bca6 bundle exec rspec spec
 notifications: recipients - evan@lrdesign.com
-install: .travis-support/cached-bundle install --deployment
 env:
   global:
   - CAPYBARA_DRIVER=selenium_firefox
   - CAPYBARA_JS_DRIVER=selenium_firefox
-  - AMAZON_S3_BUCKET=lrd-travis-caching
-  - secure: kc7LwLqkUhq8PJScY/pNhzT8GzRolGZ33Jkxvo2Xr/uM1j7N58xFBMdzRXgUS6/1LrvnHZd2z6n4+N0c14778oJQ5Apnq+ldIWhk2lSxy2pLMRoOPxWl4OH6rAU5zZYX/YnPAgsDjAnXTT+uudodYjuszALPp1GCuGrxUuk6uGo=
-  - secure: qf0OQQ6hD1ME50OYTDUhSgwiszzNB4XMSqpyIbBfKLdE0+7KAZ3k8gjGSaJKvbirkXaUlDbIePh7eoKVZ2yJ6SL/mgwgFMifvnBdJQNlLxx69i0aE7QyA0nL2cf9xm8ZZFEMQ+ey+NY9LM9jC5MJfF+7KESIXDjecN1Nxteaz1E=
