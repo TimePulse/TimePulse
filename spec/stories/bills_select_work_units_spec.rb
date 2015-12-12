@@ -1,19 +1,16 @@
 require 'spec_helper'
 
-shared_steps "for an billing task" do |opt_hash|
-  opt_hash ||= {}
-  let :admin do
+shared_steps "for an billing task" do
+  let! :admin do
     FactoryGirl.create(:admin)
   end
 
-  let :project do
+  let! :project do
     FactoryGirl.create(:project)
   end
 
-  (opt_hash[:wu_count] || 3).times do |idx|
-    let! "work_unit_#{idx}" do
-      FactoryGirl.create(:work_unit, :project => project, :user => admin)
-    end
+  let! "work_units" do
+    FactoryGirl.create_list(:work_unit, wu_count, :project => project, :user => admin)
   end
 
   it "should login as an admin" do
@@ -62,6 +59,10 @@ shared_steps "to verify bill is visible" do
 end
 
 steps "Selects all boxes", :type => :feature do
+  let :wu_count do
+    3
+  end
+
   perform_steps "for an billing task"
 
   it "should select all work units" do
@@ -91,16 +92,16 @@ steps "Selects all boxes", :type => :feature do
 end
 
 steps "Select a few work units", :type => :feature do
-  perform_steps "for an billing task", :wu_count => 5
-
-  def click_checkbox(id)
-    check(id)
+  let :wu_count do
+    5
   end
 
+  perform_steps "for an billing task"
+
   it "should select 3 work units" do
-    click_checkbox("bill_work_unit_ids_1")
-    click_checkbox("bill_work_unit_ids_2")
-    click_checkbox("bill_work_unit_ids_3")
+    check("bill_work_unit_ids_1")
+    check("bill_work_unit_ids_2")
+    check("bill_work_unit_ids_3")
   end
 
   it "should create the bill" do
