@@ -52,7 +52,7 @@ group :development, :test do
   gem 'capybara-webkit', '~> 1.7.0'
   gem 'selenium-webdriver'
   gem 'poltergeist'
-  gem 'waterpig'
+  gem 'waterpig', "~> 0.12.1"
   gem 'cadre'
   gem "populator"
   gem "faker"
