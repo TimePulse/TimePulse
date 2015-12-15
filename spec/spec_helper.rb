@@ -1,19 +1,21 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+#
+# NB: I had to *remove* byebug from this file. Please require it as needed: it
+# breaks CI as currently configured
 ENV["RAILS_ENV"] ||= 'test'
+
+require 'simplecov'
+SimpleCov.start 'rails'
 
 if ENV["CODECLIMATE_REPO_TOKEN"]
   require "codeclimate-test-reporter"
   CodeClimate::TestReporter.start
 end
 
-require 'byebug'
-require 'simplecov'
-SimpleCov.start 'rails'
-
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 
-
+require 'rspec-steps/monkeypatching'
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
@@ -82,6 +84,13 @@ RSpec.configure do |config|
   config.waterpig_truncation_types = [:feature, :task]
   config.waterpig_driver =    ENV['CAPYBARA_DRIVER']    || :selenium_chrome
   config.waterpig_js_driver = ENV['CAPYBARA_JS_DRIVER'] || :selenium_chrome
+
+  puts "Capybara driver: #{config.waterpig_driver}"
+
+  if config.waterpig_driver.to_s == "selenium_firefox"
+    config.filter_run_excluding :firefox => false
+  end
+
 
   config.before :all, :type => proc{ |value| config.waterpig_truncation_types.include?(value)} do
     Rails.application.config.action_dispatch.show_exceptions = true

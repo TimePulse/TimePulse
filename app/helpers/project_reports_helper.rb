@@ -5,7 +5,6 @@ module ProjectReportsHelper
   end
 
   def user_project_hours(work_units)
-    #byebug
     user_hours = {}
     work_units.each do |wu|
       user_hours[wu.user] ||= 0.0

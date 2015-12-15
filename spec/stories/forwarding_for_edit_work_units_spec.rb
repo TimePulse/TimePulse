@@ -1,8 +1,6 @@
 require 'spec_helper'
 
-shared_steps "for an editing task" do |opt_hash|
-  opt_hash ||= {}
-
+shared_steps "for an editing task" do
   let :admin do
     FactoryGirl.create(:admin)
   end
@@ -14,11 +12,8 @@ shared_steps "for an editing task" do |opt_hash|
   let :user do FactoryGirl.create(:user) end
   let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => admin) end
 
-  (opt_hash[:wu_count] || 3).times do |idx|
-    let! "work_unit_#{idx}" do
-      FactoryGirl.create(:work_unit, :user => admin, :project => project)
-    end
-
+  let! "work_units" do
+    FactoryGirl.create_list(:work_unit, 3, :user => admin, :project => project)
   end
 
   it "should login as an admin" do
@@ -35,7 +30,7 @@ steps "Edit a work unit from the home page", :type => :feature do
   perform_steps "for an editing task"
 
   it "click to edit and save a work unit" do
-    page.find(:css, "#recent_work a[href='/work_units/#{work_unit_0.id}/edit']").click
+    page.find(:css, "#recent_work a[href='/work_units/#{work_units[0].id}/edit']").click
     click_button 'Submit'
   end
 
@@ -53,7 +48,7 @@ steps "Edit a work unit from the new invoice page", :type => :feature do
     click_link "New Invoice"
     page.select project.client.name
     click_button "Set Parameters"
-    page.find(:css, "a[href='/work_units/#{work_unit_0.id}/edit']").click
+    page.find(:css, "a[href='/work_units/#{work_units[0].id}/edit']").click
     click_button 'Submit'
   end
 

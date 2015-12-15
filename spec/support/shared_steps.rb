@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-shared_steps "log in" do
+RSpec.shared_steps "log in" do
 
   it "When I go to the login page" do
     # TODO: figure out why this doesn't work.

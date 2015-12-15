@@ -1,8 +1,11 @@
 require 'spec_helper'
 
-shared_steps "for a task with project and work units" do |opt_hash|
+shared_steps "for a task with project and work units" do
   include ChosenSelect
-  opt_hash ||= {}
+
+  let :wu_count do
+    3
+  end
 
   let :admin do
     FactoryGirl.create(:admin)
@@ -21,10 +24,8 @@ shared_steps "for a task with project and work units" do |opt_hash|
   let :user do FactoryGirl.create(:user) end
   let! :rates_user do FactoryGirl.create(:rates_user, :rate => project.rates.last, :user => admin) end
 
-  (opt_hash[:wu_count] || 3).times do |idx|
-    let! "work_unit_#{idx}" do
-      FactoryGirl.create(:work_unit, :user => admin, :project => project, :hours => 3)
-    end
+  let! "work_units" do
+    FactoryGirl.create_list(:work_unit, wu_count, :user => admin, :project => project, :hours => 3)
   end
 
   let :work_unit_list do
@@ -106,13 +107,13 @@ steps "the project reports page", :type => :feature do
     end
   end
   it "should list the work units for the project" do
-    within "#work_unit_#{work_unit_0.id}" do
+    within "#work_unit_#{work_units[0].id}" do
       page.should have_link("Edit")
     end
-    within "#work_unit_#{work_unit_1.id}" do
+    within "#work_unit_#{work_units[1].id}" do
       page.should have_link("Edit")
     end
-    within "#work_unit_#{work_unit_2.id}" do
+    within "#work_unit_#{work_units[2].id}" do
       page.should have_link("Edit")
     end
   end
