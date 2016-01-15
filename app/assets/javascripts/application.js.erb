@@ -152,8 +152,8 @@ Ninja.behavior({
             event.preventDefault();
             if ($(elem).val() != "") {
               $('#timeclock form#annotation_form').submit();
+              $("#annotation_form")[0].reset();
             }
-            $("#annotation_form")[0].reset();
           }
         });
       }
@@ -177,8 +177,10 @@ Ninja.behavior({
     },
     '#timeclock button#clock_out_button': {
       click: function(evnt, elem) {
-        if ($(elem).val() != "") {
+        var annot = $(elem).parents('div').find('textarea').val();
+        if (annot != "") {
           $('#timeclock form#annotation_form').submit();
+          $("#annotation_form")[0].reset();
         }
         $('#timeclock form.edit_work_unit').submit();
       }
