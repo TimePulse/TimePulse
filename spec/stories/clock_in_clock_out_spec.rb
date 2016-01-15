@@ -38,7 +38,6 @@ steps "clock in and out on projects", :type => :feature do
     end
   end
 
-
   it "user clicks on the clock in link in the timeclock" do
     within "#timeclock" do
       click_link "Clock in on [] Foo Project 1"
@@ -59,10 +58,14 @@ steps "clock in and out on projects", :type => :feature do
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_nil
     new_work_unit.project.should == project_1
+    new_work_unit.activities.count.should == 0
   end
 
-  it "should create annotation on enter" do
-    fill_in "annotation_input", :with => "Starting work on project #1!\n"
+  it "should create annotation on clockout if content is present" do
+    within "#timeclock" do
+      fill_in "Annotations", :with => "Starting work on project"
+      click_button "Clock Out"
+    end
   end
 
   it "should show newly-created annotation under Recent Annotations" do
@@ -71,19 +74,14 @@ steps "clock in and out on projects", :type => :feature do
     end
   end
 
-  it "should clock out with a message" do
-    within "#timeclock" do
-      fill_in "Annotations", :with => "Did a little work on project #1"
-      click_button "Clock Out"
+  it "should show new annotation in recent work, within a project, under notes" do
+    within("#recent_work") do
+      find(".work_unit_label", match: :first).click
+    end
+    within(".work_unit_details") do
+      page.should have_content("Starting work on project")
     end
   end
-
-  it "should show newly-created annotation under Recent Annotations" do
-    within("#recent_annotations") do
-      page.should have_content("Did a little work")
-    end
-  end
-
 
   it "should have an unclocked timeclock" do
     page.should have_title(/clocked out/i)
@@ -94,7 +92,6 @@ steps "clock in and out on projects", :type => :feature do
       page.should_not have_selector("#timeclock #task_elapsed")
     end
   end
-
 
   it "user clicks on the clock in link in the timeclock" do
     within "#timeclock" do
@@ -107,13 +104,52 @@ steps "clock in and out on projects", :type => :feature do
     page.should have_selector("#timeclock #task_elapsed")
   end
 
+  it "should create annotation on enter" do
+    fill_in "annotation_input", :with => "More work"
+    find('#annotation_input').native.send_keys(:return)
+  end
+
+  it "should show newly-created annotation under Recent Annotations" do
+    within("#recent_annotations") do
+      page.should have_content("More work")
+    end
+  end
+
+  it "should have created a new annotation in the DB" do
+    new_work_unit = WorkUnit.last
+    new_work_unit.activities.count.should == 1
+    new_work_unit.activities.last.description.should == "More work"
+  end
+
+  it "should not have blank annotations" do
+    find('#annotation_input').native.send_keys(:return)
+  end
+
+  it "should not have created a new annotation in the DB" do
+    new_work_unit = WorkUnit.last
+    new_work_unit.activities.count.should == 1
+  end
+
+  it "should create a second annotation on the same work unit" do
+    fill_in "annotation_input", :with => "Worked all day"
+    find('#annotation_input').native.send_keys(:return)
+  end
+
   it "and I fill in nine hours and clock out" do
     within "#timeclock" do
       Timecop.travel(Time.zone.now + 10.hours)
       click_link("(+ show override tools)")
       fill_in "Hours", :with => '9.0'
-      fill_in "Annotations", :with => "I worked all day on this"
       click_button "Clock Out"
+    end
+  end
+
+  it "should show new annotation in recent work, within a project, under notes" do
+    within("#recent_work") do
+      find(".work_unit_label", match: :first).click
+    end
+    within(".work_unit_details") do
+      page.should have_content("More work; Worked all day")
     end
   end
 
@@ -124,16 +160,12 @@ steps "clock in and out on projects", :type => :feature do
     end
   end
 
-
   it "should have created a completed work unit in the DB" do
     WorkUnit.count.should == @work_unit_count + 2
     new_work_unit = WorkUnit.last
     new_work_unit.stop_time.should be_within(10.seconds).of(Time.zone.now)
     new_work_unit.project.should == project_1
     new_work_unit.hours.should == 9.0
-    new_work_unit.activities.count.should == 1
-    new_work_unit.activities.last.description.should == "I worked all day on this"
-    #new_work_unit.hours.should be_within(0.1).of(9.0)
   end
 
   it "should show the created work unit in 'Recent Work'" do
@@ -142,14 +174,7 @@ steps "clock in and out on projects", :type => :feature do
     end
   end
 
-  it "should show newly-created annotation under Recent Annotations" do
-    within("#recent_annotations") do
-      page.should have_content("I worked all day")
-    end
-  end
-
   it "should update 'Hours this week' with the created work units" do
-
     within "#this_week" do
       hours = WorkUnit.this_week.map{|wu|wu.hours}.sum
       page.should have_content("%.2f" % hours)
