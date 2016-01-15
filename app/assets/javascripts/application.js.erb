@@ -144,32 +144,15 @@ Ninja.behavior({
         }
       }
     },
-    '#work_unit_notes': {
-      keyup: function(evnt, elem) {
-        content = $(elem).val();
-
-        content = content.replace(/\n/g, '<br>');
-        hiddenDiv = $(elem).parent().find('.hidden-work-unit-notes-div');
-        hiddenDiv.html('<br>' + content + '<br>');
-
-        $(elem).css('height', hiddenDiv.height());
-      },
-      transform: function(elem) {
-        hiddenDiv = $(document.createElement('div')),
-        content = $(elem).val();
-
-        hiddenDiv.addClass('hidden-work-unit-notes-div');
-
-        $(elem).parent().append(hiddenDiv);
-      }
-    },
     //keydown overrides every key's functionality, not just Enter, so we used transform instead
     '#annotation_input': {
       transform: function(elem) {
         $(elem).keydown(function(event) {
           if (event.which == 13) {
             event.preventDefault();
-            $("#annotation_form").submit();
+            if ($(elem).val() != "") {
+              $('#timeclock form#annotation_form').submit();
+            }
             $("#annotation_form")[0].reset();
           }
         });
@@ -193,9 +176,11 @@ Ninja.behavior({
       }
     },
     '#timeclock button#clock_out_button': {
-      click: function(evnt) {
+      click: function(evnt, elem) {
+        if ($(elem).val() != "") {
+          $('#timeclock form#annotation_form').submit();
+        }
         $('#timeclock form.edit_work_unit').submit();
-        $('#timeclock form#annotation_form').submit();
       }
     },
 
