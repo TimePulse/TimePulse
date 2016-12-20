@@ -45,10 +45,9 @@ group :development, :test do
   gem 'rspec-legacy_formatters'
   gem 'rspec-collection_matchers'
   gem 'factory_girl_rails'
-  gem 'thin'
 
   # Enable for in-browser testing.  See spec/support/browser-integration.rb
-  gem 'capybara-webkit', '~> 1.7.0'
+  # gem 'capybara-webkit'
   gem 'selenium-webdriver'
   gem 'poltergeist'
   gem 'waterpig', "~> 0.12.1"

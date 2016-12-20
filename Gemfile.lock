@@ -84,9 +84,6 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
-    capybara-webkit (1.7.0)
-      capybara (>= 2.3.0, < 2.6.0)
-      json
     childprocess (0.5.6)
       ffi (~> 1.0, >= 1.0.11)
     chronic (0.10.2)
@@ -121,7 +118,6 @@ GEM
       sprockets (< 2.13)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
-    daemons (1.2.3)
     database_cleaner (1.3.0)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
@@ -136,7 +132,6 @@ GEM
     dynamic_form (1.1.4)
     equalizer (0.0.11)
     erubis (2.7.0)
-    eventmachine (1.0.8)
     execjs (2.6.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
@@ -350,10 +345,6 @@ GEM
     sqlite3 (1.3.10)
     systemu (2.6.5)
     text-table (1.2.4)
-    thin (1.6.3)
-      daemons (~> 1.0, >= 1.0.9)
-      eventmachine (~> 1.0)
-      rack (~> 1.0)
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (1.4.1)
@@ -411,7 +402,6 @@ DEPENDENCIES
   cadre
   capistrano (< 3.0)
   capistrano-ext
-  capybara-webkit (~> 1.7.0)
   chronic
   codeclimate-test-reporter
   compass-rails (>= 2.0.2)
@@ -451,7 +441,6 @@ DEPENDENCIES
   selenium-webdriver
   simplecov (~> 0.7.1)
   simplecov-vim
-  thin
   timecop
   uglifier (>= 1.0.3)
   unicorn-rails
@@ -462,4 +451,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.10.6
+   1.13.6
