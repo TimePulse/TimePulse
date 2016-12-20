@@ -37,16 +37,34 @@ Documentation and examples can be found at [timepulse.io](http://timepulse.io "T
 Assuming you have a place to deploy already set up, you'll need to:
   * Clone this repository
   * Set up deploy scripts (for Capistrano, or whatever system you prefer)
-  * Copy and configure the credentials files, particularly config/database.yml, config/initializers/smtp.rb, config/initializers/session_secret.rb and config/initializers/api_keys.rb
+  * Copy and configure the credentials files config/database.yml and config/secrets.yml. Note that you can start with copies of config/database.yml.example and config/secrets.yml.example.
   * Create a database
   * Deploy and seed the database
-  * Log in as the initial admin user
+  * Log in as the initial admin user  (username: admin@timepulse.io, password: foobar)
 
 For now, you'll probably need solid knowledge of Rails to customize and deploy this app.  We're working on making it a simpler process for future users.
 
 ## Contributing
 
 Fork and Pull Request! Y'all know the drill by now.  Please make sure the tests pass, and add tests for your code.
+
+### Setting up for development
+
+To develop or contribute, the setup sequence should look something like this:
+
+```
+git clone https://github.com/TimePulse/TimePulse
+cd TimePulse
+bundle
+cp config/secrets.yml.example config/secrets.yml
+cp config/database.yml.example config/database.yml
+# Edit config/database.yml to match your local DB setup
+bundle exec rake db:create db:migrate db:seed db:sample_data:load db:test:prepare
+bundle exec rspec spec
+```
+
+Note that sample users are created by the sample_data rake task, which can be found
+in 'lib/sample_data.rake'.
 
 ## History
 
@@ -68,6 +86,3 @@ TimePulse was first built as an internal time-tracking application for LRD in ea
 ## LICENSE
 
 TimePulse is released under a restricted license. See the accompanying LICENSE file for details.
-
-
-
