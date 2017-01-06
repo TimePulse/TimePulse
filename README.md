@@ -5,8 +5,7 @@ This project is originally by Logical Reality Design, Inc., and was built primar
 by Evan Dorn, Judson Lester, and Hannah Howard with contributions from many other
 current and past contractors of LRD.
 
-[![Code Climate](https://codeclimate.com/repos/52793e167e00a4591d00005c/badges/454bdc2ee23863e3bbe3/gpa.png)](https://codeclimate.com/repos/52793e167e00a4591d00005c/feed)
-[![Build Status](https://travis-ci.org/TimePulse/TimePulse.png?branch=master)](https://travis-ci.org/TimePulse/TimePulse)
+[![Code Climate](https://codeclimate.com/github/TimePulse/TimePulse/badges/gpa.svg)](https://codeclimate.com/github/TimePulse/TimePulse)[![Build Status](https://travis-ci.org/TimePulse/TimePulse.png?branch=master)](https://travis-ci.org/TimePulse/TimePulse)
 
 ## Features Overview
 
