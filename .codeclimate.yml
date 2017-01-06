@@ -41,6 +41,7 @@ exclude_paths:
 - script/**/*
 - spec/**/*
 - vendor/**/*
-- app/assets/javascripts/jquery.*
-- app/assets/javascripts/moment.*
+- app/assets/javascripts/*jquery*
+- app/assets/javascripts/fullcalendar.js
+- app/assets/javascripts/ninjascript*
 - public/flot/jquery.*
