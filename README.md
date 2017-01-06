@@ -5,7 +5,8 @@ This project is originally by Logical Reality Design, Inc., and was built primar
 by Evan Dorn, Judson Lester, and Hannah Howard with contributions from many other
 current and past contractors of LRD.
 
-[![Code Climate](https://codeclimate.com/github/TimePulse/TimePulse/badges/gpa.svg)](https://codeclimate.com/github/TimePulse/TimePulse)[![Build Status](https://travis-ci.org/TimePulse/TimePulse.png?branch=master)](https://travis-ci.org/TimePulse/TimePulse)
+[![Code Climate](https://codeclimate.com/github/TimePulse/TimePulse/badges/gpa.svg)](https://codeclimate.com/github/TimePulse/TimePulse)
+[![Build Status](https://travis-ci.org/TimePulse/TimePulse.png?branch=master)](https://travis-ci.org/TimePulse/TimePulse)
 
 ## Features Overview
 
@@ -39,17 +40,10 @@ Assuming you have a place to deploy already set up, you'll need to:
   * Copy and configure the credentials files config/database.yml and config/secrets.yml. Note that you can start with copies of config/database.yml.example and config/secrets.yml.example.
   * Create a database
   * Deploy and seed the database
-  * Log in as the initial admin user  (username: admin@timepulse.io, password: foobar)
+  * Log in as the initial admin user  (username: admin, password: password)
+  * Log in a the initial fake non-admin user  (username: jane, password: password)
 
 For now, you'll probably need solid knowledge of Rails to customize and deploy this app.  We're working on making it a simpler process for future users.
-
-### Sample data
-
-The rake db:sample_data:load task will create fake users, clients, projects, and work history.
-Most of the information is random, but there are two guaranteed user accounts:
-
-  * login 'admin', password 'password', a user with admin privileges but no work History
-  * login 'jane', password 'password', a non-admin user with a work history.
 
 ## Contributing
 
@@ -73,6 +67,15 @@ bundle exec rspec spec
 
 Note that sample users are created by the sample_data rake task, which can be found
 in 'lib/sample_data.rake'.
+
+### Sample data
+
+The rake db:sample_data:load task will create fake users, clients, projects, and work history.
+Most of the information is random, but there are two guaranteed user accounts:
+
+  * login 'admin', password 'password', a user with admin privileges but no work History
+  * login 'jane', password 'password', a non-admin user with a work history.
+
 
 ## History
 
