@@ -36,6 +36,7 @@ end
 #end
 
 DEFAULT_PASSWORD = 'password'
+
 namespace :db do
   namespace :sample_data do
 
