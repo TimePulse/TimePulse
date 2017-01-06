@@ -35,6 +35,7 @@ end
   #alias_method_chain :execute, :benchmark
 #end
 
+DEFAULT_PASSWORD = 'password'
 namespace :db do
   namespace :sample_data do
 
@@ -79,8 +80,8 @@ namespace :db do
           :login                 => 'admin',
           :name                  => "Admin",
           :email                 => "admin@timepulse.io",
-          :password              => 'foobar',
-          :password_confirmation => 'foobar'
+          :password              => DEFAULT_PASSWORD,
+          :password_confirmation => DEFAULT_PASSWORD
         )
         admin.admin = true
         admin.save

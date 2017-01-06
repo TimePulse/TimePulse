@@ -318,8 +318,8 @@ describe WorkUnit do
       start_time = Time.now - 1.day
       work_unit = FactoryGirl.create(:work_unit,
                                      :start_time => start_time,
-                                     :stop_time => start_time + 12.minutes,
-                                     :hours => 0.20)
+                                     :stop_time => start_time + 9.minutes,
+                                     :hours => 0.11)
       work_unit.sufficiently_annotated?.should be(false)
     end
 
@@ -327,8 +327,8 @@ describe WorkUnit do
       start_time = Time.now - 1.day
       work_unit = FactoryGirl.create(:work_unit_with_annotation,
                                      :start_time => start_time,
-                                     :stop_time => start_time + 12.minutes,
-                                     :hours => 0.20,
+                                     :stop_time => start_time + 9.minutes,
+                                     :hours => 0.11,
                                      :description => "A little annotation.")
       work_unit.sufficiently_annotated?.should be(true)
     end
@@ -338,7 +338,7 @@ describe WorkUnit do
       work_unit = FactoryGirl.create(:work_unit_with_annotation,
                                      :start_time => start_time,
                                      :stop_time => start_time + 12.minutes,
-                                     :hours => 0.10,
+                                     :hours => 0.09,
                                      :description => "A little orphan annotation.")
       work_unit.sufficiently_annotated?.should be(true)
     end

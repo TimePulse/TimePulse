@@ -44,6 +44,14 @@ Assuming you have a place to deploy already set up, you'll need to:
 
 For now, you'll probably need solid knowledge of Rails to customize and deploy this app.  We're working on making it a simpler process for future users.
 
+### Sample data
+
+The rake db:sample_data:load task will create fake users, clients, projects, and work history.
+Most of the information is random, but there are two guaranteed user accounts:
+
+  * login 'admin', password 'password', a user with admin privileges but no work History
+  * login 'jane', password 'password', a non-admin user with a work history.
+
 ## Contributing
 
 Fork and Pull Request! Y'all know the drill by now.  Please make sure the tests pass, and add tests for your code.
@@ -59,7 +67,8 @@ bundle
 cp config/secrets.yml.example config/secrets.yml
 cp config/database.yml.example config/database.yml
 # Edit config/database.yml to match your local DB setup
-bundle exec rake db:create db:migrate db:seed db:sample_data:load db:test:prepare
+bundle exec rake db:create db:migrate
+bundle exec rake db:seed db:sample_data:load db:test:prepare
 bundle exec rspec spec
 ```
 
